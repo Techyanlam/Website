@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Oneder Chat 一芯 — WhatsApp AI 自動語音客服</title>
   <meta name="description" content="Oneder Chat 一芯 — 24/7 WhatsApp AI 自動語音＋文字客服，專為香港企業設計，3秒回覆、全廣東話支援，節省70-85%客服成本。" />
+  <!-- 優化SEO：增加關鍵字、Open Graph -->
   <meta name="keywords" content="WhatsApp AI客服, 香港AI客服, WhatsApp自動回覆, 廣東話AI語音, WhatsApp Business API" />
   <meta property="og:title" content="Oneder Chat 一芯 — WhatsApp AI 自動語音客服" />
   <meta property="og:description" content="24/7 WhatsApp AI自動語音+文字客服，專為香港企業設計，3秒回覆、全廣東話支援，節省70-85%客服成本。" />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/og-image.jpg" />
+  <meta property="og:image" content="assets/og-image.jpg" /> <!-- 建議補充OG圖 -->
   
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入圖標庫增強視覺 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   
   <style>
@@ -19,7 +21,7 @@
       --oneder-blue: #00A6D6;
       --oneder-orange: #FFA239;
       --oneder-dark: #0f172a;
-      --transition: all 0.3s ease;
+      --transition: all 0.3s ease; /* 統一過渡動畫 */
     }
     .brand-blue{ background-color: var(--oneder-blue); }
     .brand-orange{ background-color: var(--oneder-orange); }
@@ -34,7 +36,9 @@
       transform: translateY(-2px);
     }
     .logo-circle{ background: linear-gradient(180deg,var(--oneder-orange),var(--oneder-blue)); }
+    /* 平滑滾動 */
     html{ scroll-behavior: smooth; }
+    /* 響應式影片容器 */
     .video-container {
       position: relative;
       padding-bottom: 56.25%; /* 16:9比例 */
@@ -48,6 +52,7 @@
       width: 100%;
       height: 100%;
     }
+    /* FAQ展開動畫 */
     .faq-content {
       max-height: 0;
       overflow: hidden;
@@ -59,10 +64,11 @@
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
-  <!-- 導航欄（左上角圖標為Oneder.jpeg） -->
+  <!-- NAV - 優化手機端響應式 + 更新Logo為Oneder.jpeg -->
   <header class="bg-white shadow-sm sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
+        <!-- 更換為Oneder.jpeg作為ICON -->
         <div class="w-12 h-12 rounded-full logo-circle flex items-center justify-center"> 
           <img src="Oneder.jpeg" alt="Oneder Logo" class="w-10 h-10 object-contain rounded-full" loading="lazy">
         </div>
@@ -71,6 +77,8 @@
           <div class="text-xs text-gray-500">WhatsApp AI 自動語音 + 文字客服</div>
         </div>
       </div>
+      
+      <!-- 桌面導航 -->
       <nav class="hidden md:flex items-center gap-6">
         <a href="#features" class="text-sm hover:text-brand-blue transition-colors">功能</a>
         <a href="#pricing" class="text-sm hover:text-brand-blue transition-colors">收費</a>
@@ -78,10 +86,14 @@
         <a href="#contact" class="text-sm hover:text-brand-blue transition-colors">聯絡</a>
         <a href="#contact" class="px-4 py-2 rounded-md text-white btn-primary text-sm shadow-sm hover:shadow">免費試用</a>
       </nav>
+      
+      <!-- 手機端漢堡按鈕 -->
       <button class="md:hidden text-gray-700" id="menuBtn">
-        <<i class="fa-solid fa-bars text-xl"></</i>
+        <i class="fa-solid fa-bars text-xl"></i>
       </button>
     </div>
+    
+    <!-- 手機端下拉導航 -->
     <div class="md:hidden hidden bg-white shadow-md absolute w-full" id="mobileMenu">
       <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-4">
         <a href="#features" class="text-sm py-2 hover:text-brand-blue">功能</a>
@@ -93,7 +105,7 @@
     </div>
   </header>
 
-  <!-- 首屏區域 -->
+  <!-- HERO - 強化視覺層級、優化行間距 -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12">
     <div class="md:w-1/2 order-2 md:order-1">
       <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
@@ -107,19 +119,21 @@
         <a href="#contact" class="px-6 py-3 rounded-md text-white btn-primary font-medium shadow hover:shadow-md">立即申請免費 Demo</a>
         <a href="#demo" class="px-6 py-3 rounded-md border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors">觀看 Demo</a>
       </div>
+
       <ul class="mt-6 space-y-2 text-sm text-gray-600">
-        <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-brand-blue"></</i> 3 秒內自動回覆</li>
-        <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-brand-blue"></</i> AI 語音訊息更有人情味（廣東話/英文/普通話）</li>
-        <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-brand-blue"></</i> WhatsApp Business API 一鍵接駁</li>
+        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-blue"></i> 3 秒內自動回覆</li>
+        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-blue"></i> AI 語音訊息更有人情味（廣東話/英文/普通話）</li>
+        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-blue"></i> WhatsApp Business API 一鍵接駁</li>
       </ul>
     </div>
+
     <div class="md:w-1/2 order-1 md:order-2">
       <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-[1.02] transition-transform">
         <div class="h-64 bg-gradient-to-r from-sky-100 to-amber-50 rounded-lg flex items-center justify-center">
           <div class="text-center">
             <p class="text-sm text-gray-500">示範：WhatsApp 自動回覆 + AI 語音</p>
             <div class="mt-3 w-48 h-48 rounded-lg bg-white shadow flex items-center justify-center">
-              <<i class="fa-solid fa-play-circle text-5xl text-brand-blue mb-2"></</i>
+              <i class="fa-solid fa-play-circle text-5xl text-brand-blue mb-2"></i>
               <span class="text-brand-blue font-bold block">Demo Video</span>
             </div>
           </div>
@@ -128,51 +142,57 @@
     </div>
   </section>
 
-  <!-- 功能總覽 -->
+  <!-- FEATURES - 增加圖標、強化視覺識別 -->
   <section id="features" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 bg-gray-50/50">
     <div class="text-center mb-8">
       <h2 class="text-3xl font-bold">功能總覽</h2>
       <p class="mt-2 text-gray-600 max-w-3xl mx-auto">針對香港企業打造，簡單接駁你現有 WhatsApp，立即提升回覆效率。</p>
     </div>
+
     <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
         <div class="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center mb-4">
-          <<i class="fa-solid fa-comments text-xl text-brand-blue"></</i>
+          <i class="fa-solid fa-comments text-xl text-brand-blue"></i>
         </div>
         <h3 class="font-semibold text-lg">AI 自動文字回覆</h3>
         <p class="mt-2 text-sm text-gray-600">即時解答 80% 常見問題，支援自定義公司語氣，秒回覆，保持一致性。</p>
       </div>
+
       <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
         <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-4">
-          <<i class="fa-solid fa-microphone-lines text-xl text-brand-orange"></</i>
+          <i class="fa-solid fa-microphone-lines text-xl text-brand-orange"></i>
         </div>
         <h3 class="font-semibold text-lg">AI 自動語音</h3>
         <p class="mt-2 text-sm text-gray-600">自然語音（廣東話/英文/普通話），提升信任感，特別適合需要講解服務或詳情的行業。</p>
       </div>
+
       <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
         <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
-          <<i class="fa-solid fa-plug-circle-check text-xl text-green-600"></</i>
+          <i class="fa-solid fa-plug-circle-check text-xl text-green-600"></i>
         </div>
         <h3 class="font-semibold text-lg">WhatsApp API 一鍵接駁</h3>
         <p class="mt-2 text-sm text-gray-600">無需更換電話或安裝額外 App，保持現有流程，馬上使用。</p>
       </div>
+
       <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
         <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mb-4">
-          <<i class="fa-solid fa-sitemap text-xl text-purple-600"></</i>
+          <i class="fa-solid fa-sitemap text-xl text-purple-600"></i>
         </div>
         <h3 class="font-semibold text-lg">自動流程 & 分流</h3>
         <p class="mt-2 text-sm text-gray-600">自動收集客戶資料、做初步估價、分流到指定團隊，節省人手操作時間。</p>
       </div>
+
       <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
         <div class="w-12 h-12 rounded-full bg-rose-100 flex items-center justify-center mb-4">
-          <<i class="fa-solid fa-language text-xl text-rose-600"></</i>
+          <i class="fa-solid fa-language text-xl text-rose-600"></i>
         </div>
         <h3 class="font-semibold text-lg">多語自動切換</h3>
         <p class="mt-2 text-sm text-gray-600">系統會根據客戶語言自動回覆廣東話、英文或普通話，無需手動切換。</p>
       </div>
+
       <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
         <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
-          <<i class="fa-solid fa-chart-simple text-xl text-indigo-600"></</i>
+          <i class="fa-solid fa-chart-simple text-xl text-indigo-600"></i>
         </div>
         <h3 class="font-semibold text-lg">後台數據報表</h3>
         <p class="mt-2 text-sm text-gray-600">追蹤對話量、熱門問題、AI 準確度及轉換數據，幫你優化流程。</p>
@@ -180,7 +200,7 @@
     </div>
   </section>
 
-  <!-- 數據效果 -->
+  <!-- BENEFITS / STATS - 強化數據視覺化 -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
     <div class="bg-white rounded-lg shadow p-8 flex flex-col md:flex-row items-center justify-between gap-8">
       <div class="md:w-2/3">
@@ -209,7 +229,7 @@
     </div>
   </section>
 
-  <!-- 適用行業 -->
+  <!-- INDUSTRIES - 增加圖標、優化排版 -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 bg-gray-50/50">
     <div class="text-center mb-8">
       <h2 class="text-3xl font-bold">適用行業</h2>
@@ -217,51 +237,53 @@
     </div>
     <div class="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
       <div class="bg-white p-5 rounded shadow hover:shadow-md transition-shadow text-center">
-        <<i class="fa-solid fa-spa text-2xl text-brand-blue mb-2"></</i>
+        <i class="fa-solid fa-spa text-2xl text-brand-blue mb-2"></i>
         <p>美容 / Spa / 醫美</p>
       </div>
       <div class="bg-white p-5 rounded shadow hover:shadow-md transition-shadow text-center">
-        <<i class="fa-solid fa-book-open text-2xl text-brand-blue mb-2"></</i>
+        <i class="fa-solid fa-book-open text-2xl text-brand-blue mb-2"></i>
         <p>補習社 / 教育</p>
       </div>
       <div class="bg-white p-5 rounded shadow hover:shadow-md transition-shadow text-center">
-        <<i class="fa-solid fa-building text-2xl text-brand-blue mb-2"></</i>
+        <i class="fa-solid fa-building text-2xl text-brand-blue mb-2"></i>
         <p>地產代理</p>
       </div>
       <div class="bg-white p-5 rounded shadow hover:shadow-md transition-shadow text-center">
-        <<i class="fa-solid fa-wrench text-2xl text-brand-blue mb-2"></</i>
+        <i class="fa-solid fa-wrench text-2xl text-brand-blue mb-2"></i>
         <p>清潔 / 維修工程</p>
       </div>
       <div class="bg-white p-5 rounded shadow hover:shadow-md transition-shadow text-center">
-        <<i class="fa-solid fa-stethoscope text-2xl text-brand-blue mb-2"></</i>
+        <i class="fa-solid fa-stethoscope text-2xl text-brand-blue mb-2"></i>
         <p>診所 / 醫療</p>
       </div>
       <div class="bg-white p-5 rounded shadow hover:shadow-md transition-shadow text-center">
-        <<i class="fa-solid fa-shop text-2xl text-brand-blue mb-2"></</i>
+        <i class="fa-solid fa-shop text-2xl text-brand-blue mb-2"></i>
         <p>網店 / IG Shop</p>
       </div>
     </div>
   </section>
 
-  <!-- 收費方案 -->
+  <!-- PRICING - 優化價格展示、增加推薦標籤 -->
   <section id="pricing" class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
     <div class="text-center mb-8">
       <h2 class="text-3xl font-bold">收費方案</h2>
       <p class="mt-2 text-gray-600 max-w-3xl mx-auto">三個分級計劃，按需選擇或聯絡我們訂製企業級方案。</p>
     </div>
+
     <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
       <div class="border rounded-lg p-6 bg-white shadow hover:shadow-md transition-shadow">
         <h3 class="text-lg font-semibold">Starter</h3>
         <p class="mt-2 text-gray-600 text-sm">小店 / IG Shop 基本 AI 回覆</p>
         <div class="mt-4 text-3xl font-bold">$880 <span class="text-base font-normal text-gray-500">/ 月</span></div>
         <ul class="mt-4 text-sm text-gray-600 space-y-2">
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-green-500"></</i> 文字自動回覆</li>
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-green-500"></</i> 最多 5000 條訊息/月</li>
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-green-500"></</i> 基礎常見問題庫</li>
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-xmark text-red-400"></</i> AI語音回覆</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 文字自動回覆</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 最多 5000 條訊息/月</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 基礎常見問題庫</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-xmark text-red-400"></i> AI語音回覆</li>
         </ul>
         <a href="#contact" class="mt-6 inline-block w-full text-center px-4 py-2 rounded-md text-white btn-primary">申請</a>
       </div>
+
       <div class="border-2 border-brand-blue rounded-lg p-6 bg-white shadow-lg hover:shadow-xl transition-shadow relative transform md:scale-105 z-10">
         <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-brand-blue text-white text-xs py-1 px-3 rounded-full">
           最受歡迎
@@ -270,29 +292,30 @@
         <p class="mt-2 text-gray-600 text-sm">語音 + 文字，中小企常用</p>
         <div class="mt-4 text-3xl font-bold">$1880 <span class="text-base font-normal text-gray-500">/ 月</span></div>
         <ul class="mt-4 text-sm text-gray-600 space-y-2">
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-green-500"></</i> 語音 + 文字回覆</li>
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-green-500"></</i> 最多 20000 條訊息/月</li>
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-green-500"></</i> 自動流程 & 分流</li>
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-green-500"></</i> 多語自動切換</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 語音 + 文字回覆</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 最多 20000 條訊息/月</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 自動流程 & 分流</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 多語自動切換</li>
         </ul>
         <a href="#contact" class="mt-6 inline-block w-full text-center px-4 py-2 rounded-md text-white btn-primary">申請</a>
       </div>
+
       <div class="border rounded-lg p-6 bg-white shadow hover:shadow-md transition-shadow">
         <h3 class="text-lg font-semibold">Pro</h3>
         <p class="mt-2 text-gray-600 text-sm">高流量 / 多部門 / 客製化</p>
         <div class="mt-4 text-3xl font-bold">$3880 <span class="text-base font-normal text-gray-500">/ 月</span></div>
         <ul class="mt-4 text-sm text-gray-600 space-y-2">
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-green-500"></</i> WhatsApp API 直接接駁</li>
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-green-500"></</i> 無限訊息量</li>
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-green-500"></</i> 自定義語音 & 進階報表</li>
-          <li class="flex items-center gap-2"><<i class="fa-solid fa-check text-green-500"></</i> 專屬客服經理</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> WhatsApp API 直接接駁</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 無限訊息量</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 自定義語音 & 進階報表</li>
+          <li class="flex items-center gap-2"><i class="fa-solid fa-check text-green-500"></i> 專屬客服經理</li>
         </ul>
         <a href="#contact" class="mt-6 inline-block w-full text-center px-4 py-2 rounded-md text-white btn-primary">申請</a>
       </div>
     </div>
   </section>
 
-  <!-- Demo 示範（替換為指定 YouTube 影片 htTanHLdTJY） -->
+  <!-- DEMO - 更換為指定YouTube影片 svpORnujVHQ + 自動播放靜音 -->
   <section id="demo" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 bg-gray-50/50">
     <div class="text-center mb-8">
       <h2 class="text-3xl font-bold">Demo 示範</h2>
@@ -300,8 +323,7 @@
     </div>
     <div class="mt-6 bg-white p-6 rounded shadow-lg">
       <div class="video-container">
-        <!-- 替換為指定影片链接，保留 autoplay=1&mute=1 實現自動靜音播放 -->
-        <iframe src="https://www.youtube.com/embed/htTanHLdTJY?autoplay=1&mute=1" 
+        <iframe src="https://www.youtube.com/embed/svpORnujVHQ?autoplay=1&mute=1" 
                 title="Oneder Chat 一芯 WhatsApp AI 客服 Demo" 
                 frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -310,7 +332,7 @@
     </div>
   </section>
 
-  <!-- FAQ 區域 -->
+  <!-- FAQ - 改為可展開式、優化交互 -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
     <div class="text-center mb-8">
       <h2 class="text-3xl font-bold">常見問題（FAQ）</h2>
@@ -320,7 +342,7 @@
       <div class="bg-white p-4 rounded shadow faq-item" id="faq1">
         <div class="flex justify-between items-center cursor-pointer faq-header">
           <h4 class="font-semibold">AI 真係識廣東話？</h4>
-          <<i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></</i>
+          <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
         </div>
         <div class="faq-content mt-2 text-gray-600">
           係，Oneder Chat 一芯專為香港市場研發，語音識別與生成均支援地道廣東話（包括口語化表達），同時兼容英文、普通話，無需手動切換。
@@ -329,7 +351,7 @@
       <div class="bg-white p-4 rounded shadow faq-item" id="faq2">
         <div class="flex justify-between items-center cursor-pointer faq-header">
           <h4 class="font-semibold">需要安裝 App 嗎？</h4>
-          <<i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></</i>
+          <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
         </div>
         <div class="faq-content mt-2 text-gray-600">
           唔需要，全部功能基於雲端運作，只需透過後台設定完成 WhatsApp Business API 接駁，即可在現有 WhatsApp 帳號上使用所有 AI 功能。
@@ -338,7 +360,7 @@
       <div class="bg-white p-4 rounded shadow faq-item" id="faq3">
         <div class="flex justify-between items-center cursor-pointer faq-header">
           <h4 class="font-semibold">資料會唔會外洩？</h4>
-          <<i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></</i>
+          <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
         </div>
         <div class="faq-content mt-2 text-gray-600">
           絕對不會。所有客戶對話數據均採用企業級 AES-256 加密儲存，伺服器部署於香港本地，符合 GDPR 及香港個人資料保護條例，不會向第三方分享任何數據。
@@ -347,7 +369,7 @@
       <div class="bg-white p-4 rounded shadow faq-item" id="faq4">
         <div class="flex justify-between items-center cursor-pointer faq-header">
           <h4 class="font-semibold">AI 語氣可以修改？</h4>
-          <<i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></</i>
+          <i class="fa-solid fa-chevron-down text-gray-400 transition-transform"></i>
         </div>
         <div class="faq-content mt-2 text-gray-600">
           可以。我哋會根據你嘅品牌語調（例如親切、專業、休閒）進行專屬訓練，同時支援自定義常見問題回覆模板，確保 AI 回覆符合企業形象。
@@ -356,12 +378,13 @@
     </div>
   </section>
 
-  <!-- 聯絡表單 -->
+  <!-- CONTACT - 優化表單交互、增加驗證提示 -->
   <section id="contact" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 bg-gray-50/50">
     <div class="text-center mb-8">
       <h2 class="text-3xl font-bold">聯絡我們 / 申請試用</h2>
       <p class="mt-2 text-gray-600 max-w-3xl mx-auto">填表或直接用 WhatsApp 聯絡我哋，我哋會 1 對 1 幫你示範並解答疑問。</p>
     </div>
+
     <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
       <form class="bg-white p-6 rounded shadow-lg space-y-4" id="contactForm">
         <div>
@@ -388,12 +411,13 @@
           <p class="mt-2 text-xs text-gray-500 text-center">提交後我們會在 1 個工作天內透過 WhatsApp 聯絡你</p>
         </div>
       </form>
+
       <div class="bg-white p-6 rounded shadow-lg">
         <h3 class="font-semibold text-xl mb-4">快速聯絡</h3>
         <div class="space-y-4">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-              <<i class="fa-brands fa-whatsapp text-xl text-green-600"></</i>
+              <i class="fa-brands fa-whatsapp text-xl text-green-600"></i>
             </div>
             <div>
               <p class="text-sm text-gray-500">WhatsApp</p>
@@ -402,7 +426,7 @@
           </div>
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <<i class="fa-solid fa-envelope text-xl text-blue-600"></</i>
+              <i class="fa-solid fa-envelope text-xl text-blue-600"></i>
             </div>
             <div>
               <p class="text-sm text-gray-500">Email</p>
@@ -411,7 +435,7 @@
           </div>
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-              <<i class="fa-solid fa-clock text-xl text-purple-600"></</i>
+              <i class="fa-solid fa-clock text-xl text-purple-600"></i>
             </div>
             <div>
               <p class="text-sm text-gray-500">工作時間</p>
@@ -422,19 +446,20 @@
         <div class="mt-6">
           <p class="text-sm text-gray-500 mb-3">或直接按下面按鈕用 WhatsApp 聯絡我哋：</p>
           <a href="https://wa.me/85261234567" class="inline-block w-full text-center px-4 py-3 rounded-md text-white bg-green-600 hover:bg-green-700 transition-colors" target="_blank">
-            <<i class="fa-brands fa-whatsapp mr-2"></</i> WhatsApp 我哋
+            <i class="fa-brands fa-whatsapp mr-2"></i> WhatsApp 我哋
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 頁腳（同步更換 Logo 為 Oneder.jpeg） -->
+  <!-- FOOTER - 優化響應式、更新Logo為Oneder.jpeg -->
   <footer class="bg-white border-t mt-12">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
       <div class="flex flex-col md:flex-row justify-between mb-6">
         <div class="mb-6 md:mb-0">
           <div class="flex items-center gap-3">
+            <!-- 更換為Oneder.jpeg作為ICON -->
             <div class="w-10 h-10 rounded-full logo-circle flex items-center justify-center">
               <img src="Oneder.jpeg" alt="Oneder Logo" class="w-8 h-8 object-contain rounded-full" loading="lazy">
             </div>
@@ -477,22 +502,23 @@
       <div class="pt-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between text-sm text-gray-600">
         <div>© 2025 <span class="font-medium">Oneder Chat 一芯</span> ・ All rights reserved.</div>
         <div class="mt-3 md:mt-0 flex gap-4">
-          <a href="#" class="hover:text-brand-blue"><<i class="fa-brands fa-facebook"></</i></a>
-          <a href="#" class="hover:text-brand-blue"><<i class="fa-brands fa-instagram"></</i></a>
-          <a href="#" class="hover:text-brand-blue"><<i class="fa-brands fa-linkedin"></</i></a>
+          <a href="#" class="hover:text-brand-blue"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" class="hover:text-brand-blue"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="hover:text-brand-blue"><i class="fa-brands fa-linkedin"></i></a>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- JS 交互功能 -->
+  <!-- JS - 交互功能 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    // 手機菜單切換
+    // 手機端菜單切換
     const menuBtn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     menuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
+      // 切換圖標
       const icon = menuBtn.querySelector('i');
       icon.classList.toggle('fa-bars');
       icon.classList.toggle('fa-xmark');
@@ -504,6 +530,7 @@
       header.addEventListener('click', () => {
         const faqItem = header.parentElement;
         faqItem.classList.toggle('faq-active');
+        // 旋轉圖標
         const icon = header.querySelector('i');
         icon.style.transform = faqItem.classList.contains('faq-active') ? 'rotate(180deg)' : 'rotate(0)';
       });
@@ -525,22 +552,37 @@
         labels: ['客服成本節省', '回覆效率提升', '轉換率提升'],
         datasets: [{
           data: [75, 90, 35],
-          backgroundColor: ['#00A6D6', '#FFA239', '#34D399'],
+          backgroundColor: [
+            '#00A6D6',
+            '#FFA239',
+            '#34D399'
+          ],
           borderWidth: 0
         }]
       },
       options: {
         responsive: true,
         plugins: {
-          legend: { position: 'bottom', labels: { font: { size: 10 } } }
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: {
+                size: 10
+              }
+            }
+          }
         }
       }
     });
 
-    // 滾動導航欄效果
+    // 滾動時導航欄效果
     window.addEventListener('scroll', () => {
       const header = document.querySelector('header');
-      header.classList.toggle('shadow-md', window.scrollY > 50);
+      if (window.scrollY > 50) {
+        header.classList.add('shadow-md');
+      } else {
+        header.classList.remove('shadow-md');
+      }
     });
   </script>
 </body>
