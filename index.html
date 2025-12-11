@@ -38,7 +38,7 @@
     .logo-circle{ background: linear-gradient(180deg,var(--oneder-orange),var(--oneder-blue)); }
     /* 平滑滾動 */
     html{ scroll-behavior: smooth; }
-    /* 響應式影片容器 */
+    /* 響應式影片容器（通用） */
     .video-container {
       position: relative;
       padding-bottom: 56.25%; /* 16:9比例 */
@@ -51,6 +51,21 @@
       left: 0;
       width: 100%;
       height: 100%;
+    }
+    /* Hero區域影片容器（適配原有高度） */
+    .hero-video-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 0.5rem;
+    }
+    .hero-video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0.5rem;
     }
     /* FAQ展開動畫 */
     .faq-content {
@@ -105,7 +120,7 @@
     </div>
   </header>
 
-  <!-- HERO - 強化視覺層級、優化行間距 -->
+  <!-- HERO - 強化視覺層級、優化行間距（加入YouTube影片） -->
   <section class="max-w-6xl mx-auto px-4 sm:px-6 py-12 md:py-20 flex flex-col md:flex-row items-center gap-8 md:gap-12">
     <div class="md:w-1/2 order-2 md:order-1">
       <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
@@ -129,13 +144,14 @@
 
     <div class="md:w-1/2 order-1 md:order-2">
       <div class="bg-white rounded-xl shadow-lg p-6 transform hover:scale-[1.02] transition-transform">
-        <div class="h-64 bg-gradient-to-r from-sky-100 to-amber-50 rounded-lg flex items-center justify-center">
-          <div class="text-center">
-            <p class="text-sm text-gray-500">示範：WhatsApp 自動回覆 + AI 語音</p>
-            <div class="mt-3 w-48 h-48 rounded-lg bg-white shadow flex items-center justify-center">
-              <i class="fa-solid fa-play-circle text-5xl text-brand-blue mb-2"></i>
-              <span class="text-brand-blue font-bold block">Demo Video</span>
-            </div>
+        <div class="h-64 bg-gradient-to-r from-sky-100 to-amber-50 rounded-lg">
+          <!-- 替換原有占位圖標為YouTube影片 -->
+          <div class="hero-video-container">
+            <iframe src="https://www.youtube.com/embed/htTanHLdTJY?autoplay=1&mute=1" 
+                    title="WhatsApp 自動回覆 + AI 語音示範" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen></iframe>
           </div>
         </div>
       </div>
@@ -315,7 +331,7 @@
     </div>
   </section>
 
-  <!-- DEMO - 更換為指定YouTube影片 svpORnujVHQ + 自動播放靜音 -->
+  <!-- DEMO - 保留原有影片（如需統一可替換為同一影片） -->
   <section id="demo" class="max-w-6xl mx-auto px-4 sm:px-6 py-12 bg-gray-50/50">
     <div class="text-center mb-8">
       <h2 class="text-3xl font-bold">Demo 示範</h2>
@@ -323,7 +339,7 @@
     </div>
     <div class="mt-6 bg-white p-6 rounded shadow-lg">
       <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/svpORnujVHQ?autoplay=1&mute=1" 
+        <iframe src="https://www.youtube.com/embed/htTanHLdTJY?autoplay=1&mute=1" 
                 title="Oneder Chat 一芯 WhatsApp AI 客服 Demo" 
                 frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
