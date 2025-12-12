@@ -52,10 +52,11 @@
       background-color: #F0F0F2;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
-    /* Logo渐变圆（Apple细腻质感） */
+    /* Logo圓形（改為純白色 + 保留陰影） */
     .logo-circle{ 
-      background: linear-gradient(180deg,var(--oneder-orange),var(--oneder-blue));
-      box-shadow: 0 2px 10px rgba(0,166,214,0.15);
+      background: #FFFFFF; /* 純白色背景 */
+      box-shadow: 0 2px 10px rgba(0,166,214,0.15); /* 保留原陰影效果 */
+      border: 1px solid rgba(0,166,214,0.08); /* 輕微邊框增強層次 */
     }
     /* 平滑滚动+基础统一 */
     html{ scroll-behavior: smooth; }
@@ -136,7 +137,7 @@
     <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <div class="w-12 h-12 rounded-full logo-circle flex items-center justify-center"> 
-          <img src="Oneder.jpeg" alt="Oneder Logo" class="w-20 h-20 object-contain rounded-full" loading="lazy">
+          <img src="Oneder.jpeg" alt="Oneder Logo" class="w-10 h-10 object-contain rounded-full" loading="lazy">
         </div>
         <div>
           <div class="text-lg font-semibold">Oneder Chat 一芯</div>
