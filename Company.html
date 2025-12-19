@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oneder 一芯 - 公司簡介</title>
+  <style>
+    /* 品牌核心色+Apple中性色体系 */
+    :root{
+      --oneder-blue: #00A6D6;
+      --oneder-orange: #FFA239;
+      --oneder-dark: #1D1D1F; /* Apple深灰 */
+      --apple-light: #f5f1ea; /* 指定背景色 */
+      --apple-gray: #86868B; /* Apple次级文本灰 */
+      --apple-border: #E6E6E6; /* 极细浅边框 */
+      --transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1); /* Apple顺滑过渡曲线 */
+      --brand-blue: var(--oneder-blue); /* 統一頁腳的brand-blue變量 */
+    }
+
+    /* 全域重置與基礎樣式 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--apple-light);
+      color: var(--oneder-dark);
+      line-height: 1.7;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--oneder-blue);
+      transition: var(--transition);
+    }
+
+    a:hover {
+      color: var(--oneder-orange);
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* 頁頭樣式 */
+    header {
+      background-color: white;
+      border-bottom: 1px solid var(--apple-border);
+      padding: 1.2rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo h1 {
+      font-size: 2rem;
+      color: var(--oneder-dark);
+      text-align: center;
+    }
+
+    .logo h1 span {
+      color: var(--oneder-blue);
+    }
+
+    /* 公司簡介主區域 */
+    .company-intro {
+      padding: 6rem 0;
+      background-color: white;
+      margin: 2rem auto;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .intro-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .intro-header h2 {
+      font-size: 2.5rem;
+      color: var(--oneder-dark);
+      margin-bottom: 1rem;
+    }
+
+    .intro-header h2 span {
+      color: var(--oneder-blue);
+    }
+
+    .intro-header p {
+      font-size: 1.1rem;
+      color: var(--apple-gray);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* 核心業務模塊 */
+    .core-business {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 4rem 0;
+    }
+
+    .business-card {
+      background-color: var(--apple-light);
+      padding: 2rem;
+      border-radius: 12px;
+      transition: var(--transition);
+    }
+
+    .business-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+
+    .business-card i {
+      color: var(--oneder-blue);
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .business-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: var(--oneder-dark);
+    }
+
+    .business-card p {
+      color: var(--apple-gray);
+      line-height: 1.6;
+    }
+
+    /* 公司優勢 */
+    .company-advantages {
+      margin: 4rem 0;
+    }
+
+    .advantages-title {
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 2.5rem;
+      color: var(--oneder-dark);
+    }
+
+    .advantages-title span {
+      color: var(--oneder-blue);
+    }
+
+    .advantages-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .advantage-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background-color: var(--apple-light);
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      border-left: 3px solid var(--oneder-blue);
+    }
+
+    .advantage-item i {
+      color: var(--oneder-orange);
+      font-size: 1.2rem;
+    }
+
+    .advantage-item span {
+      font-weight: 500;
+      color: var(--oneder-dark);
+    }
+
+    /* 聯繫資訊 */
+    .contact-info {
+      background-color: var(--oneder-blue);
+      color: white;
+      padding: 3rem;
+      border-radius: 12px;
+      margin-top: 4rem;
+      text-align: center;
+    }
+
+    .contact-info h3 {
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-details {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .contact-item i {
+      font-size: 1.2rem;
+    }
+
+    .contact-item span {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .contact-btn {
+      display: inline-block;
+      background-color: white;
+      color: var(--oneder-blue);
+      padding: 0.9rem 2.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .contact-btn:hover {
+      background-color: var(--oneder-orange);
+      color: white;
+      text-decoration: none;
+      transform: translateY(-2px);
+    }
+
+    /* 自定義頁腳樣式（基於你提供的程式碼） */
+    .bg-white {
+      background-color: white;
+    }
+    .border-t {
+      border-top: 1px solid var(--apple-border);
+    }
+    .border-apple {
+      border-color: var(--apple-border);
+    }
+    .mt-12 {
+      margin-top: 3rem;
+    }
+    .max-w-7xl {
+      max-width: 80rem;
+    }
+    .mx-auto {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .px-6 {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    .py-16 {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+    .flex {
+      display: flex;
+    }
+    .flex-col {
+      flex-direction: column;
+    }
+    .md\:flex-row {
+      @media (min-width: 768px) {
+        flex-direction: row;
+      }
+    }
+    .justify-between {
+      justify-content: space-between;
+    }
+    .mb-12 {
+      margin-bottom: 3rem;
+    }
+    .gap-10 {
+      gap: 2.5rem;
+    }
+    .max-w-sm {
+      max-width: 24rem;
+    }
+    .items-center {
+      align-items: center;
+    }
+    .gap-3 {
+      gap: 0.75rem;
+    }
+    .w-10 {
+      width: 2.5rem;
+    }
+    .h-10 {
+      height: 2.5rem;
+    }
+    .rounded-full {
+      border-radius: 9999px;
+    }
+    .border {
+      border: 1px solid var(--apple-border);
+    }
+    .border-gray-100 {
+      border-color: #f3f4f6;
+    }
+    .overflow-hidden {
+      overflow: hidden;
+    }
+    .object-cover {
+      object-fit: cover;
+    }
+    .text-lg {
+      font-size: 1.125rem;
+      line-height: 1.75rem;
+    }
+    .font-bold {
+      font-weight: 700;
+    }
+    .text-xs {
+      font-size: 0.75rem;
+      line-height: 1rem;
+    }
+    .text-apple-gray {
+      color: var(--apple-gray);
+    }
+    .mt-6 {
+      margin-top: 1.5rem;
+    }
+    .text-sm {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    .leading-relaxed {
+      line-height: 1.625;
+    }
+    .grid {
+      display: grid;
+    }
+    .grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .sm\:grid-cols-3 {
+      @media (min-width: 640px) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    .md\:gap-16 {
+      @media (min-width: 768px) {
+        gap: 4rem;
+      }
+    }
+    .mb-5 {
+      margin-bottom: 1.25rem;
+    }
+    .text-oneder-dark {
+      color: var(--oneder-dark);
+    }
+    .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+      --tw-space-y-reverse: 0;
+      margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+      margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+    }
+    .pt-8 {
+      padding-top: 2rem;
+    }
+    .gap-4 {
+      gap: 1rem;
+    }
+    .font-medium {
+      font-weight: 500;
+    }
+    .gap-6 {
+      gap: 1.5rem;
+    }
+
+    /* 響應式設計 */
+    @media (max-width: 768px) {
+      .intro-header h2 {
+        font-size: 2rem;
+      }
+
+      .core-business {
+        grid-template-columns: 1fr;
+      }
+
+      .advantages-list {
+        flex-direction: column;
+      }
+
+      .contact-details {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .company-intro {
+        padding: 3rem 0;
+        margin: 1rem;
+      }
+
+      .contact-info {
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+  <!-- 引入Font Awesome圖標 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- 頁頭 -->
+  <header>
+    <div class="container header-content">
+      <div class="logo">
+        <h1>Oneder <span>一芯</span></h1>
+      </div>
+    </div>
+  </header>
+
+  <!-- 公司簡介主內容 -->
+  <main class="container">
+    <section class="company-intro">
+      <!-- 簡介標題區 -->
+      <div class="intro-header">
+        <h2>關於 <span>Oneder 一芯</span></h2>
+        <p>立足香港，專注AI智能解決方案的科技企業，為不同行業客戶量身打造符合市場需求的AI應用，以技術驅動企業效率提升與業務增長</p>
+      </div>
+
+      <!-- 公司定位與核心價值 -->
+      <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+        <p style="font-size: 1.1rem; line-height: 1.8; color: var(--oneder-dark); margin-bottom: 2rem;">
+          Oneder 一芯是一家專注於人工智能技術研發與應用的科技企業，深耕香港市場，聚焦企業級AI解決方案落地。我們基於客戶不同行業的獨特需求，結合AI市場趨勢與技術優勢，為零售、服務、教育、醫療等多領域客戶提供定制化AI服務，覆蓋智能客服、語音交互、數據分析等核心場景，幫助企業降本增效，搶佔AI時代商業先機。
+        </p>
+      </div>
+
+      <!-- 核心業務模塊 -->
+      <div class="core-business">
+        <div class="business-card">
+          <i class="fas fa-robot"></i>
+          <h3>AI智能客服解決方案</h3>
+          <p>基於WhatsApp等主流渠道，打造全廣東話支援的智能客服系統，3秒自動回覆，24/7無休服務，大幅降低人力成本。</p>
+        </div>
+        <div class="business-card">
+          <i class="fas fa-sliders"></i>
+          <h3>定制化AI需求開發</h3>
+          <p>根據不同行業、不同企業的獨特業務場景，量身開發適配的AI功能模塊，滿足個性化業務需求。</p>
+        </div>
+        <div class="business-card">
+          <i class="fas fa-chart-line"></i>
+          <h3>AI數據分析與應用</h3>
+          <p>基於企業運營數據，透過AI技術挖掘商業價值，優化業務流程，提升轉化效率與決策精準度。</p>
+        </div>
+      </div>
+
+      <!-- 公司核心優勢 -->
+      <div class="company-advantages">
+        <h3 class="advantages-title">我們的<span>核心優勢</span></h3>
+        <div class="advantages-list">
+          <div class="advantage-item">
+            <i class="fas fa-check-circle"></i>
+            <span>香港本地研發，深度適配粵語場景</span>
+          </div>
+          <div class="advantage-item">
+            <i class="fas fa-check-circle"></i>
+            <span>定制化開發，匹配企業獨特需求</span>
+          </div>
+          <div class="advantage-item">
+            <i class="fas fa-check-circle"></i>
+            <span>快速落地，無需複雜技術改造成本</span>
+          </div>
+          <div class="advantage-item">
+            <i class="fas fa-check-circle"></i>
+            <span>企業級數據安全，符合本地法規</span>
+          </div>
+          <div class="advantage-item">
+            <i class="fas fa-check-circle"></i>
+            <span>全流程技術支援，保障穩定運行</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 聯繫資訊 -->
+      <div class="contact-info">
+        <h3>聯繫 Oneder 一芯</h3>
+        <div class="contact-details">
+          <div class="contact-item">
+            <i class="fab fa-whatsapp"></i>
+            <span>+852 9123 4567</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <span>info@oneder.dpdns.org</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-globe"></i>
+            <span>https://oneder.dpdns.org/</span>
+          </div>
+        </div>
+        <a href="https://wa.me/85291234567" class="contact-btn" target="_blank">
+          <i class="fab fa-whatsapp mr-2"></i> 立即諮詢
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- 你提供的自定義頁腳 -->
+  <footer class="bg-white border-t border-apple mt-12">
+    <div class="max-w-7xl mx-auto px-6 py-16">
+      <div class="flex flex-col md:flex-row justify-between mb-12 gap-10">
+        <div class="max-w-sm">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center overflow-hidden">
+              <img src="Oneder.png" onerror="this.src='https://via.placeholder.com/150'" alt="Logo" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <div class="text-lg font-bold">Oneder Chat 一芯</div>
+              <div class="text-xs text-apple-gray">WhatsApp AI 自動語音 + 文字客服</div>
+            </div>
+          </div>
+          <p class="mt-6 text-sm text-apple-gray leading-relaxed">
+            專為香港企業打造的 WhatsApp AI 客服解決方案，提升回覆效率，降低營運成本。
+          </p>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-10 md:gap-16">
+          <div>
+            <h4 class="font-bold text-sm mb-5 text-oneder-dark">產品</h4>
+            <ul class="space-y-4 text-sm text-apple-gray">
+              <li><a href="#features" class="hover:text-brand-blue transition-colors">功能介紹</a></li>
+              <li><a href="#pricing" class="hover:text-brand-blue transition-colors">收費方案</a></li>
+              <li><a href="#demo" class="hover:text-brand-blue transition-colors">示範</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm mb-5 text-oneder-dark">支援</h4>
+            <ul class="space-y-4 text-sm text-apple-gray">
+              <li><a href="#" class="hover:text-brand-blue transition-colors">常見問題</a></li>
+              <li><a href="#contact" class="hover:text-brand-blue transition-colors">聯絡我們</a></li>
+              <li><a href="#" class="hover:text-brand-blue transition-colors">使用指南</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-sm mb-5 text-oneder-dark">公司</h4>
+            <ul class="space-y-4 text-sm text-apple-gray">
+              <li><a href="#" class="hover:text-brand-blue transition-colors">關於我們</a></li>
+              <li><a href="#" class="hover:text-brand-blue transition-colors">私隱政策</a></li>
+              <li><a href="#" class="hover:text-brand-blue transition-colors">服務條款</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="pt-8 border-t border-apple flex flex-col md:flex-row items-center justify-between text-sm text-apple-gray gap-4">
+        <div>© 2025 <span class="font-medium text-oneder-dark">Oneder Chat 一芯</span> ・ All rights reserved.</div>
+        <div class="flex gap-6 text-lg">
+          <a href="#" class="hover:text-brand-blue transition-colors"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" class="hover:text-brand-blue transition-colors"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="hover:text-brand-blue transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 平滑滾動增強體驗 -->
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href'))?.scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>
