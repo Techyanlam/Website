@@ -87,7 +87,7 @@
     }
 
     .intro-header h2 {
-      font-size: 2.5rem;
+      font-size: 2rem;
       color: var(--oneder-dark);
       margin-bottom: 1rem;
     }
@@ -108,7 +108,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 2rem;
-      margin: 4rem 0;
+      margin: 1rem ;
     }
 
     .business-card {
@@ -417,16 +417,169 @@
   </style>
   <!-- 引入Font Awesome圖標 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Oneder 一芯 — WhatsApp AI 自動語音客服</title>
+  <meta name="description" content="Oneder Chat 一芯 — 24/7 WhatsApp AI 自動語音＋文字客服，專為香港企業設計，3秒回覆、全廣東話支援，節省70-85%客服成本。" />
+  <meta name="keywords" content="WhatsApp AI客服, 香港AI客服, WhatsApp自動回覆, 廣東話AI語音, WhatsApp Business API" />
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+  <style>
+    /* 品牌核心色+Apple中性色体系 */
+    :root{
+      --oneder-blue: #00A6D6;
+      --oneder-orange: #FFA239;
+      --oneder-dark: #1D1D1F; 
+      --apple-light: #f5f1ea; 
+      --apple-gray: #86868B;
+      --apple-border: #E6E6E6;
+      --transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    body{ background-color: var(--apple-light); color: var(--oneder-dark); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    
+    /* 品牌样式统一 */
+    .text-brand-blue{ color: var(--oneder-blue); }
+    .text-brand-orange{ color: var(--oneder-orange); }
+    .text-oneder-dark{ color: var(--oneder-dark); }
+    .text-apple-gray{ color: var(--apple-gray); }
+    .border-apple{ border-color: var(--apple-border); }
+
+    /* 按钮样式 */
+    .btn-primary{ 
+      background: linear-gradient(90deg,var(--oneder-orange),#ffb25f);
+      transition: var(--transition);
+      box-shadow: 0 2px 8px rgba(255,162,57,0.2);
+    }
+    .btn-primary:hover{ 
+      background: linear-gradient(90deg,#ff951f,#ffb86b);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255,162,57,0.3);
+    }
+    .btn-secondary{
+      transition: var(--transition);
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .btn-secondary:hover{
+      background-color: #F0F0F2;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    /* 平滑滚动 */
+    html{ scroll-behavior: smooth; }
+    input:focus, textarea:focus, select:focus{ outline: 2px solid var(--oneder-blue); outline-offset: 1px; }
+    
+    /* 卡片通用样式 */
+    .apple-card{
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      transition: var(--transition);
+    }
+    .apple-card:hover{
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      transform: scale(1.01);
+      z-index: 10;
+    }
+
+    /* 视频容器 */
+    .hero-video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 */
+        height: 0;
+        overflow: hidden;
+        border-radius: 16px;
+        background: #000;
+    }
+    .hero-video-wrapper iframe, .video-container iframe {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%; border: none;
+    }
+    .video-container {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px;
+    }
+    
+    /* FAQ动画 */
+    .faq-content {
+      max-height: 0; overflow: hidden; transition: max-height 0.4s ease-in-out;
+    }
+    .faq-active .faq-content { max-height: 300px; }
+
+    /* 导航栏滚动效果 */
+    .header-scroll{
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 10px rgba(0,0,0,0.05);
+    }
+    
+    /* Pricing Card Hover Fix */
+    .pricing-card:hover { transform: scale(1.03) !important; }
+  </style>
 </head>
 <body>
-  <!-- 頁頭 -->
-  <header>
-    <div class="container header-content">
-      <div class="logo">
-        <h1>Oneder <span>一芯</span></h1>
+
+  <header class="bg-white sticky top-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden border border-gray-100 flex items-center justify-center"> 
+          <img src="Oneder.png" onerror="this.src='https://via.placeholder.com/150?text=Oneder'" alt="Oneder Logo" class="w-full h-full object-cover">
+        </div>
+        <div>
+         <h1 class="text-lg font-bold tracking-tight">Oneder Chat 一芯</h1>
+          <div class="text-xs text-apple-gray">WhatsApp AI 自動語音客服</div>
+        </div>
+      </div>
+        
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#features" class="text-sm font-medium hover:text-brand-blue transition-colors">功能</a>
+        <a href="#pricing" class="text-sm font-medium hover:text-brand-blue transition-colors">收費</a>
+        <a href="#demo" class="text-sm font-medium hover:text-brand-blue transition-colors">示範</a>
+        <a href="#contact" class="text-sm font-medium hover:text-brand-blue transition-colors">聯絡</a>
+        <a href="#company" class="text-sm font-medium hover:text-brand-blue transition-colors">公司介紹</a>
+        
+        <div class="flex items-center gap-2 text-sm font-medium text-apple-gray border-l border-gray-200 pl-6">
+           <i class="fa-solid fa-globe text-lg"></i>
+           <a href="#" class="hover:text-brand-blue text-brand-blue">中</a>
+           <span>/</span>
+           <a href="#" class="hover:text-brand-blue">EN</a>
+        </div>
+
+        <a href="#contact" class="px-6 py-2.5 rounded-full text-white btn-primary text-sm font-medium">預約示範</a>
+      </nav>
+        
+      <button class="md:hidden text-oneder-dark p-2" id="menuBtn">
+        <i class="fa-solid fa-bars text-xl"></i>
+      </button>
+    </div>
+      
+    <div class="hidden bg-white absolute w-full top-full left-0 shadow-lg border-t border-gray-100" id="mobileMenu">
+      <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-4">
+        <a href="#features" class="text-base font-medium py-2 border-b border-gray-50 hover:text-brand-blue">功能</a>
+        <a href="#pricing" class="text-base font-medium py-2 border-b border-gray-50 hover:text-brand-blue">收費</a>
+        <a href="#demo" class="text-base font-medium py-2 border-b border-gray-50 hover:text-brand-blue">示範</a>
+        <a href="#contact" class="text-base font-medium py-2 border-b border-gray-50 hover:text-brand-blue">聯絡</a>
+        
+        <div class="flex items-center gap-4 py-2 text-sm">
+           <i class="fa-solid fa-globe text-apple-gray"></i>
+           <a href="#" class="font-bold text-brand-blue">中文</a>
+           <span class="text-gray-300">|</span>
+           <a href="#" class="text-gray-600 hover:text-brand-blue">English</a>
+        </div>
+
+        <a href="#contact" class="px-5 py-3 rounded-lg text-white btn-primary text-center mt-2 font-medium">預約示範</a>
       </div>
     </div>
   </header>
+
+
+
+
 
   <!-- 公司簡介主內容 -->
   <main class="container">
@@ -490,27 +643,6 @@
         </div>
       </div>
 
-      <!-- 聯繫資訊 -->
-      <div class="contact-info">
-        <h3>聯繫 Oneder 一芯</h3>
-        <div class="contact-details">
-          <div class="contact-item">
-            <i class="fab fa-whatsapp"></i>
-            <span>+852 9123 4567</span>
-          </div>
-          <div class="contact-item">
-            <i class="fas fa-envelope"></i>
-            <span>info@oneder.dpdns.org</span>
-          </div>
-          <div class="contact-item">
-            <i class="fas fa-globe"></i>
-            <span>https://oneder.dpdns.org/</span>
-          </div>
-        </div>
-        <a href="https://wa.me/85291234567" class="contact-btn" target="_blank">
-          <i class="fab fa-whatsapp mr-2"></i> 立即諮詢
-        </a>
-      </div>
     </section>
   </main>
 
