@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>United Power Label Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 10mm;
+        }
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .no-print { 
+            width: 100%; 
+            max-width: 800px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f4f4f4;
+            border-radius: 8px;
+        }
+        .input-group { margin-bottom: 10px; }
+        
+        #label-area { 
+            border: 2px solid #000; 
+            width: 190mm; 
+            height: 275mm;
+            padding: 20px;
+            text-align: center;
+            background: white;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-img { width: 250px; display: block; margin: 0 auto 20px auto; }
+        
+        /* Pallet# 字體放大 +5 版本 */
+        .pallet-section { 
+            font-size: 2.5em; 
+            font-weight: bold; 
+            margin-bottom: 20px; 
+            white-space: nowrap; 
+        }
+        
+        svg { width: 100%; height: 100px; margin-bottom: 20px; }
+        
+        .details-container { 
+            text-align: left; 
+            font-size: 1.8em; 
+            font-weight: bold;
+            padding-left: 20px;
+            line-height: 1.4;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 2px;
+            width: 90%;
+            height: 200px;
+            border: 1px solid #000;
+            margin: 15px 0;
+        }
+        .grid-cell { border: 0.5px solid #000; }
+        
+        .line-blank { border-bottom: 2px solid #000; width: 300px; display: inline-block; vertical-align: bottom; }
+        
+        @media print { 
+            .no-print { display: none; } 
+            #label-area { border: 2px solid #000; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print">
+        <h3>標籤系統 (A4 直式 - Pallet# 字體放大版)</h3>
+        <div class="input-group">Pallet #: <input type="text" id="palletInput" value="UPG-20231207-P002"></div>
+        <div class="input-group">Dimension: <input type="text" id="dimInput" value="120 X 100 X 182"></div>
+        <div class="input-group">Ship Date: <input type="date" id="dateInput"></div>
+        <button onclick="generateLabel()">更新標籤</button>
+        <button onclick="window.print()">列印 A4 直式</button>
+    </div>
+
+    <div id="label-area">
+        <img src="logo.png" class="logo-img" alt="Logo">
+        
+        <div class="pallet-section">
+            Pallet #: <span id="outPallet"></span>
+        </div>
+        
+        <svg id="barcode"></svg>
+        
+        <div class="details-container">
+            <div>Dimension: <span id="outDim"></span></div>
+            <div class="grid-container">
+                <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+                <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+            </div>
+            <div>
+                Ship Date: <span id="outDate"></span> <span class="line-blank"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateLabel() {
+            const palletVal = document.getElementById('palletInput').value;
+            document.getElementById('outPallet').innerText = palletVal;
+            document.getElementById('outDim').innerText = document.getElementById('dimInput').value;
+            document.getElementById('outDate').innerText = document.getElementById('dateInput').value;
+
+            JsBarcode("#barcode", palletVal, {
+                format: "CODE128",
+                lineColor: "#000",
+                width: 2,
+                height: 80,
+                displayValue: false
+            });
+        }
+        generateLabel();
+    </script>
+</body>
+</html>
