@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -27,6 +26,17 @@
             border-radius: 8px;
         }
         .input-group { margin-bottom: 10px; }
+        .link-group {
+            margin-bottom: 15px;
+        }
+        .link-group a {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .link-group a:hover {
+            text-decoration: underline;
+        }
         
         #label-area { 
             border: 2px solid #000; 
@@ -84,6 +94,10 @@
 
     <div class="no-print">
         <h3>標籤系統 (A4 直式 - Pallet# 字體放大版)</h3>
+        <!-- 新增頁面跳轉連結 -->
+        <div class="link-group">
+            <a href="Shipmentlabel.html">前往 Shipment 標籤頁面</a>
+        </div>
         <div class="input-group">Pallet #: <input type="text" id="palletInput" value="UPG-20231207-P002"></div>
         <div class="input-group">Dimension: <input type="text" id="dimInput" value="120 X 100 X 182"></div>
         <div class="input-group">Ship Date: <input type="date" id="dateInput"></div>
