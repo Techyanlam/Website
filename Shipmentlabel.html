@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>物流標籤產生器</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+    <style>
+        body { font-family: Arial, "Microsoft JhengHei", sans-serif; padding: 20px; margin:0; }
+        .input-section { margin-bottom: 30px; padding: 20px; border: 1px dashed #ccc; background: #f9f9f9; max-width: 550px; }
+        .field-row { margin: 12px 0; }
+        input { width: 320px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size:14px; }
+        button { padding:12px 28px; font-size:16px; background:#0055aa; color:#fff; border:none; border-radius:6px; cursor:pointer; margin-top:10px; }
+
+        /* 螢幕預覽樣式（跟樣本比例） */
+        .label-card { 
+            width: 100%; max-width:1000px;
+            border: 2px solid #000; 
+            padding:10px;
+            background:#fff;
+            box-sizing:border-box;
+        }
+        .labware-logo { 
+            width: 48%;
+            height:auto; 
+            display:block; 
+            margin-bottom:10px; 
+        }
+        .label-line { 
+            margin:8px 0; 
+            display:flex; 
+            align-items:center; 
+            gap:10px;
+        }
+        .label-title { 
+            font-size:20px; 
+            min-width:160px; 
+            font-weight:bold;
+            flex-shrink:0;
+        }
+        .doc-box {
+            border:3px solid #000;
+            padding:10px 14px;
+            font-size:40px;
+            font-weight:bold;
+            flex:1;
+            text-align:center;
+        }
+        #barcode { 
+            width:70%; 
+            height:60px; 
+            margin:6px auto; 
+            display:block;
+        }
+        .addr-box {
+            border:2px solid #000;
+            padding:12px 14px;
+            font-size:36px;
+            flex:1;
+        }
+        .contact-box { 
+            border:none; 
+            font-size:40px; 
+            font-weight:bold; 
+            flex:1;
+        }
+
+        /* 核心修正列印樣式：解決裁切、內容全部顯示 */
+        @media print {
+            .input-section { display:none !important; }
+            @page {
+                size: 1.87in 0.54in;
+                margin: 0;
+                transform: scale(1) !important;
+                /* 禁止頁面自動縮放 */
+                scale: 1;
+            }
+            html, body { margin:0; padding:0; height:100%; }
+            .label-card {
+                width:1.87in;
+                height:0.54in;
+                border:2px solid #000 !important;
+                padding:2px !important; /* 極細內邊距，騰空間 */
+                box-sizing:border-box;
+                overflow:visible !important;
+                transform: scale(1);
+            }
+            /* LOGO大幅縮細，減少頂部佔用高度 */
+            .labware-logo { 
+                width:48% !important;
+                height:auto !important;
+                margin-bottom:1px !important;
+                display:block;
+            }
+            /* 行與行垂直空隙壓到最小 */
+            .label-line { 
+                margin:1px 0 !important; 
+                gap:3px;
+                display:flex;
+                align-items:center;
+            }
+            /* 列印標題文字縮細 */
+            .label-title { font-size:6.8px !important; min-width:52px; flex-shrink:0; }
+            /* Doc編號框縮細內邊距、減細字體 */
+            .doc-box {
+                border:2px solid #000;
+                padding:1px 3px !important;
+                font-size:11px !important;
+            }
+            /* 條碼降低高度，節省垂直空間 */
+            #barcode { 
+                height:14px !important; 
+                width:70% !important;
+                margin:1px auto !important; 
+                display:block;
+            }
+            /* 地址框縮細 */
+            .addr-box {
+                border:1px solid #000;
+                padding:1px 3px !important;
+                font-size:10px !important;
+            }
+            .contact-box { font-size:11px !important; font-weight:bold; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 輸入面板 -->
+    <div class="input-section">
+        <h3>物流標籤資料填寫</h3>
+        <div class="field-row">Customer Name：<input id="in-name" oninput="updateLabel()" placeholder="客戶名稱"></div>
+        <div class="field-row">Doc Number：<input id="in-doc" value="HKLSI26050656" oninput="updateLabel()"></div>
+        <div class="field-row">Ship-to Address：<input id="in-addr" value="九龍-理大" oninput="updateLabel()"></div>
+        <div class="field-row">Contact Name：<input id="in-contact" value="Ken Chan" oninput="updateLabel()"></div>
+        <button onclick="generateAndPrint()">生成並列印標籤</button>
+    </div>
+
+    <div class="label-card" id="label">
+        <img src="Image.png" class="labware-logo" alt="LABWARE GROUP To be your partner in laboratory">
+
+        <div class="label-line">
+            <div class="label-title">Customer Name :</div>
+            <div id="out-name" style="font-size:26px;">-</div>
+        </div>
+
+        <div class="label-line">
+            <div class="label-title">Doc Number :</div>
+            <div class="doc-box" id="out-doc">HKLSI26050656</div>
+        </div>
+
+        <svg id="barcode"></svg>
+
+        <div class="label-line">
+            <div class="label-title">Ship-to Address :</div>
+            <div class="addr-box" id="out-addr">九龍-理大</div>
+        </div>
+
+        <div class="label-line">
+            <div class="label-title">Contact Name</div>
+            <div class="contact-box" id="out-contact">Ken Chan</div>
+        </div>
+    </div>
+
+    <script>
+        function updateLabel() {
+            let name = document.getElementById('in-name').value || "-";
+            let docNo = document.getElementById('in-doc').value || "HKLSI26050656";
+            let addr = document.getElementById('in-addr').value || "九龍-理大";
+            let contact = document.getElementById('in-contact').value || "Ken Chan";
+
+            document.getElementById('out-name').innerText = name;
+            document.getElementById('out-doc').innerText = docNo;
+            document.getElementById('out-addr').innerText = addr;
+            document.getElementById('out-contact').innerText = contact;
+
+            JsBarcode("#barcode", `*${docNo}*`, {
+                format: "CODE128",
+                width:2.16,
+                height:60,
+                displayValue:false,
+                margin:0
+            });
+        }
+
+        function generateAndPrint() {
+            updateLabel();
+            setTimeout(()=> window.print(), 400);
+        }
+        updateLabel();
+    </script>
+</body>
+</html>
