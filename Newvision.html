@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<title>New Vision 訂單打印工具 - 維修單 / MacBook發票</title>
+<style>
+*{box-sizing:border-box;font-family:"Microsoft JhengHei",Arial,sans-serif;}
+body{background:#f0f0f0;padding:20px;margin:0;}
+.box{background:#fff;padding:16px;border-radius:8px;margin-bottom:20px;box-shadow:0 2px 10px #ccc;}
+h3{margin-top:0;color:#222;}
+select, input, textarea{width:100%;padding:4px;border:1px solid #ccc;border-radius:3px;}
+button{padding:8px 16px;border:none;border-radius:4px;background:#0066cc;color:#fff;cursor:pointer;margin-right:8px;}
+button.gray{background:#666;}
+.check-group{display:flex;gap:12px;flex-wrap:wrap;padding:4px 0;}
+/* 表格通用樣式 */
+table.input-table{width:100%;border-collapse:collapse;margin:10px 0;}
+.input-table td, .input-table th{border:1px solid #999;padding:6px 8px;font-size:13px;}
+/* A4打印頁面 */
+.print-page{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:22mm;box-shadow:0 0 10px #aaa;}
+.shop-header{text-align:center;border-bottom:1px solid #333;padding-bottom:10px;margin-bottom:15px;}
+.shop-header h4{margin:0;font-size:18px;}
+.shop-header p{font-size:13px;margin:3px 0;}
+.form-table{width:100%;border-collapse:collapse;margin:12px 0;}
+.form-table td, .form-table th{border:1px solid #555;padding:7px 10px;font-size:13px;}
+.title{text-align:center;font-size:16px;font-weight:bold;margin:12px 0;}
+.remark{font-size:12px;line-height:1.6;margin-top:16px;}
+.hidden{display:none !important;}
+@media print{
+    body{background:#fff;padding:0;}
+    .box{display:none !important;}
+    .print-page{width:100%;padding:0;box-shadow:none;min-height:auto;}
+}
+</style>
+</head>
+<body>
+
+<!-- 主控制面板 -->
+<div class="box">
+    <h3>📝 訂單打印工具 - 單據類型選擇</h3>
+    <div style="margin:10px 0;">
+        <strong>選擇單據類型：</strong>
+        <select id="invoiceType" onchange="switchInvoiceType()">
+            <option value="repair">維修服務單 / 清潔服務單</option>
+            <option value="macbook">MacBook 銷售發票</option>
+        </select>
+    </div>
+
+    <!-- 維修單輸入表單 -->
+    <div id="repairForm">
+        <h4 style="margin:15px 0 10px 0;">維修單資料輸入</h4>
+        <!-- 服務項目勾選區 -->
+        <div style="margin:10px 0;">
+            <strong>服務項目 Item：</strong>
+            <div class="check-group">
+                <label><input type="checkbox" id="chkDiag"> 專業故障診斷</label>
+                <label><input type="checkbox" id="chkClean" checked> 深層清潔</label>
+                <label><input type="checkbox" id="chkPart"> 零件更換</label>
+                <label><input type="checkbox" id="chkOther"> 其他維修服務</label>
+            </div>
+        </div>
+
+        <table class="input-table">
+            <tr>
+                <th>預約時間</th>
+                <th>服務內容備註</th>
+                <th>Model</th>
+                <th>SN</th>
+                <th>服務費(HK$)</th>
+                <th>送貨費(HK$)</th>
+            </tr>
+            <tr>
+                <td><input id="bookTime"></td>
+                <td><input id="serviceText" value="清洗dyson v10吸塵機"></td>
+                <td><input id="model"></td>
+                <td><input id="sn"></td>
+                <td><input id="serviceFee" value="250.00"></td>
+                <td><input id="delFee" value="0" readonly style="background:#eee;"></td>
+            </tr>
+            <tr>
+                <th>客戶姓名 Name</th>
+                <th>電話 Tel</th>
+                <th>送貨地址 Delivery Address</th>
+                <th>保固月數 Month</th>
+                <th>總金額 Total(自動計算)</th>
+                <th>備註 Remarks</th>
+            </tr>
+            <tr>
+                <td><input id="custName" placeholder="客戶姓名 Name"></td>
+                <td><input id="custTel" placeholder="電話 Tel"></td>
+                <td><input id="delAddr"></td>
+                <td><input id="warrantyMonth" value="0"></td>
+                <td><input id="totalAmt" readonly style="background:#eee;"></td>
+                <td><textarea id="orderRemark" rows="1"></textarea></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- MacBook發票輸入表單 -->
+    <div id="macbookForm" class="hidden">
+        <h4 style="margin:15px 0 10px 0;">MacBook 銷售發票資料輸入</h4>
+        <table class="input-table">
+            <tr>
+                <th>發票編號</th>
+                <th>開單日期</th>
+                <th>客戶姓名 Name</th>
+                <th>聯絡電話 Tel</th>
+                <th>WhatsApp</th>
+                <th>送貨地址</th>
+            </tr>
+            <tr>
+                <td><input id="invNo" value="NV46183"></td>
+                <td><input id="invDate"></td>
+                <td><input id="mbCustName" placeholder="客戶姓名 Name"></td>
+                <td><input id="mbCustTel" placeholder="電話 Tel"></td>
+                <td><input id="mbWhatsApp"></td>
+                <td><input id="mbDelAddr"></td>
+            </tr>
+            <tr>
+                <th>商品型號</th>
+                <th>規格配置</th>
+                <th>單價(HK$)</th>
+                <th>數量</th>
+                <th>優惠折扣(HK$)</th>
+                <th>總金額 Total(自動計算)</th>
+            </tr>
+            <tr>
+                <td><input id="mbModel" value="Apple MacBook Pro M1 Pro 16吋"></td>
+                <td><input id="mbSpec" value="32GB RAM + 1TB SSD"></td>
+                <td><input id="mbPrice" value="7799.00"></td>
+                <td><input id="mbQty" value="1"></td>
+                <td><input id="mbDiscount" value="0.00"></td>
+                <td><input id="mbTotal" readonly style="background:#eee;"></td>
+            </tr>
+            <tr>
+                <th>送貨方式</th>
+                <th>保固期限</th>
+                <th>付款方式</th>
+                <th colspan="3">備註 Remarks</th>
+            </tr>
+            <tr>
+                <td><input id="mbDelMethod" value="免費送貨/到店自取"></td>
+                <td><input id="mbWarranty" value="3個月"></td>
+                <td><input id="mbPayMethod" value="現金/銀行轉賬/FPS"></td>
+                <td colspan="3"><textarea id="mbRemark" rows="1"></textarea></td>
+            </tr>
+        </table>
+    </div>
+
+    <button onclick="updatePreview()">即時更新預覽</button>
+    <button class="gray" onclick="window.print()">開啟打印預覽</button>
+</div>
+
+<!-- 打印預覽區 -->
+<div class="print-page" id="printArea">
+    <!-- 通用店鋪抬頭 -->
+    <div class="shop-header">
+        <h4>New Vision Tech Co Limited</h4>
+        <p>Room 1015-1016, Hollywood Plaza, 610 Nathan Road, Mong Kok, Kowloon</p>
+        <p>九龍旺角彌敦道610號荷李活商業中心1015-1016 | Tel:+852 2887 8820</p>
+    </div>
+
+    <!-- 維修單打印模板 -->
+    <div id="repairTemplate">
+        <div class="title">維修服務單 / INVOICE</div>
+        <table class="form-table">
+            <tr>
+                <td width="140">單據編號</td>
+                <td>NV2026060528</td>
+                <td width="140">開單日期</td>
+                <td id="pBookTime"></td>
+            </tr>
+            <tr>
+                <td>客戶姓名</td>
+                <td id="pName"></td>
+                <td>聯絡電話</td>
+                <td id="pTel"></td>
+            </tr>
+            <tr>
+                <td>設備型號 Model</td>
+                <td id="pModel"></td>
+                <td>SN編號</td>
+                <td id="pSN"></td>
+            </tr>
+        </table>
+
+        <p style="font-weight:bold;margin:10px 0;">維修服務項目 Item</p>
+        <div id="printItemList" style="margin:8px 0;line-height:1.8;"></div>
+
+        <p style="font-weight:bold;margin:10px 0;">服務明細 Service Details</p>
+        <table class="form-table">
+            <tr>
+                <th>服務內容</th>
+                <th>單價(HK$)</th>
+                <th>備註</th>
+            </tr>
+            <tr>
+                <td id="pService">清洗dyson v10吸塵機</td>
+                <td id="pSvcFee">250.00</td>
+                <td>預約時間：<span id="pBookTime2"></span></td>
+            </tr>
+            <tr>
+                <td>送貨費 Delivery Fee</td>
+                <td id="pDelFee">0.00</td>
+                <td id="pDelAddr"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right"><strong>應付總金額 Total Amount Due</strong></td>
+                <td><strong>HK$ <span id="pTotal">250.00</span></strong></td>
+            </tr>
+        </table>
+
+        <p style="font-weight:bold;margin:10px 0;">付款方式 Payment</p>
+        <p>□ 現金 Cash &nbsp;&nbsp; □ 銀行轉賬 Bank Transfer &nbsp;&nbsp; □ 電子支付 FPS/微信/支付寶</p>
+
+        <div style="margin:12px 0;">
+            <strong>單據備註：</strong>
+            <div id="printRemark" style="margin-top:4px;"></div>
+        </div>
+
+        <div class="remark">
+            <p>合約條款：</p>
+            <p>1. 本單據為維修付款憑證，請妥善保管，維修後憑單取機。</p>
+            <p>2. 設備享 <span id="pWarranty">0</span> 個月保固（非人為損壞），保固由開單日起計。</p>
+            <p>3. 逾期未付款，每日收取應付金額0.5%滯納金。</p>
+            <p>4. 如有查詢，請於開單7日內聯絡客服核實。</p>
+        </div>
+    </div>
+
+    <!-- MacBook發票打印模板 -->
+    <div id="macbookTemplate" class="hidden">
+        <div class="title">發票 INVOICE</div>
+        <table class="form-table">
+            <tr>
+                <td width="140">發票編號</td>
+                <td id="pInvNo">NV46183</td>
+                <td width="140">開單日期</td>
+                <td id="pInvDate"></td>
+            </tr>
+            <tr>
+                <td>客戶姓名</td>
+                <td id="pMbName"></td>
+                <td>聯絡電話</td>
+                <td id="pMbTel"></td>
+            </tr>
+            <tr>
+                <td>WhatsApp</td>
+                <td id="pMbWhatsApp"></td>
+                <td>送貨地址</td>
+                <td id="pMbDelAddr"></td>
+            </tr>
+        </table>
+
+        <p style="font-weight:bold;margin:10px 0;">商品明細 Product Details</p>
+        <table class="form-table">
+            <tr>
+                <th>商品型號</th>
+                <th>規格配置</th>
+                <th>單價(HK$)</th>
+                <th>數量</th>
+                <th>小計(HK$)</th>
+            </tr>
+            <tr>
+                <td id="pMbModel">Apple MacBook Pro M1 Pro 16吋</td>
+                <td id="pMbSpec">32GB RAM + 1TB SSD</td>
+                <td id="pMbPrice">7799.00</td>
+                <td id="pMbQty">1</td>
+                <td id="pMbSubtotal">7799.00</td>
+            </tr>
+            <tr>
+                <td colspan="4" align="right">優惠折扣 Discount</td>
+                <td id="pMbDiscount">0.00</td>
+            </tr>
+            <tr>
+                <td colspan="4" align="right"><strong>應付總金額 Total Amount Due</strong></td>
+                <td><strong>HK$ <span id="pMbTotal">7799.00</span></strong></td>
+            </tr>
+        </table>
+
+        <p style="font-weight:bold;margin:10px 0;">送貨方式 Delivery Method</p>
+        <p id="pMbDelMethod">免費送貨/到店自取</p>
+
+        <p style="font-weight:bold;margin:10px 0;">保固期限 Warranty</p>
+        <p id="pMbWarranty">3個月</p>
+
+        <p style="font-weight:bold;margin:10px 0;">付款方式 Payment</p>
+        <p id="pMbPayMethod">現金 Cash / 銀行轉賬 Bank Transfer / FPS 電子支付</p>
+
+        <div style="margin:12px 0;">
+            <strong>單據備註：</strong>
+            <div id="pMbRemark" style="margin-top:4px;"></div>
+        </div>
+
+        <div class="remark">
+            <p>合約條款：</p>
+            <p>1. 本發票為銷售付款憑證，請妥善保管，取貨時需出示本單據。</p>
+            <p>2. 商品享 <span id="pMbWarranty2">3</span> 個月保固（非人為損壞），保固由開單日起計。</p>
+            <p>3. 商品出貨後不設無理由退換，如有質量問題請於7日內聯絡客服。</p>
+            <p>4. 逾期未付款，每日收取應付金額0.5%滯納金。</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// 格式化時間：月/日/兩位年份 時:分 例如 6/23/26 16:24
+function getNowTime() {
+    const now = new Date();
+    const m = now.getMonth() + 1;
+    const d = now.getDate();
+    const y = String(now.getFullYear()).slice(-2);
+    const h = now.getHours();
+    const mi = String(now.getMinutes()).padStart(2, '0');
+    return `${m}/${d}/${y} ${h}:${mi}`;
+}
+
+// 格式化日期：月/日/兩位年份 例如 6/23/26
+function getNowDate() {
+    const now = new Date();
+    const m = now.getMonth() + 1;
+    const d = now.getDate();
+    const y = String(now.getFullYear()).slice(-2);
+    return `${m}/${d}/${y}`;
+}
+
+// 頁面載入初始化
+window.onload = function(){
+    const nowTime = getNowTime();
+    const nowDate = getNowDate();
+    // 維修單預設值
+    document.getElementById('bookTime').value = nowTime;
+    calcRepairTotal();
+    // MacBook發票預設值
+    document.getElementById('invDate').value = nowDate;
+    calcMacbookTotal();
+    // 初始化預覽
+    updatePreview();
+}
+
+// 切換單據類型
+function switchInvoiceType(){
+    const type = document.getElementById('invoiceType').value;
+    // 切換表單顯示
+    if(type === 'repair'){
+        document.getElementById('repairForm').classList.remove('hidden');
+        document.getElementById('macbookForm').classList.add('hidden');
+    }else{
+        document.getElementById('repairForm').classList.add('hidden');
+        document.getElementById('macbookForm').classList.remove('hidden');
+    }
+    updatePreview();
+}
+
+// 計算維修單總金額
+function calcRepairTotal(){
+    let svc = parseFloat(document.getElementById('serviceFee').value) || 0;
+    let del = parseFloat(document.getElementById('delFee').value) || 0;
+    let total = (svc + del).toFixed(2);
+    document.getElementById('totalAmt').value = total;
+    return total;
+}
+
+// 計算MacBook發票總金額
+function calcMacbookTotal(){
+    let price = parseFloat(document.getElementById('mbPrice').value) || 0;
+    let qty = parseFloat(document.getElementById('mbQty').value) || 1;
+    let discount = parseFloat(document.getElementById('mbDiscount').value) || 0;
+    let subtotal = (price * qty).toFixed(2);
+    let total = (subtotal - discount).toFixed(2);
+    document.getElementById('mbTotal').value = total;
+    return {subtotal, total};
+}
+
+// 組合勾選嘅服務項目文字
+function getCheckedItems(){
+    let list = [];
+    if(document.getElementById('chkDiag').checked) list.push("☑ 專業故障診斷");
+    else list.push("□ 專業故障診斷");
+
+    if(document.getElementById('chkClean').checked) list.push("☑ 深層清潔");
+    else list.push("□ 深層清潔");
+
+    if(document.getElementById('chkPart').checked) list.push("☑ 零件更換");
+    else list.push("□ 零件更換");
+
+    if(document.getElementById('chkOther').checked) list.push("☑ 其他維修服務");
+    else list.push("□ 其他維修服務");
+    return list.join("<br>");
+}
+
+// 更新預覽內容
+function updatePreview(){
+    const type = document.getElementById('invoiceType').value;
+    // 隱藏兩個模板
+    document.getElementById('repairTemplate').classList.add('hidden');
+    document.getElementById('macbookTemplate').classList.add('hidden');
+
+    if(type === 'repair'){
+        // 顯示維修單模板
+        document.getElementById('repairTemplate').classList.remove('hidden');
+        calcRepairTotal();
+        // 讀取輸入值
+        let bookTime = document.getElementById('bookTime').value;
+        let serviceText = document.getElementById('serviceText').value;
+        let model = document.getElementById('model').value;
+        let sn = document.getElementById('sn').value;
+        let serviceFee = document.getElementById('serviceFee').value;
+        let delFee = document.getElementById('delFee').value;
+        let custName = document.getElementById('custName').value;
+        let custTel = document.getElementById('custTel').value;
+        let delAddr = document.getElementById('delAddr').value;
+        let warranty = document.getElementById('warrantyMonth').value;
+        let total = document.getElementById('totalAmt').value;
+        let remark = document.getElementById('orderRemark').value;
+
+        // 寫入預覽
+        document.getElementById('printItemList').innerHTML = getCheckedItems();
+        document.getElementById('printRemark').innerText = remark || "無";
+        document.getElementById('pBookTime').innerText = bookTime;
+        document.getElementById('pBookTime2').innerText = bookTime;
+        document.getElementById('pService').innerText = serviceText;
+        document.getElementById('pModel').innerText = model;
+        document.getElementById('pSN').innerText = sn;
+        document.getElementById('pSvcFee').innerText = serviceFee;
+        document.getElementById('pDelFee').innerText = delFee;
+        document.getElementById('pName').innerText = custName;
+        document.getElementById('pTel').innerText = custTel;
+        document.getElementById('pDelAddr').innerText = delAddr;
+        document.getElementById('pWarranty').innerText = warranty;
+        document.getElementById('pTotal').innerText = total;
+    }else{
+        // 顯示MacBook發票模板
+        document.getElementById('macbookTemplate').classList.remove('hidden');
+        const {subtotal, total} = calcMacbookTotal();
+        // 讀取輸入值
+        let invNo = document.getElementById('invNo').value;
+        let invDate = document.getElementById('invDate').value;
+        let custName = document.getElementById('mbCustName').value;
+        let custTel = document.getElementById('mbCustTel').value;
+        let whatsApp = document.getElementById('mbWhatsApp').value;
+        let delAddr = document.getElementById('mbDelAddr').value;
+        let model = document.getElementById('mbModel').value;
+        let spec = document.getElementById('mbSpec').value;
+        let price = document.getElementById('mbPrice').value;
+        let qty = document.getElementById('mbQty').value;
+        let discount = document.getElementById('mbDiscount').value;
+        let delMethod = document.getElementById('mbDelMethod').value;
+        let warranty = document.getElementById('mbWarranty').value;
+        let payMethod = document.getElementById('mbPayMethod').value;
+        let remark = document.getElementById('mbRemark').value;
+
+        // 寫入預覽
+        document.getElementById('pInvNo').innerText = invNo;
+        document.getElementById('pInvDate').innerText = invDate;
+        document.getElementById('pMbName').innerText = custName;
+        document.getElementById('pMbTel').innerText = custTel;
+        document.getElementById('pMbWhatsApp').innerText = whatsApp;
+        document.getElementById('pMbDelAddr').innerText = delAddr;
+        document.getElementById('pMbModel').innerText = model;
+        document.getElementById('pMbSpec').innerText = spec;
+        document.getElementById('pMbPrice').innerText = price;
+        document.getElementById('pMbQty').innerText = qty;
+        document.getElementById('pMbSubtotal').innerText = subtotal;
+        document.getElementById('pMbDiscount').innerText = discount;
+        document.getElementById('pMbTotal').innerText = total;
+        document.getElementById('pMbDelMethod').innerText = delMethod;
+        document.getElementById('pMbWarranty').innerText = warranty;
+        document.getElementById('pMbWarranty2').innerText = warranty.replace(/[^0-9]/g, '');
+        document.getElementById('pMbPayMethod').innerText = payMethod;
+        document.getElementById('pMbRemark').innerText = remark || "無";
+    }
+}
+</script>
+</body>
+</html>
