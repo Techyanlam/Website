@@ -507,63 +507,54 @@ async function loadFromBase() {
     const tipLoad = document.getElementById("tipLoad");
     const tipErr = document.getElementById("tipErr");
     const btn = document.querySelector(".btn-green");
-    tipLoad.innerText = "";
-    tipErr.innerText = "";
+
     if (!orderNo) {
         tipErr.innerText = "請輸入單據編號";
         return;
     }
-    tipLoad.innerText = "正在連接飛書Base載入訂單數據...";
+
+    tipLoad.innerText = "正在連接後端，請稍候...";
+    tipErr.innerText = "";
     btn.disabled = true;
+
     try {
-        const res = await fetch(`${API_URL}?orderNo=${encodeURIComponent(orderNo)}`);
+        // 加入 mode: 'cors' 告訴瀏覽器這是一個跨域請求
+        const res = await fetch(`${API_URL}?orderNo=${encodeURIComponent(orderNo)}`, {
+            method: 'GET',
+            mode: 'cors', 
+            headers: { 'Accept': 'application/json' }
+        });
+
+        if (!res.ok) throw new Error(`HTTP 錯誤 ${res.status}`);
+        
         const data = await res.json();
+        
+        // 檢查 API 結構是否符合預期
         if (data.code !== 0) {
-            tipErr.innerText = "載入失敗：" + data.msg;
-            return;
+            throw new Error(data.msg || "伺服器返回資料錯誤");
         }
-        tipLoad.innerText = "✅ 載入成功，數據已自動填充（開單日期維持本地今日）";
+
+        tipLoad.innerText = "✅ 載入成功！";
+        
+        // 根據類型填充數據
         const type = data.type;
         document.getElementById("invoiceType").value = type;
         refreshForm();
+
+        // 填充邏輯
         if (type === "repair") {
-            document.getElementById("inpCustName").value = data.custName;
-            document.getElementById("inpTel").value = data.custTel;
-            document.getElementById("inpAddr").value = data.delAddr;
-            document.getElementById("inpModel").value = data.model;
-            document.getElementById("inpSN").value = data.sn;
-            document.getElementById("inpServiceText").value = data.serviceText;
-            document.getElementById("inpServiceFee").value = Number(data.serviceFee).toFixed(2);
-            document.getElementById("inpDelFee").value = Number(data.delFee).toFixed(2);
-            document.getElementById("inpWarranty").value = data.warrantyMonth;
-            document.getElementById("inpRemark").value = data.remark;
-            document.getElementById("chkDiag").checked = data.items.includes("專業故障診斷");
-            document.getElementById("chkClean").checked = data.items.includes("深層清潔");
-            document.getElementById("chkPart").checked = data.items.includes("零件更換");
-            document.getElementById("chkOther").checked = data.items.includes("其他維修服務");
-            calcRepair();
+            // ... (保持您原有的填充代碼)
         } else if (type === "sale") {
-            document.getElementById("saleInvNo").value = data.invNo;
-            document.getElementById("saleCustName").value = data.custName;
-            document.getElementById("saleTel").value = data.custTel;
-            document.getElementById("saleWhatsapp").value = data.whatsapp;
-            document.getElementById("saleAddr").value = data.delAddr;
-            document.getElementById("saleModel").value = data.model;
-            document.getElementById("saleSpec").value = data.spec;
-            document.getElementById("salePrice").value = Number(data.price).toFixed(2);
-            document.getElementById("saleQty").value = data.qty;
-            document.getElementById("saleDisc").value = Number(data.discount).toFixed(2);
-            document.getElementById("saleDelMethod").value = data.delMethod;
-            document.getElementById("saleWarranty").value = data.warranty;
-            document.getElementById("salePay").value = data.payMethod;
-            document.getElementById("saleRemark").value = data.remark;
-            calcSale();
+            // ... (保持您原有的填充代碼)
         }
         refreshPreview();
+
     } catch (e) {
-        tipErr.innerText = "載入失敗：伺服器錯誤，請確認後端已上線並開啟CORS";
+        console.error(e);
+        tipErr.innerText = "載入失敗：" + e.message + " (請確認伺服器已開啟 CORS)";
     } finally {
         btn.disabled = false;
+        tipLoad.innerText = "";
     }
 }
 </script>
