@@ -2,77 +2,81 @@
 <html lang="zh-HK">
 <head>
 <meta charset="UTF-8">
-<title>New Vision 訂單打印工具 - 支援飛書Base載入｜維修服務</title>
+<title>New Vision 訂單打印工具</title>
 <style>
-*{box-sizing:border-box;font-family:"Microsoft JhengHei",Arial,sans-serif;}
-body{background:#f0f0f0;padding:20px;margin:0;}
-.box{background:#fff;padding:16px;border-radius:8px;margin-bottom:20px;box-shadow:0 2px 10px #ccc;}
+*{box-sizing:border-box;font-family:"微軟正黑體","Microsoft JhengHei",sans-serif;}
+body{background:#f5f5f5;margin:0;padding:20px;}
+.box{background:#fff;padding:20px;border-radius:8px;margin-bottom:20px;box-shadow:0 2px 12px #ddd;}
 h3{margin-top:0;color:#222;}
-select, input, textarea{width:100%;padding:4px;border:1px solid #ccc;border-radius:3px;}
-.btn-group{margin:8px 0;display:flex;gap:10px;flex-wrap:wrap;}
-button{padding:8px 16px;border:none;border-radius:4px;background:#0066cc;color:#fff;cursor:pointer;}
-button.gray{background:#666;}
-button.green{background:#009944;}
-.check-group{display:flex;gap:12px;flex-wrap:wrap;padding:6px 0;}
-table.input-table{width:100%;border-collapse:collapse;margin:10px 0;}
-.input-table td, .input-table th{border:1px solid #999;padding:6px 8px;font-size:13px;}
-.print-page{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:22mm;box-shadow:0 0 10px #aaa;}
-.shop-header{text-align:center;border-bottom:1px solid #333;padding-bottom:10px;margin-bottom:15px;}
-.shop-header h4{margin:0;font-size:18px;}
-.shop-header p{font-size:13px;margin:3px 0;}
-.form-table{width:100%;border-collapse:collapse;margin:12px 0;}
-.form-table td, .form-table th{border:1px solid #555;padding:7px 10px;font-size:13px;}
-.title{text-align:center;font-size:16px;font-weight:bold;margin:12px 0;}
-.remark{font-size:12px;line-height:1.6;margin-top:16px;}
-.hidden{display:none !important;}
-.load-tip{color:#0066cc;margin:8px 0;}
-.error-tip{color:#d33;margin:8px 0;}
+input,select,textarea{width:100%;padding:6px;border:1px solid #ccc;border-radius:4px;font-size:14px;}
+input[readonly]{background:#f0f0f0;text-align:right;}
+.btn-group{margin:10px 0;display:flex;gap:12px;flex-wrap:wrap;}
+button{padding:9px 18px;border:none;border-radius:4px;color:#fff;font-size:15px;cursor:pointer;}
+button:disabled{background:#aaa;cursor:not-allowed;}
+.btn-blue{background:#0066cc;}
+.btn-gray{background:#666;}
+.btn-green{background:#009944;}
+.check-group{display:flex;gap:16px;flex-wrap:wrap;padding:8px 0;}
+table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
+.input-table td,.input-table th{border:1px solid #aaa;padding:8px;font-size:13px;}
+
+/* A4打印專用樣式 */
+.print-wrap{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:22mm;box-shadow:0 0 10px #ccc;}
+.print-header{text-align:center;border-bottom:1px solid #333;padding-bottom:10px;margin-bottom:16px;}
+.print-header h4{font-size:22px;margin:0;}
+.print-sub{font-size:13px;color:#444;margin-top:4px;line-height:1.5;}
+.print-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0;font-size:14px;}
+.print-table{width:100%;border-collapse:collapse;margin:16px 0;}
+.print-table th,.print-table td{border:1px solid #888;padding:10px 8px;font-size:14px;}
+.print-table th{background:#f8f8f8;}
+.text-right{text-align:right;}
+.total-block{margin:14px 0 20px;text-align:right;font-size:16px;font-weight:bold;}
+.remark-block{border:1px dashed #999;padding:10px;min-height:80px;margin:12px 0;}
+.term{font-size:12px;color:#555;line-height:1.6;margin-top:20px;}
+
 @media print{
     body{background:#fff;padding:0;}
     .box{display:none !important;}
-    .print-page{width:100%;padding:0;box-shadow:none;min-height:auto;}
+    .print-wrap{box-shadow:none;width:100%;padding:0;}
+    @page {size:A4;margin:15mm;}
 }
 </style>
 </head>
 <body>
-
-<!-- 主控制面板 -->
+<!-- 操作面板 -->
 <div class="box">
     <h3>📝 訂單打印工具 - 可從飛書Base載入訂單</h3>
-
-    <!-- Base載入區 -->
-    <div style="margin:10px 0;">
+    <div style="margin:12px 0;">
         <strong>飛書Base 訂單載入：</strong>
-        <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
-            <input id="baseOrderNo" placeholder="輸入單據編號 NV2026060528 / NV46183" style="flex:1;">
-            <button class="green" onclick="loadDataFromBase()">從Base載入數據</button>
+        <div style="display:flex;gap:10px;align-items:center;margin-top:8px;">
+            <input id="baseOrderNo" placeholder="輸入單據編號 NV2026xxxx" style="flex:1;">
+            <button class="btn-green" onclick="loadFromBase()">從Base載入數據</button>
         </div>
-        <div class="load-tip" id="loadMsg"></div>
-        <div class="error-tip" id="errorMsg"></div>
+        <div id="tipLoad" style="color:#0066cc;margin:6px 0;"></div>
+        <div id="tipErr" style="color:#d32f2f;margin:6px 0;"></div>
     </div>
 
-    <div style="margin:10px 0;">
+    <div style="margin:12px 0;">
         <strong>選擇單據類型：</strong>
-        <select id="invoiceType" onchange="switchInvoiceType()">
-            <!-- 已修改選項文字：維修服務單 / INVOICE -->
-            <option value="repair">維修服務單 / INVOICE</option>
-            <option value="macbook">MacBook 銷售發票</option>
+        <select id="invoiceType" onchange="refreshForm()">
+            <option value="repair">維修服務發票</option>
+            <option value="general">INVOICE</option>
+            <option value="sale">Sale order invoice</option>
         </select>
     </div>
 
-    <!-- 維修單輸入表單 -->
+    <!-- 維修單表單 -->
     <div id="repairForm">
-        <h4 style="margin:15px 0 10px 0;">維修服務資料輸入</h4>
-        <div style="margin:10px 0;">
+        <h4 style="margin:16px 0 8px;">維修服務資料輸入</h4>
+        <div style="margin:8px 0;">
             <strong>維修服務項目 Item：</strong>
             <div class="check-group">
-                <label><input type="checkbox" id="chkDiag"> 專業故障診斷</label>
-                <label><input type="checkbox" id="chkClean"> 深層清潔</label>
-                <label><input type="checkbox" id="chkPart"> 零件更換</label>
-                <label><input type="checkbox" id="chkOther"> 其他維修服務</label>
+                <label><input type="checkbox" id="chkDiag" onchange="refreshPreview()"> 專業故障診斷</label>
+                <label><input type="checkbox" id="chkClean" onchange="refreshPreview()"> 深層清潔</label>
+                <label><input type="checkbox" id="chkPart" onchange="refreshPreview()"> 零件更換</label>
+                <label><input type="checkbox" id="chkOther" onchange="refreshPreview()"> 其他維修服務</label>
             </div>
         </div>
-
         <table class="input-table">
             <tr>
                 <th>預約時間</th>
@@ -83,12 +87,12 @@ table.input-table{width:100%;border-collapse:collapse;margin:10px 0;}
                 <th>送貨費(HK$)</th>
             </tr>
             <tr>
-                <td><input id="bookTime"></td>
-                <td><input id="serviceText" value="清洗dyson v10吸塵機"></td>
-                <td><input id="model"></td>
-                <td><input id="sn"></td>
-                <td><input id="serviceFee" value="250.00"></td>
-                <td><input id="delFee" value="0" readonly style="background:#eee;"></td>
+                <td><input id="inpCreateTime" readonly></td>
+                <td><input id="inpServiceText" onblur="refreshPreview()"></td>
+                <td><input id="inpModel" onblur="refreshPreview()"></td>
+                <td><input id="inpSN" onblur="refreshPreview()"></td>
+                <td><input id="inpServiceFee" value="0.00" onblur="calcRepair();refreshPreview()"></td>
+                <td><input id="inpDelFee" value="0" readonly></td>
             </tr>
             <tr>
                 <th>客戶姓名 Name</th>
@@ -96,390 +100,470 @@ table.input-table{width:100%;border-collapse:collapse;margin:10px 0;}
                 <th>送貨地址 Delivery Address</th>
                 <th>保固月數 Month</th>
                 <th>總金額 Total(自動計算)</th>
-                <th>單據備註 Remarks</th>
+                <th>備註</th>
             </tr>
             <tr>
-                <td><input id="custName" placeholder="客戶姓名 Name"></td>
-                <td><input id="custTel" placeholder="電話 Tel"></td>
-                <td><input id="delAddr"></td>
-                <td><input id="warrantyMonth" value="0"></td>
-                <td><input id="totalAmt" readonly style="background:#eee;"></td>
-                <td><textarea id="orderRemark" rows="1"></textarea></td>
+                <td><input id="inpCustName" onblur="refreshPreview()"></td>
+                <td><input id="inpTel" onblur="refreshPreview()"></td>
+                <td><input id="inpAddr" onblur="refreshPreview()"></td>
+                <td><input id="inpWarranty" value="0" onblur="refreshPreview()"></td>
+                <td><input id="inpTotal" readonly></td>
+                <td><textarea id="inpRemark" rows="1" onblur="refreshPreview()"></textarea></td>
             </tr>
         </table>
     </div>
 
-    <!-- MacBook發票輸入表單 -->
-    <div id="macbookForm" class="hidden">
-        <h4 style="margin:15px 0 10px 0;">MacBook 銷售發票資料輸入</h4>
+    <!-- 通用發票表單 -->
+    <div id="generalForm" style="display:none;">
+        <h4 style="margin:16px 0 8px;">通用發票資料輸入</h4>
         <table class="input-table">
             <tr>
                 <th>發票編號</th>
-                <th>開單日期</th>
-                <th>客戶姓名 Name</th>
-                <th>聯絡電話 Tel</th>
+                <th>開單日期(本地今日，不跟飛書)</th>
+                <th>客戶姓名</th>
+                <th>聯絡電話</th>
+                <th>WhatsApp</th>
+                <th>地址</th>
+            </tr>
+            <tr>
+                <td><input id="genInvNo" onblur="refreshPreview()"></td>
+                <td><input id="genCreateTime" readonly></td>
+                <td><input id="genCustName" onblur="refreshPreview()"></td>
+                <td><input id="genTel" onblur="refreshPreview()"></td>
+                <td><input id="genWhatsapp" onblur="refreshPreview()"></td>
+                <td><input id="genAddr" onblur="refreshPreview()"></td>
+            </tr>
+            <tr>
+                <th>項目名稱</th>
+                <th>規格</th>
+                <th>單價(HK$)</th>
+                <th>數量</th>
+                <th>折扣</th>
+                <th>總金額</th>
+            </tr>
+            <tr>
+                <td><input id="genItem" onblur="calcGen();refreshPreview()"></td>
+                <td><input id="genSpec" onblur="refreshPreview()"></td>
+                <td><input id="genPrice" value="0.00" onblur="calcGen();refreshPreview()"></td>
+                <td><input id="genQty" value="1" onblur="calcGen();refreshPreview()"></td>
+                <td><input id="genDisc" value="0.00" onblur="calcGen();refreshPreview()"></td>
+                <td><input id="genTotal" readonly></td>
+            </tr>
+            <tr>
+                <th>備註</th>
+                <td colspan="5"><textarea id="genRemark" rows="1" onblur="refreshPreview()"></textarea></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 銷售單表單 -->
+    <div id="saleForm" style="display:none;">
+        <h4 style="margin:16px 0 8px;">Sale order 銷售單資料</h4>
+        <table class="input-table">
+            <tr>
+                <th>發票編號</th>
+                <th>開單日期(本地今日，不跟飛書)</th>
+                <th>客戶姓名</th>
+                <th>聯絡電話</th>
                 <th>WhatsApp</th>
                 <th>送貨地址</th>
             </tr>
             <tr>
-                <td><input id="invNo" value="NV46183"></td>
-                <td><input id="invDate"></td>
-                <td><input id="mbCustName" placeholder="客戶姓名 Name"></td>
-                <td><input id="mbCustTel" placeholder="電話 Tel"></td>
-                <td><input id="mbWhatsApp"></td>
-                <td><input id="mbDelAddr"></td>
+                <td><input id="saleInvNo" onblur="refreshPreview()"></td>
+                <td><input id="saleCreateTime" readonly></td>
+                <td><input id="saleCustName" onblur="refreshPreview()"></td>
+                <td><input id="saleTel" onblur="refreshPreview()"></td>
+                <td><input id="saleWhatsapp" onblur="refreshPreview()"></td>
+                <td><input id="saleAddr" onblur="refreshPreview()"></td>
             </tr>
             <tr>
-                <th>商品型號</th>
+                <th>機型</th>
                 <th>規格配置</th>
                 <th>單價(HK$)</th>
                 <th>數量</th>
-                <th>優惠折扣(HK$)</th>
-                <th>總金額 Total(自動計算)</th>
+                <th>折扣</th>
+                <th>總金額</th>
             </tr>
             <tr>
-                <td><input id="mbModel" value="Apple MacBook Pro M1 Pro 16吋"></td>
-                <td><input id="mbSpec" value="32GB RAM + 1TB SSD"></td>
-                <td><input id="mbPrice" value="7799.00"></td>
-                <td><input id="mbQty" value="1"></td>
-                <td><input id="mbDiscount" value="0.00"></td>
-                <td><input id="mbTotal" readonly style="background:#eee;"></td>
+                <td><input id="saleModel" onblur="calcSale();refreshPreview()"></td>
+                <td><input id="saleSpec" onblur="refreshPreview()"></td>
+                <td><input id="salePrice" value="0.00" onblur="calcSale();refreshPreview()"></td>
+                <td><input id="saleQty" value="1" onblur="calcSale();refreshPreview()"></td>
+                <td><input id="saleDisc" value="0.00" onblur="calcSale();refreshPreview()"></td>
+                <td><input id="saleTotal" readonly></td>
             </tr>
             <tr>
                 <th>送貨方式</th>
                 <th>保固期限</th>
                 <th>付款方式</th>
-                <th colspan="3">備註 Remarks</th>
+                <th colspan="3">備註</th>
             </tr>
             <tr>
-                <td><input id="mbDelMethod" value="免費送貨/到店自取"></td>
-                <td><input id="mbWarranty" value="3個月"></td>
-                <td><input id="mbPayMethod" value="現金/銀行轉賬/FPS"></td>
-                <td colspan="3"><textarea id="mbRemark" rows="1"></textarea></td>
+                <td><input id="saleDelMethod" onblur="refreshPreview()"></td>
+                <td><input id="saleWarranty" onblur="refreshPreview()"></td>
+                <td><input id="salePay" onblur="refreshPreview()"></td>
+                <td colspan="3"><textarea id="saleRemark" rows="1" onblur="refreshPreview()"></textarea></td>
             </tr>
         </table>
     </div>
 
     <div class="btn-group">
-        <button onclick="updatePreview()">即時更新預覽</button>
-        <button class="gray" onclick="window.print()">開啟打印預覽</button>
+        <button class="btn-blue" onclick="refreshPreview()">即時更新預覽</button>
+        <button class="btn-gray" onclick="window.print()">開啟打印預覽</button>
     </div>
 </div>
 
-<!-- 打印預覽區 -->
-<div class="print-page" id="printArea">
-    <div class="shop-header">
+<!-- A4 發票打印預覽區 -->
+<div class="print-wrap" id="printArea">
+    <div class="print-header">
         <h4>New Vision Tech Co Limited</h4>
-        <p>Room 1015-1016, Hollywood Plaza, 610 Nathan Road, Mong Kok, Kowloon</p>
-        <p>九龍旺角彌敦道610號荷李活商業中心1015-1016 | Tel:+852 2887 8820</p>
-    </div>
-
-    <!-- 維修單模板 -->
-    <div id="repairTemplate">
-        <div class="title">維修服務單 / INVOICE</div>
-        <table class="form-table">
-            <tr>
-                <td width="140">單據編號</td>
-                <td id="pRepairNo">NV2026060528</td>
-                <td width="140">開單日期</td>
-                <td id="pBookTime"></td>
-            </tr>
-            <tr>
-                <td>客戶姓名</td>
-                <td id="pName"></td>
-                <td>聯絡電話</td>
-                <td id="pTel"></td>
-            </tr>
-            <tr>
-                <td>設備型號 Model</td>
-                <td id="pModel"></td>
-                <td>SN編號</td>
-                <td id="pSN"></td>
-            </tr>
-        </table>
-
-        <p style="font-weight:bold;margin:10px 0;">維修服務項目 Item</p>
-        <div id="printItemList" style="margin:8px 0;line-height:1.8;"></div>
-
-        <p style="font-weight:bold;margin:10px 0;">維修服務明細 Service Details</p>
-        <table class="form-table">
-            <tr>
-                <th>維修服務內容</th>
-                <th>單價(HK$)</th>
-                <th>備註</th>
-            </tr>
-            <tr>
-                <td id="pService">清洗dyson v10吸塵機</td>
-                <td id="pSvcFee">250.00</td>
-                <td>預約時間：<span id="pBookTime2"></span></td>
-            </tr>
-            <tr>
-                <td>送貨費 Delivery Fee</td>
-                <td id="pDelFee">0.00</td>
-                <td id="pDelAddr"></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="right"><strong>應付總金額 Total Amount Due</strong></td>
-                <td><strong>HK$ <span id="pTotal">250.00</span></strong></td>
-            </tr>
-        </table>
-
-        <p style="font-weight:bold;margin:10px 0;">付款方式 Payment</p>
-        <p>□ 現金 Cash &nbsp;&nbsp; □ 銀行轉賬 Bank Transfer &nbsp;&nbsp; □ 電子支付 FPS/微信/支付寶</p>
-
-        <div style="margin:12px 0;">
-            <strong>單據備註：</strong>
-            <div id="printRemark" style="margin-top:4px;"></div>
-        </div>
-
-        <div class="remark">
-            <p>合約條款：</p>
-            <p>1. 本維修服務單為付款憑證，請妥善保管，維修完畢憑單取機。</p>
-            <p>2. 維修設備享 <span id="pWarranty">0</span> 個月保固（非人為損壞），保固由開單日起計。</p>
-            <p>3. 逾期未付款，每日收取應付金額0.5%滯納金。</p>
-            <p>4. 維修後如有查詢，請於開單7日內聯絡客服核實。</p>
+        <div class="print-sub">
+            Room 1015-1016, Hollywood Plaza, 610 Nathan Road, Mong Kok, Kowloon<br>
+            電話 Tel：+852 2887 8820
         </div>
     </div>
 
-    <!-- MacBook發票模板 -->
-    <div id="macbookTemplate" class="hidden">
-        <div class="title">發票 INVOICE</div>
-        <table class="form-table">
+    <!-- 維修服務發票 -->
+    <div id="printRepair">
+        <h4 style="text-align:center;margin:10px 0;">維修服務發票</h4>
+        <div class="print-row">
+            <div>單據編號：<span id="pInvNo"></span></div>
+            <div class="text-right">開單日期：<span id="pCreateTime"></span></div>
+        </div>
+        <div style="border:1px solid #999;padding:10px;margin:12px 0;">
+            <div class="print-row">
+                <div>客戶姓名：<span id="pCust"></span></div>
+                <div>聯絡電話：<span id="pTel"></span></div>
+            </div>
+            <div style="margin-top:6px;">送貨地址：<span id="pAddr"></span></div>
+            <div class="print-row" style="margin-top:6px;">
+                <div>設備型號：<span id="pModel"></span></div>
+                <div>SN 序號：<span id="pSN"></span></div>
+                <div>保固期限：<span id="pWarranty"></span> 個月</div>
+            </div>
+        </div>
+
+        <div style="margin:10px 0 4px;"><strong>維修項目清單</strong></div>
+        <div id="pItemList"></div>
+        <div style="margin:10px 0 4px;"><strong>維修內容</strong></div>
+        <div style="border:1px solid #aaa;padding:8px;min-height:40px;margin-bottom:12px;" id="pServiceText"></div>
+
+        <table class="print-table">
             <tr>
-                <td width="140">發票編號</td>
-                <td id="pInvNo">NV46183</td>
-                <td width="140">開單日期</td>
-                <td id="pInvDate"></td>
+                <th>項目</th>
+                <th>金額(HK$)</th>
             </tr>
             <tr>
-                <td>客戶姓名</td>
-                <td id="pMbName"></td>
-                <td>聯絡電話</td>
-                <td id="pMbTel"></td>
+                <td>維修服務費</td>
+                <td class="text-right" id="pFee"></td>
             </tr>
             <tr>
-                <td>WhatsApp</td>
-                <td id="pMbWhatsApp"></td>
-                <td>送貨地址</td>
-                <td id="pMbDelAddr"></td>
+                <td>送貨費</td>
+                <td class="text-right" id="pDelFee"></td>
             </tr>
         </table>
-        <p style="font-weight:bold;margin:10px 0;">商品明細 Product Details</p>
-        <table class="form-table">
+        <div class="total-block">總金額 HK$ <span id="pTotal"></span></div>
+
+        <div><strong>備註</strong></div>
+        <div class="remark-block" id="pRemark"></div>
+
+        <div class="term">
+            條款：
+            1. 本發票為維修憑證，憑單據享有對應保固服務；
+            2. 人為損壞、液體進水、摔機不在免費保固範圍；
+            3. 維修完畢7日內可取機，逾期本店不負保管責任。
+        </div>
+    </div>
+
+    <!-- INVOICE 通用發票 -->
+    <div id="printGeneral" style="display:none;">
+        <h4 style="text-align:center;margin:10px 0;">INVOICE</h4>
+        <div class="print-row">
+            <div>發票編號：<span id="gInvNo"></span></div>
+            <div class="text-right">開單日期：<span id="gCreateTime"></span></div>
+        </div>
+        <div style="border:1px solid #999;padding:10px;margin:12px 0;">
+            <div class="print-row">
+                <div>客戶姓名：<span id="gCust"></span></div>
+                <div>聯絡電話 / WhatsApp：<span id="gTel"></span></div>
+            </div>
+            <div style="margin-top:6px;">地址：<span id="gAddr"></span></div>
+        </div>
+
+        <table class="print-table">
             <tr>
-                <th>商品型號</th>
-                <th>規格配置</th>
+                <th>項目名稱</th>
+                <th>規格</th>
                 <th>單價(HK$)</th>
                 <th>數量</th>
-                <th>小計(HK$)</th>
+                <th>小計</th>
             </tr>
             <tr>
-                <td id="pMbModel">Apple MacBook Pro M1 Pro 16吋</td>
-                <td id="pMbSpec">32GB RAM + 1TB SSD</td>
-                <td id="pMbPrice">7799.00</td>
-                <td id="pMbQty">1</td>
-                <td id="pMbSubtotal">7799.00</td>
+                <td id="gItem"></td>
+                <td id="gSpec"></td>
+                <td class="text-right" id="gPrice"></td>
+                <td class="text-right" id="gQty"></td>
+                <td class="text-right" id="gSub"></td>
             </tr>
             <tr>
-                <td colspan="4" align="right">優惠折扣 Discount</td>
-                <td id="pMbDiscount">0.00</td>
-            </tr>
-            <tr>
-                <td colspan="4" align="right"><strong>應付總金額 Total Amount Due</strong></td>
-                <td><strong>HK$ <span id="pMbTotal">7799.00</span></strong></td>
+                <td colspan="4" class="text-right">折扣</td>
+                <td class="text-right" id="gDisc"></td>
             </tr>
         </table>
-        <p style="font-weight:bold;margin:10px 0;">送貨方式 Delivery Method</p>
-        <p id="pMbDelMethod">免費送貨/到店自取</p>
-        <p style="font-weight:bold;margin:10px 0;">保固期限 Warranty</p>
-        <p id="pMbWarranty">3個月</p>
-        <p style="font-weight:bold;margin:10px 0;">付款方式 Payment</p>
-        <p id="pMbPayMethod">現金 Cash / 銀行轉賬 Bank Transfer / FPS 電子支付</p>
-        <div style="margin:12px 0;">
-            <strong>單據備註：</strong>
-            <div id="pMbRemark" style="margin-top:4px;"></div>
+        <div class="total-block">應付總金額 HK$ <span id="gTotal"></span></div>
+
+        <div><strong>備註</strong></div>
+        <div class="remark-block" id="gRemark"></div>
+    </div>
+
+    <!-- Sale order invoice 銷售單 -->
+    <div id="printSale" style="display:none;">
+        <h4 style="text-align:center;margin:10px 0;">Sale order invoice</h4>
+        <div class="print-row">
+            <div>發票編號：<span id="sInvNo"></span></div>
+            <div class="text-right">開單日期：<span id="sCreateTime"></span></div>
         </div>
-        <div class="remark">
-            <p>合約條款：</p>
-            <p>1. 本發票為銷售付款憑證，請妥善保管，取貨時需出示本單據。</p>
-            <p>2. 商品享 <span id="pMbWarranty2">3</span> 個月保固（非人為損壞），保固由開單日起計。</p>
-            <p>3. 商品出貨後不設無理由退換，如有質量問題請於7日內聯絡客服。</p>
-            <p>4. 逾期未付款，每日收取應付金額0.5%滯納金。</p>
+        <div style="border:1px solid #999;padding:10px;margin:12px 0;">
+            <div class="print-row">
+                <div>客戶姓名：<span id="sCust"></span></div>
+                <div>聯絡電話 / WhatsApp：<span id="sTel"></span></div>
+            </div>
+            <div style="margin-top:6px;">送貨地址：<span id="sAddr"></span></div>
+            <div class="print-row" style="margin-top:6px;">
+                <div>送貨方式：<span id="sDelMethod"></span></div>
+                <div>保固期限：<span id="sWarranty"></span></div>
+                <div>付款方式：<span id="sPay"></span></div>
+            </div>
+        </div>
+
+        <table class="print-table">
+            <tr>
+                <th>產品型號</th>
+                <th>規格</th>
+                <th>單價(HK$)</th>
+                <th>數量</th>
+                <th>小計</th>
+            </tr>
+            <tr>
+                <td id="sModel"></td>
+                <td id="sSpec"></td>
+                <td class="text-right" id="sPrice"></td>
+                <td class="text-right" id="sQty"></td>
+                <td class="text-right" id="sSub"></td>
+            </tr>
+            <tr>
+                <td colspan="4" class="text-right">折扣</td>
+                <td class="text-right" id="sDisc"></td>
+            </tr>
+        </table>
+        <div class="total-block">應付總金額 HK$ <span id="sTotal"></span></div>
+
+        <div><strong>備註</strong></div>
+        <div class="remark-block" id="sRemark"></div>
+
+        <div class="term">
+            銷售條款：
+            1. 全新機享有廠商標準保固，人為損壞不納入免費維修；
+            2. 出貨前已測試功能正常，售出無質量問題不設退換；
+            3. 送貨時間以店員通知為準。
         </div>
     </div>
 </div>
 
 <script>
-// ========== 飛書Base後端接口配置區（後台搭建後替換地址）==========
-const API_BACKEND_URL = "http://localhost:3000/api/getBaseOrder";
-// ==============================================================
+// ===================== 線上專用：替換成你雲端後端HTTPS網址 =====================
+const API_URL = "https://你的雲端後端網址/api/getBaseOrder";
 
-// 取得當前時間 格式：6/23/26 14:30
-function getNowTime(){
-    const now=new Date();
-    const m=now.getMonth()+1;
-    const d=now.getDate();
-    const y=String(now.getFullYear()).slice(-2);
-    const h=now.getHours();
-    const mi=String(now.getMinutes()).padStart(2,'0');
-    return `${m}/${d}/${y} ${h}:${mi}`;
-}
-// 取得當前日期 格式：6/23/26
-function getNowDate(){
-    const now=new Date();
-    const m=now.getMonth()+1;
-    const d=now.getDate();
-    const y=String(now.getFullYear()).slice(-2);
-    return `${m}/${d}/${y}`;
-}
+window.onload = function () {
+    const now = new Date();
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, "0");
+    const d = String(now.getDate()).padStart(2, "0");
+    const h = String(now.getHours()).padStart(2, "0");
+    const mi = String(now.getMinutes()).padStart(2, "0");
+    const localDate = `${y}/${m}/${d} ${h}:${mi}`;
+    document.getElementById("inpCreateTime").value = localDate;
+    document.getElementById("genCreateTime").value = localDate;
+    document.getElementById("saleCreateTime").value = localDate;
 
-// 頁面初始化
-window.onload=function(){
-    document.getElementById('bookTime').value=getNowTime();
-    document.getElementById('invDate').value=getNowDate();
-    calcRepairTotal();
-    calcMacbookTotal();
-    updatePreview();
-}
+    document.getElementById("invoiceType").addEventListener("change", refreshForm);
+    refreshForm();
+    calcRepair();
+    calcGen();
+    calcSale();
+    refreshPreview();
+};
 
-// 切換維修單 / MacBook發票
-function switchInvoiceType(){
-    const t=document.getElementById('invoiceType').value;
-    document.getElementById('repairForm').classList.toggle('hidden',t!=='repair');
-    document.getElementById('macbookForm').classList.toggle('hidden',t!=='macbook');
-    updatePreview();
-}
-
-// 維修單自動計總金額：維修費+送貨費
-function calcRepairTotal(){
-    const svc=parseFloat(document.getElementById('serviceFee').value)||0;
-    const del=parseFloat(document.getElementById('delFee').value)||0;
-    const total=(svc+del).toFixed(2);
-    document.getElementById('totalAmt').value=total;
-    return total;
-}
-
-// MacBook發票自動計總金額：單價×數量-折扣
-function calcMacbookTotal(){
-    const p=parseFloat(document.getElementById('mbPrice').value)||0;
-    const q=parseFloat(document.getElementById('mbQty').value)||1;
-    const disc=parseFloat(document.getElementById('mbDiscount').value)||0;
-    const sub=(p*q).toFixed(2);
-    const tot=(sub-disc).toFixed(2);
-    document.getElementById('mbTotal').value=tot;
-    return {subtotal:sub,total:tot};
-}
-
-// 組合維修服務勾選項目（打印頁顯示□/☑）
-function getCheckedItems(){
-    let arr=[];
-    arr.push(document.getElementById('chkDiag').checked?"☑ 專業故障診斷":"□ 專業故障診斷");
-    arr.push(document.getElementById('chkClean').checked?"☑ 深層清潔":"□ 深層清潔");
-    arr.push(document.getElementById('chkPart').checked?"☑ 零件更換":"□ 零件更換");
-    arr.push(document.getElementById('chkOther').checked?"☑ 其他維修服務":"□ 其他維修服務");
-    return arr.join("<br>");
-}
-
-// 實時更新下方打印預覽
-function updatePreview(){
-    const t=document.getElementById('invoiceType').value;
-    document.getElementById('repairTemplate').classList.add('hidden');
-    document.getElementById('macbookTemplate').classList.add('hidden');
-
-    if(t==='repair'){
-        document.getElementById('repairTemplate').classList.remove('hidden');
-        calcRepairTotal();
-        document.getElementById('printItemList').innerHTML=getCheckedItems();
-        document.getElementById('pBookTime').innerText=document.getElementById('bookTime').value;
-        document.getElementById('pBookTime2').innerText=document.getElementById('bookTime').value;
-        document.getElementById('pName').innerText=document.getElementById('custName').value;
-        document.getElementById('pTel').innerText=document.getElementById('custTel').value;
-        document.getElementById('pModel').innerText=document.getElementById('model').value;
-        document.getElementById('pSN').innerText=document.getElementById('sn').value;
-        document.getElementById('pSvcFee').innerText=document.getElementById('serviceFee').value;
-        document.getElementById('pDelFee').innerText=document.getElementById('delFee').value;
-        document.getElementById('pDelAddr').innerText=document.getElementById('delAddr').value;
-        document.getElementById('pWarranty').innerText=document.getElementById('warrantyMonth').value;
-        document.getElementById('pTotal').innerText=document.getElementById('totalAmt').value;
-        document.getElementById('printRemark').innerText=document.getElementById('orderRemark').value||"無";
-    }else{
-        document.getElementById('macbookTemplate').classList.remove('hidden');
-        const {subtotal,total}=calcMacbookTotal();
-        document.getElementById('pInvNo').innerText=document.getElementById('invNo').value;
-        document.getElementById('pInvDate').innerText=document.getElementById('invDate').value;
-        document.getElementById('pMbName').innerText=document.getElementById('mbCustName').value;
-        document.getElementById('pMbTel').innerText=document.getElementById('mbCustTel').value;
-        document.getElementById('pMbWhatsApp').innerText=document.getElementById('mbWhatsApp').value;
-        document.getElementById('pMbDelAddr').innerText=document.getElementById('mbDelAddr').value;
-        document.getElementById('pMbModel').innerText=document.getElementById('mbModel').value;
-        document.getElementById('pMbSpec').innerText=document.getElementById('mbSpec').value;
-        document.getElementById('pMbPrice').innerText=document.getElementById('mbPrice').value;
-        document.getElementById('pMbQty').innerText=document.getElementById('mbQty').value;
-        document.getElementById('pMbSubtotal').innerText=subtotal;
-        document.getElementById('pMbDiscount').innerText=document.getElementById('mbDiscount').value;
-        document.getElementById('pMbTotal').innerText=total;
-        document.getElementById('pMbDelMethod').innerText=document.getElementById('mbDelMethod').value;
-        document.getElementById('pMbWarranty').innerText=document.getElementById('mbWarranty').value;
-        document.getElementById('pMbWarranty2').innerText=document.getElementById('mbWarranty').value.replace(/[^0-9]/g,'');
-        document.getElementById('pMbPayMethod').innerText=document.getElementById('mbPayMethod').value;
-        document.getElementById('pMbRemark').innerText=document.getElementById('mbRemark').value||"無";
+function refreshForm() {
+    const type = document.getElementById("invoiceType").value;
+    document.getElementById("repairForm").style.display = "none";
+    document.getElementById("generalForm").style.display = "none";
+    document.getElementById("saleForm").style.display = "none";
+    document.getElementById("printRepair").style.display = "none";
+    document.getElementById("printGeneral").style.display = "none";
+    document.getElementById("printSale").style.display = "none";
+    if (type === "repair") {
+        document.getElementById("repairForm").style.display = "block";
+        document.getElementById("printRepair").style.display = "block";
+    } else if (type === "general") {
+        document.getElementById("generalForm").style.display = "block";
+        document.getElementById("printGeneral").style.display = "block";
+    } else if (type === "sale") {
+        document.getElementById("saleForm").style.display = "block";
+        document.getElementById("printSale").style.display = "block";
     }
 }
 
-// 飛書Base載入訂單數據接口
-async function loadDataFromBase(){
-    const orderNo=document.getElementById('baseOrderNo').value.trim();
-    const loadMsg=document.getElementById('loadMsg');
-    const errMsg=document.getElementById('errorMsg');
-    loadMsg.textContent="";errMsg.textContent="";
-    if(!orderNo){errMsg.textContent="請輸入單據編號";return;}
-    loadMsg.textContent="正在連接飛書Base載入訂單數據...";
-    try{
-        const res=await fetch(`${API_BACKEND_URL}?orderNo=${encodeURIComponent(orderNo)}`);
-        const data=await res.json();
-        if(!res.ok||data.code!==0) throw new Error(data.msg||"查無此訂單記錄");
+function calcRepair() {
+    const s = parseFloat(document.getElementById("inpServiceFee").value) || 0;
+    const d = parseFloat(document.getElementById("inpDelFee").value) || 0;
+    document.getElementById("inpTotal").value = (s + d).toFixed(2);
+}
 
-        document.getElementById('invoiceType').value=data.type;
-        switchInvoiceType();
+function calcGen() {
+    const p = parseFloat(document.getElementById("genPrice").value) || 0;
+    const q = parseInt(document.getElementById("genQty").value) || 1;
+    const disc = parseFloat(document.getElementById("genDisc").value) || 0;
+    document.getElementById("genTotal").value = (p * q - disc).toFixed(2);
+}
 
-        if(data.type==="repair"){
-            document.getElementById('bookTime').value=data.bookTime;
-            document.getElementById('serviceText').value=data.serviceText;
-            document.getElementById('model').value=data.model;
-            document.getElementById('sn').value=data.sn;
-            document.getElementById('serviceFee').value=data.serviceFee;
-            document.getElementById('custName').value=data.custName;
-            document.getElementById('custTel').value=data.custTel;
-            document.getElementById('delAddr').value=data.delAddr;
-            document.getElementById('warrantyMonth').value=data.warrantyMonth;
-            document.getElementById('orderRemark').value=data.remark;
-            // 自動勾選對應維修服務項目
-            document.getElementById('chkDiag').checked=data.items.includes("專業故障診斷");
-            document.getElementById('chkClean').checked=data.items.includes("深層清潔");
-            document.getElementById('chkPart').checked=data.items.includes("零件更換");
-            document.getElementById('chkOther').checked=data.items.includes("其他維修服務");
+function calcSale() {
+    const p = parseFloat(document.getElementById("salePrice").value) || 0;
+    const q = parseInt(document.getElementById("saleQty").value) || 1;
+    const disc = parseFloat(document.getElementById("saleDisc").value) || 0;
+    document.getElementById("saleTotal").value = (p * q - disc).toFixed(2);
+}
+
+function getItemText() {
+    const arr = [];
+    if(document.getElementById("chkDiag").checked) arr.push("☑ 專業故障診斷");
+    if(document.getElementById("chkClean").checked) arr.push("☑ 深層清潔");
+    if(document.getElementById("chkPart").checked) arr.push("☑ 零件更換");
+    if(document.getElementById("chkOther").checked) arr.push("☑ 其他維修服務");
+    return arr.join("<br>");
+}
+
+function refreshPreview() {
+    const t = document.getElementById("invoiceType").value;
+    if (t === "repair") {
+        document.getElementById("pInvNo").innerText = document.getElementById("baseOrderNo").value || "";
+        document.getElementById("pCreateTime").innerText = document.getElementById("inpCreateTime").value;
+        document.getElementById("pCust").innerText = document.getElementById("inpCustName").value;
+        document.getElementById("pTel").innerText = document.getElementById("inpTel").value;
+        document.getElementById("pAddr").innerText = document.getElementById("inpAddr").value;
+        document.getElementById("pModel").innerText = document.getElementById("inpModel").value;
+        document.getElementById("pSN").innerText = document.getElementById("inpSN").value;
+        document.getElementById("pWarranty").innerText = document.getElementById("inpWarranty").value;
+        document.getElementById("pItemList").innerHTML = getItemText();
+        document.getElementById("pServiceText").innerText = document.getElementById("inpServiceText").value;
+        document.getElementById("pFee").innerText = Number(document.getElementById("inpServiceFee").value).toFixed(2);
+        document.getElementById("pDelFee").innerText = Number(document.getElementById("inpDelFee").value).toFixed(2);
+        document.getElementById("pTotal").innerText = document.getElementById("inpTotal").value;
+        document.getElementById("pRemark").innerText = document.getElementById("inpRemark").value;
+    } else if (t === "general") {
+        document.getElementById("gInvNo").innerText = document.getElementById("genInvNo").value;
+        document.getElementById("gCreateTime").innerText = document.getElementById("genCreateTime").value;
+        document.getElementById("gCust").innerText = document.getElementById("genCustName").value;
+        document.getElementById("gTel").innerText = document.getElementById("genTel").value + " / " + document.getElementById("genWhatsapp").value;
+        document.getElementById("gAddr").innerText = document.getElementById("genAddr").value;
+        document.getElementById("gItem").innerText = document.getElementById("genItem").value;
+        document.getElementById("gSpec").innerText = document.getElementById("genSpec").value;
+        const gp = Number(document.getElementById("genPrice").value).toFixed(2);
+        const gq = document.getElementById("genQty").value;
+        const gsub = (gp * gq).toFixed(2);
+        const gdisc = Number(document.getElementById("genDisc").value).toFixed(2);
+        document.getElementById("gPrice").innerText = gp;
+        document.getElementById("gQty").innerText = gq;
+        document.getElementById("gSub").innerText = gsub;
+        document.getElementById("gDisc").innerText = gdisc;
+        document.getElementById("gTotal").innerText = document.getElementById("genTotal").value;
+        document.getElementById("gRemark").innerText = document.getElementById("genRemark").value;
+    } else if (t === "sale") {
+        document.getElementById("sInvNo").innerText = document.getElementById("saleInvNo").value;
+        document.getElementById("sCreateTime").innerText = document.getElementById("saleCreateTime").value;
+        document.getElementById("sCust").innerText = document.getElementById("saleCustName").value;
+        document.getElementById("sTel").innerText = document.getElementById("saleTel").value + " / " + document.getElementById("saleWhatsapp").value;
+        document.getElementById("sAddr").innerText = document.getElementById("saleAddr").value;
+        document.getElementById("sDelMethod").innerText = document.getElementById("saleDelMethod").value;
+        document.getElementById("sWarranty").innerText = document.getElementById("saleWarranty").value;
+        document.getElementById("sPay").innerText = document.getElementById("salePay").value;
+        document.getElementById("sModel").innerText = document.getElementById("saleModel").value;
+        document.getElementById("sSpec").innerText = document.getElementById("saleSpec").value;
+        const sp = Number(document.getElementById("salePrice").value).toFixed(2);
+        const sq = document.getElementById("saleQty").value;
+        const ssub = (sp * sq).toFixed(2);
+        const sdisc = Number(document.getElementById("saleDisc").value).toFixed(2);
+        document.getElementById("sPrice").innerText = sp;
+        document.getElementById("sQty").innerText = sq;
+        document.getElementById("sSub").innerText = ssub;
+        document.getElementById("sDisc").innerText = sdisc;
+        document.getElementById("sTotal").innerText = document.getElementById("saleTotal").value;
+        document.getElementById("sRemark").innerText = document.getElementById("saleRemark").value;
+    }
+}
+
+async function loadFromBase() {
+    const orderNo = document.getElementById("baseOrderNo").value.trim();
+    const tipLoad = document.getElementById("tipLoad");
+    const tipErr = document.getElementById("tipErr");
+    const btn = document.querySelector(".btn-green");
+    tipLoad.innerText = "";
+    tipErr.innerText = "";
+    if (!orderNo) {
+        tipErr.innerText = "請輸入單據編號";
+        return;
+    }
+    tipLoad.innerText = "正在連接飛書Base載入訂單數據...";
+    btn.disabled = true;
+    try {
+        const res = await fetch(`${API_URL}?orderNo=${encodeURIComponent(orderNo)}`);
+        const data = await res.json();
+        if (data.code !== 0) {
+            tipErr.innerText = "載入失敗：" + data.msg;
+            return;
         }
-        if(data.type==="macbook"){
-            document.getElementById('invNo').value=data.invNo;
-            document.getElementById('invDate').value=data.invDate;
-            document.getElementById('mbCustName').value=data.custName;
-            document.getElementById('mbCustTel').value=data.custTel;
-            document.getElementById('mbWhatsApp').value=data.whatsapp;
-            document.getElementById('mbDelAddr').value=data.delAddr;
-            document.getElementById('mbModel').value=data.model;
-            document.getElementById('mbSpec').value=data.spec;
-            document.getElementById('mbPrice').value=data.price;
-            document.getElementById('mbQty').value=data.qty;
-            document.getElementById('mbDiscount').value=data.discount;
-            document.getElementById('mbDelMethod').value=data.delMethod;
-            document.getElementById('mbWarranty').value=data.warranty;
-            document.getElementById('mbPayMethod').value=data.payMethod;
-            document.getElementById('mbRemark').value=data.remark;
+        tipLoad.innerText = "✅ 載入成功，數據已自動填充（開單日期維持本地今日）";
+        const type = data.type;
+        document.getElementById("invoiceType").value = type;
+        refreshForm();
+        if (type === "repair") {
+            document.getElementById("inpCustName").value = data.custName;
+            document.getElementById("inpTel").value = data.custTel;
+            document.getElementById("inpAddr").value = data.delAddr;
+            document.getElementById("inpModel").value = data.model;
+            document.getElementById("inpSN").value = data.sn;
+            document.getElementById("inpServiceText").value = data.serviceText;
+            document.getElementById("inpServiceFee").value = Number(data.serviceFee).toFixed(2);
+            document.getElementById("inpDelFee").value = Number(data.delFee).toFixed(2);
+            document.getElementById("inpWarranty").value = data.warrantyMonth;
+            document.getElementById("inpRemark").value = data.remark;
+            document.getElementById("chkDiag").checked = data.items.includes("專業故障診斷");
+            document.getElementById("chkClean").checked = data.items.includes("深層清潔");
+            document.getElementById("chkPart").checked = data.items.includes("零件更換");
+            document.getElementById("chkOther").checked = data.items.includes("其他維修服務");
+            calcRepair();
+        } else if (type === "sale") {
+            document.getElementById("saleInvNo").value = data.invNo;
+            document.getElementById("saleCustName").value = data.custName;
+            document.getElementById("saleTel").value = data.custTel;
+            document.getElementById("saleWhatsapp").value = data.whatsapp;
+            document.getElementById("saleAddr").value = data.delAddr;
+            document.getElementById("saleModel").value = data.model;
+            document.getElementById("saleSpec").value = data.spec;
+            document.getElementById("salePrice").value = Number(data.price).toFixed(2);
+            document.getElementById("saleQty").value = data.qty;
+            document.getElementById("saleDisc").value = Number(data.discount).toFixed(2);
+            document.getElementById("saleDelMethod").value = data.delMethod;
+            document.getElementById("saleWarranty").value = data.warranty;
+            document.getElementById("salePay").value = data.payMethod;
+            document.getElementById("saleRemark").value = data.remark;
+            calcSale();
         }
-        calcRepairTotal();calcMacbookTotal();updatePreview();
-        loadMsg.textContent="✅ 飛書Base數據載入成功，已自動填充全部維修/銷售資料";
-    }catch(e){
-        errMsg.textContent="❌ 載入失敗："+e.message;
+        refreshPreview();
+    } catch (e) {
+        tipErr.innerText = "載入失敗：伺服器錯誤，請確認後端已上線並開啟CORS";
+    } finally {
+        btn.disabled = false;
     }
 }
 </script>
