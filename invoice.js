@@ -1,5 +1,5 @@
 // 線上網站專用API位址，後續要替換成你雲端後端網址
-const API_URL = "https://你的雲端後端網址/api/getBaseOrder";
+const API_URL = "https://oneder.dpdns.org/getBaseOrder";
 
 // 頁面載入初始化
 window.onload = function () {
