@@ -505,28 +505,38 @@ async function loadFromBase() {
     const tipErr = document.getElementById("tipErr");
     const btn = document.querySelector(".btn-green");
 
-    if (!orderNo) {
-        tipErr.innerText = "請輸入單據編號";
-        return;
-    }
+    if (!orderNo) return tipErr.innerText = "請輸入單據編號";
 
-    tipLoad.innerText = "正在連接後端，請稍候...";
+    tipLoad.innerText = "正在連接飛書...";
     tipErr.innerText = "";
     btn.disabled = true;
 
     try {
-        // 🚨 修正：移除了多餘的 headers 和 mode，確保跨域請求順利
         const res = await fetch(`${API_URL}?orderNo=${encodeURIComponent(orderNo)}`);
-
-        if (!res.ok) throw new Error(`HTTP 錯誤 ${res.status}`);
-        
         const data = await res.json();
         
-        if (data.code !== 0) {
-            throw new Error(data.msg || "伺服器返回資料錯誤");
-        }
+        if (data.code !== 0) throw new Error(data.msg);
 
-        tipLoad.innerText = "✅ 載入成功，數據已自動填充！";
+        // 成功載入，填充資料
+        document.getElementById("inpCustName").value = data.custName;
+        document.getElementById("inpTel").value = data.custTel;
+        document.getElementById("inpAddr").value = data.delAddr;
+        document.getElementById("inpModel").value = data.model;
+        document.getElementById("inpSN").value = data.sn;
+        document.getElementById("inpServiceText").value = data.serviceText;
+        document.getElementById("inpRemark").value = data.remark;
+        // 費用對接
+        document.getElementById("inpServiceFee").value = Number(data.serviceFee).toFixed(2);
+        
+        tipLoad.innerText = "✅ 載入成功！";
+        calcRepair(); // 觸發總金額計算
+        refreshPreview(); // 觸發預覽更新
+    } catch (e) {
+        tipErr.innerText = "錯誤：" + e.message;
+    } finally {
+        btn.disabled = false;
+    }
+}
         
         // 根據類型填充數據
         const type = data.type;
