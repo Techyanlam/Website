@@ -74,7 +74,7 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <label><input type="checkbox" id="chkDiag" onchange="refreshPreview()"> 專業故障診斷</label>
                 <label><input type="checkbox" id="chkClean" onchange="refreshPreview()"> 深層清潔</label>
                 <label><input type="checkbox" id="chkPart" onchange="refreshPreview()"> 零件更換</label>
-                <label><input type="chkOther" onchange="refreshPreview()"> 其他維修服務</label>
+                <label><input type="checkbox" id="chkOther" onchange="refreshPreview()"> 其他維修服務</label>
             </div>
         </div>
         <table class="input-table">
@@ -371,8 +371,8 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
 </div>
 
 <script>
-// ===================== 【重點修改呢度】替換成你雲端後端完整HTTPS網址 =====================
-const API_URL = "https://你的後端獨立網址/api/getBaseOrder";
+// ========== 【必須修改此處】替換成你雲端後端完整HTTPS網址 ==========
+const API_URL = "https://你的後端公網網址/api/getBaseOrder";
 
 window.onload = function () {
     const now = new Date();
