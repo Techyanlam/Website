@@ -43,7 +43,6 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
 </style>
 </head>
 <body>
-<!-- 操作面板 -->
 <div class="box">
     <h3>📝 訂單打印工具 - 可從飛書Base載入訂單</h3>
     <div style="margin:12px 0;">
@@ -65,7 +64,6 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         </select>
     </div>
 
-    <!-- 維修單表單 -->
     <div id="repairForm">
         <h4 style="margin:16px 0 8px;">維修服務資料輸入</h4>
         <div style="margin:8px 0;">
@@ -113,7 +111,6 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         </table>
     </div>
 
-    <!-- 通用發票表單 -->
     <div id="generalForm" style="display:none;">
         <h4 style="margin:16px 0 8px;">通用發票資料輸入</h4>
         <table class="input-table">
@@ -156,7 +153,6 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         </table>
     </div>
 
-    <!-- 銷售單表單 -->
     <div id="saleForm" style="display:none;">
         <h4 style="margin:16px 0 8px;">Sale order 銷售單資料</h4>
         <table class="input-table">
@@ -213,7 +209,6 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
     </div>
 </div>
 
-<!-- A4 發票打印預覽區 -->
 <div class="print-wrap" id="printArea">
     <div class="print-header">
         <h4>New Vision Tech Co Limited</h4>
@@ -223,7 +218,6 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         </div>
     </div>
 
-    <!-- 維修服務發票 -->
     <div id="printRepair">
         <h4 style="text-align:center;margin:10px 0;">維修服務發票</h4>
         <div class="print-row">
@@ -275,7 +269,6 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         </div>
     </div>
 
-    <!-- INVOICE 通用發票 -->
     <div id="printGeneral" style="display:none;">
         <h4 style="text-align:center;margin:10px 0;">INVOICE</h4>
         <div class="print-row">
@@ -316,7 +309,6 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         <div class="remark-block" id="gRemark"></div>
     </div>
 
-    <!-- Sale order invoice 銷售單 -->
     <div id="printSale" style="display:none;">
         <h4 style="text-align:center;margin:10px 0;">Sale order invoice</h4>
         <div class="print-row">
@@ -371,7 +363,7 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
 </div>
 
 <script>
-// ========== 【必須修改此處】替換成你雲端後端完整HTTPS網址 ==========
+// ========== 您的 Google Apps Script 網址 ==========
 const API_URL = "https://script.google.com/macros/s/AKfycbxSNyldLroCwZgJGDj0Br7TarmPp9wTAybSm6-O-U2aIR3CS-smcIA4AehL513bHzUeQQ/exec";
 
 window.onload = function () {
@@ -392,6 +384,11 @@ window.onload = function () {
     calcGen();
     calcSale();
     refreshPreview();
+
+    // 增加按 Enter 鍵自動搜尋的功能
+    document.getElementById("baseOrderNo").addEventListener("keypress", function(e) {
+        if(e.key === 'Enter') loadFromBase();
+    });
 };
 
 function refreshForm() {
@@ -518,43 +515,73 @@ async function loadFromBase() {
     btn.disabled = true;
 
     try {
-        // 加入 mode: 'cors' 告訴瀏覽器這是一個跨域請求
-        const res = await fetch(`${API_URL}?orderNo=${encodeURIComponent(orderNo)}`, {
-            method: 'GET',
-            mode: 'cors', 
-            headers: { 'Accept': 'application/json' }
-        });
+        // 🚨 修正：移除了多餘的 headers 和 mode，確保跨域請求順利
+        const res = await fetch(`${API_URL}?orderNo=${encodeURIComponent(orderNo)}`);
 
         if (!res.ok) throw new Error(`HTTP 錯誤 ${res.status}`);
         
         const data = await res.json();
         
-        // 檢查 API 結構是否符合預期
         if (data.code !== 0) {
             throw new Error(data.msg || "伺服器返回資料錯誤");
         }
 
-        tipLoad.innerText = "✅ 載入成功！";
+        tipLoad.innerText = "✅ 載入成功，數據已自動填充！";
         
         // 根據類型填充數據
         const type = data.type;
         document.getElementById("invoiceType").value = type;
         refreshForm();
 
-        // 填充邏輯
+        // 🚨 修正：將後端抓到的真實資料填入表格
         if (type === "repair") {
-            // ... (保持您原有的填充代碼)
+            document.getElementById("inpCustName").value = data.custName || "";
+            document.getElementById("inpTel").value = data.custTel || "";
+            document.getElementById("inpAddr").value = data.delAddr || "";
+            document.getElementById("inpModel").value = data.model || "";
+            document.getElementById("inpSN").value = data.sn || "";
+            document.getElementById("inpServiceText").value = data.serviceText || "";
+            document.getElementById("inpServiceFee").value = Number(data.serviceFee || 0).toFixed(2);
+            document.getElementById("inpDelFee").value = Number(data.delFee || 0).toFixed(2);
+            document.getElementById("inpWarranty").value = data.warrantyMonth || "0";
+            document.getElementById("inpRemark").value = data.remark || "";
+            
+            // 處理勾選項目
+            const items = data.items || [];
+            document.getElementById("chkDiag").checked = items.includes("專業故障診斷");
+            document.getElementById("chkClean").checked = items.includes("深層清潔");
+            document.getElementById("chkPart").checked = items.includes("零件更換");
+            document.getElementById("chkOther").checked = items.includes("其他維修服務");
+            
+            calcRepair();
         } else if (type === "sale") {
-            // ... (保持您原有的填充代碼)
+            document.getElementById("saleInvNo").value = data.invNo || orderNo;
+            document.getElementById("saleCustName").value = data.custName || "";
+            document.getElementById("saleTel").value = data.custTel || "";
+            document.getElementById("saleWhatsapp").value = data.whatsapp || "";
+            document.getElementById("saleAddr").value = data.delAddr || "";
+            document.getElementById("saleModel").value = data.model || "";
+            document.getElementById("saleSpec").value = data.spec || "";
+            document.getElementById("salePrice").value = Number(data.price || 0).toFixed(2);
+            document.getElementById("saleQty").value = data.qty || 1;
+            document.getElementById("saleDisc").value = Number(data.discount || 0).toFixed(2);
+            document.getElementById("saleDelMethod").value = data.delMethod || "";
+            document.getElementById("saleWarranty").value = data.warranty || "";
+            document.getElementById("salePay").value = data.payMethod || "";
+            document.getElementById("saleRemark").value = data.remark || "";
+            
+            calcSale();
         }
         refreshPreview();
 
     } catch (e) {
-        console.error(e);
-        tipErr.innerText = "載入失敗：" + e.message + " (請確認伺服器已開啟 CORS)";
+        console.error("錯誤:", e);
+        tipErr.innerText = "載入失敗：" + e.message;
     } finally {
         btn.disabled = false;
-        tipLoad.innerText = "";
+        if(tipErr.innerText !== "") {
+            tipLoad.innerText = "";
+        }
     }
 }
 </script>
