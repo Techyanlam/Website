@@ -1,665 +1,130 @@
-<!DOCTYPE html>
-<html lang="zh-HK">
-<head>
-<meta charset="UTF-8">
-<title>New Vision 發票打印工具</title>
-<style>
-*{box-sizing:border-box;font-family:"Microsoft JhengHei","Microsoft YaHei",sans-serif;}
-body{background:#f5f5f5;margin:0;padding:20px;}
-.box{background:#fff;padding:20px;border-radius:8px;margin-bottom:20px;box-shadow:0 2px 12px #ddd;}
-h3{margin-top:0;color:#222;}
-input,select,textarea{width:100%;padding:6px;border:1px solid #ccc;border-radius:4px;font-size:14px;}
-input[readonly]{background:#f0f0f0;text-align:right;}
-.btn-group{margin:10px 0;display:flex;gap:12px;flex-wrap:wrap;}
-button{padding:9px 18px;border:none;border-radius:4px;color:#fff;font-size:15px;cursor:pointer;}
-button:disabled{background:#aaa;cursor:not-allowed;}
-.btn-blue{background:#0066cc;}
-.btn-gray{background:#666;}
-.btn-green{background:#009944;}
-.check-group{display:flex;gap:16px;flex-wrap:wrap;padding:8px 0;}
-table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
-.input-table td,.input-table th{border:1px solid #aaa;padding:8px;font-size:13px;}
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
+const app = express();
+const port = 3000;
 
-/* 打印發票專用樣式 */
-.print-wrap{width:210mm;min-height:297mm;background:#fff;margin:0 auto;padding:22mm;box-shadow:0 0 10px #ccc;}
-.print-header{text-align:center;border-bottom:1px solid #333;padding-bottom:10px;margin-bottom:16px;}
-.print-header h4{font-size:22px;margin:0;}
-.print-sub{font-size:13px;color:#444;margin-top:4px;line-height:1.5;}
-.print-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0;font-size:14px;}
-.print-table{width:100%;border-collapse:collapse;margin:16px 0;}
-.print-table th,.print-table td{border:1px solid #888;padding:10px 8px;font-size:14px;}
-.print-table th{background:#f8f8f8;}
-.text-right{text-align:right;}
-.total-block{margin:14px 0 20px;text-align:right;font-size:16px;font-weight:bold;}
-.remark-block{border:1px dashed #999;padding:10px;min-height:80px;margin:12px 0;}
-.term{font-size:12px;color:#555;line-height:1.6;margin-top:20px;}
-.term ul {margin:4px 0; padding-left:20px;}
+app.use(cors());
 
-@media print{
-    body{background:#fff;padding:0;}
-    .box{display:none !important;}
-    .print-wrap{box-shadow:none;width:100%;padding:0;}
-    @page {size:A4;margin:15mm;}
+// 飛書固定參數
+const APP_ID = "cli_a94e743517781bd8";
+const APP_SECRET = "IDOrtoojYjrJTeDOg9DMsb5Z8vPuxCxH";
+const TABLE_ID = "tbl2jFGYqmMfZjNC";
+const BASE_APP_TOKEN = "TAG2b406ja23OHsIXH6c6Kbxndh";
+
+// 獲取租戶Token
+async function getTenantToken() {
+  const res = await axios.post(
+    "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal",
+    { app_id: APP_ID, app_secret: APP_SECRET }
+  );
+  console.log("【Token返回】", res.data);
+  if (res.data.code !== 0) throw new Error("Token獲取失敗：" + res.data.msg);
+  return res.data.tenant_access_token;
 }
-</style>
-</head>
-<body>
-<!-- 操作面板 -->
-<div class="box">
-    <h3>📝 發票打印工具 - 可從飛書Base載入訂單</h3>
-    <div style="margin:12px 0;">
-        <strong>飛書Base 訂單載入：</strong>
-        <div style="display:flex;gap:10px;align-items:center;margin-top:8px;">
-            <input id="baseOrderNo" placeholder="輸入單據編號 NV2026xxxx" style="flex:1;">
-            <button class="btn-green" onclick="loadFromBase()">從Base載入數據</button>
-        </div>
-        <div id="tipLoad" style="color:#0066cc;margin:6px 0;"></div>
-        <div id="tipErr" style="color:#d32f2f;margin:6px 0;"></div>
-    </div>
 
-    <div style="margin:12px 0;">
-        <strong>發票類型選擇：</strong>
-        <select id="invoiceType" onchange="refreshForm()">
-            <option value="repair">維修服務發票</option>
-            <option value="workorder">維修服務單</option>
-            <option value="general">INVOICE</option>
-            <option value="sale">Sale order invoice</option>
-        </select>
-    </div>
+// 格式化飛書timestamp 轉 YYYY/MM/DD HH:mm
+function formatCreateTime(timestamp) {
+  if (!timestamp) return "";
+  const date = new Date(timestamp * 1000);
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  const h = String(date.getHours()).padStart(2, "0");
+  const mi = String(date.getMinutes()).padStart(2, "0");
+  return `${y}/${m}/${d} ${h}:${mi}`;
+}
 
-    <!-- 維修單表單（維修發票 + 維修服務單共用） -->
-    <div id="repairForm">
-        <h4 style="margin:16px 0 8px;">維修服務資料輸入</h4>
-        <div style="margin:8px 0;">
-            <strong>維修服務項目 Item：</strong>
-            <div class="check-group">
-                <label><input type="checkbox" id="chkDiag" onchange="refreshPreview()"> 專業故障診斷</label>
-                <label><input type="checkbox" id="chkClean" onchange="refreshPreview()"> 深層清潔</label>
-                <label><input type="checkbox" id="chkPart" onchange="refreshPreview()"> 零件更換</label>
-                <label><input type="checkbox" id="chkOther" onchange="refreshPreview()"> 其他維修服務</label>
-            </div>
-        </div>
-        <table class="input-table">
-            <tr>
-                <th>開單日期(本地今日，不跟飛書)</th>
-                <th>維修服務內容</th>
-                <th>設備Model</th>
-                <th>SN編號</th>
-                <th>維修服務費(HK$)</th>
-                <th>送貨費(HK$)</th>
-            </tr>
-            <tr>
-                <td><input id="inpCreateTime" readonly></td>
-                <td><input id="inpServiceText" onblur="refreshPreview()"></td>
-                <td><input id="inpModel" onblur="refreshPreview()"></td>
-                <td><input id="inpSN" onblur="refreshPreview()"></td>
-                <td><input id="inpServiceFee" value="0.00" onblur="calcRepair();refreshPreview()"></td>
-                <td><input id="inpDelFee" value="0" readonly></td>
-            </tr>
-            <tr>
-                <th>客戶姓名 Name</th>
-                <th>聯絡電話 Tel</th>
-                <th>送貨地址 Delivery Address</th>
-                <th>保固月數 Month</th>
-                <th>總金額 Total(自動計算)</th>
-                <th>備註</th>
-            </tr>
-            <tr>
-                <td><input id="inpCustName" onblur="refreshPreview()"></td>
-                <td><input id="inpTel" onblur="refreshPreview()"></td>
-                <td><input id="inpAddr" onblur="refreshPreview()"></td>
-                <td><input id="inpWarranty" value="0" onblur="refreshPreview()"></td>
-                <td><input id="inpTotal" readonly></td>
-                <td><textarea id="inpRemark" rows="1" onblur="refreshPreview()"></textarea></td>
-            </tr>
-        </table>
-    </div>
+// 前端查詢接口
+app.get('/api/getBaseOrder', async (req, res) => {
+  console.log("【收到查詢，單號】", req.query.orderNo);
+  try {
+    const orderNo = req.query.orderNo?.trim();
+    if (!orderNo) return res.json({ code: 1, msg: "缺少參數 orderNo" });
 
-    <!-- 通用發票表單 -->
-    <div id="generalForm" style="display:none;">
-        <h4 style="margin:16px 0 8px;">通用發票資料輸入</h4>
-        <table class="input-table">
-            <tr>
-                <th>發票編號</th>
-                <th>開單日期(本地今日，不跟飛書)</th>
-                <th>客戶姓名</th>
-                <th>聯絡電話</th>
-                <th>WhatsApp</th>
-                <th>地址</th>
-            </tr>
-            <tr>
-                <td><input id="genInvNo" onblur="refreshPreview()"></td>
-                <td><input id="genCreateTime" readonly></td>
-                <td><input id="genCustName" onblur="refreshPreview()"></td>
-                <td><input id="genTel" onblur="refreshPreview()"></td>
-                <td><input id="genWhatsapp" onblur="refreshPreview()"></td>
-                <td><input id="genAddr" onblur="refreshPreview()"></td>
-            </tr>
-            <tr>
-                <th>項目名稱</th>
-                <th>規格</th>
-                <th>單價(HK$)</th>
-                <th>數量</th>
-                <th>折扣</th>
-                <th>總金額</th>
-            </tr>
-            <tr>
-                <td><input id="genItem" onblur="calcGen();refreshPreview()"></td>
-                <td><input id="genSpec" onblur="refreshPreview()"></td>
-                <td><input id="genPrice" value="0.00" onblur="calcGen();refreshPreview()"></td>
-                <td><input id="genQty" value="1" onblur="calcGen();refreshPreview()"></td>
-                <td><input id="genDisc" value="0.00" onblur="calcGen();refreshPreview()"></td>
-                <td><input id="genTotal" readonly></td>
-            </tr>
-            <tr>
-                <th>備註</th>
-                <td colspan="5"><textarea id="genRemark" rows="1" onblur="refreshPreview()"></textarea></td>
-            </tr>
-        </table>
-    </div>
+    const token = await getTenantToken();
 
-    <!-- 銷售單表單 -->
-    <div id="saleForm" style="display:none;">
-        <h4 style="margin:16px 0 8px;">Sale order 銷售單資料</h4>
-        <table class="input-table">
-            <tr>
-                <th>發票編號</th>
-                <th>開單日期(本地今日，不跟飛書)</th>
-                <th>客戶姓名</th>
-                <th>聯絡電話</th>
-                <th>WhatsApp</th>
-                <th>送貨地址</th>
-            </tr>
-            <tr>
-                <td><input id="saleInvNo" onblur="refreshPreview()"></td>
-                <td><input id="saleCreateTime" readonly></td>
-                <td><input id="saleCustName" onblur="refreshPreview()"></td>
-                <td><input id="saleTel" onblur="refreshPreview()"></td>
-                <td><input id="saleWhatsapp" onblur="refreshPreview()"></td>
-                <td><input id="saleAddr" onblur="refreshPreview()"></td>
-            </tr>
-            <tr>
-                <th>機型</th>
-                <th>規格配置</th>
-                <th>單價(HK$)</th>
-                <th>數量</th>
-                <th>折扣</th>
-                <th>總金額</th>
-            </tr>
-            <tr>
-                <td><input id="saleModel" onblur="calcSale();refreshPreview()"></td>
-                <td><input id="saleSpec" onblur="refreshPreview()"></td>
-                <td><input id="salePrice" value="0.00" onblur="calcSale();refreshPreview()"></td>
-                <td><input id="saleQty" value="1" onblur="calcSale();refreshPreview()"></td>
-                <td><input id="saleDisc" value="0.00" onblur="calcSale();refreshPreview()"></td>
-                <td><input id="saleTotal" readonly></td>
-            </tr>
-            <tr>
-                <th>送貨方式</th>
-                <th>保固期限</th>
-                <th>付款方式</th>
-                <th colspan="3">備註</th>
-            </tr>
-            <tr>
-                <td><input id="saleDelMethod" onblur="refreshPreview()"></td>
-                <td><input id="saleWarranty" onblur="refreshPreview()"></td>
-                <td><input id="salePay" onblur="refreshPreview()"></td>
-                <td colspan="3"><textarea id="saleRemark" rows="1" onblur="refreshPreview()"></textarea></td>
-            </tr>
-        </table>
-    </div>
+    // 官方標準篩選公式
+    const filterExpr = `CurrentValue.[Number] = "${orderNo}"`;
+    const url = `https://open.feishu.cn/open-apis/bitable/v1/apps/${BASE_APP_TOKEN}/tables/${TABLE_ID}/records?filter=${encodeURIComponent(filterExpr)}`;
+    console.log("【請求URL】", url);
 
-    <div class="btn-group">
-        <button class="btn-blue" onclick="refreshPreview()">即時更新預覽</button>
-        <button class="btn-gray" onclick="window.print()">開啟打印預覽</button>
-    </div>
-</div>
+    const feishuResp = await axios.get(url, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    console.log("【飛書原始返回】", JSON.stringify(feishuResp.data, null, 2));
 
-<!-- A4 發票打印預覽區 -->
-<div class="print-wrap" id="printArea">
-    <div class="print-header">
-        <h4>New Vision Tech Co Limited</h4>
-        <div class="print-sub">
-            Room 1015-1016, Hollywood Plaza, 610 Nathan Road, Mong Kok, Kowloon<br>
-            電話 Tel：+852 2887 8820
-        </div>
-    </div>
-
-    <!-- 維修服務發票 -->
-    <div id="printRepair">
-        <h4 style="text-align:center;margin:10px 0;">維修服務發票</h4>
-        <div class="print-row">
-            <div>單據編號：<span id="pInvNo"></span></div>
-            <div class="text-right">開單日期：<span id="pCreateTime"></span></div>
-        </div>
-        <div style="border:1px solid #999;padding:10px;margin:12px 0;">
-            <div class="print-row">
-                <div>客戶姓名：<span id="pCust"></span></div>
-                <div>聯絡電話：<span id="pTel"></span></div>
-            </div>
-            <div style="margin-top:6px;">送貨地址：<span id="pAddr"></span></div>
-            <div class="print-row" style="margin-top:6px;">
-                <div>設備型號：<span id="pModel"></span></div>
-                <div>SN 序號：<span id="pSN"></span></div>
-                <div>保固期限：<span id="pWarranty"></span> 個月</div>
-            </div>
-        </div>
-
-        <div style="margin:10px 0 4px;"><strong>維修項目清單</strong></div>
-        <div id="pItemList"></div>
-        <div style="margin:10px 0 4px;"><strong>維修內容</strong></div>
-        <div style="border:1px solid #aaa;padding:8px;min-height:40px;margin-bottom:12px;" id="pServiceText"></div>
-
-        <table class="print-table">
-            <tr>
-                <th>項目</th>
-                <th>金額(HK$)</th>
-            </tr>
-            <tr>
-                <td>維修服務費</td>
-                <td class="text-right" id="pFee"></td>
-            </tr>
-            <tr>
-                <td>送貨費</td>
-                <td class="text-right" id="pDelFee"></td>
-            </tr>
-        </table>
-        <div class="total-block">總金額 HK$ <span id="pTotal"></span></div>
-
-        <div><strong>備註</strong></div>
-        <div class="remark-block" id="pRemark"></div>
-
-        <div class="term">
-            <strong>備註（Remarks）</strong>
-            <ul>
-                <li>本發票為維修服務付款憑證，請妥善保管，維修後憑此票取機</li>
-                <li>維修設備享對應開單填寫月數保固，非人為損壞方可免費保修，保固期自開單日起算</li>
-                <li>逾期未付款，將按應付金額的0.5%/日收取滯納金</li>
-                <li>如有疑問，請於開單後7日內聯絡客服核實</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- 新增：維修服務單（完全複製維修發票模板，僅標題修改） -->
-    <div id="printWorkOrder" style="display:none;">
-        <h4 style="text-align:center;margin:10px 0;">維修服務單</h4>
-        <div class="print-row">
-            <div>單據編號：<span id="wInvNo"></span></div>
-            <div class="text-right">開單日期：<span id="wCreateTime"></span></div>
-        </div>
-        <div style="border:1px solid #999;padding:10px;margin:12px 0;">
-            <div class="print-row">
-                <div>客戶姓名：<span id="wCust"></span></div>
-                <div>聯絡電話：<span id="wTel"></span></div>
-            </div>
-            <div style="margin-top:6px;">送貨地址：<span id="wAddr"></span></div>
-            <div class="print-row" style="margin-top:6px;">
-                <div>設備型號：<span id="wModel"></span></div>
-                <div>SN 序號：<span id="wSN"></span></div>
-                <div>保固期限：<span id="wWarranty"></span> 個月</div>
-            </div>
-        </div>
-
-        <div style="margin:10px 0 4px;"><strong>維修項目清單</strong></div>
-        <div id="wItemList"></div>
-        <div style="margin:10px 0 4px;"><strong>維修內容</strong></div>
-        <div style="border:1px solid #aaa;padding:8px;min-height:40px;margin-bottom:12px;" id="wServiceText"></div>
-
-        <table class="print-table">
-            <tr>
-                <th>項目</th>
-                <th>金額(HK$)</th>
-            </tr>
-            <tr>
-                <td>維修服務費</td>
-                <td class="text-right" id="wFee"></td>
-            </tr>
-            <tr>
-                <td>送貨費</td>
-                <td class="text-right" id="wDelFee"></td>
-            </tr>
-        </table>
-        <div class="total-block">總金額 HK$ <span id="wTotal"></span></div>
-
-        <div><strong>備註</strong></div>
-        <div class="remark-block" id="wRemark"></div>
-
-        <div class="term">
-            <strong>備註（Remarks）</strong>
-            <ul>
-                <li>本單為維修服務付款憑證，請妥善保管，維修後憑此單取機</li>
-                <li>維修設備享對應開單填寫月數保固，非人為損壞方可免費保修，保固期自開單日起算</li>
-                <li>逾期未付款，將按應付金額的0.5%/日收取滯納金</li>
-                <li>如有疑問，請於開單後7日內聯絡客服核實</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- INVOICE 通用發票 -->
-    <div id="printGeneral" style="display:none;">
-        <h4 style="text-align:center;margin:10px 0;">INVOICE</h4>
-        <div class="print-row">
-            <div>發票編號：<span id="gInvNo"></span></div>
-            <div class="text-right">開單日期：<span id="gCreateTime"></span></div>
-        </div>
-        <div style="border:1px solid #999;padding:10px;margin:12px 0;">
-            <div class="print-row">
-                <div>客戶姓名：<span id="gCust"></span></div>
-                <div>聯絡電話 / WhatsApp：<span id="gTel"></span></div>
-            </div>
-            <div style="margin-top:6px;">地址：<span id="gAddr"></span></div>
-        </div>
-
-        <table class="print-table">
-            <tr>
-                <th>項目名稱</th>
-                <th>規格</th>
-                <th>單價(HK$)</th>
-                <th>數量</th>
-                <th>小計</th>
-            </tr>
-            <tr>
-                <td id="gItem"></td>
-                <td id="gSpec"></td>
-                <td class="text-right" id="gPrice"></td>
-                <td class="text-right" id="gQty"></td>
-                <td class="text-right" id="gSub"></td>
-            </tr>
-            <tr>
-                <td colspan="4" class="text-right">折扣</td>
-                <td class="text-right" id="gDisc"></td>
-            </tr>
-        </table>
-        <div class="total-block">應付總金額 HK$ <span id="gTotal"></span></div>
-
-        <div><strong>備註</strong></div>
-        <div class="remark-block" id="gRemark"></div>
-    </div>
-
-    <!-- Sale order invoice 銷售單 -->
-    <div id="printSale" style="display:none;">
-        <h4 style="text-align:center;margin:10px 0;">Sale order invoice</h4>
-        <div class="print-row">
-            <div>發票編號：<span id="sInvNo"></span></div>
-            <div class="text-right">開單日期：<span id="sCreateTime"></span></div>
-        </div>
-        <div style="border:1px solid #999;padding:10px;margin:12px 0;">
-            <div class="print-row">
-                <div>客戶姓名：<span id="sCust"></span></div>
-                <div>聯絡電話 / WhatsApp：<span id="sTel"></span></div>
-            </div>
-            <div style="margin-top:6px;">送貨地址：<span id="sAddr"></span></div>
-            <div class="print-row" style="margin-top:6px;">
-                <div>送貨方式：<span id="sDelMethod"></span></div>
-                <div>保固期限：<span id="sWarranty"></span></div>
-                <div>付款方式：<span id="sPay"></span></div>
-            </div>
-        </div>
-
-        <table class="print-table">
-            <tr>
-                <th>產品型號</th>
-                <th>規格</th>
-                <th>單價(HK$)</th>
-                <th>數量</th>
-                <th>小計</th>
-            </tr>
-            <tr>
-                <td id="sModel"></td>
-                <td id="sSpec"></td>
-                <td class="text-right" id="sPrice"></td>
-                <td class="text-right" id="sQty"></td>
-                <td class="text-right" id="sSub"></td>
-            </tr>
-            <tr>
-                <td colspan="4" class="text-right">折扣</td>
-                <td class="text-right" id="sDisc"></td>
-            </tr>
-        </table>
-        <div class="total-block">應付總金額 HK$ <span id="sTotal"></span></div>
-
-        <div><strong>備註</strong></div>
-        <div class="remark-block" id="sRemark"></div>
-
-        <div class="term">
-            <strong>銷售條款</strong>
-            <ul>
-                <li>全新機享有廠商標準保固，人為損壞不納入免費維修</li>
-                <li>出貨前已測試功能正常，售出無質量問題不設退換</li>
-                <li>送貨時間以店員通知為準</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<script>
-// 後端接口地址，勿修改
-const API_URL = "http://localhost:3000/api/getBaseOrder";
-
-// 頁面載入初始化
-window.onload = function () {
-    // 本地今日時間，三種單據共用
-    const now = new Date();
-    const y = now.getFullYear();
-    const m = String(now.getMonth() + 1).padStart(2, "0");
-    const d = String(now.getDate()).padStart(2, "0");
-    const h = String(now.getHours()).padStart(2, "0");
-    const mi = String(now.getMinutes()).padStart(2, "0");
-    const localDate = `${y}/${m}/${d} ${h}:${mi}`;
-    document.getElementById("inpCreateTime").value = localDate;
-    document.getElementById("genCreateTime").value = localDate;
-    document.getElementById("saleCreateTime").value = localDate;
-
-    document.getElementById("invoiceType").addEventListener("change", refreshForm);
-    refreshForm();
-    calcRepair();
-    calcGen();
-    calcSale();
-    refreshPreview();
-};
-
-// 切換表單+打印區塊（新增 workorder 判斷）
-function refreshForm() {
-    const type = document.getElementById("invoiceType").value;
-    // 隱藏全部
-    document.getElementById("repairForm").style.display = "none";
-    document.getElementById("generalForm").style.display = "none";
-    document.getElementById("saleForm").style.display = "none";
-    document.getElementById("printRepair").style.display = "none";
-    document.getElementById("printWorkOrder").style.display = "none";
-    document.getElementById("printGeneral").style.display = "none";
-    document.getElementById("printSale").style.display = "none";
-
-    if (type === "repair" || type === "workorder") {
-        document.getElementById("repairForm").style.display = "block";
+    if (feishuResp.data.code !== 0) {
+      return res.json({ code: 1, msg: `飛書API錯誤 code:${feishuResp.data.code} ${feishuResp.data.msg}` });
     }
-    if (type === "repair") {
-        document.getElementById("printRepair").style.display = "block";
-    } else if (type === "workorder") {
-        document.getElementById("printWorkOrder").style.display = "block";
-    } else if (type === "general") {
-        document.getElementById("generalForm").style.display = "block";
-        document.getElementById("printGeneral").style.display = "block";
-    } else if (type === "sale") {
-        document.getElementById("saleForm").style.display = "block";
-        document.getElementById("printSale").style.display = "block";
+    if (!feishuResp.data?.data?.items) {
+      return res.json({ code: 1, msg: "飛書未返回表格數據，檢查ID、表格應用權限" });
     }
-}
 
-// 維修金額計算
-function calcRepair() {
-    const s = parseFloat(document.getElementById("inpServiceFee").value) || 0;
-    const d = parseFloat(document.getElementById("inpDelFee").value) || 0;
-    document.getElementById("inpTotal").value = (s + d).toFixed(2);
-}
-
-// 通用發票金額計算
-function calcGen() {
-    const p = parseFloat(document.getElementById("genPrice").value) || 0;
-    const q = parseInt(document.getElementById("genQty").value) || 1;
-    const disc = parseFloat(document.getElementById("genDisc").value) || 0;
-    document.getElementById("genTotal").value = (p * q - disc).toFixed(2);
-}
-
-// 銷售金額計算
-function calcSale() {
-    const p = parseFloat(document.getElementById("salePrice").value) || 0;
-    const q = parseInt(document.getElementById("saleQty").value) || 1;
-    const disc = parseFloat(document.getElementById("saleDisc").value) || 0;
-    document.getElementById("saleTotal").value = (p * q - disc).toFixed(2);
-}
-
-// 維修項目文字
-function getItemText() {
-    const arr = [];
-    if(document.getElementById("chkDiag").checked) arr.push("☑ 專業故障診斷");
-    if(document.getElementById("chkClean").checked) arr.push("☑ 深層清潔");
-    if(document.getElementById("chkPart").checked) arr.push("☑ 零件更換");
-    if(document.getElementById("chkOther").checked) arr.push("☑ 其他維修服務");
-    return arr.join("<br>");
-}
-
-// 實時更新打印預覽（新增維修服務單數據綁定）
-function refreshPreview() {
-    const t = document.getElementById("invoiceType").value;
-    if (t === "repair") {
-        document.getElementById("pInvNo").innerText = document.getElementById("baseOrderNo").value || "";
-        document.getElementById("pCreateTime").innerText = document.getElementById("inpCreateTime").value;
-        document.getElementById("pCust").innerText = document.getElementById("inpCustName").value;
-        document.getElementById("pTel").innerText = document.getElementById("inpTel").value;
-        document.getElementById("pAddr").innerText = document.getElementById("inpAddr").value;
-        document.getElementById("pModel").innerText = document.getElementById("inpModel").value;
-        document.getElementById("pSN").innerText = document.getElementById("inpSN").value;
-        document.getElementById("pWarranty").innerText = document.getElementById("inpWarranty").value;
-        document.getElementById("pItemList").innerHTML = getItemText();
-        document.getElementById("pServiceText").innerText = document.getElementById("inpServiceText").value;
-        document.getElementById("pFee").innerText = Number(document.getElementById("inpServiceFee").value).toFixed(2);
-        document.getElementById("pDelFee").innerText = Number(document.getElementById("inpDelFee").value).toFixed(2);
-        document.getElementById("pTotal").innerText = document.getElementById("inpTotal").value;
-        document.getElementById("pRemark").innerText = document.getElementById("inpRemark").value;
-    } else if (t === "workorder") {
-        // 維修服務單，共用同一套輸入數據
-        document.getElementById("wInvNo").innerText = document.getElementById("baseOrderNo").value || "";
-        document.getElementById("wCreateTime").innerText = document.getElementById("inpCreateTime").value;
-        document.getElementById("wCust").innerText = document.getElementById("inpCustName").value;
-        document.getElementById("wTel").innerText = document.getElementById("inpTel").value;
-        document.getElementById("wAddr").innerText = document.getElementById("inpAddr").value;
-        document.getElementById("wModel").innerText = document.getElementById("inpModel").value;
-        document.getElementById("wSN").innerText = document.getElementById("inpSN").value;
-        document.getElementById("wWarranty").innerText = document.getElementById("inpWarranty").value;
-        document.getElementById("wItemList").innerHTML = getItemText();
-        document.getElementById("wServiceText").innerText = document.getElementById("inpServiceText").value;
-        document.getElementById("wFee").innerText = Number(document.getElementById("inpServiceFee").value).toFixed(2);
-        document.getElementById("wDelFee").innerText = Number(document.getElementById("inpDelFee").value).toFixed(2);
-        document.getElementById("wTotal").innerText = document.getElementById("inpTotal").value;
-        document.getElementById("wRemark").innerText = document.getElementById("inpRemark").value;
-    } else if (t === "general") {
-        document.getElementById("gInvNo").innerText = document.getElementById("genInvNo").value;
-        document.getElementById("gCreateTime").innerText = document.getElementById("genCreateTime").value;
-        document.getElementById("gCust").innerText = document.getElementById("genCustName").value;
-        document.getElementById("gTel").innerText = document.getElementById("genTel").value + " / " + document.getElementById("genWhatsapp").value;
-        document.getElementById("gAddr").innerText = document.getElementById("genAddr").value;
-        document.getElementById("gItem").innerText = document.getElementById("genItem").value;
-        document.getElementById("gSpec").innerText = document.getElementById("genSpec").value;
-        const gp = Number(document.getElementById("genPrice").value).toFixed(2);
-        const gq = document.getElementById("genQty").value;
-        const gsub = (gp * gq).toFixed(2);
-        const gdisc = Number(document.getElementById("genDisc").value).toFixed(2);
-        document.getElementById("gPrice").innerText = gp;
-        document.getElementById("gQty").innerText = gq;
-        document.getElementById("gSub").innerText = gsub;
-        document.getElementById("gDisc").innerText = gdisc;
-        document.getElementById("gTotal").innerText = document.getElementById("genTotal").value;
-        document.getElementById("gRemark").innerText = document.getElementById("genRemark").value;
-    } else if (t === "sale") {
-        document.getElementById("sInvNo").innerText = document.getElementById("saleInvNo").value;
-        document.getElementById("sCreateTime").innerText = document.getElementById("saleCreateTime").value;
-        document.getElementById("sCust").innerText = document.getElementById("saleCustName").value;
-        document.getElementById("sTel").innerText = document.getElementById("saleTel").value + " / " + document.getElementById("saleWhatsapp").value;
-        document.getElementById("sAddr").innerText = document.getElementById("saleAddr").value;
-        document.getElementById("sDelMethod").innerText = document.getElementById("saleDelMethod").value;
-        document.getElementById("sWarranty").innerText = document.getElementById("saleWarranty").value;
-        document.getElementById("sPay").innerText = document.getElementById("salePay").value;
-        document.getElementById("sModel").innerText = document.getElementById("saleModel").value;
-        document.getElementById("sSpec").innerText = document.getElementById("saleSpec").value;
-        const sp = Number(document.getElementById("salePrice").value).toFixed(2);
-        const sq = document.getElementById("saleQty").value;
-        const ssub = (sp * sq).toFixed(2);
-        const sdisc = Number(document.getElementById("saleDisc").value).toFixed(2);
-        document.getElementById("sPrice").innerText = sp;
-        document.getElementById("sQty").innerText = sq;
-        document.getElementById("sSub").innerText = ssub;
-        document.getElementById("sDisc").innerText = sdisc;
-        document.getElementById("sTotal").innerText = document.getElementById("saleTotal").value;
-        document.getElementById("sRemark").innerText = document.getElementById("saleRemark").value;
+    const records = feishuResp.data.data.items;
+    if (records.length === 0) {
+      return res.json({ code: 1, msg: "無匹配該單號的訂單記錄" });
     }
-}
 
-// 飛書載入API（維修類數據同時支援發票/服務單）
-async function loadFromBase() {
-    const orderNo = document.getElementById("baseOrderNo").value.trim();
-    const tipLoad = document.getElementById("tipLoad");
-    const tipErr = document.getElementById("tipErr");
-    const btn = document.querySelector(".btn-green");
-    tipLoad.innerText = "";
-    tipErr.innerText = "";
-    if (!orderNo) {
-        tipErr.innerText = "請輸入單據編號";
-        return;
+    const row = records[0].fields;
+    const createTs = records[0].create_time;
+    const createTimeStr = formatCreateTime(createTs);
+    const serviceText = row["服務內容"] || "";
+
+    // 銷售單
+    if (serviceText.includes("Sale Order")) {
+      return res.json({
+        code: 0,
+        type: "macbook",
+        invNo: row["Number"] || "",
+        invDate: createTimeStr, // 改用建立時間
+        custName: row["Name"] || "",
+        custTel: row["聯絡電話 Tel"] || "",
+        whatsapp: row["聯絡電話 Tel"] || "",
+        delAddr: row["Address (Delivery)"] || "",
+        model: row["Model"] || "",
+        spec: row["服務內容"] || "",
+        price: Number(row["Sale amount"]) || 0,
+        qty: 1,
+        discount: 0,
+        delMethod: row["送貨方式"] || "",
+        warranty: row["Month"] || "",
+        payMethod: row["Payment Methods"] || "",
+        remark: row["Remark"] || "" // 手動備註欄
+      });
     }
-    tipLoad.innerText = "正在連接飛書Base載入訂單數據...";
-    btn.disabled = true;
-    try {
-        const res = await fetch(`${API_URL}?orderNo=${encodeURIComponent(orderNo)}`);
-        const data = await res.json();
-        if (data.code !== 0) {
-            tipErr.innerText = "載入失敗：" + data.msg;
-            return;
-        }
-        tipLoad.innerText = "✅ 載入成功，數據已自動填充（開單日期維持本地今日）";
-        const type = data.type;
-        document.getElementById("invoiceType").value = type;
-        refreshForm();
-        if (type === "repair") {
-            document.getElementById("inpCustName").value = data.custName;
-            document.getElementById("inpTel").value = data.custTel;
-            document.getElementById("inpAddr").value = data.delAddr;
-            document.getElementById("inpModel").value = data.model;
-            document.getElementById("inpSN").value = data.sn;
-            document.getElementById("inpServiceText").value = data.serviceText;
-            document.getElementById("inpServiceFee").value = Number(data.serviceFee).toFixed(2);
-            document.getElementById("inpDelFee").value = Number(data.delFee).toFixed(2);
-            document.getElementById("inpWarranty").value = data.warrantyMonth;
-            document.getElementById("inpRemark").value = data.remark;
-            document.getElementById("chkDiag").checked = data.items.includes("專業故障診斷");
-            document.getElementById("chkClean").checked = data.items.includes("深層清潔");
-            document.getElementById("chkPart").checked = data.items.includes("零件更換");
-            document.getElementById("chkOther").checked = data.items.includes("其他維修服務");
-            calcRepair();
-        } else if (type === "sale") {
-            document.getElementById("saleInvNo").value = data.invNo;
-            document.getElementById("saleCustName").value = data.custName;
-            document.getElementById("saleTel").value = data.custTel;
-            document.getElementById("saleWhatsapp").value = data.whatsapp;
-            document.getElementById("saleAddr").value = data.delAddr;
-            document.getElementById("saleModel").value = data.model;
-            document.getElementById("saleSpec").value = data.spec;
-            document.getElementById("salePrice").value = Number(data.price).toFixed(2);
-            document.getElementById("saleQty").value = data.qty;
-            document.getElementById("saleDisc").value = Number(data.discount).toFixed(2);
-            document.getElementById("saleDelMethod").value = data.delMethod;
-            document.getElementById("saleWarranty").value = data.warranty;
-            document.getElementById("salePay").value = data.payMethod;
-            document.getElementById("saleRemark").value = data.remark;
-            calcSale();
-        }
-        refreshPreview();
-    } catch (e) {
-        tipErr.innerText = "載入失敗：伺服器錯誤，請確認後端已開啟";
-    } finally {
-        btn.disabled = false;
+    // 維修單
+    else {
+      const itemList = [];
+      if (serviceText.includes("故障診斷") || serviceText.includes("維修")) itemList.push("專業故障診斷");
+      if (Number(row["深層清潔費用"]) > 0) itemList.push("深層清潔");
+      if (Number(row["Parts amount"]) > 0) itemList.push("零件更換");
+      if (serviceText.includes("其他") || serviceText.includes("安裝")) itemList.push("其他維修服務");
+
+      return res.json({
+        code: 0,
+        type: "repair",
+        invNo: row["Number"] || "",
+        bookTime: createTimeStr, // 改用建立時間
+        serviceText: row["服務內容"] || "",
+        model: row["Model"] || "",
+        sn: row["SN"] || "",
+        serviceFee: Number(row["服務費用"]) || 0,
+        delFee: 0,
+        custName: row["Name"] || "",
+        custTel: row["聯絡電話 Tel"] || "",
+        delAddr: row["Address (Delivery)"] || "",
+        warrantyMonth: Number(row["Month"]) || 0,
+        remark: row["Remark"] || "", // 手動備註
+        items: itemList
+      });
     }
-}
-</script>
-</body>
-</html>
+  } catch (err) {
+    console.log("【接口異常】", err);
+    return res.json({ code: 1, msg: "伺服器錯誤：" + err.message });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`✅ 後端服務啟動成功 http://localhost:3000`);
+});
