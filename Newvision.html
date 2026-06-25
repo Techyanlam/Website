@@ -33,6 +33,7 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
 .total-block{margin:14px 0 20px;text-align:right;font-size:16px;font-weight:bold;}
 .remark-block{border:1px dashed #999;padding:10px;min-height:80px;margin:12px 0;}
 .term{font-size:12px;color:#555;line-height:1.6;margin-top:20px;}
+.term ul {margin:4px 0; padding-left:20px;}
 
 @media print{
     body{background:#fff;padding:0;}
@@ -60,12 +61,13 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         <strong>發票類型選擇：</strong>
         <select id="invoiceType" onchange="refreshForm()">
             <option value="repair">維修服務發票</option>
+            <option value="workorder">維修服務單</option>
             <option value="general">INVOICE</option>
             <option value="sale">Sale order invoice</option>
         </select>
     </div>
 
-    <!-- 維修單表單 -->
+    <!-- 維修單表單（維修發票 + 維修服務單共用） -->
     <div id="repairForm">
         <h4 style="margin:16px 0 8px;">維修服務資料輸入</h4>
         <div style="margin:8px 0;">
@@ -268,10 +270,68 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         <div class="remark-block" id="pRemark"></div>
 
         <div class="term">
-            條款：
-            1. 本發票為維修憑證，憑單據享有對應保固服務；
-            2. 人為損壞、液體進水、摔機不在免費保固範圍；
-            3. 維修完畢7日內可取機，逾期本店不負保管責任。
+            <strong>備註（Remarks）</strong>
+            <ul>
+                <li>本發票為維修服務付款憑證，請妥善保管，維修後憑此票取機</li>
+                <li>維修設備享對應開單填寫月數保固，非人為損壞方可免費保修，保固期自開單日起算</li>
+                <li>逾期未付款，將按應付金額的0.5%/日收取滯納金</li>
+                <li>如有疑問，請於開單後7日內聯絡客服核實</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 新增：維修服務單（完全複製維修發票模板，僅標題修改） -->
+    <div id="printWorkOrder" style="display:none;">
+        <h4 style="text-align:center;margin:10px 0;">維修服務單</h4>
+        <div class="print-row">
+            <div>單據編號：<span id="wInvNo"></span></div>
+            <div class="text-right">開單日期：<span id="wCreateTime"></span></div>
+        </div>
+        <div style="border:1px solid #999;padding:10px;margin:12px 0;">
+            <div class="print-row">
+                <div>客戶姓名：<span id="wCust"></span></div>
+                <div>聯絡電話：<span id="wTel"></span></div>
+            </div>
+            <div style="margin-top:6px;">送貨地址：<span id="wAddr"></span></div>
+            <div class="print-row" style="margin-top:6px;">
+                <div>設備型號：<span id="wModel"></span></div>
+                <div>SN 序號：<span id="wSN"></span></div>
+                <div>保固期限：<span id="wWarranty"></span> 個月</div>
+            </div>
+        </div>
+
+        <div style="margin:10px 0 4px;"><strong>維修項目清單</strong></div>
+        <div id="wItemList"></div>
+        <div style="margin:10px 0 4px;"><strong>維修內容</strong></div>
+        <div style="border:1px solid #aaa;padding:8px;min-height:40px;margin-bottom:12px;" id="wServiceText"></div>
+
+        <table class="print-table">
+            <tr>
+                <th>項目</th>
+                <th>金額(HK$)</th>
+            </tr>
+            <tr>
+                <td>維修服務費</td>
+                <td class="text-right" id="wFee"></td>
+            </tr>
+            <tr>
+                <td>送貨費</td>
+                <td class="text-right" id="wDelFee"></td>
+            </tr>
+        </table>
+        <div class="total-block">總金額 HK$ <span id="wTotal"></span></div>
+
+        <div><strong>備註</strong></div>
+        <div class="remark-block" id="wRemark"></div>
+
+        <div class="term">
+            <strong>備註（Remarks）</strong>
+            <ul>
+                <li>本單為維修服務付款憑證，請妥善保管，維修後憑此單取機</li>
+                <li>維修設備享對應開單填寫月數保固，非人為損壞方可免費保修，保固期自開單日起算</li>
+                <li>逾期未付款，將按應付金額的0.5%/日收取滯納金</li>
+                <li>如有疑問，請於開單後7日內聯絡客服核實</li>
+            </ul>
         </div>
     </div>
 
@@ -362,10 +422,12 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         <div class="remark-block" id="sRemark"></div>
 
         <div class="term">
-            銷售條款：
-            1. 全新機享有廠商標準保固，人為損壞不納入免費維修；
-            2. 出貨前已測試功能正常，售出無質量問題不設退換；
-            3. 送貨時間以店員通知為準。
+            <strong>銷售條款</strong>
+            <ul>
+                <li>全新機享有廠商標準保固，人為損壞不納入免費維修</li>
+                <li>出貨前已測試功能正常，售出無質量問題不設退換</li>
+                <li>送貨時間以店員通知為準</li>
+            </ul>
         </div>
     </div>
 </div>
@@ -396,7 +458,7 @@ window.onload = function () {
     refreshPreview();
 };
 
-// 切換表單+打印區塊
+// 切換表單+打印區塊（新增 workorder 判斷）
 function refreshForm() {
     const type = document.getElementById("invoiceType").value;
     // 隱藏全部
@@ -404,12 +466,17 @@ function refreshForm() {
     document.getElementById("generalForm").style.display = "none";
     document.getElementById("saleForm").style.display = "none";
     document.getElementById("printRepair").style.display = "none";
+    document.getElementById("printWorkOrder").style.display = "none";
     document.getElementById("printGeneral").style.display = "none";
     document.getElementById("printSale").style.display = "none";
 
-    if (type === "repair") {
+    if (type === "repair" || type === "workorder") {
         document.getElementById("repairForm").style.display = "block";
+    }
+    if (type === "repair") {
         document.getElementById("printRepair").style.display = "block";
+    } else if (type === "workorder") {
+        document.getElementById("printWorkOrder").style.display = "block";
     } else if (type === "general") {
         document.getElementById("generalForm").style.display = "block";
         document.getElementById("printGeneral").style.display = "block";
@@ -452,7 +519,7 @@ function getItemText() {
     return arr.join("<br>");
 }
 
-// 實時更新打印預覽
+// 實時更新打印預覽（新增維修服務單數據綁定）
 function refreshPreview() {
     const t = document.getElementById("invoiceType").value;
     if (t === "repair") {
@@ -470,6 +537,22 @@ function refreshPreview() {
         document.getElementById("pDelFee").innerText = Number(document.getElementById("inpDelFee").value).toFixed(2);
         document.getElementById("pTotal").innerText = document.getElementById("inpTotal").value;
         document.getElementById("pRemark").innerText = document.getElementById("inpRemark").value;
+    } else if (t === "workorder") {
+        // 維修服務單，共用同一套輸入數據
+        document.getElementById("wInvNo").innerText = document.getElementById("baseOrderNo").value || "";
+        document.getElementById("wCreateTime").innerText = document.getElementById("inpCreateTime").value;
+        document.getElementById("wCust").innerText = document.getElementById("inpCustName").value;
+        document.getElementById("wTel").innerText = document.getElementById("inpTel").value;
+        document.getElementById("wAddr").innerText = document.getElementById("inpAddr").value;
+        document.getElementById("wModel").innerText = document.getElementById("inpModel").value;
+        document.getElementById("wSN").innerText = document.getElementById("inpSN").value;
+        document.getElementById("wWarranty").innerText = document.getElementById("inpWarranty").value;
+        document.getElementById("wItemList").innerHTML = getItemText();
+        document.getElementById("wServiceText").innerText = document.getElementById("inpServiceText").value;
+        document.getElementById("wFee").innerText = Number(document.getElementById("inpServiceFee").value).toFixed(2);
+        document.getElementById("wDelFee").innerText = Number(document.getElementById("inpDelFee").value).toFixed(2);
+        document.getElementById("wTotal").innerText = document.getElementById("inpTotal").value;
+        document.getElementById("wRemark").innerText = document.getElementById("inpRemark").value;
     } else if (t === "general") {
         document.getElementById("gInvNo").innerText = document.getElementById("genInvNo").value;
         document.getElementById("gCreateTime").innerText = document.getElementById("genCreateTime").value;
@@ -512,7 +595,7 @@ function refreshPreview() {
     }
 }
 
-// 飛書載入API（只填充客戶/金額，不覆蓋開單日期）
+// 飛書載入API（維修類數據同時支援發票/服務單）
 async function loadFromBase() {
     const orderNo = document.getElementById("baseOrderNo").value.trim();
     const tipLoad = document.getElementById("tipLoad");
