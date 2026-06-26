@@ -2,7 +2,7 @@
 <html lang="zh-HK">
 <head>
 <meta charset="UTF-8">
-<title>New Vision 發票打印工具 (連附件上傳)</title>
+<title>New Vision 發票打印工具</title>
 <style>
 *{box-sizing:border-box;font-family:"Microsoft JhengHei","Microsoft YaHei",sans-serif;}
 body{background:#f5f5f5;margin:0;padding:20px;}
@@ -37,10 +37,11 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
 .search-row{display:flex;gap:10px;align-items:center;margin:8px 0;}
 .search-row input{flex:1;}
 
-/* 新增的圖片預覽樣式 */
-.upload-preview-img { max-width: 150px; max-height: 150px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; display: none; }
+/* 新增：上傳預覽控制與打印相片樣式 */
+.upload-container { margin-top: 5px; display: flex; flex-direction: column; gap: 4px; }
+.upload-preview-img { max-width: 120px; max-height: 120px; border: 1px dashed #ccc; border-radius: 4px; display: none; margin-top: 5px; object-fit: contain; }
 .print-img-wrap { margin: 15px 0; text-align: center; }
-.print-img-wrap img { max-width: 60%; height: auto; border: 1px dashed #666; display: none; }
+.print-img-wrap img { max-width: 65%; height: auto; border: 1px solid #999; padding: 4px; display: none; }
 
 @media print{
     body{background:#fff;padding:0;}
@@ -134,7 +135,7 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <th>送貨地址 Delivery Address</th>
                 <th>保固月數 Month</th>
                 <th>總金額 Total(自動計算)</th>
-                <th>備註兼上傳附件</th>
+                <th>備註與相片上傳</th>
             </tr>
             <tr>
                 <td><input id="inpCustName" onblur="refreshPreview()"></td>
@@ -143,9 +144,11 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <td><input id="inpWarranty" value="0" onblur="refreshPreview()"></td>
                 <td><input id="inpTotal" readonly></td>
                 <td>
-                    <textarea id="inpRemark" rows="1" onblur="refreshPreview()" placeholder="備註"></textarea>
-                    <input type="file" id="repairFile" accept="image/*" onchange="previewImage(this, 'repairPreview', 'pImg')">
-                    <img id="repairPreview" class="upload-preview-img">
+                    <textarea id="inpRemark" rows="1" onblur="refreshPreview()" placeholder="輸入備註"></textarea>
+                    <div class="upload-container">
+                        <input type="file" id="repairFile" accept="image/*" onchange="previewImage(this, 'repairPreview', 'pImg', 'wImg')">
+                        <img id="repairPreview" class="upload-preview-img">
+                    </div>
                 </td>
             </tr>
         </table>
@@ -187,11 +190,13 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <td><input id="genTotal" readonly></td>
             </tr>
             <tr>
-                <th>備註與附件</th>
+                <th>備註與相片上傳</th>
                 <td colspan="5">
                     <textarea id="genRemark" rows="1" onblur="refreshPreview()"></textarea>
-                    <input type="file" id="generalFile" accept="image/*" onchange="previewImage(this, 'generalPreview', 'gImg')">
-                    <img id="generalPreview" class="upload-preview-img">
+                    <div class="upload-container">
+                        <input type="file" id="generalFile" accept="image/*" onchange="previewImage(this, 'generalPreview', 'gImg')">
+                        <img id="generalPreview" class="upload-preview-img">
+                    </div>
                 </td>
             </tr>
         </table>
@@ -236,7 +241,7 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <th>送貨方式</th>
                 <th>保固期限</th>
                 <th>付款方式</th>
-                <th colspan="3">備註與附件</th>
+                <th colspan="3">備註與相片上傳</th>
             </tr>
             <tr>
                 <td><input id="saleDelMethod" onblur="refreshPreview()"></td>
@@ -244,8 +249,10 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <td><input id="salePay" onblur="refreshPreview()"></td>
                 <td colspan="3">
                     <textarea id="saleRemark" rows="1" onblur="refreshPreview()"></textarea>
-                    <input type="file" id="saleFile" accept="image/*" onchange="previewImage(this, 'salePreview', 'sImg')">
-                    <img id="salePreview" class="upload-preview-img">
+                    <div class="upload-container">
+                        <input type="file" id="saleFile" accept="image/*" onchange="previewImage(this, 'salePreview', 'sImg')">
+                        <img id="salePreview" class="upload-preview-img">
+                    </div>
                 </td>
             </tr>
         </table>
@@ -359,6 +366,8 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         <div><strong>內部備註</strong></div>
         <div class="remark-block" id="wRemark"></div>
         
+        <div class="print-img-wrap"><img id="wImg"></div>
+
         <div class="term">
             <strong>服務備註</strong>
             <ul>
@@ -403,6 +412,7 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         <div class="total-block">應付總額 HK$ <span id="gTotal"></span></div>
         <div><strong>備註</strong></div>
         <div class="remark-block" id="gRemark"></div>
+        
         <div class="print-img-wrap"><img id="gImg"></div>
     </div>
 
@@ -446,6 +456,7 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         <div class="total-block">合計金額 HK$ <span id="sTotal"></span></div>
         <div><strong>訂單備註</strong></div>
         <div class="remark-block" id="sRemark"></div>
+        
         <div class="print-img-wrap"><img id="sImg"></div>
     </div>
 </div>
@@ -479,16 +490,24 @@ window.onload = function(){
     genNewOrderNo();
 };
 
-// 圖片實時預覽函數
-function previewImage(input, previewId, printImgId) {
+// 圖片選擇後，同步顯示於前端與打印區預覽
+function previewImage(input, previewId, ...printImgIds) {
     const file = input.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
             const previewEl = document.getElementById(previewId);
-            const printImgEl = document.getElementById(printImgId);
-            if(previewEl) { previewEl.src = e.target.result; previewEl.style.display = 'block'; }
-            if(printImgEl) { printImgEl.src = e.target.result; printImgEl.style.display = 'inline-block'; }
+            if(previewEl) { 
+                previewEl.src = e.target.result; 
+                previewEl.style.display = 'block'; 
+            }
+            printImgIds.forEach(id => {
+                const printImgEl = document.getElementById(id);
+                if(printImgEl) { 
+                    printImgEl.src = e.target.result; 
+                    printImgEl.style.display = 'inline-block'; 
+                }
+            });
         }
         reader.readAsDataURL(file);
     }
@@ -500,7 +519,7 @@ async function searchByTel(){
     const tipErr = document.getElementById("tipErr");
     tip.innerText = "";
     tipErr.innerText = "";
-    if(!tel) { tip.innerText = "請輸入客戶電話"; return; }
+    if(!tel){ tip.innerText = "請輸入客戶電話"; return; }
     tel = tel.replace(/[^\d]/g,"");
     if(tel.length === 0){ tip.innerText = "請輸入有效數字電話"; return; }
     tip.innerText = "正在查詢該電話歷史訂單...";
@@ -771,7 +790,7 @@ async function loadFromBase(){
     }
 }
 
-// 修改發送功能：支援 FormData 檔案上傳
+// 修改發送功能：使用 FormData 包裹檔案與文字欄位
 async function sendToBase(){
     const tipLoad = document.getElementById("tipLoad");
     const tipErr = document.getElementById("tipErr");
@@ -780,7 +799,6 @@ async function sendToBase(){
     tipLoad.innerText = "";
     tipErr.innerText = "";
 
-    // 必填驗證
     if(invoiceType === "repair" || invoiceType === "workorder"){
         if(!document.getElementById("baseOrderNo").value.trim()){ tipErr.innerText = "請輸入單據編號 NVxxxx"; return; }
         if(!document.getElementById("inpCustName").value.trim()){ tipErr.innerText = "請填寫客戶姓名"; return; }
@@ -791,7 +809,7 @@ async function sendToBase(){
         }
     }
 
-    // 建立 FormData 物件，這樣才能包裹實體檔案
+    // 建立 FormData 物件
     let formData = new FormData();
     formData.append("type", invoiceType === "workorder" ? "repair" : invoiceType);
 
@@ -814,7 +832,6 @@ async function sendToBase(){
         if(document.getElementById("chkOther").checked) items.push("其他維修服務");
         formData.append("items", JSON.stringify(items));
 
-        // 夾帶檔案
         const fileInput = document.getElementById("repairFile");
         if(fileInput.files.length > 0) formData.append("file", fileInput.files[0]);
 
@@ -858,7 +875,7 @@ async function sendToBase(){
     tipLoad.innerText = "正在發送訂單與附件到飛書Base...";
     btn.disabled = true;
     try{
-        // 注意：發送 FormData 時，不要設定 "Content-Type" header，瀏覽器會自動封裝邊界值 (Boundary)
+        // ⚠️ 發送 FormData 時，切勿設定 headers: {"Content-Type": ...}，由瀏覽器自動封裝即可
         const res = await fetch(SEND_API_URL, {
             method: "POST",
             body: formData 
@@ -866,16 +883,23 @@ async function sendToBase(){
         const result = await res.json();
         if(result.code === 0){
             tipLoad.innerText = result.msg;
-            // 清除剛剛選取的檔案
-            if(document.getElementById("repairFile")) document.getElementById("repairFile").value = "";
-            if(document.getElementById("generalFile")) document.getElementById("generalFile").value = "";
-            if(document.getElementById("saleFile")) document.getElementById("saleFile").value = "";
+            tipErr.innerText = "";
+            
+            // 成功後清除相片選取器與隱藏預覽
+            const files = ["repairFile", "generalFile", "saleFile"];
+            const previews = ["repairPreview", "generalPreview", "salePreview"];
+            const prints = ["pImg", "wImg", "gImg", "sImg"];
+            
+            files.forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ""; });
+            previews.forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = "none"; });
+            prints.forEach(id => { if(document.getElementById(id)) document.getElementById(id).style.display = "none"; });
+
             setTimeout(()=>genNewOrderNo(), 500);
         }else{
             tipErr.innerText = "發送失敗：" + result.msg;
         }
     }catch(err){
-        tipErr.innerText = "發送失敗：請檢查 Node 後端是否支援接收 Form-Data";
+        tipErr.innerText = "發送失敗：伺服器錯誤，請確認後端已重啟並支援 FormData";
         console.error("前端SEND完整異常紀錄：",err);
     }finally{
         btn.disabled = false;
