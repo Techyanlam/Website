@@ -17,6 +17,7 @@ button:disabled{background:#aaa;cursor:not-allowed;}
 .btn-gray{background:#666;}
 .btn-green{background:#009944;}
 .btn-purple{background:#9933cc;}
+.btn-red{background:#d32f2f;}
 .check-group{display:flex;gap:16px;flex-wrap:wrap;padding:8px 0;}
 table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
 .input-table td,.input-table th{border:1px solid #aaa;padding:8px;font-size:13px;}
@@ -33,6 +34,8 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
 .remark-block{border:1px dashed #999;padding:10px;min-height:80px;margin:12px 0;}
 .term{font-size:12px;color:#555;line-height:1.6;margin-top:20px;}
 .term ul {margin:4px 0;padding-left:20px;}
+.search-row{display:flex;gap:10px;align-items:center;margin:8px 0;}
+.search-row input{flex:1;}
 @media print{
     body{background:#fff;padding:0;}
     .box{display:none !important;}
@@ -44,6 +47,17 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
 <body>
 <div class="box">
     <h3>📝 發票打印工具 - 可從飛書Base載入/發送訂單</h3>
+
+    <!-- 電話搜尋客戶區域（自動過濾空格、+852、符號） -->
+    <div style="margin:12px 0;">
+        <strong>客戶電話快速搜尋：</strong>
+        <div class="search-row">
+            <input id="searchTel" placeholder="輸入客戶電話，系統自動過濾符號只取數字">
+            <button class="btn-red" onclick="searchByTel()">搜尋客戶</button>
+        </div>
+        <div id="telSearchTip" style="color:#0066cc;margin:6px 0;"></div>
+    </div>
+
     <div style="margin:12px 0;">
         <strong>飛書Base 訂單載入 / 自動生成單號：</strong>
         <div style="display:flex;gap:10px;align-items:center;margin-top:8px;">
@@ -69,7 +83,7 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         <h4 style="margin:16px 0 8px;">維修服務資料輸入</h4>
         <!-- 維修項目下拉選單 - 單項選擇 -->
         <div style="margin:8px 0;">
-            <strong>快速填入單項維修項目：</strong>
+            <strong>快速填入單項維修/清潔：</strong>
             <select id="repairItemSelect" onchange="fillRepairItem()">
                 <option value="">-- 請選擇單項維修/清潔 --</option>
                 <optgroup label="清潔類">
@@ -88,10 +102,10 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
         <div style="margin:8px 0;">
             <strong>維修服務項目 Item：</strong>
             <div class="check-group">
-                <label><input type="checkbox" id="chkDiag" onchange="refreshPreview()"> 專業故障診斷</label>
-                <label><input type="checkbox" id="chkClean" onchange="refreshPreview()"> 深層清潔</label>
-                <label><input type="checkbox" id="chkPart" onchange="refreshPreview()"> 零件更換</label>
-                <label><input type="checkbox" id="chkOther" onchange="refreshPreview()"> 其他維修服務</label>
+                <label><input type="checkbox" id="chkDiag"> 專業故障診斷</label>
+                <label><input type="checkbox" id="chkClean"> 深層清潔</label>
+                <label><input type="checkbox" id="chkPart"> 零件更換</label>
+                <label><input type="checkbox" id="chkOther"> 其他維修服務</label>
             </div>
         </div>
         <table class="input-table">
@@ -105,10 +119,10 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
             </tr>
             <tr>
                 <td><input id="inpCreateTime" readonly></td>
-                <td><textarea id="inpServiceText" rows="4" onblur="refreshPreview()"></textarea></td>
-                <td><input id="inpModel" onblur="refreshPreview()"></td>
-                <td><input id="inpSN" onblur="refreshPreview()"></td>
-                <td><input id="inpServiceFee" value="0.00" onblur="calcRepair();refreshPreview()"></td>
+                <td><textarea id="inpServiceText" rows="4"></textarea></td>
+                <td><input id="inpModel"></td>
+                <td><input id="inpSN"></td>
+                <td><input id="inpServiceFee" value="0.00"></td>
                 <td><input id="inpDelFee" value="0" readonly></td>
             </tr>
             <tr>
@@ -120,12 +134,12 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <th>備註 Remark</th>
             </tr>
             <tr>
-                <td><input id="inpCustName" onblur="refreshPreview()"></td>
-                <td><input id="inpTel" onblur="refreshPreview()"></td>
-                <td><input id="inpAddr" onblur="refreshPreview()"></td>
-                <td><input id="inpWarranty" value="0" onblur="refreshPreview()"></td>
+                <td><input id="inpCustName"></td>
+                <td><input id="inpTel"></td>
+                <td><input id="inpAddr"></td>
+                <td><input id="inpWarranty" value="0"></td>
                 <td><input id="inpTotal" readonly></td>
-                <td><textarea id="inpRemark" rows="1" onblur="refreshPreview()"></textarea></td>
+                <td><textarea id="inpRemark" rows="1"></textarea></td>
             </tr>
         </table>
     </div>
@@ -143,12 +157,12 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <th>地址</th>
             </tr>
             <tr>
-                <td><input id="genInvNo" onblur="refreshPreview()"></td>
+                <td><input id="genInvNo"></td>
                 <td><input id="genCreateTime" readonly></td>
-                <td><input id="genCustName" onblur="refreshPreview()"></td>
-                <td><input id="genTel" onblur="refreshPreview()"></td>
-                <td><input id="genWhatsapp" onblur="refreshPreview()"></td>
-                <td><input id="genAddr" onblur="refreshPreview()"></td>
+                <td><input id="genCustName"></td>
+                <td><input id="genTel"></td>
+                <td><input id="genWhatsapp"></td>
+                <td><input id="genAddr"></td>
             </tr>
             <tr>
                 <th>項目名稱</th>
@@ -159,16 +173,16 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <th>總金額</th>
             </tr>
             <tr>
-                <td><input id="genItem" onblur="calcGen();refreshPreview()"></td>
-                <td><input id="genSpec" onblur="refreshPreview()"></td>
-                <td><input id="genPrice" value="0.00" onblur="calcGen();refreshPreview()"></td>
-                <td><input id="genQty" value="1" onblur="calcGen();refreshPreview()"></td>
-                <td><input id="genDisc" value="0.00" onblur="calcGen();refreshPreview()"></td>
+                <td><input id="genItem"></td>
+                <td><input id="genSpec"></td>
+                <td><input id="genPrice" value="0.00"></td>
+                <td><input id="genQty" value="1"></td>
+                <td><input id="genDisc" value="0.00"></td>
                 <td><input id="genTotal" readonly></td>
             </tr>
             <tr>
                 <th>備註</th>
-                <td colspan="5"><textarea id="genRemark" rows="1" onblur="refreshPreview()"></textarea></td>
+                <td colspan="5"><textarea id="genRemark" rows="1"></textarea></td>
             </tr>
         </table>
     </div>
@@ -186,12 +200,12 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <th>送貨地址</th>
             </tr>
             <tr>
-                <td><input id="saleInvNo" onblur="refreshPreview()"></td>
+                <td><input id="saleInvNo"></td>
                 <td><input id="saleCreateTime" readonly></td>
-                <td><input id="saleCustName" onblur="refreshPreview()"></td>
-                <td><input id="saleTel" onblur="refreshPreview()"></td>
-                <td><input id="saleWhatsapp" onblur="refreshPreview()"></td>
-                <td><input id="saleAddr" onblur="refreshPreview()"></td>
+                <td><input id="saleCustName"></td>
+                <td><input id="saleTel"></td>
+                <td><input id="saleWhatsapp"></td>
+                <td><input id="saleAddr"></td>
             </tr>
             <tr>
                 <th>機型 Model</th>
@@ -202,11 +216,11 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <th>總金額</th>
             </tr>
             <tr>
-                <td><input id="saleModel" onblur="calcSale();refreshPreview()"></td>
-                <td><input id="saleSpec" onblur="refreshPreview()"></td>
-                <td><input id="salePrice" value="0.00" onblur="calcSale();refreshPreview()"></td>
-                <td><input id="saleQty" value="1" onblur="calcSale();refreshPreview()"></td>
-                <td><input id="saleDisc" value="0.00" onblur="calcSale();refreshPreview()"></td>
+                <td><input id="saleModel"></td>
+                <td><input id="saleSpec"></td>
+                <td><input id="salePrice" value="0.00"></td>
+                <td><input id="saleQty" value="1"></td>
+                <td><input id="saleDisc" value="0.00"></td>
                 <td><input id="saleTotal" readonly></td>
             </tr>
             <tr>
@@ -216,10 +230,10 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
                 <th colspan="3">備註</th>
             </tr>
             <tr>
-                <td><input id="saleDelMethod" onblur="refreshPreview()"></td>
-                <td><input id="saleWarranty" onblur="refreshPreview()"></td>
-                <td><input id="salePay" onblur="refreshPreview()"></td>
-                <td colspan="3"><textarea id="saleRemark" rows="1" onblur="refreshPreview()"></textarea></td>
+                <td><input id="saleDelMethod"></td>
+                <td><input id="saleWarranty"></td>
+                <td><input id="salePay"></td>
+                <td colspan="3"><textarea id="saleRemark" rows="1"></textarea></td>
             </tr>
         </table>
     </div>
@@ -424,16 +438,16 @@ table.input-table{width:100%;border-collapse:collapse;margin:12px 0;}
 </div>
 
 <script>
-// API 位址（與後端3000埠對應，一字不差）
+// API 地址
 const API_URL = "http://localhost:3000/api/getBaseOrder";
 const SEND_API_URL = "http://localhost:3000/api/sendToBase";
 
-// 全域儲存今日日期同當前序號，實現點一次+1
+// 全域變數：今日日期、當日序號自動遞增
 let todayDateStr = "";
 let currentSeq = 0;
 
 window.onload = function(){
-    // 自動填入當前日期
+    // 初始化開單時間
     const now = new Date();
     const y = now.getFullYear();
     const m = String(now.getMonth()+1).padStart(2,"0");
@@ -452,20 +466,61 @@ window.onload = function(){
     calcGen();
     calcSale();
     refreshPreview();
-    // 頁面載入自動生成今日第一個單號
     genNewOrderNo();
+
+    // 所有輸入框失去焦點自動執行更新預覽
+    const allInputs = document.querySelectorAll("input,textarea,select");
+    allInputs.forEach(el => {
+        el.addEventListener("blur", refreshPreview);
+    });
 };
 
-// 下拉選單填入單項文字（覆蓋原有內容）
+// 電話搜尋客戶：自動清除空格、+852、所有非數字
+async function searchByTel(){
+    let tel = document.getElementById("searchTel").value.trim();
+    const tip = document.getElementById("telSearchTip");
+    const tipErr = document.getElementById("tipErr");
+    tip.innerText = "";
+    tipErr.innerText = "";
+    if(!tel){
+        tip.innerText = "請輸入客戶電話";
+        return;
+    }
+    tel = tel.replace(/\s+/g,"").replace(/\+852|\D/g,"");
+    if(tel.length === 0){
+        tip.innerText = "請輸入有效數字電話";
+        return;
+    }
+    tip.innerText = "正在查詢該電話歷史訂單...";
+    try{
+        const res = await fetch(`${API_URL}?tel=${encodeURIComponent(tel)}`);
+        const data = await res.json();
+        if(data.code !== 0 || !Array.isArray(data.list) || data.list.length === 0){
+            tip.innerText = "無該電話之歷史訂單";
+            return;
+        }
+        const latest = data.list[data.list.length - 1];
+        document.getElementById("inpCustName").value = latest.custName || "";
+        document.getElementById("inpTel").value = latest.custTel || "";
+        document.getElementById("inpAddr").value = latest.delAddr || "";
+        tip.innerText = `✅ 查詢成功，共 ${data.list.length} 筆歷史訂單，已自動回填客戶資料`;
+        refreshPreview();
+    }catch(e){
+        tip.innerText = "查詢失敗，請確認後端伺服器正常運行";
+        console.error("電話搜尋異常：",e);
+    }
+}
+
+// 維修下拉填入
 function fillRepairItem(){
-    const selectVal = document.getElementById("repairItemSelect").value;
-    if(selectVal !== ""){
-        document.getElementById("inpServiceText").value = selectVal;
+    const val = document.getElementById("repairItemSelect").value;
+    if(val){
+        document.getElementById("inpServiceText").value = val;
         refreshPreview();
     }
 }
 
-// 自動生成單號 NVYYYYMMDDXX
+// 生成當日新單號
 async function genNewOrderNo(){
     const tipLoad = document.getElementById("tipLoad");
     const tipErr = document.getElementById("tipErr");
@@ -479,46 +534,37 @@ async function genNewOrderNo(){
     const currDateStr = `${y}${m}${d}`;
     const prefix = "NV" + currDateStr;
 
-    // 判斷係唔係同一日，唔同日期重置序號
     if(currDateStr !== todayDateStr){
         todayDateStr = currDateStr;
         currentSeq = 0;
-        // 新一日先查飛書拎最大序號
-        let maxSeq = 0;
         try{
-            const res = await fetch(`${API_URL}?orderNo=`);
+            const res = await fetch(`${API_URL}`);
             const allData = await res.json();
             if(allData.code === 0 && Array.isArray(allData.list)){
                 allData.list.forEach(item => {
-                    if(item.invNo.startsWith(prefix)){
-                        const seqStr = item.invNo.slice(-2);
-                        const seq = parseInt(seqStr,10);
-                        if(seq > maxSeq) maxSeq = seq;
+                    if(item.orderNo.startsWith(prefix)){
+                        const seq = parseInt(item.orderNo.slice(-2),10);
+                        if(seq > currentSeq) currentSeq = seq;
                     }
                 });
             }
         }catch(e){
-            console.log("查詢現有單號失敗，預設01");
+            console.log("載入單號列表失敗");
         }
-        currentSeq = maxSeq;
     }
-
-    // 同一日直接序號+1，唔使再查API
     currentSeq += 1;
-    const seqStr = String(currentSeq).padStart(2,"0");
-    const newOrderNo = prefix + seqStr;
-    document.getElementById("baseOrderNo").value = newOrderNo;
-    tipLoad.innerText = `✅ 已生成新單號：${newOrderNo}`;
+    const newNo = prefix + String(currentSeq).padStart(2,"0");
+    document.getElementById("baseOrderNo").value = newNo;
+    tipLoad.innerText = `✅ 已生成新單號：${newNo}`;
     refreshPreview();
 }
 
-// 切換表單顯示
+// 切換發票模板
 function refreshForm(){
     const type = document.getElementById("invoiceType").value;
     document.getElementById("repairForm").style.display = "none";
     document.getElementById("generalForm").style.display = "none";
     document.getElementById("saleForm").style.display = "none";
-
     document.getElementById("printRepair").style.display = "none";
     document.getElementById("printWorkOrder").style.display = "none";
     document.getElementById("printGeneral").style.display = "none";
@@ -526,8 +572,7 @@ function refreshForm(){
 
     if(type === "repair" || type === "workorder"){
         document.getElementById("repairForm").style.display = "block";
-        if(type === "repair") document.getElementById("printRepair").style.display = "block";
-        else document.getElementById("printWorkOrder").style.display = "block";
+        document.getElementById(type === "repair" ? "printRepair" : "printWorkOrder").style.display = "block";
     }else if(type === "general"){
         document.getElementById("generalForm").style.display = "block";
         document.getElementById("printGeneral").style.display = "block";
@@ -538,30 +583,26 @@ function refreshForm(){
     refreshPreview();
 }
 
-// 維修單金額計算
+// 金額計算
 function calcRepair(){
-    const fee = parseFloat(document.getElementById("inpServiceFee").value) || 0;
-    const del = parseFloat(document.getElementById("inpDelFee").value) || 0;
+    const fee = Number(document.getElementById("inpServiceFee").value) || 0;
+    const del = Number(document.getElementById("inpDelFee").value) || 0;
     document.getElementById("inpTotal").value = (fee + del).toFixed(2);
 }
-// 通用發票金額
 function calcGen(){
-    const price = parseFloat(document.getElementById("genPrice").value) || 0;
-    const qty = Number(document.getElementById("genQty").value) || 1;
-    const disc = parseFloat(document.getElementById("genDisc").value) || 0;
-    const total = (price * qty) - disc;
-    document.getElementById("genTotal").value = total.toFixed(2);
+    const p = Number(document.getElementById("genPrice").value) || 0;
+    const q = Number(document.getElementById("genQty").value) || 1;
+    const d = Number(document.getElementById("genDisc").value) || 0;
+    document.getElementById("genTotal").value = (p * q - d).toFixed(2);
 }
-// 銷售單金額
 function calcSale(){
-    const price = parseFloat(document.getElementById("salePrice").value) || 0;
-    const qty = Number(document.getElementById("saleQty").value) || 1;
-    const disc = parseFloat(document.getElementById("saleDisc").value) || 0;
-    const total = (price * qty) - disc;
-    document.getElementById("saleTotal").value = total.toFixed(2);
+    const p = Number(document.getElementById("salePrice").value) || 0;
+    const q = Number(document.getElementById("saleQty").value) || 1;
+    const d = Number(document.getElementById("saleDisc").value) || 0;
+    document.getElementById("saleTotal").value = (p * q - d).toFixed(2);
 }
 
-// 組合維修項目清單文字
+// 組合勾選維修項目文字
 function getItemText(){
     const arr = [];
     if(document.getElementById("chkDiag").checked) arr.push("☑ 專業故障診斷");
@@ -571,12 +612,16 @@ function getItemText(){
     return arr.join("<br>");
 }
 
-// 實時更新打印預覽區
+// 手動點擊「即時更新預覽」核心函數
 function refreshPreview(){
+    // 先重新計算金額
+    calcRepair();
+    calcGen();
+    calcSale();
+
     const type = document.getElementById("invoiceType").value;
     const orderNo = document.getElementById("baseOrderNo").value;
     if(type === "repair" || type === "workorder"){
-        // 維修單/服務單共用數據
         const date = document.getElementById("inpCreateTime").value;
         const cust = document.getElementById("inpCustName").value;
         const tel = document.getElementById("inpTel").value;
@@ -658,7 +703,7 @@ function refreshPreview(){
     }
 }
 
-// 從飛書載入訂單接口（原有功能保留）
+// 按單號載入訂單
 async function loadFromBase(){
     const orderNo = document.getElementById("baseOrderNo").value.trim();
     const tipLoad = document.getElementById("tipLoad");
@@ -675,46 +720,32 @@ async function loadFromBase(){
     try{
         const res = await fetch(`${API_URL}?orderNo=${encodeURIComponent(orderNo)}`);
         const data = await res.json();
-        if(data.code !== 0){
-            tipErr.innerText = "載入失敗：" + data.msg;
+        if(data.code !== 0 || data.list.length === 0){
+            tipErr.innerText = "找不到該單號訂單";
             return;
         }
         tipLoad.innerText = "✅ 載入成功，數據已自動填寫";
-        const t = data.type;
+        const row = data.list[0];
+        const t = "repair";
         document.getElementById("invoiceType").value = t;
         refreshForm();
-        if(t === "repair"){
-            document.getElementById("baseOrderNo").value = data.invNo;
-            document.getElementById("inpCustName").value = data.custName;
-            document.getElementById("inpTel").value = data.custTel;
-            document.getElementById("inpAddr").value = data.delAddr;
-            document.getElementById("inpModel").value = data.model;
-            document.getElementById("inpSN").value = data.sn;
-            document.getElementById("inpServiceText").value = data.serviceText;
-            document.getElementById("inpServiceFee").value = Number(data.serviceFee).toFixed(2);
-            document.getElementById("inpWarranty").value = data.warrantyMonth;
-            document.getElementById("inpRemark").value = data.remark;
-            // 復原勾選項目
-            document.getElementById("chkDiag").checked = data.items.includes("專業故障診斷");
-            document.getElementById("chkClean").checked = data.items.includes("深層清潔");
-            document.getElementById("chkPart").checked = data.items.includes("零件更換");
-            document.getElementById("chkOther").checked = data.items.includes("其他維修服務");
-            calcRepair();
-        }else if(t === "sale"){
-            document.getElementById("saleInvNo").value = data.invNo;
-            document.getElementById("saleCustName").value = data.custName;
-            document.getElementById("saleTel").value = data.custTel;
-            document.getElementById("saleWhatsapp").value = data.whatsapp;
-            document.getElementById("saleAddr").value = data.delAddr;
-            document.getElementById("saleModel").value = data.model;
-            document.getElementById("saleSpec").value = data.spec;
-            document.getElementById("salePrice").value = Number(data.price).toFixed(2);
-            document.getElementById("saleDelMethod").value = data.delMethod;
-            document.getElementById("saleWarranty").value = data.warranty;
-            document.getElementById("salePay").value = data.payMethod;
-            document.getElementById("saleRemark").value = data.remark;
-            calcSale();
-        }
+
+        document.getElementById("baseOrderNo").value = row.orderNo;
+        document.getElementById("inpCustName").value = row.custName;
+        document.getElementById("inpTel").value = row.custTel;
+        document.getElementById("inpAddr").value = row.delAddr;
+        document.getElementById("inpModel").value = row.model;
+        document.getElementById("inpSN").value = row.sn;
+        document.getElementById("inpServiceText").value = row.serviceText;
+        document.getElementById("inpServiceFee").value = Number(row.serviceFee).toFixed(2);
+        document.getElementById("inpWarranty").value = row.warrantyMonth;
+        document.getElementById("inpRemark").value = row.remark;
+
+        document.getElementById("chkDiag").checked = row.items.includes("專業故障診斷");
+        document.getElementById("chkClean").checked = row.items.includes("深層清潔");
+        document.getElementById("chkPart").checked = row.items.includes("零件更換");
+        document.getElementById("chkOther").checked = row.items.includes("其他維修服務");
+        calcRepair();
         refreshPreview();
     }catch(e){
         tipErr.innerText = "載入失敗：伺服器錯誤，請確認後端已開啟";
@@ -724,7 +755,7 @@ async function loadFromBase(){
     }
 }
 
-// 發送訂單到飛書
+// 提交訂單到飛書Base
 async function sendToBase(){
     const tipLoad = document.getElementById("tipLoad");
     const tipErr = document.getElementById("tipErr");
@@ -733,123 +764,50 @@ async function sendToBase(){
     tipLoad.innerText = "";
     tipErr.innerText = "";
 
-    // 必填校驗
-    if(invoiceType === "repair" || invoiceType === "workorder"){
-        if(!document.getElementById("baseOrderNo").value.trim()){
-            tipErr.innerText = "請輸入單據編號 NVxxxx";
-            return;
-        }
-        if(!document.getElementById("inpCustName").value.trim()){
-            tipErr.innerText = "請填寫客戶姓名";
-            return;
-        }
-    }else if(invoiceType === "general"){
-        if(!document.getElementById("genInvNo").value.trim() && !document.getElementById("baseOrderNo").value.trim()){
-            tipErr.innerText = "請填寫發票編號";
-            return;
-        }
-    }else if(invoiceType === "sale"){
-        if(!document.getElementById("saleInvNo").value.trim() && !document.getElementById("baseOrderNo").value.trim()){
-            tipErr.innerText = "請填寫發票編號";
-            return;
-        }
+    if((invoiceType === "repair" || invoiceType === "workorder") && !document.getElementById("inpCustName").value.trim()){
+        tipErr.innerText = "請填寫客戶姓名";
+        return;
     }
 
-    // 組裝傳送JSON數據
-    let sendData = {
+    const sendData = {
         type: invoiceType === "workorder" ? "repair" : invoiceType,
-        orderNo: "",
-        custName: "",
-        custTel: "",
-        delAddr: "",
-        model: "",
-        sn: "",
-        serviceText: "",
-        serviceFee: 0,
-        delFee: 0,
-        warrantyMonth: 0,
-        remark: "",
-        items: [],
-        invNo: "",
-        whatsapp: "",
-        spec: "",
-        price: 0,
-        qty: 1,
-        discount: 0,
-        delMethod: "",
-        warranty: "",
-        payMethod: ""
+        orderNo: document.getElementById("baseOrderNo").value.trim(),
+        custName: document.getElementById("inpCustName").value.trim(),
+        custTel: document.getElementById("inpTel").value.trim(),
+        delAddr: document.getElementById("inpAddr").value.trim(),
+        model: document.getElementById("inpModel").value.trim(),
+        sn: document.getElementById("inpSN").value.trim(),
+        serviceText: document.getElementById("inpServiceText").value.trim(),
+        serviceFee: Number(document.getElementById("inpServiceFee").value) || 0,
+        delFee: Number(document.getElementById("inpDelFee").value) || 0,
+        warrantyMonth: Number(document.getElementById("inpWarranty").value) || 0,
+        remark: document.getElementById("inpRemark").value.trim(),
+        items: []
     };
-
-    if(invoiceType === "repair" || invoiceType === "workorder"){
-        sendData.orderNo = document.getElementById("baseOrderNo").value.trim();
-        sendData.custName = document.getElementById("inpCustName").value.trim();
-        sendData.custTel = document.getElementById("inpTel").value.trim();
-        sendData.delAddr = document.getElementById("inpAddr").value.trim();
-        sendData.model = document.getElementById("inpModel").value.trim();
-        sendData.sn = document.getElementById("inpSN").value.trim();
-        sendData.serviceText = document.getElementById("inpServiceText").value.trim();
-        sendData.serviceFee = parseFloat(document.getElementById("inpServiceFee").value) || 0;
-        sendData.warrantyMonth = Number(document.getElementById("inpWarranty").value) || 0;
-        sendData.remark = document.getElementById("inpRemark").value.trim();
-
-        if(document.getElementById("chkDiag").checked) sendData.items.push("專業故障診斷");
-        if(document.getElementById("chkClean").checked) sendData.items.push("深層清潔");
-        if(document.getElementById("chkPart").checked) sendData.items.push("零件更換");
-        if(document.getElementById("chkOther").checked) sendData.items.push("其他維修服務");
-    }else if(invoiceType === "general"){
-        sendData.invNo = document.getElementById("genInvNo").value.trim() || document.getElementById("baseOrderNo").value.trim();
-        sendData.custName = document.getElementById("genCustName").value.trim();
-        sendData.custTel = document.getElementById("genTel").value.trim();
-        sendData.whatsapp = document.getElementById("genWhatsapp").value.trim();
-        sendData.delAddr = document.getElementById("genAddr").value.trim();
-        sendData.serviceText = document.getElementById("genItem").value.trim();
-        sendData.spec = document.getElementById("genSpec").value.trim();
-        sendData.price = parseFloat(document.getElementById("genPrice").value) || 0;
-        sendData.qty = Number(document.getElementById("genQty").value) || 1;
-        sendData.discount = parseFloat(document.getElementById("genDisc").value) || 0;
-        sendData.remark = document.getElementById("genRemark").value.trim();
-    }else if(invoiceType === "sale"){
-        sendData.invNo = document.getElementById("saleInvNo").value.trim() || document.getElementById("baseOrderNo").value.trim();
-        sendData.custName = document.getElementById("saleCustName").value.trim();
-        sendData.custTel = document.getElementById("saleTel").value.trim();
-        sendData.whatsapp = document.getElementById("saleWhatsapp").value.trim();
-        sendData.delAddr = document.getElementById("saleAddr").value.trim();
-        sendData.model = document.getElementById("saleModel").value.trim();
-        sendData.spec = document.getElementById("saleSpec").value.trim();
-        sendData.price = parseFloat(document.getElementById("salePrice").value) || 0;
-        sendData.qty = Number(document.getElementById("saleQty").value) || 1;
-        sendData.discount = parseFloat(document.getElementById("saleDisc").value) || 0;
-        sendData.delMethod = document.getElementById("saleDelMethod").value.trim();
-        sendData.warranty = document.getElementById("saleWarranty").value.trim();
-        sendData.payMethod = document.getElementById("salePay").value.trim();
-        sendData.remark = document.getElementById("saleRemark").value.trim();
-        sendData.serviceText = "Sale Order";
-    }
+    if(document.getElementById("chkDiag").checked) sendData.items.push("專業故障診斷");
+    if(document.getElementById("chkClean").checked) sendData.items.push("深層清潔");
+    if(document.getElementById("chkPart").checked) sendData.items.push("零件更換");
+    if(document.getElementById("chkOther").checked) sendData.items.push("其他維修服務");
 
     tipLoad.innerText = "正在發送訂單到飛書Base...";
     btn.disabled = true;
     try{
-        const fetchOpt = {
+        const res = await fetch(SEND_API_URL, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json; charset=utf-8"
-            },
+            headers: {"Content-Type":"application/json; charset=utf-8"},
             body: JSON.stringify(sendData)
-        };
-        const res = await fetch(SEND_API_URL, fetchOpt);
+        });
         const result = await res.json();
         if(result.code === 0){
             tipLoad.innerText = result.msg;
             tipErr.innerText = "";
-            // 發送成功自動產生下一張單號（自動+1）
             setTimeout(()=>genNewOrderNo(), 500);
         }else{
             tipErr.innerText = "發送失敗：" + result.msg;
         }
     }catch(err){
         tipErr.innerText = "發送失敗：伺服器錯誤，請確認後端node伺服器持續開啟";
-        console.error("前端SEND完整異常紀錄：",err);
+        console.error("提交異常：",err);
     }finally{
         btn.disabled = false;
     }
