@@ -28,7 +28,7 @@
         .label-line { 
             margin:10px 0; 
             display:flex; 
-            align-items:center; 
+            align-items:flex-start; 
             gap:12px;
         }
         .label-title { 
@@ -36,9 +36,15 @@
             min-width:160px; 
             font-weight:bold;
             flex-shrink:0;
+            padding-top: 2px;
         }
         #out-name {
-            font-size:13px;
+            font-size: 13px;
+            flex: 1;
+            word-break: break-word;
+            overflow: hidden;
+            line-height: 1.2;
+            max-height: 2.4em;
         }
         .doc-box {
             border:2px solid #000;
@@ -59,6 +65,7 @@
             padding:8px 14px;
             font-size:28px;
             flex:1;
+            word-break: break-word;
         }
         .contact-box { 
             border:none; 
@@ -82,7 +89,7 @@
                 border: 1px solid #000 !important;
                 padding: 4mm !important;
                 box-sizing: border-box;
-                overflow: visible !important;
+                overflow: hidden !important;
             }
             .labware-logo { 
                 width: 19% !important;
@@ -94,16 +101,22 @@
                 margin: 1.2mm 0 !important; 
                 gap: 2.5mm;
                 display:flex;
-                align-items:center;
+                align-items:flex-start;
             }
             .label-title { 
                 font-size: 10pt !important; 
                 min-width: 26mm; 
                 flex-shrink:0;
                 font-weight:bold;
+                padding-top: 1pt;
             }
             #out-name {
                 font-size: 6pt !important;
+                flex: 1 !important;
+                word-break: break-word !important;
+                overflow: hidden !important;
+                line-height: 1.2 !important;
+                max-height: 2.4em !important;
             }
             .doc-box {
                 border: 1.5px solid #000;
@@ -124,6 +137,7 @@
                 padding: 0.8mm 2mm !important;
                 font-size: 11pt !important;
                 flex:1;
+                word-break: break-word !important;
             }
             .contact-box { 
                 font-size: 12pt !important; 
@@ -142,7 +156,7 @@
         <div class="field-row">Ship-to Address：<input id="in-addr" value="九龍-理大" oninput="updateLabel()"></div>
         <div class="field-row">Contact Name：<input id="in-contact" value="Ken Chan" oninput="updateLabel()"></div>
         <button onclick="generateAndPrint()">生成並列印標籤</button>
-        </div>
+    </div>
 
     <div class="label-card" id="label">
         <img src="Image.png" class="labware-logo" alt="LABWARE GROUP To be your partner in laboratory">
@@ -166,7 +180,7 @@
 
         <div class="label-line">
             <div class="label-title">Contact Name</div>
-            <div class="contact-box" id="out-contact">Ken's"Chan's</bbox>
+            <div class="contact-box" id="out-contact">Ken Chan</div>
         </div>
     </div>
 
@@ -197,6 +211,5 @@
         }
         updateLabel();
     </script>
-    </bbox>
 </body>
 </html>
