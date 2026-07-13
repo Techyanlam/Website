@@ -37,6 +37,9 @@
             font-weight:bold;
             flex-shrink:0;
         }
+        #out-name {
+            font-size:13px;
+        }
         .doc-box {
             border:2px solid #000;
             padding:8px 14px;
@@ -99,6 +102,9 @@
                 flex-shrink:0;
                 font-weight:bold;
             }
+            #out-name {
+                font-size: 6pt !important;
+            }
             .doc-box {
                 border: 1.5px solid #000;
                 padding: 0.8mm 2mm !important;
@@ -136,14 +142,14 @@
         <div class="field-row">Ship-to Address：<input id="in-addr" value="九龍-理大" oninput="updateLabel()"></div>
         <div class="field-row">Contact Name：<input id="in-contact" value="Ken Chan" oninput="updateLabel()"></div>
         <button onclick="generateAndPrint()">生成並列印標籤</button>
-    </div>
+        </div>
 
     <div class="label-card" id="label">
         <img src="Image.png" class="labware-logo" alt="LABWARE GROUP To be your partner in laboratory">
 
         <div class="label-line">
             <div class="label-title">Customer Name :</div>
-            <div id="out-name" style="font-size:24px;">-</div>
+            <div id="out-name">-</div>
         </div>
 
         <div class="label-line">
@@ -160,7 +166,7 @@
 
         <div class="label-line">
             <div class="label-title">Contact Name</div>
-            <div class="contact-box" id="out-contact">Ken Chan</div>
+            <div class="contact-box" id="out-contact">Ken's"Chan's</bbox>
         </div>
     </div>
 
@@ -191,5 +197,6 @@
         }
         updateLabel();
     </script>
+    </bbox>
 </body>
 </html>
