@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ink Dashboard (Hong Kong)</title>
+  <title>E-Ink Dashboard (Hong Kong) - Robust News</title>
   <style>
     /* =========================================================
        全局重置與 E-ink 最佳化設定
@@ -163,11 +163,20 @@
     .bus-route {
       font-size: 2rem;
       font-weight: 900;
-      width: 60px;
+      width: 70px;
+    }
+    .co-badge {
+      font-size: 0.75rem;
+      border: 1px solid #000;
+      padding: 1px 4px;
+      display: inline-block;
+      margin-bottom: 2px;
+      font-weight: normal;
     }
     .bus-info {
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
     }
     .bus-dest {
       font-size: 1.2rem;
@@ -295,7 +304,6 @@
 
 <div class="dashboard-container">
   
-  <!-- 頂部資訊列 -->
   <div class="header-panel">
     <div class="time-display" id="clock-time">--:--</div>
     
@@ -315,13 +323,11 @@
     </div>
   </div>
 
-  <!-- 主體區域 -->
   <div class="main-grid">
-    
     <!-- 左側：巴士到站時間 -->
     <div class="panel">
       <div class="panel-header">
-        <div class="panel-title">九巴預計到站時間</div>
+        <div class="panel-title">巴士預計到站時間</div>
         <div class="refresh-badge">1分鐘更新</div>
       </div>
       <div class="bus-list" id="bus-container">
@@ -348,22 +354,21 @@
         </tbody>
       </table>
     </div>
-
   </div>
 
   <!-- 底部：即時新聞 -->
   <div class="panel news-panel">
     <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
-      <div class="panel-title" style="font-size: 1.1rem;">即時焦點新聞 (香港電台)</div>
+      <div class="panel-title" id="news-panel-title" style="font-size: 1.1rem;">即時綜合新聞 (載入中...)</div>
       <div class="refresh-badge">15分鐘更新</div>
     </div>
     <ul class="news-grid" id="news-container">
-      <li class="news-item">載入新聞中...</li>
+      <li class="news-item">嘗試連接新聞伺服器中...</li>
     </ul>
   </div>
 
   <div class="footer-bar">
-    <div>資料來源：香港天文台 / 資料一線通 / RTHK</div>
+    <div>資料來源：天文台 / 運輸署開放資料 (九巴/城巴) / 新聞機構</div>
     <div id="last-update">系統啟動中...</div>
   </div>
 
@@ -371,7 +376,8 @@
 
 <script>
   /* =========================================================
-     設定區：預先定義你常去的車站位置群組
+     設定區：支援九巴 (co: 'kmb') 及 城巴 (co: 'ctb')
+     城巴必須提供 stopId，可加入 dir ('O'去程/'I'回程)
      ========================================================= */
   const LOCATION_ZONES = [
     {
@@ -380,10 +386,10 @@
       lat: 22.3301,
       lng: 114.2050,
       buses: [
-        { route: '24',  bound: '1', seq: 3, dest: '旺角(循環線)', stopName: '麗晶花園 8 座附近' },
-        { route: '13X', bound: '2', seq: 21, dest: '尖沙咀 (東)', stopName: '麗晶花園 8 座附近' },
-        { route: '107', bound: '2', seq: 6, dest: '華貴', stopName: '麗晶商場/麗晶花園' },
-        { route: '5D',  bound: '1', seq: 4, dest: '紅磡', stopName: '麗晶花園' }
+        { co: 'kmb', route: '24',  bound: '1', seq: 3, dest: '旺角(循環線)', stopName: '麗晶花園 8 座附近' },
+        { co: 'kmb', route: '13X', bound: '2', seq: 21, dest: '尖沙咀 (東)', stopName: '麗晶花園 8 座附近' },
+        { co: 'kmb', route: '107', bound: '2', seq: 6, dest: '華貴', stopName: '麗晶商場/麗晶花園' },
+        { co: 'kmb', route: '5D',  bound: '1', seq: 4, dest: '紅磡', stopName: '麗晶花園' }
       ]
     },
     {
@@ -392,9 +398,10 @@
       lat: 22.2452,
       lng: 114.1540,
       buses: [
-        { route: '171', bound: '1', seq: 4, dest: '荔枝角', stopName: '利澤樓' },
-        { route: '671', bound: '1', seq: 3, dest: '鑽石山站', stopName: '利澤樓' },
-        { route: '171', bound: '2', seq: 20, dest: '海怡半島', stopName: '利澤樓(落客站)' }
+        { co: 'kmb', route: '171', bound: '1', seq: 4, dest: '荔枝角', stopName: '利澤樓' },
+        { co: 'kmb', route: '671', bound: '1', seq: 3, dest: '鑽石山站', stopName: '利澤樓' },
+        { co: 'ctb', route: '90',  stopId: '001152', dir: 'O', dest: '中環 (交易廣場)', stopName: '利澤樓 (城巴)' },
+        { co: 'ctb', route: '592', stopId: '001152', dir: 'O', dest: '銅鑼灣 (摩頓台)', stopName: '利澤樓 (城巴)' }
       ]
     },
     {
@@ -403,10 +410,10 @@
       lat: 22.3188,
       lng: 114.1700,
       buses: [
-        { route: '1',   bound: '2', seq: 4, dest: '竹園邨', stopName: '旺角奶路臣街/雅蘭中心' },
-        { route: '1A',  bound: '2', seq: 4, dest: '中秀茂坪', stopName: '旺角奶路臣街/雅蘭中心' },
-        { route: '104', bound: '1', seq: 5, dest: '堅尼地城', stopName: '旺角奶路臣街/雅蘭中心' },
-        { route: '905', bound: '1', seq: 8, dest: '灣仔 (會展)', stopName: '旺角奶路臣街/雅蘭中心' }
+        { co: 'kmb', route: '1',   bound: '2', seq: 4, dest: '竹園邨', stopName: '雅蘭中心' },
+        { co: 'kmb', route: '1A',  bound: '2', seq: 4, dest: '中秀茂坪', stopName: '雅蘭中心' },
+        { co: 'kmb', route: '104', bound: '1', seq: 5, dest: '堅尼地城', stopName: '雅蘭中心' },
+        { co: 'ctb', route: '970', stopId: '001550', dir: 'O', dest: '數碼港', stopName: '雅蘭中心 (城巴)' }
       ]
     }
   ];
@@ -537,39 +544,53 @@
     const busesToFetch = currentActiveZone.buses;
 
     for (const config of busesToFetch) {
+      const company = config.co || 'kmb';
+      
       try {
-        const res = await fetch(`https://data.etabus.gov.hk/v1/transport/kmb/route-eta/${config.route}/${config.bound}`);
-        const result = await res.json();
+        let validEtas = [];
         const now = new Date();
 
-        const validEtas = (result.data || [])
-          .filter(eta => eta.seq === config.seq && eta.eta)
-          .map(eta => {
-            const diffMs = new Date(eta.eta) - now;
-            return Math.max(0, Math.floor(diffMs / 60000));
-          })
-          .sort((a, b) => a - b)
-          .slice(0, 3);
+        if (company === 'kmb') {
+          const res = await fetch(`https://data.etabus.gov.hk/v1/transport/kmb/route-eta/${config.route}/${config.bound}`);
+          const result = await res.json();
+          validEtas = (result.data || [])
+            .filter(eta => eta.seq === config.seq && eta.eta)
+            .map(eta => Math.max(0, Math.floor((new Date(eta.eta) - now) / 60000)))
+            .sort((a, b) => a - b)
+            .slice(0, 3);
+            
+        } else if (company === 'ctb') {
+          const res = await fetch(`https://rt.data.gov.hk/v2/transport/citybus/eta/CTB/${config.stopId}/${config.route}`);
+          const result = await res.json();
+          validEtas = (result.data || [])
+            .filter(eta => eta.eta && (!config.dir || eta.dir === config.dir))
+            .map(eta => Math.max(0, Math.floor((new Date(eta.eta) - now) / 60000)))
+            .sort((a, b) => a - b)
+            .slice(0, 3);
+        }
 
         let etaHtml = validEtas.length > 0 
           ? validEtas.map(m => `<span>${m}<span class="eta-min">分</span></span>`).join('')
           : '<span style="font-size:1.2rem; font-weight:normal;">暫無班次</span>';
 
+        const coBadge = company === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
+
         htmlStr += `
           <div class="bus-item">
             <div class="bus-route">${config.route}</div>
             <div class="bus-info">
-              <span class="bus-dest">往 ${config.dest}</span>
+              <span class="bus-dest">${coBadge} 往 ${config.dest}</span>
               <span class="bus-stop">${config.stopName}</span>
             </div>
             <div class="bus-etas">${etaHtml}</div>
           </div>
         `;
       } catch (error) {
+        const coName = company === 'ctb' ? '城巴' : '九巴';
         htmlStr += `
           <div class="bus-item">
             <div class="bus-route">${config.route}</div>
-            <div class="bus-info"><span class="bus-dest">API 錯誤或無此站</span></div>
+            <div class="bus-info"><span class="bus-dest">${coName} API 錯誤</span></div>
           </div>
         `;
       }
@@ -579,24 +600,50 @@
     updateLastUpdateTime('全部');
   }
 
+  // ==========================================
+  // 高度穩定的多重來源新聞獲取邏輯
+  // ==========================================
   async function fetchNews() {
-    try {
-      const rssUrl = encodeURIComponent('https://rthk9.rthk.hk/rthk/news/rss/c_expressnews_clocal.xml');
-      const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
-      const result = await res.json();
-      
-      const newsContainer = document.getElementById('news-container');
-      if (result.items && result.items.length > 0) {
-        newsContainer.innerHTML = result.items.slice(0, 6).map(news => `
-          <li class="news-item">${news.title}</li>
-        `).join('');
-      } else {
-        newsContainer.innerHTML = '<li class="news-item">暫無新聞更新</li>';
+    const newsContainer = document.getElementById('news-container');
+    const titleElement = document.getElementById('news-panel-title');
+    
+    // 設定多個來源，如果香港電台被擋，自動切換至備用的 Yahoo 新聞
+    const sources = [
+      {
+        name: '香港電台',
+        url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://rthk9.rthk.hk/rthk/news/rss/c_expressnews_cnews.xml')
+      },
+      {
+        name: 'Yahoo 港聞',
+        url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://hk.news.yahoo.com/rss/hong-kong')
       }
-      updateLastUpdateTime('新聞');
-    } catch (error) {
-      console.error('新聞載入失敗:', error);
+    ];
+
+    for (let source of sources) {
+      try {
+        const res = await fetch(source.url);
+        if (!res.ok) continue; // 如果狀態碼錯誤，嘗試下一個來源
+        
+        const data = await res.json();
+        
+        if (data.status === 'ok' && data.items && data.items.length > 0) {
+          // 成功獲取新聞
+          const titles = data.items.slice(0, 6).map(item => item.title);
+          
+          newsContainer.innerHTML = titles.map(t => `<li class="news-item" title="${t}">${t}</li>`).join('');
+          titleElement.textContent = `即時綜合新聞 (${source.name})`; // 標題顯示目前使用的來源
+          
+          updateLastUpdateTime('新聞');
+          return; // 成功後直接結束函數，不再嘗試後面的來源
+        }
+      } catch (err) {
+        console.warn(`${source.name} 獲取失敗:`, err);
+      }
     }
+
+    // 若所有來源都失敗，顯示友善的錯誤訊息
+    newsContainer.innerHTML = '<li class="news-item">新聞載入失敗，可能受到網絡或防火牆限制。</li>';
+    titleElement.textContent = `即時綜合新聞 (無法連線)`;
   }
 
   function updateLastUpdateTime(type) {
