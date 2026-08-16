@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Ink Dashboard (Hong Kong)</title>
+  <style>
+    /* =========================================================
+       全局重置與 E-ink 最佳化設定
+       ========================================================= */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      font-family: "PingFang TC", "Noto Sans CJK TC", "Microsoft JhengHei", -apple-system, sans-serif;
+      padding: 16px;
+      line-height: 1.4;
+      display: flex;
+      justify-content: center;
+    }
+    .dashboard-container {
+      width: 100%;
+      max-width: 1200px;
+      border: 4px solid #000000;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* =========================================================
+       頂部：時鐘、日期與即時天氣
+       ========================================================= */
+    .header-panel {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 24px;
+      border-bottom: 4px solid #000000;
+      padding-bottom: 16px;
+    }
+    
+    .time-display {
+      font-size: 5rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+    
+    .date-location-display {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+    .date-text {
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+    
+    /* 地區選擇器 (下拉選單) */
+    .location-selector-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .gps-status {
+      font-size: 0.8rem;
+      border: 1px solid #000;
+      padding: 2px 6px;
+      font-weight: bold;
+    }
+    .location-select {
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: 2px solid #000;
+      background-color: #fff;
+      color: #000;
+      padding: 4px 8px;
+      font-family: inherit;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      border-radius: 0;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px top 50%;
+      background-size: 12px auto;
+      padding-right: 28px;
+    }
+
+    .weather-current {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .temp-text {
+      font-size: 3.5rem;
+      font-weight: bold;
+      line-height: 1;
+    }
+    .weather-desc-text {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+
+    /* =========================================================
+       主體區域：左巴士、右天氣預報
+       ========================================================= */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    
+    .panel {
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 3px solid #000000;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+    }
+    .panel-title {
+      font-size: 1.4rem;
+      font-weight: 900;
+    }
+    .refresh-badge {
+      font-size: 0.85rem;
+      border: 1px solid #000000;
+      padding: 2px 6px;
+      font-weight: bold;
+    }
+
+    /* 巴士列表 */
+    .bus-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .bus-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 2px dashed #000000;
+    }
+    .bus-route {
+      font-size: 2rem;
+      font-weight: 900;
+      width: 60px;
+    }
+    .bus-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .bus-dest {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .bus-stop {
+      font-size: 0.9rem;
+    }
+    .bus-etas {
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-align: right;
+    }
+    .bus-etas span {
+      margin-left: 12px;
+    }
+    .eta-min {
+      font-size: 1rem;
+      font-weight: normal;
+    }
+
+    /* 天氣預報表格 */
+    .forecast-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .forecast-table th {
+      text-align: left;
+      font-size: 1rem;
+      border-bottom: 2px solid #000000;
+      padding: 8px 4px;
+    }
+    .forecast-table td {
+      border-bottom: 2px dashed #000000;
+      padding: 16px 4px;
+      vertical-align: middle;
+    }
+    .fc-day {
+      font-size: 1.2rem;
+      font-weight: bold;
+      width: 20%;
+    }
+    .fc-desc {
+      font-size: 1rem;
+      width: 55%;
+      padding-right: 16px;
+    }
+    .fc-temp-rain {
+      width: 25%;
+      text-align: right;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+    .fc-rain {
+      font-size: 0.9rem;
+      font-weight: normal;
+      margin-top: 4px;
+    }
+
+    /* =========================================================
+       底部區域：新聞
+       ========================================================= */
+    .news-panel {
+      border-top: 4px solid #000000;
+      padding-top: 16px;
+    }
+    .news-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 24px;
+      margin-top: 12px;
+      list-style: none;
+    }
+    .news-item {
+      font-size: 1rem;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+      padding-left: 16px;
+    }
+    .news-item::before {
+      content: "■";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 0.8rem;
+    }
+
+    /* 頁尾更新時間 */
+    .footer-bar {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      border-top: 1px solid #000000;
+      padding-top: 8px;
+      font-weight: bold;
+    }
+
+    /* 響應式 */
+    @media (max-width: 800px) {
+      .header-panel {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 12px;
+      }
+      .weather-current {
+        align-items: center;
+      }
+      .location-selector-wrapper {
+        justify-content: center;
+      }
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+  
+  <!-- 頂部資訊列 -->
+  <div class="header-panel">
+    <div class="time-display" id="clock-time">--:--</div>
+    
+    <div class="date-location-display">
+      <div class="date-text" id="clock-date">----年--月--日 星期-</div>
+      <div class="location-selector-wrapper">
+        <span class="gps-status" id="gps-status-text">優先定位中...</span>
+        <select id="location-select" class="location-select">
+          <!-- 選項由 JS 自動生成 -->
+        </select>
+      </div>
+    </div>
+
+    <div class="weather-current">
+      <div class="temp-text"><span id="curr-temp">--</span>°C</div>
+      <div class="weather-desc-text" id="curr-desc">載入中... 濕度 --%</div>
+    </div>
+  </div>
+
+  <!-- 主體區域 -->
+  <div class="main-grid">
+    
+    <!-- 左側：巴士到站時間 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">九巴預計到站時間</div>
+        <div class="refresh-badge">1分鐘更新</div>
+      </div>
+      <div class="bus-list" id="bus-container">
+        <div class="bus-item" style="border:none;">等待定位並載入資料中...</div>
+      </div>
+    </div>
+
+    <!-- 右側：天氣預報 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">香港天文台四天天氣預報</div>
+        <div class="refresh-badge">15分鐘更新</div>
+      </div>
+      <table class="forecast-table">
+        <thead>
+          <tr>
+            <th>日子</th>
+            <th>天氣預測</th>
+            <th style="text-align: right;">氣溫 / 降雨機率</th>
+          </tr>
+        </thead>
+        <tbody id="forecast-tbody">
+          <tr><td colspan="3">載入資料中...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- 底部：即時新聞 -->
+  <div class="panel news-panel">
+    <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
+      <div class="panel-title" style="font-size: 1.1rem;">即時焦點新聞 (香港電台)</div>
+      <div class="refresh-badge">15分鐘更新</div>
+    </div>
+    <ul class="news-grid" id="news-container">
+      <li class="news-item">載入新聞中...</li>
+    </ul>
+  </div>
+
+  <div class="footer-bar">
+    <div>資料來源：香港天文台 / 資料一線通 / RTHK</div>
+    <div id="last-update">系統啟動中...</div>
+  </div>
+
+</div>
+
+<script>
+  /* =========================================================
+     設定區：預先定義你常去的車站位置群組
+     ========================================================= */
+  const LOCATION_ZONES = [
+    {
+      id: "richland",
+      name: "麗晶花園 8 座",
+      lat: 22.3301,
+      lng: 114.2050,
+      buses: [
+        { route: '24',  bound: '1', seq: 3, dest: '旺角(循環線)', stopName: '麗晶花園 8 座附近' },
+        { route: '13X', bound: '2', seq: 21, dest: '尖沙咀 (東)', stopName: '麗晶花園 8 座附近' },
+        { route: '107', bound: '2', seq: 6, dest: '華貴', stopName: '麗晶商場/麗晶花園' },
+        { route: '5D',  bound: '1', seq: 4, dest: '紅磡', stopName: '麗晶花園' }
+      ]
+    },
+    {
+      id: "leechak",
+      name: "鴨脷洲邨利澤樓",
+      lat: 22.2452,
+      lng: 114.1540,
+      buses: [
+        { route: '171', bound: '1', seq: 4, dest: '荔枝角', stopName: '利澤樓' },
+        { route: '671', bound: '1', seq: 3, dest: '鑽石山站', stopName: '利澤樓' },
+        { route: '171', bound: '2', seq: 20, dest: '海怡半島', stopName: '利澤樓(落客站)' }
+      ]
+    },
+    {
+      id: "grandtower",
+      name: "旺角雅蘭中心",
+      lat: 22.3188,
+      lng: 114.1700,
+      buses: [
+        { route: '1',   bound: '2', seq: 4, dest: '竹園邨', stopName: '旺角奶路臣街/雅蘭中心' },
+        { route: '1A',  bound: '2', seq: 4, dest: '中秀茂坪', stopName: '旺角奶路臣街/雅蘭中心' },
+        { route: '104', bound: '1', seq: 5, dest: '堅尼地城', stopName: '旺角奶路臣街/雅蘭中心' },
+        { route: '905', bound: '1', seq: 8, dest: '灣仔 (會展)', stopName: '旺角奶路臣街/雅蘭中心' }
+      ]
+    }
+  ];
+
+  let currentActiveZone = LOCATION_ZONES[0];
+
+  /* =========================================================
+     功能實作區
+     ========================================================= */
+
+  function initLocationSelector() {
+    const select = document.getElementById('location-select');
+    LOCATION_ZONES.forEach((zone, index) => {
+      const option = document.createElement('option');
+      option.value = index;
+      option.textContent = zone.name;
+      select.appendChild(option);
+    });
+
+    select.addEventListener('change', (e) => {
+      const selectedIndex = e.target.value;
+      currentActiveZone = LOCATION_ZONES[selectedIndex];
+      document.getElementById('gps-status-text').textContent = '手動選擇';
+      document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none;">載入新地點巴士資料中...</div>';
+      fetchBusETA();
+    });
+  }
+
+  function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    var R = 6371;
+    var dLat = deg2rad(lat2-lat1);
+    var dLon = deg2rad(lon2-lon1); 
+    var a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    return R * c;
+  }
+  function deg2rad(deg) { return deg * (Math.PI/180) }
+
+  function attemptGPSLocation() {
+    const statusText = document.getElementById('gps-status-text');
+    const select = document.getElementById('location-select');
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          
+          let minDistance = Infinity;
+          let closestZoneIndex = 0;
+
+          LOCATION_ZONES.forEach((zone, index) => {
+            const distance = getDistanceFromLatLonInKm(userLat, userLng, zone.lat, zone.lng);
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestZoneIndex = index;
+            }
+          });
+
+          currentActiveZone = LOCATION_ZONES[closestZoneIndex];
+          select.value = closestZoneIndex;
+          statusText.textContent = `自動定位 (${minDistance.toFixed(1)}km)`;
+          fetchBusETA();
+        },
+        (error) => {
+          console.warn("GPS 定位失敗，使用預設值", error);
+          statusText.textContent = '定位失敗 (預設)';
+          select.value = 0;
+          currentActiveZone = LOCATION_ZONES[0];
+          fetchBusETA();
+        },
+        { timeout: 5000, maximumAge: 60000 }
+      );
+    } else {
+      statusText.textContent = '不支援定位 (預設)';
+      select.value = 0;
+      currentActiveZone = LOCATION_ZONES[0];
+      fetchBusETA();
+    }
+  }
+
+  function updateClock() {
+    const now = new Date();
+    const pad = n => n.toString().padStart(2, '0');
+    document.getElementById('clock-time').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+    document.getElementById('clock-date').textContent = `${now.getFullYear()}年${pad(now.getMonth() + 1)}月${pad(now.getDate())}日 ${days[now.getDay()]}`;
+  }
+
+  async function fetchWeather() {
+    try {
+      const currentRes = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc');
+      const currentData = await currentRes.json();
+      
+      const temp = currentData.temperature.data[0].value;
+      const humidity = currentData.humidity.data[0].value;
+      const warning = currentData.warningMessage ? currentData.warningMessage[0] : '';
+      const iconDesc = warning !== '' ? '有天氣警告' : '大致多雲'; 
+
+      document.getElementById('curr-temp').textContent = temp;
+      document.getElementById('curr-desc').textContent = `${iconDesc} · 濕度 ${humidity}%`;
+
+      const forecastRes = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc');
+      const forecastData = await forecastRes.json();
+      const fourDays = forecastData.weatherForecast.slice(0, 4);
+
+      document.getElementById('forecast-tbody').innerHTML = fourDays.map(day => `
+        <tr>
+          <td class="fc-day">${day.week}</td>
+          <td class="fc-desc">${day.forecastWeather}</td>
+          <td class="fc-temp-rain">
+            ${day.forecastMintemp.value}° - ${day.forecastMaxtemp.value}°<br>
+            <span class="fc-rain">降雨: ${day.PSR}</span>
+          </td>
+        </tr>
+      `).join('');
+      updateLastUpdateTime('天氣');
+    } catch (error) {
+      console.error('天氣載入失敗:', error);
+    }
+  }
+
+  async function fetchBusETA() {
+    const container = document.getElementById('bus-container');
+    let htmlStr = '';
+    const busesToFetch = currentActiveZone.buses;
+
+    for (const config of busesToFetch) {
+      try {
+        const res = await fetch(`https://data.etabus.gov.hk/v1/transport/kmb/route-eta/${config.route}/${config.bound}`);
+        const result = await res.json();
+        const now = new Date();
+
+        const validEtas = (result.data || [])
+          .filter(eta => eta.seq === config.seq && eta.eta)
+          .map(eta => {
+            const diffMs = new Date(eta.eta) - now;
+            return Math.max(0, Math.floor(diffMs / 60000));
+          })
+          .sort((a, b) => a - b)
+          .slice(0, 3);
+
+        let etaHtml = validEtas.length > 0 
+          ? validEtas.map(m => `<span>${m}<span class="eta-min">分</span></span>`).join('')
+          : '<span style="font-size:1.2rem; font-weight:normal;">暫無班次</span>';
+
+        htmlStr += `
+          <div class="bus-item">
+            <div class="bus-route">${config.route}</div>
+            <div class="bus-info">
+              <span class="bus-dest">往 ${config.dest}</span>
+              <span class="bus-stop">${config.stopName}</span>
+            </div>
+            <div class="bus-etas">${etaHtml}</div>
+          </div>
+        `;
+      } catch (error) {
+        htmlStr += `
+          <div class="bus-item">
+            <div class="bus-route">${config.route}</div>
+            <div class="bus-info"><span class="bus-dest">API 錯誤或無此站</span></div>
+          </div>
+        `;
+      }
+    }
+    
+    container.innerHTML = htmlStr;
+    updateLastUpdateTime('全部');
+  }
+
+  async function fetchNews() {
+    try {
+      const rssUrl = encodeURIComponent('https://rthk9.rthk.hk/rthk/news/rss/c_expressnews_clocal.xml');
+      const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`);
+      const result = await res.json();
+      
+      const newsContainer = document.getElementById('news-container');
+      if (result.items && result.items.length > 0) {
+        newsContainer.innerHTML = result.items.slice(0, 6).map(news => `
+          <li class="news-item">${news.title}</li>
+        `).join('');
+      } else {
+        newsContainer.innerHTML = '<li class="news-item">暫無新聞更新</li>';
+      }
+      updateLastUpdateTime('新聞');
+    } catch (error) {
+      console.error('新聞載入失敗:', error);
+    }
+  }
+
+  function updateLastUpdateTime(type) {
+    const now = new Date();
+    const pad = n => n.toString().padStart(2, '0');
+    document.getElementById('last-update').textContent = `最後更新 (${type})：${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  }
+
+  /* =========================================================
+     初始化執行
+     ========================================================= */
+  
+  initLocationSelector();
+  
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  attemptGPSLocation();
+  
+  setInterval(fetchBusETA, 60 * 1000);
+
+  fetchWeather();
+  fetchNews();
+  setInterval(() => {
+    fetchWeather();
+    fetchNews();
+  }, 15 * 60 * 1000);
+
+</script>
+</body>
+</html>
+
+
