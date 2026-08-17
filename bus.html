@@ -360,10 +360,10 @@
      ========================================================= */
   const LOCATION_ZONES = [
     {
-      id: "richland", name: "麗晶花園 8 座", lat: 22.3301, lng: 114.2050,
+      id: "richland", name: "麗晶花園 13 座", lat: 22.3301, lng: 114.2050,
       buses: [
-        { co: 'kmb', route: '24',  dir: 'O', seq: 3, dest: '旺角(循環)', stopName: '麗晶花園 8 座' },
-        { co: 'kmb', route: '13X', dir: 'O', seq: 21, dest: '尖沙咀 (東)', stopName: '麗晶花園 8 座' },
+        { co: 'kmb', route: '24',  dir: 'O', seq: 3, dest: '旺角(循環)', stopName: '麗晶花園 13 座' },
+        { co: 'kmb', route: '13X', dir: 'O', seq: 21, dest: '尖沙咀 (東)', stopName: '麗晶花園 13 座' },
         { co: 'kmb', route: '107', dir: 'O', seq: 6, dest: '華貴', stopName: '麗晶商場/麗晶花園' },
         { co: 'kmb', route: '5D',  dir: 'O', seq: 4, dest: '紅磡', stopName: '麗晶花園' }
       ]
@@ -432,7 +432,8 @@
           statusText.textContent = `${errMsg}(預設)`; 
           select.value = 0; currentActiveZone = LOCATION_ZONES[0]; fetchBusETA(); 
         }, 
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
+        // 🚨 關鍵修改：關閉 enableHighAccuracy，允許使用 5 分鐘內的 Wi-Fi 定位快取
+        { enableHighAccuracy: false, timeout: 15000, maximumAge: 300000 }
       );
     } else { statusText.textContent = '不支援(預設)'; fetchBusETA(); }
   }
@@ -542,5 +543,7 @@
 </script>
 </body>
 </html>
+
+
 
 
