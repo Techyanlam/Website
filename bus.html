@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ink Dashboard (Hong Kong) - Fixed KMB API</title>
+  <title>E-Ink Dashboard (Hong Kong) - Multi-Calendar & Lark</title>
   <style>
     /* =========================================================
        全局重置與 E-ink 最佳化設定
@@ -70,6 +70,7 @@
     .g-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .g-time { font-size: 0.9rem; }
     .g-sender { font-size: 0.9rem; font-style: italic; }
+    .cal-badge { font-size: 0.75rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; margin-left: 6px; font-weight: bold; vertical-align: middle; border-radius: 2px;}
 
     /* 底部區域：新聞 */
     .news-panel { border-top: 4px solid #000000; padding-top: 16px; }
@@ -87,8 +88,13 @@
       .main-grid, .google-grid, .news-grid { grid-template-columns: 1fr; }
     }
   </style>
+
+  <!-- 引入 Google API 客戶端程式庫 -->
   <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
   <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+  <!-- 引入 ical.js 用來完美解析飛書日曆 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.5.0/ical.min.js"></script>
+
 </head>
 <body>
 
@@ -136,7 +142,7 @@
 
   <div class="google-section">
     <div class="panel-header" style="margin-bottom: 8px;">
-      <div class="panel-title" style="font-size: 1.1rem;">Google 助理 (日曆 & Gmail)</div>
+      <div class="panel-title" style="font-size: 1.1rem;">整合工作助理 (Google & 飛書)</div>
       <div class="auth-buttons">
         <button id="authorize_button" class="auth-btn" onclick="handleAuthClick()" disabled>登入 Google</button>
         <button id="signout_button" class="auth-btn" onclick="handleSignoutClick()" style="display: none;">登出</button>
@@ -146,7 +152,7 @@
       <div class="panel">
         <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px;">📅 即將到來的行程</div>
         <ul class="google-list" id="calendar-container">
-          <li class="google-item">請先登入 Google 帳號授權。</li>
+          <li class="google-item">載入中...</li>
         </ul>
       </div>
       <div class="panel">
@@ -169,7 +175,7 @@
   </div>
 
   <div class="footer-bar">
-    <div>資料來源：天文台 / 運輸署開放資料 / 新聞機構 / Google</div>
+    <div>資料來源：天文台 / 運輸署 / 綜合新聞 / Google / 飛書</div>
     <div id="last-update">系統啟動中...</div>
   </div>
 
@@ -177,10 +183,16 @@
 
 <script>
   /* =========================================================
-     🛑🛑🛑 Google API 設定區 🛑🛑🛑
+     🛑🛑🛑 Google API 與 飛書日曆 設定區 🛑🛑🛑
      ========================================================= */
   const GOOGLE_CLIENT_ID = '32327213493-1dqkm15k6kn8dorc6iaf37v4rlqneljt.apps.googleusercontent.com';
   const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
+  
+  // 👉 在單引號內填入飛書的「iCal 訂閱連結」，這樣就可以跳過Google直接極速同步飛書！
+  // 範例: 'https://calendar.feishu.cn/subscribe/.../public/basic.ics'
+  const LARK_ICS_URL = ''; 
+  
+
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
   const DISCOVERY_DOCS = [ 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest', 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest' ];
 
@@ -196,7 +208,7 @@
         callback: (t) => {
           if (t && t.access_token) {
             document.getElementById('authorize_button').style.display = 'none'; document.getElementById('signout_button').style.display = 'inline-block';
-            fetchGoogleData(); setInterval(fetchGoogleData, 15 * 60 * 1000);
+            fetchCombinedCalendarData(); setInterval(fetchCombinedCalendarData, 15 * 60 * 1000);
           }
         },
       });
@@ -209,31 +221,67 @@
     const t = gapi.client.getToken();
     if (t !== null) {
       google.accounts.oauth2.revoke(t.access_token); gapi.client.setToken('');
-      document.getElementById('calendar-container').innerHTML = '<li class="google-item">已登出，請重新授權。</li>';
       document.getElementById('gmail-container').innerHTML = '<li class="google-item">已登出，請重新授權。</li>';
       document.getElementById('authorize_button').style.display = 'inline-block'; document.getElementById('signout_button').style.display = 'none';
+      fetchCombinedCalendarData(); // 登出後重新抓取 (為了保留可能還在的飛書資料)
     }
   }
 
-  async function fetchGoogleData() {
+  // =========================================
+  // 🌟 直連飛書解析器 (Bypass Google)
+  // =========================================
+  async function fetchLarkEvents() {
+    if (!LARK_ICS_URL) return [];
     try {
-      // 日曆
-      const calRes = await gapi.client.calendar.events.list({ 'calendarId': 'primary', 'timeMin': (new Date()).toISOString(), 'showDeleted': false, 'singleEvents': true, 'maxResults': 3, 'orderBy': 'startTime' });
-      const events = calRes.result.items;
-      if (!events || events.length === 0) document.getElementById('calendar-container').innerHTML = '<li class="google-item">近期沒有行程。</li>';
-      else document.getElementById('calendar-container').innerHTML = events.map(event => {
-        let when = event.start.dateTime;
-        if (!when) when = event.start.date;
-        else { const d = new Date(when); when = `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; }
-        return `<li class="google-item"><div class="g-title">▪ ${event.summary || '無標題'}</div><div class="g-time">時間: ${when}</div></li>`;
-      }).join('');
+      // 加上時間戳強制代理伺服器不使用快取，保證拿到最新鮮的飛書資料
+      const cacheBusterUrl = LARK_ICS_URL + (LARK_ICS_URL.includes('?') ? '&' : '?') + 'cb=' + Date.now();
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(cacheBusterUrl)}`;
+      const res = await fetch(proxyUrl);
+      const data = await res.json();
+      if (!data.contents) return [];
+      
+      const jcalData = ICAL.parse(data.contents);
+      const comp = new ICAL.Component(jcalData);
+      const vevents = comp.getAllSubcomponents("vevent");
+      
+      const events = [];
+      const now = ICAL.Time.now();
+      
+      vevents.forEach(vevent => {
+        try {
+          const event = new ICAL.Event(vevent);
+          // 處理重複發生的會議 (例如飛書上設定的每週開會)
+          if (event.isRecurring()) {
+            const expand = event.iterator();
+            let next; let count = 0;
+            while ((next = expand.next()) && count < 5) {
+              if (next.compare(now) >= 0) {
+                events.push({ summary: event.summary, time: next.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' });
+                count++;
+              }
+            }
+          } else {
+            // 單次會議
+            if (event.endDate.compare(now) >= 0) {
+              events.push({ summary: event.summary, time: event.startDate.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' });
+            }
+          }
+        } catch(e) {} // 忽略解析錯誤的個別行程
+      });
+      return events;
+    } catch (err) {
+      console.error("飛書日曆讀取失敗", err); return [];
+    }
+  }
 
-      // Gmail
+  async function fetchGmail() {
+    try {
       const gmailRes = await gapi.client.gmail.users.messages.list({ 'userId': 'me', 'q': 'is:unread in:inbox', 'maxResults': 3 });
       document.getElementById('unread-count').textContent = `(共 ${gmailRes.result.resultSizeEstimate || 0} 封)`;
       const messages = gmailRes.result.messages || [];
-      if (messages.length === 0) document.getElementById('gmail-container').innerHTML = '<li class="google-item">收件匣沒有未讀郵件。</li>';
-      else {
+      if (messages.length === 0) {
+        document.getElementById('gmail-container').innerHTML = '<li class="google-item">收件匣沒有未讀郵件。</li>';
+      } else {
         let htmlStr = '';
         for (const msg of messages) {
           const detail = await gapi.client.gmail.users.messages.get({ 'userId': 'me', 'id': msg.id, 'format': 'metadata', 'metadataHeaders': ['Subject', 'From'] });
@@ -243,12 +291,72 @@
         }
         document.getElementById('gmail-container').innerHTML = htmlStr;
       }
-    } catch (err) { console.error(err); }
+    } catch(err) { console.error("Gmail讀取失敗", err); }
+  }
+
+  // =========================================
+  // 🌟 合併 Google 與 飛書 行程的終極函數
+  // =========================================
+  async function fetchCombinedCalendarData() {
+    let allEvents = [];
+    const calContainer = document.getElementById('calendar-container');
+    const token = gapi.client.getToken();
+
+    // 1. 抓取飛書日曆 (不需要 Google 登入也能運作)
+    if (LARK_ICS_URL) {
+      const larkEvents = await fetchLarkEvents();
+      allEvents = allEvents.concat(larkEvents);
+    }
+
+    // 2. 抓取 Google 日曆 & Gmail
+    if (token) {
+      fetchGmail();
+      try {
+        const calListRes = await gapi.client.calendar.calendarList.list();
+        const nowIso = (new Date()).toISOString();
+        for (const cal of calListRes.result.items) {
+          try {
+            const eventsRes = await gapi.client.calendar.events.list({
+              'calendarId': cal.id, 'timeMin': nowIso, 'showDeleted': false, 'singleEvents': true, 'maxResults': 4, 'orderBy': 'startTime'
+            });
+            if (eventsRes.result.items) {
+              eventsRes.result.items.forEach(e => {
+                let timeObj = e.start.dateTime ? new Date(e.start.dateTime) : new Date(e.start.date);
+                allEvents.push({
+                  summary: e.summary,
+                  time: timeObj,
+                  isAllDay: !e.start.dateTime,
+                  // 如果是外部訂閱日曆，打上日曆名稱標籤
+                  source: cal.primary ? '' : cal.summary 
+                });
+              });
+            }
+          } catch (err) {}
+        }
+      } catch (err) { console.error("Google Calendar 讀取失敗", err); }
+    }
+
+    // 3. 排序與渲染 (整合了兩邊的資料)
+    if (allEvents.length > 0) {
+      allEvents.sort((a, b) => a.time - b.time);
+      const topEvents = allEvents.slice(0, 4);
+      calContainer.innerHTML = topEvents.map(event => {
+        let when = event.isAllDay ? `${event.time.getMonth()+1}/${event.time.getDate()} (全天)` : `${event.time.getMonth()+1}/${event.time.getDate()} ${event.time.getHours().toString().padStart(2,'0')}:${event.time.getMinutes().toString().padStart(2,'0')}`;
+        // 飛書行程會有一個專屬的黑底白字標籤
+        const badge = event.source ? `<span class="cal-badge">${event.source}</span>` : '';
+        return `<li class="google-item"><div class="g-title">▪ ${event.summary || '無標題'} ${badge}</div><div class="g-time">時間: ${when}</div></li>`;
+      }).join('');
+    } else {
+      if (!LARK_ICS_URL && !token) {
+        calContainer.innerHTML = '<li class="google-item">請登入 Google 或設定飛書日曆連結。</li>';
+      } else {
+        calContainer.innerHTML = '<li class="google-item">近期沒有行程。</li>';
+      }
+    }
   }
 
   /* =========================================================
-     🌟 已修正的巴士 ETA API 設定：
-     九巴必須使用 dir ('O'去程 / 'I'回程)，不再使用 bound！
+     原有的巴士與天氣新聞邏輯
      ========================================================= */
   const LOCATION_ZONES = [
     {
@@ -265,14 +373,13 @@
       buses: [
         { co: 'kmb', route: '171', dir: 'O', seq: 4, dest: '荔枝角', stopName: '利澤樓' },
         { co: 'kmb', route: '671', dir: 'O', seq: 3, dest: '鑽石山站', stopName: '利澤樓' },
-        { co: 'ctb', route: '90',  stopId: '001152', dir: 'O', dest: '中環 (交易廣場)', stopName: '利澤樓 (城巴)' },
+        { co: 'ctb', route: '90',  stopId: '001152', dir: 'O', dest: '中環', stopName: '利澤樓 (城巴)' },
         { co: 'ctb', route: '592', stopId: '001152', dir: 'O', dest: '銅鑼灣', stopName: '利澤樓 (城巴)' }
       ]
     },
     {
       id: "grandtower", name: "旺角雅蘭中心", lat: 22.3188, lng: 114.1700,
       buses: [
-        // 修正了雅蘭中心的 seq，並明確指出往竹園/秀茂坪方向通常是回程 ('I')
         { co: 'kmb', route: '1',   dir: 'I', seq: 16, dest: '竹園邨', stopName: '雅蘭中心' },
         { co: 'kmb', route: '1A',  dir: 'I', seq: 18, dest: '中秀茂坪', stopName: '雅蘭中心' },
         { co: 'kmb', route: '104', dir: 'O', seq: 10, dest: '堅尼地城', stopName: '雅蘭中心' },
@@ -318,18 +425,13 @@
           statusText.textContent = `自動定位 (${minDistance.toFixed(1)}km)`; fetchBusETA();
         },
         (error) => { 
-          console.warn("GPS 定位失敗:", error);
           let errMsg = '定位失敗';
           if (error.code === 1) errMsg = '拒絕定位';
           else if (error.code === 2) errMsg = '無定位訊號';
           else if (error.code === 3) errMsg = '定位超時';
-          
           statusText.textContent = `${errMsg}(預設)`; 
-          select.value = 0;
-          currentActiveZone = LOCATION_ZONES[0];
-          fetchBusETA(); 
+          select.value = 0; currentActiveZone = LOCATION_ZONES[0]; fetchBusETA(); 
         }, 
-        // 延長 timeout 到 15 秒，並開啟高精度模式
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
       );
     } else { statusText.textContent = '不支援(預設)'; fetchBusETA(); }
@@ -358,9 +460,6 @@
     } catch (error) {}
   }
 
-  /* =========================================================
-     🌟 已修正的巴士 ETA 核心邏輯
-     ========================================================= */
   async function fetchBusETA() {
     const container = document.getElementById('bus-container'); let htmlStr = '';
     for (const config of currentActiveZone.buses) {
@@ -368,19 +467,20 @@
       try {
         let validEtas = []; const now = new Date();
         if (company === 'kmb') {
-          // 修正1：強制 URL 為 service_type = 1 (常規班次)
           const res = await fetch(`https://data.etabus.gov.hk/v1/transport/kmb/route-eta/${config.route}/1`);
           if (!res.ok) throw new Error(`HTTP 錯誤: ${res.status}`);
           const result = await res.json();
           if (!result || !result.data) throw new Error('API 格式異常');
           
-          validEtas = result.data
-            // 修正2：嚴格比對 config.dir ('O'去程 或 'I'回程)
-            .filter(eta => eta.seq === config.seq && eta.dir === config.dir && eta.eta)
-            // 修正3：增強日期轉換的相容性 (兼容 Safari 等瀏覽器)
-            .map(eta => Math.max(0, Math.floor((new Date(eta.eta.replace(/-/g, '/').replace('T', ' ')) - now) / 60000)))
-            .sort((a, b) => a - b)
-            .slice(0, 3);
+          validEtas = result.data.filter(eta => eta.seq === config.seq && eta.dir === config.dir && eta.eta)
+            .map(eta => {
+              // 修復時區計算錯誤：直接使用原生 ISO 8601 解析
+              const diffMs = new Date(eta.eta).getTime() - now.getTime();
+              // 檢查九巴的備註，如果是原定/預定班次，標記起來
+              const isScheduled = eta.rmk_tc && (eta.rmk_tc.includes('原定') || eta.rmk_tc.includes('預定'));
+              return { min: Math.max(0, Math.floor(diffMs / 60000)), isScheduled: isScheduled };
+            })
+            .sort((a, b) => a.min - b.min).slice(0, 3);
             
         } else if (company === 'ctb') {
           if (!config.stopId) throw new Error('設定缺少 stopId');
@@ -389,23 +489,23 @@
           const result = await res.json();
           if (!result || !result.data) throw new Error('API 格式異常');
           
-          validEtas = result.data
-            .filter(eta => eta.eta && (!config.dir || eta.dir === config.dir))
-            .map(eta => Math.max(0, Math.floor((new Date(eta.eta.replace(/-/g, '/').replace('T', ' ')) - now) / 60000)))
-            .sort((a, b) => a - b)
-            .slice(0, 3);
+          validEtas = result.data.filter(eta => eta.eta && (!config.dir || eta.dir === config.dir))
+            .map(eta => {
+              const diffMs = new Date(eta.eta).getTime() - now.getTime();
+              const isScheduled = eta.rmk_tc && (eta.rmk_tc.includes('原定') || eta.rmk_tc.includes('預定'));
+              return { min: Math.max(0, Math.floor(diffMs / 60000)), isScheduled: isScheduled };
+            })
+            .sort((a, b) => a.min - b.min).slice(0, 3);
         }
         
+        // 渲染時間，如果是預定班次加上 * 號
         let etaHtml = validEtas.length > 0 
-            ? validEtas.map(m => `<span>${Number.isNaN(m) ? '?' : m}<span class="eta-min">分</span></span>`).join('') 
-            : '<span style="font-size:1.2rem; font-weight:normal;">暫無班次</span>';
-            
+          ? validEtas.map(m => `<span>${Number.isNaN(m.min) ? '?' : m.min}<span class="eta-min">分${m.isScheduled ? '*' : ''}</span></span>`).join('') 
+          : '<span style="font-size:1.2rem; font-weight:normal;">暫無班次</span>';
+          
         htmlStr += `<div class="bus-item"><div class="bus-route">${config.route}</div><div class="bus-info"><span class="bus-dest"><span class="co-badge">${company === 'ctb'?'城巴':'九巴'}</span> 往 ${config.dest}</span><span class="bus-stop">${config.stopName}</span></div><div class="bus-etas">${etaHtml}</div></div>`;
-      
       } catch (error) { 
-        const coName = company === 'ctb' ? '城巴' : '九巴';
-        // 將具體錯誤原因印在畫面上，方便除錯
-        htmlStr += `<div class="bus-item"><div class="bus-route">${config.route}</div><div class="bus-info"><span class="bus-dest">${coName} API 錯誤</span><span class="bus-stop" style="color:#666;">原因: ${error.message}</span></div></div>`; 
+        htmlStr += `<div class="bus-item"><div class="bus-route">${config.route}</div><div class="bus-info"><span class="bus-dest">${company === 'ctb'?'城巴':'九巴'} API 錯誤</span><span class="bus-stop" style="color:#666;">原因: ${error.message}</span></div></div>`; 
       }
     }
     container.innerHTML = htmlStr; updateLastUpdateTime('巴士');
@@ -434,16 +534,13 @@
     document.getElementById('last-update').textContent = `最後更新 (${type})：${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
   }
 
-  initLocationSelector(); updateClock(); setInterval(updateClock, 1000); attemptGPSLocation(); setInterval(fetchBusETA, 60 * 1000); fetchWeather(); fetchNews(); setInterval(() => { fetchWeather(); fetchNews(); }, 15 * 60 * 1000);
+  initLocationSelector(); updateClock(); setInterval(updateClock, 1000); attemptGPSLocation(); setInterval(fetchBusETA, 60 * 1000); fetchWeather(); fetchNews(); 
+  // 啟動時先嘗試載入飛書 (即使沒登入Google)
+  fetchCombinedCalendarData(); setInterval(fetchCombinedCalendarData, 15 * 60 * 1000);
+  setInterval(() => { fetchWeather(); fetchNews(); }, 15 * 60 * 1000);
 
 </script>
 </body>
 </html>
-
-
-
-
-
-
 
 
