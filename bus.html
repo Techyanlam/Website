@@ -179,7 +179,7 @@
   /* =========================================================
      🛑🛑🛑 Google API 設定區 🛑🛑🛑
      ========================================================= */
-  const GOOGLE_CLIENT_ID = '32327213493-ha27s29a7vg6ibmpqpn68b7402t9du3i.apps.googleusercontent.com';
+  const GOOGLE_CLIENT_ID = '32327213493-1dqkm15k6kn8dorc6iaf37v4rlqneljt.apps.googleusercontent.com';
   const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
   const DISCOVERY_DOCS = [ 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest', 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest' ];
@@ -317,7 +317,20 @@
           currentActiveZone = LOCATION_ZONES[closestZoneIndex]; select.value = closestZoneIndex;
           statusText.textContent = `自動定位 (${minDistance.toFixed(1)}km)`; fetchBusETA();
         },
-        (error) => { statusText.textContent = '定位失敗(預設)'; fetchBusETA(); }, { timeout: 5000, maximumAge: 60000 }
+        (error) => { 
+          console.warn("GPS 定位失敗:", error);
+          let errMsg = '定位失敗';
+          if (error.code === 1) errMsg = '拒絕定位';
+          else if (error.code === 2) errMsg = '無定位訊號';
+          else if (error.code === 3) errMsg = '定位超時';
+          
+          statusText.textContent = `${errMsg}(預設)`; 
+          select.value = 0;
+          currentActiveZone = LOCATION_ZONES[0];
+          fetchBusETA(); 
+        }, 
+        // 延長 timeout 到 15 秒，並開啟高精度模式
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 }
       );
     } else { statusText.textContent = '不支援(預設)'; fetchBusETA(); }
   }
@@ -426,6 +439,9 @@
 </script>
 </body>
 </html>
+
+
+
 
 
 
