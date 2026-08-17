@@ -3,302 +3,92 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ink Dashboard (Hong Kong) - Robust News</title>
+  <title>E-Ink Dashboard (Hong Kong) - Fixed KMB API</title>
   <style>
     /* =========================================================
        全局重置與 E-ink 最佳化設定
        ========================================================= */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    body {
-      background-color: #ffffff;
-      color: #000000;
-      font-family: "PingFang TC", "Noto Sans CJK TC", "Microsoft JhengHei", -apple-system, sans-serif;
-      padding: 16px;
-      line-height: 1.4;
-      display: flex;
-      justify-content: center;
-    }
-    .dashboard-container {
-      width: 100%;
-      max-width: 1200px;
-      border: 4px solid #000000;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body { background-color: #ffffff; color: #000000; font-family: "PingFang TC", "Noto Sans CJK TC", "Microsoft JhengHei", -apple-system, sans-serif; padding: 16px; line-height: 1.4; display: flex; justify-content: center; }
+    .dashboard-container { width: 100%; max-width: 1200px; border: 4px solid #000000; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
 
     /* =========================================================
        頂部：時鐘、日期與即時天氣
        ========================================================= */
-    .header-panel {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 24px;
-      border-bottom: 4px solid #000000;
-      padding-bottom: 16px;
-    }
-    
-    .time-display {
-      font-size: 5rem;
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -2px;
-    }
-    
-    .date-location-display {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      align-items: center;
-    }
-    .date-text {
-      font-size: 1.6rem;
-      font-weight: bold;
-    }
-    
-    /* 地區選擇器 (下拉選單) */
-    .location-selector-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .gps-status {
-      font-size: 0.8rem;
-      border: 1px solid #000;
-      padding: 2px 6px;
-      font-weight: bold;
-    }
-    .location-select {
-      font-size: 1.2rem;
-      font-weight: bold;
-      border: 2px solid #000;
-      background-color: #fff;
-      color: #000;
-      padding: 4px 8px;
-      font-family: inherit;
-      outline: none;
-      cursor: pointer;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      border-radius: 0;
-      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-      background-repeat: no-repeat;
-      background-position: right 8px top 50%;
-      background-size: 12px auto;
-      padding-right: 28px;
-    }
-
-    .weather-current {
-      text-align: right;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
-    .temp-text {
-      font-size: 3.5rem;
-      font-weight: bold;
-      line-height: 1;
-    }
-    .weather-desc-text {
-      font-size: 1.1rem;
-      font-weight: bold;
-      margin-top: 4px;
-    }
+    .header-panel { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; border-bottom: 4px solid #000000; padding-bottom: 16px; }
+    .time-display { font-size: 5rem; font-weight: 900; line-height: 1; letter-spacing: -2px; }
+    .date-location-display { text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+    .date-text { font-size: 1.6rem; font-weight: bold; }
+    .location-selector-wrapper { display: flex; align-items: center; gap: 8px; }
+    .gps-status { font-size: 0.8rem; border: 1px solid #000; padding: 2px 6px; font-weight: bold; }
+    .location-select { font-size: 1.2rem; font-weight: bold; border: 2px solid #000; background-color: #fff; color: #000; padding: 4px 8px; outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; border-radius: 0; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 8px top 50%; background-size: 12px auto; padding-right: 28px; }
+    .weather-current { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+    .temp-text { font-size: 3.5rem; font-weight: bold; line-height: 1; }
+    .weather-desc-text { font-size: 1.1rem; font-weight: bold; margin-top: 4px; }
 
     /* =========================================================
-       主體區域：左巴士、右天氣預報
+       主體區域共用
        ========================================================= */
-    .main-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    
-    .panel {
-      display: flex;
-      flex-direction: column;
-    }
-    .panel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 3px solid #000000;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
-    }
-    .panel-title {
-      font-size: 1.4rem;
-      font-weight: 900;
-    }
-    .refresh-badge {
-      font-size: 0.85rem;
-      border: 1px solid #000000;
-      padding: 2px 6px;
-      font-weight: bold;
-    }
+    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .panel { display: flex; flex-direction: column; }
+    .panel-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 3px solid #000000; padding-bottom: 8px; margin-bottom: 12px; }
+    .panel-title { font-size: 1.4rem; font-weight: 900; }
+    .refresh-badge { font-size: 0.85rem; border: 1px solid #000000; padding: 2px 6px; font-weight: bold; }
 
     /* 巴士列表 */
-    .bus-list {
-      display: flex;
-      flex-direction: column;
-    }
-    .bus-item {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 2px dashed #000000;
-    }
-    .bus-route {
-      font-size: 2rem;
-      font-weight: 900;
-      width: 70px;
-    }
-    .co-badge {
-      font-size: 0.75rem;
-      border: 1px solid #000;
-      padding: 1px 4px;
-      display: inline-block;
-      margin-bottom: 2px;
-      font-weight: normal;
-    }
-    .bus-info {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .bus-dest {
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-    .bus-stop {
-      font-size: 0.9rem;
-    }
-    .bus-etas {
-      font-size: 1.6rem;
-      font-weight: bold;
-      text-align: right;
-    }
-    .bus-etas span {
-      margin-left: 12px;
-    }
-    .eta-min {
-      font-size: 1rem;
-      font-weight: normal;
-    }
+    .bus-list { display: flex; flex-direction: column; }
+    .bus-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 2px dashed #000000; }
+    .bus-route { font-size: 2rem; font-weight: 900; width: 70px; }
+    .co-badge { font-size: 0.75rem; border: 1px solid #000; padding: 1px 4px; display: inline-block; margin-bottom: 2px; font-weight: normal; }
+    .bus-info { display: flex; flex-direction: column; align-items: flex-start; }
+    .bus-dest { font-size: 1.2rem; font-weight: bold; }
+    .bus-stop { font-size: 0.9rem; }
+    .bus-etas { font-size: 1.6rem; font-weight: bold; text-align: right; }
+    .bus-etas span { margin-left: 12px; }
+    .eta-min { font-size: 1rem; font-weight: normal; }
 
     /* 天氣預報表格 */
-    .forecast-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .forecast-table th {
-      text-align: left;
-      font-size: 1rem;
-      border-bottom: 2px solid #000000;
-      padding: 8px 4px;
-    }
-    .forecast-table td {
-      border-bottom: 2px dashed #000000;
-      padding: 16px 4px;
-      vertical-align: middle;
-    }
-    .fc-day {
-      font-size: 1.2rem;
-      font-weight: bold;
-      width: 20%;
-    }
-    .fc-desc {
-      font-size: 1rem;
-      width: 55%;
-      padding-right: 16px;
-    }
-    .fc-temp-rain {
-      width: 25%;
-      text-align: right;
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
-    .fc-rain {
-      font-size: 0.9rem;
-      font-weight: normal;
-      margin-top: 4px;
-    }
+    .forecast-table { width: 100%; border-collapse: collapse; }
+    .forecast-table th { text-align: left; font-size: 1rem; border-bottom: 2px solid #000000; padding: 8px 4px; }
+    .forecast-table td { border-bottom: 2px dashed #000000; padding: 16px 4px; vertical-align: middle; }
+    .fc-day { font-size: 1.2rem; font-weight: bold; width: 20%; }
+    .fc-desc { font-size: 1rem; width: 55%; padding-right: 16px; }
+    .fc-temp-rain { width: 25%; text-align: right; font-size: 1.1rem; font-weight: bold; }
+    .fc-rain { font-size: 0.9rem; font-weight: normal; margin-top: 4px; }
 
     /* =========================================================
-       底部區域：新聞
+       Google 日曆與 Gmail 區塊
        ========================================================= */
-    .news-panel {
-      border-top: 4px solid #000000;
-      padding-top: 16px;
-    }
-    .news-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px 24px;
-      margin-top: 12px;
-      list-style: none;
-    }
-    .news-item {
-      font-size: 1rem;
-      font-weight: bold;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      position: relative;
-      padding-left: 16px;
-    }
-    .news-item::before {
-      content: "■";
-      position: absolute;
-      left: 0;
-      top: 0;
-      font-size: 0.8rem;
-    }
+    .google-section { border-top: 4px solid #000000; padding-top: 16px; margin-top: 8px; }
+    .auth-buttons { margin-bottom: 12px; display: flex; gap: 8px; }
+    .auth-btn { border: 2px solid #000; background: #fff; color: #000; font-weight: bold; padding: 4px 12px; cursor: pointer; font-family: inherit; font-size: 1rem; }
+    .auth-btn:hover { background: #000; color: #fff; }
+    .auth-btn:disabled { border-color: #ccc; color: #ccc; cursor: not-allowed; background: #fff; }
+    .google-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .google-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .google-item { border-bottom: 1px dashed #000; padding-bottom: 8px; }
+    .g-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .g-time { font-size: 0.9rem; }
+    .g-sender { font-size: 0.9rem; font-style: italic; }
 
-    /* 頁尾更新時間 */
-    .footer-bar {
-      margin-top: 8px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      border-top: 1px solid #000000;
-      padding-top: 8px;
-      font-weight: bold;
-    }
+    /* 底部區域：新聞 */
+    .news-panel { border-top: 4px solid #000000; padding-top: 16px; }
+    .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin-top: 12px; list-style: none; }
+    .news-item { font-size: 1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; padding-left: 16px; }
+    .news-item::before { content: "■"; position: absolute; left: 0; top: 0; font-size: 0.8rem; }
 
-    /* 響應式 */
+    /* 頁尾 */
+    .footer-bar { margin-top: 8px; display: flex; justify-content: space-between; font-size: 0.85rem; border-top: 1px solid #000000; padding-top: 8px; font-weight: bold; }
+
     @media (max-width: 800px) {
-      .header-panel {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 12px;
-      }
-      .weather-current {
-        align-items: center;
-      }
-      .location-selector-wrapper {
-        justify-content: center;
-      }
-      .main-grid {
-        grid-template-columns: 1fr;
-      }
-      .news-grid {
-        grid-template-columns: 1fr;
-      }
+      .header-panel { grid-template-columns: 1fr; text-align: center; gap: 12px; }
+      .weather-current { align-items: center; }
+      .location-selector-wrapper { justify-content: center; }
+      .main-grid, .google-grid, .news-grid { grid-template-columns: 1fr; }
     }
   </style>
+  <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+  <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
 </head>
 <body>
 
@@ -306,17 +96,13 @@
   
   <div class="header-panel">
     <div class="time-display" id="clock-time">--:--</div>
-    
     <div class="date-location-display">
       <div class="date-text" id="clock-date">----年--月--日 星期-</div>
       <div class="location-selector-wrapper">
-        <span class="gps-status" id="gps-status-text">優先定位中...</span>
-        <select id="location-select" class="location-select">
-          <!-- 選項由 JS 自動生成 -->
-        </select>
+        <span class="gps-status" id="gps-status-text">定位中...</span>
+        <select id="location-select" class="location-select"></select>
       </div>
     </div>
-
     <div class="weather-current">
       <div class="temp-text"><span id="curr-temp">--</span>°C</div>
       <div class="weather-desc-text" id="curr-desc">載入中... 濕度 --%</div>
@@ -324,7 +110,6 @@
   </div>
 
   <div class="main-grid">
-    <!-- 左側：巴士到站時間 -->
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">巴士預計到站時間</div>
@@ -335,31 +120,47 @@
       </div>
     </div>
 
-    <!-- 右側：天氣預報 -->
     <div class="panel">
       <div class="panel-header">
-        <div class="panel-title">香港天文台四天天氣預報</div>
+        <div class="panel-title">香港天文台天氣預報</div>
         <div class="refresh-badge">15分鐘更新</div>
       </div>
       <table class="forecast-table">
         <thead>
-          <tr>
-            <th>日子</th>
-            <th>天氣預測</th>
-            <th style="text-align: right;">氣溫 / 降雨機率</th>
-          </tr>
+          <tr><th>日子</th><th>天氣預測</th><th style="text-align: right;">氣溫/降雨</th></tr>
         </thead>
-        <tbody id="forecast-tbody">
-          <tr><td colspan="3">載入資料中...</td></tr>
-        </tbody>
+        <tbody id="forecast-tbody"><tr><td colspan="3">載入資料中...</td></tr></tbody>
       </table>
     </div>
   </div>
 
-  <!-- 底部：即時新聞 -->
+  <div class="google-section">
+    <div class="panel-header" style="margin-bottom: 8px;">
+      <div class="panel-title" style="font-size: 1.1rem;">Google 助理 (日曆 & Gmail)</div>
+      <div class="auth-buttons">
+        <button id="authorize_button" class="auth-btn" onclick="handleAuthClick()" disabled>登入 Google</button>
+        <button id="signout_button" class="auth-btn" onclick="handleSignoutClick()" style="display: none;">登出</button>
+      </div>
+    </div>
+    <div class="google-grid">
+      <div class="panel">
+        <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px;">📅 即將到來的行程</div>
+        <ul class="google-list" id="calendar-container">
+          <li class="google-item">請先登入 Google 帳號授權。</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px;">✉️ 未讀郵件 <span id="unread-count"></span></div>
+        <ul class="google-list" id="gmail-container">
+          <li class="google-item">請先登入 Google 帳號授權。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <div class="panel news-panel">
     <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
-      <div class="panel-title" id="news-panel-title" style="font-size: 1.1rem;">即時綜合新聞 (載入中...)</div>
+      <div class="panel-title" id="news-panel-title" style="font-size: 1.1rem;">即時綜合新聞</div>
       <div class="refresh-badge">15分鐘更新</div>
     </div>
     <ul class="news-grid" id="news-container">
@@ -368,7 +169,7 @@
   </div>
 
   <div class="footer-bar">
-    <div>資料來源：天文台 / 運輸署開放資料 (九巴/城巴) / 新聞機構</div>
+    <div>資料來源：天文台 / 運輸署開放資料 / 新聞機構 / Google</div>
     <div id="last-update">系統啟動中...</div>
   </div>
 
@@ -376,43 +177,105 @@
 
 <script>
   /* =========================================================
-     設定區：支援九巴 (co: 'kmb') 及 城巴 (co: 'ctb')
-     城巴必須提供 stopId，可加入 dir ('O'去程/'I'回程)
+     🛑🛑🛑 Google API 設定區 🛑🛑🛑
+     ========================================================= */
+  const GOOGLE_CLIENT_ID = '在此輸入您的_CLIENT_ID.apps.googleusercontent.com';
+  const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
+  const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
+  const DISCOVERY_DOCS = [ 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest', 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest' ];
+
+  let tokenClient; let gapiInited = false; let gisInited = false;
+  function gapiLoaded() { gapi.load('client', initializeGapiClient); }
+  async function initializeGapiClient() {
+    try { await gapi.client.init({ apiKey: GOOGLE_API_KEY, discoveryDocs: DISCOVERY_DOCS }); gapiInited = true; maybeEnableButtons(); } catch (err) {}
+  }
+  function gisLoaded() {
+    try {
+      tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID, scope: SCOPES,
+        callback: (t) => {
+          if (t && t.access_token) {
+            document.getElementById('authorize_button').style.display = 'none'; document.getElementById('signout_button').style.display = 'inline-block';
+            fetchGoogleData(); setInterval(fetchGoogleData, 15 * 60 * 1000);
+          }
+        },
+      });
+      gisInited = true; maybeEnableButtons();
+    } catch (err) {}
+  }
+  function maybeEnableButtons() { if (gapiInited && gisInited) document.getElementById('authorize_button').disabled = false; }
+  function handleAuthClick() { tokenClient.requestAccessToken({prompt: 'consent'}); }
+  function handleSignoutClick() {
+    const t = gapi.client.getToken();
+    if (t !== null) {
+      google.accounts.oauth2.revoke(t.access_token); gapi.client.setToken('');
+      document.getElementById('calendar-container').innerHTML = '<li class="google-item">已登出，請重新授權。</li>';
+      document.getElementById('gmail-container').innerHTML = '<li class="google-item">已登出，請重新授權。</li>';
+      document.getElementById('authorize_button').style.display = 'inline-block'; document.getElementById('signout_button').style.display = 'none';
+    }
+  }
+
+  async function fetchGoogleData() {
+    try {
+      // 日曆
+      const calRes = await gapi.client.calendar.events.list({ 'calendarId': 'primary', 'timeMin': (new Date()).toISOString(), 'showDeleted': false, 'singleEvents': true, 'maxResults': 3, 'orderBy': 'startTime' });
+      const events = calRes.result.items;
+      if (!events || events.length === 0) document.getElementById('calendar-container').innerHTML = '<li class="google-item">近期沒有行程。</li>';
+      else document.getElementById('calendar-container').innerHTML = events.map(event => {
+        let when = event.start.dateTime;
+        if (!when) when = event.start.date;
+        else { const d = new Date(when); when = `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; }
+        return `<li class="google-item"><div class="g-title">▪ ${event.summary || '無標題'}</div><div class="g-time">時間: ${when}</div></li>`;
+      }).join('');
+
+      // Gmail
+      const gmailRes = await gapi.client.gmail.users.messages.list({ 'userId': 'me', 'q': 'is:unread in:inbox', 'maxResults': 3 });
+      document.getElementById('unread-count').textContent = `(共 ${gmailRes.result.resultSizeEstimate || 0} 封)`;
+      const messages = gmailRes.result.messages || [];
+      if (messages.length === 0) document.getElementById('gmail-container').innerHTML = '<li class="google-item">收件匣沒有未讀郵件。</li>';
+      else {
+        let htmlStr = '';
+        for (const msg of messages) {
+          const detail = await gapi.client.gmail.users.messages.get({ 'userId': 'me', 'id': msg.id, 'format': 'metadata', 'metadataHeaders': ['Subject', 'From'] });
+          let sub = '無主旨', from = '未知';
+          detail.result.payload.headers.forEach(h => { if(h.name==='Subject') sub=h.value; if(h.name==='From') from=h.value.replace(/<.*>/, '').trim(); });
+          htmlStr += `<li class="google-item"><div class="g-title">▪ ${sub}</div><div class="g-sender">來自: ${from}</div></li>`;
+        }
+        document.getElementById('gmail-container').innerHTML = htmlStr;
+      }
+    } catch (err) { console.error(err); }
+  }
+
+  /* =========================================================
+     🌟 已修正的巴士 ETA API 設定：
+     九巴必須使用 dir ('O'去程 / 'I'回程)，不再使用 bound！
      ========================================================= */
   const LOCATION_ZONES = [
     {
-      id: "richland",
-      name: "麗晶花園 8 座",
-      lat: 22.3301,
-      lng: 114.2050,
+      id: "richland", name: "麗晶花園 8 座", lat: 22.3301, lng: 114.2050,
       buses: [
-        { co: 'kmb', route: '24',  bound: '1', seq: 3, dest: '旺角(循環線)', stopName: '麗晶花園 8 座附近' },
-        { co: 'kmb', route: '13X', bound: '2', seq: 21, dest: '尖沙咀 (東)', stopName: '麗晶花園 8 座附近' },
-        { co: 'kmb', route: '107', bound: '2', seq: 6, dest: '華貴', stopName: '麗晶商場/麗晶花園' },
-        { co: 'kmb', route: '5D',  bound: '1', seq: 4, dest: '紅磡', stopName: '麗晶花園' }
+        { co: 'kmb', route: '24',  dir: 'O', seq: 3, dest: '旺角(循環)', stopName: '麗晶花園 8 座' },
+        { co: 'kmb', route: '13X', dir: 'O', seq: 21, dest: '尖沙咀 (東)', stopName: '麗晶花園 8 座' },
+        { co: 'kmb', route: '107', dir: 'O', seq: 6, dest: '華貴', stopName: '麗晶商場/麗晶花園' },
+        { co: 'kmb', route: '5D',  dir: 'O', seq: 4, dest: '紅磡', stopName: '麗晶花園' }
       ]
     },
     {
-      id: "leechak",
-      name: "鴨脷洲邨利澤樓",
-      lat: 22.2452,
-      lng: 114.1540,
+      id: "leechak", name: "鴨脷洲邨利澤樓", lat: 22.2452, lng: 114.1540,
       buses: [
-        { co: 'kmb', route: '171', bound: '1', seq: 4, dest: '荔枝角', stopName: '利澤樓' },
-        { co: 'kmb', route: '671', bound: '1', seq: 3, dest: '鑽石山站', stopName: '利澤樓' },
+        { co: 'kmb', route: '171', dir: 'O', seq: 4, dest: '荔枝角', stopName: '利澤樓' },
+        { co: 'kmb', route: '671', dir: 'O', seq: 3, dest: '鑽石山站', stopName: '利澤樓' },
         { co: 'ctb', route: '90',  stopId: '001152', dir: 'O', dest: '中環 (交易廣場)', stopName: '利澤樓 (城巴)' },
-        { co: 'ctb', route: '592', stopId: '001152', dir: 'O', dest: '銅鑼灣 (摩頓台)', stopName: '利澤樓 (城巴)' }
+        { co: 'ctb', route: '592', stopId: '001152', dir: 'O', dest: '銅鑼灣', stopName: '利澤樓 (城巴)' }
       ]
     },
     {
-      id: "grandtower",
-      name: "旺角雅蘭中心",
-      lat: 22.3188,
-      lng: 114.1700,
+      id: "grandtower", name: "旺角雅蘭中心", lat: 22.3188, lng: 114.1700,
       buses: [
-        { co: 'kmb', route: '1',   bound: '2', seq: 4, dest: '竹園邨', stopName: '雅蘭中心' },
-        { co: 'kmb', route: '1A',  bound: '2', seq: 4, dest: '中秀茂坪', stopName: '雅蘭中心' },
-        { co: 'kmb', route: '104', bound: '1', seq: 5, dest: '堅尼地城', stopName: '雅蘭中心' },
+        // 修正了雅蘭中心的 seq，並明確指出往竹園/秀茂坪方向通常是回程 ('I')
+        { co: 'kmb', route: '1',   dir: 'I', seq: 16, dest: '竹園邨', stopName: '雅蘭中心' },
+        { co: 'kmb', route: '1A',  dir: 'I', seq: 18, dest: '中秀茂坪', stopName: '雅蘭中心' },
+        { co: 'kmb', route: '104', dir: 'O', seq: 10, dest: '堅尼地城', stopName: '雅蘭中心' },
         { co: 'ctb', route: '970', stopId: '001550', dir: 'O', dest: '數碼港', stopName: '雅蘭中心 (城巴)' }
       ]
     }
@@ -420,86 +283,47 @@
 
   let currentActiveZone = LOCATION_ZONES[0];
 
-  /* =========================================================
-     功能實作區
-     ========================================================= */
-
   function initLocationSelector() {
     const select = document.getElementById('location-select');
     LOCATION_ZONES.forEach((zone, index) => {
       const option = document.createElement('option');
-      option.value = index;
-      option.textContent = zone.name;
-      select.appendChild(option);
+      option.value = index; option.textContent = zone.name; select.appendChild(option);
     });
-
     select.addEventListener('change', (e) => {
-      const selectedIndex = e.target.value;
-      currentActiveZone = LOCATION_ZONES[selectedIndex];
+      currentActiveZone = LOCATION_ZONES[e.target.value];
       document.getElementById('gps-status-text').textContent = '手動選擇';
       document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none;">載入新地點巴士資料中...</div>';
       fetchBusETA();
     });
   }
 
-  function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-    var R = 6371;
-    var dLat = deg2rad(lat2-lat1);
-    var dLon = deg2rad(lon2-lon1); 
-    var a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    return R * c;
-  }
   function deg2rad(deg) { return deg * (Math.PI/180) }
+  function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    var R = 6371; var dLat = deg2rad(lat2-lat1); var dLon = deg2rad(lon2-lon1); 
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+    return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+  }
 
   function attemptGPSLocation() {
-    const statusText = document.getElementById('gps-status-text');
-    const select = document.getElementById('location-select');
-
+    const statusText = document.getElementById('gps-status-text'); const select = document.getElementById('location-select');
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          
-          let minDistance = Infinity;
-          let closestZoneIndex = 0;
-
+          let minDistance = Infinity; let closestZoneIndex = 0;
           LOCATION_ZONES.forEach((zone, index) => {
-            const distance = getDistanceFromLatLonInKm(userLat, userLng, zone.lat, zone.lng);
-            if (distance < minDistance) {
-              minDistance = distance;
-              closestZoneIndex = index;
-            }
+            const distance = getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, zone.lat, zone.lng);
+            if (distance < minDistance) { minDistance = distance; closestZoneIndex = index; }
           });
-
-          currentActiveZone = LOCATION_ZONES[closestZoneIndex];
-          select.value = closestZoneIndex;
-          statusText.textContent = `自動定位 (${minDistance.toFixed(1)}km)`;
-          fetchBusETA();
+          currentActiveZone = LOCATION_ZONES[closestZoneIndex]; select.value = closestZoneIndex;
+          statusText.textContent = `自動定位 (${minDistance.toFixed(1)}km)`; fetchBusETA();
         },
-        (error) => {
-          console.warn("GPS 定位失敗，使用預設值", error);
-          statusText.textContent = '定位失敗 (預設)';
-          select.value = 0;
-          currentActiveZone = LOCATION_ZONES[0];
-          fetchBusETA();
-        },
-        { timeout: 5000, maximumAge: 60000 }
+        (error) => { statusText.textContent = '定位失敗(預設)'; fetchBusETA(); }, { timeout: 5000, maximumAge: 60000 }
       );
-    } else {
-      statusText.textContent = '不支援定位 (預設)';
-      select.value = 0;
-      currentActiveZone = LOCATION_ZONES[0];
-      fetchBusETA();
-    }
+    } else { statusText.textContent = '不支援(預設)'; fetchBusETA(); }
   }
 
   function updateClock() {
-    const now = new Date();
-    const pad = n => n.toString().padStart(2, '0');
+    const now = new Date(); const pad = n => n.toString().padStart(2, '0');
     document.getElementById('clock-time').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
     const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
     document.getElementById('clock-date').textContent = `${now.getFullYear()}年${pad(now.getMonth() + 1)}月${pad(now.getDate())}日 ${days[now.getDay()]}`;
@@ -509,171 +333,99 @@
     try {
       const currentRes = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc');
       const currentData = await currentRes.json();
-      
-      const temp = currentData.temperature.data[0].value;
-      const humidity = currentData.humidity.data[0].value;
-      const warning = currentData.warningMessage ? currentData.warningMessage[0] : '';
-      const iconDesc = warning !== '' ? '有天氣警告' : '大致多雲'; 
-
-      document.getElementById('curr-temp').textContent = temp;
-      document.getElementById('curr-desc').textContent = `${iconDesc} · 濕度 ${humidity}%`;
+      document.getElementById('curr-temp').textContent = currentData.temperature.data[0].value;
+      document.getElementById('curr-desc').textContent = `${currentData.warningMessage ? '有天氣警告' : '大致多雲'} · 濕度 ${currentData.humidity.data[0].value}%`;
 
       const forecastRes = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc');
       const forecastData = await forecastRes.json();
-      const fourDays = forecastData.weatherForecast.slice(0, 4);
-
-      document.getElementById('forecast-tbody').innerHTML = fourDays.map(day => `
-        <tr>
-          <td class="fc-day">${day.week}</td>
-          <td class="fc-desc">${day.forecastWeather}</td>
-          <td class="fc-temp-rain">
-            ${day.forecastMintemp.value}° - ${day.forecastMaxtemp.value}°<br>
-            <span class="fc-rain">降雨: ${day.PSR}</span>
-          </td>
-        </tr>
+      document.getElementById('forecast-tbody').innerHTML = forecastData.weatherForecast.slice(0, 4).map(day => `
+        <tr><td class="fc-day">${day.week}</td><td class="fc-desc">${day.forecastWeather}</td><td class="fc-temp-rain">${day.forecastMintemp.value}° - ${day.forecastMaxtemp.value}°<br><span class="fc-rain">降雨: ${day.PSR}</span></td></tr>
       `).join('');
       updateLastUpdateTime('天氣');
-    } catch (error) {
-      console.error('天氣載入失敗:', error);
-    }
+    } catch (error) {}
   }
 
+  /* =========================================================
+     🌟 已修正的巴士 ETA 核心邏輯
+     ========================================================= */
   async function fetchBusETA() {
-    const container = document.getElementById('bus-container');
-    let htmlStr = '';
-    const busesToFetch = currentActiveZone.buses;
-
-    for (const config of busesToFetch) {
+    const container = document.getElementById('bus-container'); let htmlStr = '';
+    for (const config of currentActiveZone.buses) {
       const company = config.co || 'kmb';
-      
       try {
-        let validEtas = [];
-        const now = new Date();
-
+        let validEtas = []; const now = new Date();
         if (company === 'kmb') {
-          const res = await fetch(`https://data.etabus.gov.hk/v1/transport/kmb/route-eta/${config.route}/${config.bound}`);
+          // 修正1：強制 URL 為 service_type = 1 (常規班次)
+          const res = await fetch(`https://data.etabus.gov.hk/v1/transport/kmb/route-eta/${config.route}/1`);
+          if (!res.ok) throw new Error(`HTTP 錯誤: ${res.status}`);
           const result = await res.json();
-          validEtas = (result.data || [])
-            .filter(eta => eta.seq === config.seq && eta.eta)
-            .map(eta => Math.max(0, Math.floor((new Date(eta.eta) - now) / 60000)))
+          if (!result || !result.data) throw new Error('API 格式異常');
+          
+          validEtas = result.data
+            // 修正2：嚴格比對 config.dir ('O'去程 或 'I'回程)
+            .filter(eta => eta.seq === config.seq && eta.dir === config.dir && eta.eta)
+            // 修正3：增強日期轉換的相容性 (兼容 Safari 等瀏覽器)
+            .map(eta => Math.max(0, Math.floor((new Date(eta.eta.replace(/-/g, '/').replace('T', ' ')) - now) / 60000)))
             .sort((a, b) => a - b)
             .slice(0, 3);
             
         } else if (company === 'ctb') {
+          if (!config.stopId) throw new Error('設定缺少 stopId');
           const res = await fetch(`https://rt.data.gov.hk/v2/transport/citybus/eta/CTB/${config.stopId}/${config.route}`);
+          if (!res.ok) throw new Error(`HTTP 錯誤: ${res.status}`);
           const result = await res.json();
-          validEtas = (result.data || [])
+          if (!result || !result.data) throw new Error('API 格式異常');
+          
+          validEtas = result.data
             .filter(eta => eta.eta && (!config.dir || eta.dir === config.dir))
-            .map(eta => Math.max(0, Math.floor((new Date(eta.eta) - now) / 60000)))
+            .map(eta => Math.max(0, Math.floor((new Date(eta.eta.replace(/-/g, '/').replace('T', ' ')) - now) / 60000)))
             .sort((a, b) => a - b)
             .slice(0, 3);
         }
-
+        
         let etaHtml = validEtas.length > 0 
-          ? validEtas.map(m => `<span>${m}<span class="eta-min">分</span></span>`).join('')
-          : '<span style="font-size:1.2rem; font-weight:normal;">暫無班次</span>';
-
-        const coBadge = company === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
-
-        htmlStr += `
-          <div class="bus-item">
-            <div class="bus-route">${config.route}</div>
-            <div class="bus-info">
-              <span class="bus-dest">${coBadge} 往 ${config.dest}</span>
-              <span class="bus-stop">${config.stopName}</span>
-            </div>
-            <div class="bus-etas">${etaHtml}</div>
-          </div>
-        `;
-      } catch (error) {
+            ? validEtas.map(m => `<span>${Number.isNaN(m) ? '?' : m}<span class="eta-min">分</span></span>`).join('') 
+            : '<span style="font-size:1.2rem; font-weight:normal;">暫無班次</span>';
+            
+        htmlStr += `<div class="bus-item"><div class="bus-route">${config.route}</div><div class="bus-info"><span class="bus-dest"><span class="co-badge">${company === 'ctb'?'城巴':'九巴'}</span> 往 ${config.dest}</span><span class="bus-stop">${config.stopName}</span></div><div class="bus-etas">${etaHtml}</div></div>`;
+      
+      } catch (error) { 
         const coName = company === 'ctb' ? '城巴' : '九巴';
-        htmlStr += `
-          <div class="bus-item">
-            <div class="bus-route">${config.route}</div>
-            <div class="bus-info"><span class="bus-dest">${coName} API 錯誤</span></div>
-          </div>
-        `;
+        // 將具體錯誤原因印在畫面上，方便除錯
+        htmlStr += `<div class="bus-item"><div class="bus-route">${config.route}</div><div class="bus-info"><span class="bus-dest">${coName} API 錯誤</span><span class="bus-stop" style="color:#666;">原因: ${error.message}</span></div></div>`; 
       }
     }
-    
-    container.innerHTML = htmlStr;
-    updateLastUpdateTime('全部');
+    container.innerHTML = htmlStr; updateLastUpdateTime('巴士');
   }
 
-  // ==========================================
-  // 高度穩定的多重來源新聞獲取邏輯
-  // ==========================================
   async function fetchNews() {
-    const newsContainer = document.getElementById('news-container');
-    const titleElement = document.getElementById('news-panel-title');
-    
-    // 設定多個來源，如果香港電台被擋，自動切換至備用的 Yahoo 新聞
     const sources = [
-      {
-        name: '香港電台',
-        url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://rthk9.rthk.hk/rthk/news/rss/c_expressnews_cnews.xml')
-      },
-      {
-        name: 'Yahoo 港聞',
-        url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://hk.news.yahoo.com/rss/hong-kong')
-      }
+      { name: '香港電台', url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://rthk9.rthk.hk/rthk/news/rss/c_expressnews_cnews.xml') },
+      { name: 'Yahoo 港聞', url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://hk.news.yahoo.com/rss/hong-kong') }
     ];
-
     for (let source of sources) {
       try {
-        const res = await fetch(source.url);
-        if (!res.ok) continue; // 如果狀態碼錯誤，嘗試下一個來源
-        
+        const res = await fetch(source.url); if (!res.ok) continue;
         const data = await res.json();
-        
         if (data.status === 'ok' && data.items && data.items.length > 0) {
-          // 成功獲取新聞
-          const titles = data.items.slice(0, 6).map(item => item.title);
-          
-          newsContainer.innerHTML = titles.map(t => `<li class="news-item" title="${t}">${t}</li>`).join('');
-          titleElement.textContent = `即時綜合新聞 (${source.name})`; // 標題顯示目前使用的來源
-          
-          updateLastUpdateTime('新聞');
-          return; // 成功後直接結束函數，不再嘗試後面的來源
+          document.getElementById('news-container').innerHTML = data.items.slice(0, 6).map(item => `<li class="news-item" title="${item.title}">${item.title}</li>`).join('');
+          document.getElementById('news-panel-title').textContent = `即時綜合新聞 (${source.name})`; updateLastUpdateTime('新聞'); return;
         }
-      } catch (err) {
-        console.warn(`${source.name} 獲取失敗:`, err);
-      }
+      } catch (err) {}
     }
-
-    // 若所有來源都失敗，顯示友善的錯誤訊息
-    newsContainer.innerHTML = '<li class="news-item">新聞載入失敗，可能受到網絡或防火牆限制。</li>';
-    titleElement.textContent = `即時綜合新聞 (無法連線)`;
+    document.getElementById('news-container').innerHTML = '<li class="news-item">新聞載入失敗</li>';
   }
 
   function updateLastUpdateTime(type) {
-    const now = new Date();
-    const pad = n => n.toString().padStart(2, '0');
+    const pad = n => n.toString().padStart(2, '0'); const now = new Date();
     document.getElementById('last-update').textContent = `最後更新 (${type})：${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
   }
 
-  /* =========================================================
-     初始化執行
-     ========================================================= */
-  
-  initLocationSelector();
-  
-  updateClock();
-  setInterval(updateClock, 1000);
-
-  attemptGPSLocation();
-  
-  setInterval(fetchBusETA, 60 * 1000);
-
-  fetchWeather();
-  fetchNews();
-  setInterval(() => {
-    fetchWeather();
-    fetchNews();
-  }, 15 * 60 * 1000);
+  initLocationSelector(); updateClock(); setInterval(updateClock, 1000); attemptGPSLocation(); setInterval(fetchBusETA, 60 * 1000); fetchWeather(); fetchNews(); setInterval(() => { fetchWeather(); fetchNews(); }, 15 * 60 * 1000);
 
 </script>
 </body>
 </html>
+
 
 
