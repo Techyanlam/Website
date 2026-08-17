@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ink Dashboard (Hong Kong) - Multi-Calendar & Lark</title>
+  <title>E-Ink Dashboard (Hong Kong) - Dynamic GPS Transit</title>
   <style>
     /* =========================================================
        全局重置與 E-ink 最佳化設定
@@ -17,11 +17,10 @@
        ========================================================= */
     .header-panel { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; border-bottom: 4px solid #000000; padding-bottom: 16px; }
     .time-display { font-size: 5rem; font-weight: 900; line-height: 1; letter-spacing: -2px; }
-    .date-location-display { text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+    .date-location-display { text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center;}
     .date-text { font-size: 1.6rem; font-weight: bold; }
-    .location-selector-wrapper { display: flex; align-items: center; gap: 8px; }
-    .gps-status { font-size: 0.8rem; border: 1px solid #000; padding: 2px 6px; font-weight: bold; }
-    .location-select { font-size: 1.2rem; font-weight: bold; border: 2px solid #000; background-color: #fff; color: #000; padding: 4px 8px; outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; border-radius: 0; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 8px top 50%; background-size: 12px auto; padding-right: 28px; }
+    .gps-status { font-size: 1.2rem; font-weight: bold; padding: 4px 8px; display: inline-block; border: 2px solid #000; }
+    
     .weather-current { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
     .temp-text { font-size: 3.5rem; font-weight: bold; line-height: 1; }
     .weather-desc-text { font-size: 1.1rem; font-weight: bold; margin-top: 4px; }
@@ -84,17 +83,13 @@
     @media (max-width: 800px) {
       .header-panel { grid-template-columns: 1fr; text-align: center; gap: 12px; }
       .weather-current { align-items: center; }
-      .location-selector-wrapper { justify-content: center; }
       .main-grid, .google-grid, .news-grid { grid-template-columns: 1fr; }
     }
   </style>
 
-  <!-- 引入 Google API 客戶端程式庫 -->
   <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
   <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-  <!-- 引入 ical.js 用來完美解析飛書日曆 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.5.0/ical.min.js"></script>
-
 </head>
 <body>
 
@@ -104,10 +99,7 @@
     <div class="time-display" id="clock-time">--:--</div>
     <div class="date-location-display">
       <div class="date-text" id="clock-date">----年--月--日 星期-</div>
-      <div class="location-selector-wrapper">
-        <span class="gps-status" id="gps-status-text">定位中...</span>
-        <select id="location-select" class="location-select"></select>
-      </div>
+      <span class="gps-status" id="gps-status-text">📍 啟動 GPS 中...</span>
     </div>
     <div class="weather-current">
       <div class="temp-text"><span id="curr-temp">--</span>°C</div>
@@ -118,11 +110,11 @@
   <div class="main-grid">
     <div class="panel">
       <div class="panel-header">
-        <div class="panel-title">巴士預計到站時間</div>
-        <div class="refresh-badge">1分鐘更新</div>
+        <div class="panel-title">雷達: 附近車站預計到站時間</div>
+        <div class="refresh-badge">自動定位 更新</div>
       </div>
       <div class="bus-list" id="bus-container">
-        <div class="bus-item" style="border:none;">等待定位並載入資料中...</div>
+        <div class="bus-item" style="border:none;">等待 GPS 權限以掃描附近車站...</div>
       </div>
     </div>
 
@@ -175,7 +167,7 @@
   </div>
 
   <div class="footer-bar">
-    <div>資料來源：天文台 / 運輸署 / 綜合新聞 / Google / 飛書</div>
+    <div>資料來源：天文台 / 運輸署動態站點 / 綜合新聞 / Google / 飛書</div>
     <div id="last-update">系統啟動中...</div>
   </div>
 
@@ -187,12 +179,8 @@
      ========================================================= */
   const GOOGLE_CLIENT_ID = '32327213493-1dqkm15k6kn8dorc6iaf37v4rlqneljt.apps.googleusercontent.com';
   const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
+  const LARK_ICS_URL = ''; // 若有飛書訂閱連結請填入此處
   
-  // 👉 在單引號內填入飛書的「iCal 訂閱連結」，這樣就可以跳過Google直接極速同步飛書！
-  // 範例: 'https://calendar.feishu.cn/subscribe/.../public/basic.ics'
-  const LARK_ICS_URL = ''; 
-  
-
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
   const DISCOVERY_DOCS = [ 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest', 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest' ];
 
@@ -223,17 +211,16 @@
       google.accounts.oauth2.revoke(t.access_token); gapi.client.setToken('');
       document.getElementById('gmail-container').innerHTML = '<li class="google-item">已登出，請重新授權。</li>';
       document.getElementById('authorize_button').style.display = 'inline-block'; document.getElementById('signout_button').style.display = 'none';
-      fetchCombinedCalendarData(); // 登出後重新抓取 (為了保留可能還在的飛書資料)
+      fetchCombinedCalendarData(); 
     }
   }
 
   // =========================================
-  // 🌟 直連飛書解析器 (Bypass Google)
+  // 飛書與 Google 行程解析
   // =========================================
   async function fetchLarkEvents() {
     if (!LARK_ICS_URL) return [];
     try {
-      // 加上時間戳強制代理伺服器不使用快取，保證拿到最新鮮的飛書資料
       const cacheBusterUrl = LARK_ICS_URL + (LARK_ICS_URL.includes('?') ? '&' : '?') + 'cb=' + Date.now();
       const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(cacheBusterUrl)}`;
       const res = await fetch(proxyUrl);
@@ -243,35 +230,23 @@
       const jcalData = ICAL.parse(data.contents);
       const comp = new ICAL.Component(jcalData);
       const vevents = comp.getAllSubcomponents("vevent");
-      
-      const events = [];
-      const now = ICAL.Time.now();
+      const events = []; const now = ICAL.Time.now();
       
       vevents.forEach(vevent => {
         try {
           const event = new ICAL.Event(vevent);
-          // 處理重複發生的會議 (例如飛書上設定的每週開會)
           if (event.isRecurring()) {
-            const expand = event.iterator();
-            let next; let count = 0;
+            const expand = event.iterator(); let next; let count = 0;
             while ((next = expand.next()) && count < 5) {
-              if (next.compare(now) >= 0) {
-                events.push({ summary: event.summary, time: next.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' });
-                count++;
-              }
+              if (next.compare(now) >= 0) { events.push({ summary: event.summary, time: next.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' }); count++; }
             }
           } else {
-            // 單次會議
-            if (event.endDate.compare(now) >= 0) {
-              events.push({ summary: event.summary, time: event.startDate.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' });
-            }
+            if (event.endDate.compare(now) >= 0) events.push({ summary: event.summary, time: event.startDate.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' });
           }
-        } catch(e) {} // 忽略解析錯誤的個別行程
+        } catch(e) {} 
       });
       return events;
-    } catch (err) {
-      console.error("飛書日曆讀取失敗", err); return [];
-    }
+    } catch (err) { return []; }
   }
 
   async function fetchGmail() {
@@ -291,24 +266,15 @@
         }
         document.getElementById('gmail-container').innerHTML = htmlStr;
       }
-    } catch(err) { console.error("Gmail讀取失敗", err); }
+    } catch(err) {}
   }
 
-  // =========================================
-  // 🌟 合併 Google 與 飛書 行程的終極函數
-  // =========================================
   async function fetchCombinedCalendarData() {
     let allEvents = [];
     const calContainer = document.getElementById('calendar-container');
     const token = gapi.client.getToken();
 
-    // 1. 抓取飛書日曆 (不需要 Google 登入也能運作)
-    if (LARK_ICS_URL) {
-      const larkEvents = await fetchLarkEvents();
-      allEvents = allEvents.concat(larkEvents);
-    }
-
-    // 2. 抓取 Google 日曆 & Gmail
+    if (LARK_ICS_URL) allEvents = allEvents.concat(await fetchLarkEvents());
     if (token) {
       fetchGmail();
       try {
@@ -316,93 +282,36 @@
         const nowIso = (new Date()).toISOString();
         for (const cal of calListRes.result.items) {
           try {
-            const eventsRes = await gapi.client.calendar.events.list({
-              'calendarId': cal.id, 'timeMin': nowIso, 'showDeleted': false, 'singleEvents': true, 'maxResults': 4, 'orderBy': 'startTime'
-            });
+            const eventsRes = await gapi.client.calendar.events.list({ 'calendarId': cal.id, 'timeMin': nowIso, 'showDeleted': false, 'singleEvents': true, 'maxResults': 4, 'orderBy': 'startTime' });
             if (eventsRes.result.items) {
               eventsRes.result.items.forEach(e => {
                 let timeObj = e.start.dateTime ? new Date(e.start.dateTime) : new Date(e.start.date);
-                allEvents.push({
-                  summary: e.summary,
-                  time: timeObj,
-                  isAllDay: !e.start.dateTime,
-                  // 如果是外部訂閱日曆，打上日曆名稱標籤
-                  source: cal.primary ? '' : cal.summary 
-                });
+                allEvents.push({ summary: e.summary, time: timeObj, isAllDay: !e.start.dateTime, source: cal.primary ? '' : cal.summary });
               });
             }
           } catch (err) {}
         }
-      } catch (err) { console.error("Google Calendar 讀取失敗", err); }
+      } catch (err) {}
     }
 
-    // 3. 排序與渲染 (整合了兩邊的資料)
     if (allEvents.length > 0) {
       allEvents.sort((a, b) => a.time - b.time);
-      const topEvents = allEvents.slice(0, 4);
-      calContainer.innerHTML = topEvents.map(event => {
+      calContainer.innerHTML = allEvents.slice(0, 4).map(event => {
         let when = event.isAllDay ? `${event.time.getMonth()+1}/${event.time.getDate()} (全天)` : `${event.time.getMonth()+1}/${event.time.getDate()} ${event.time.getHours().toString().padStart(2,'0')}:${event.time.getMinutes().toString().padStart(2,'0')}`;
-        // 飛書行程會有一個專屬的黑底白字標籤
         const badge = event.source ? `<span class="cal-badge">${event.source}</span>` : '';
         return `<li class="google-item"><div class="g-title">▪ ${event.summary || '無標題'} ${badge}</div><div class="g-time">時間: ${when}</div></li>`;
       }).join('');
     } else {
-      if (!LARK_ICS_URL && !token) {
-        calContainer.innerHTML = '<li class="google-item">請登入 Google 或設定飛書日曆連結。</li>';
-      } else {
-        calContainer.innerHTML = '<li class="google-item">近期沒有行程。</li>';
-      }
+      if (!LARK_ICS_URL && !token) calContainer.innerHTML = '<li class="google-item">請登入 Google 或設定飛書日曆連結。</li>';
+      else calContainer.innerHTML = '<li class="google-item">近期沒有行程。</li>';
     }
   }
 
   /* =========================================================
-     原有的巴士與天氣新聞邏輯
+     🌟 巴士引擎 2.0 (全自動動態雷達定位 + 九巴/城巴實時 API)
      ========================================================= */
-  const LOCATION_ZONES = [
-    {
-      id: "richland", name: "麗晶花園 13 座", lat: 22.3301, lng: 114.2050,
-      buses: [
-        { co: 'kmb', route: '24',  dir: 'O', seq: 3, dest: '旺角(循環)', stopName: '麗晶花園 13 座' },
-        { co: 'kmb', route: '13X', dir: 'O', seq: 21, dest: '尖沙咀 (東)', stopName: '麗晶花園 13 座' },
-        { co: 'kmb', route: '107', dir: 'O', seq: 6, dest: '華貴', stopName: '麗晶商場/麗晶花園' },
-        { co: 'kmb', route: '5D',  dir: 'O', seq: 4, dest: '紅磡', stopName: '麗晶花園' }
-      ]
-    },
-    {
-      id: "leechak", name: "鴨脷洲邨利澤樓", lat: 22.2452, lng: 114.1540,
-      buses: [
-        { co: 'kmb', route: '171', dir: 'O', seq: 4, dest: '荔枝角', stopName: '利澤樓' },
-        { co: 'kmb', route: '671', dir: 'O', seq: 3, dest: '鑽石山站', stopName: '利澤樓' },
-        { co: 'ctb', route: '90',  stopId: '001152', dir: 'O', dest: '中環', stopName: '利澤樓 (城巴)' },
-        { co: 'ctb', route: '592', stopId: '001152', dir: 'O', dest: '銅鑼灣', stopName: '利澤樓 (城巴)' }
-      ]
-    },
-    {
-      id: "grandtower", name: "旺角雅蘭中心", lat: 22.3188, lng: 114.1700,
-      buses: [
-        { co: 'kmb', route: '1',   dir: 'I', seq: 16, dest: '竹園邨', stopName: '雅蘭中心' },
-        { co: 'kmb', route: '1A',  dir: 'I', seq: 18, dest: '中秀茂坪', stopName: '雅蘭中心' },
-        { co: 'kmb', route: '104', dir: 'O', seq: 10, dest: '堅尼地城', stopName: '雅蘭中心' },
-        { co: 'ctb', route: '970', stopId: '001550', dir: 'O', dest: '數碼港', stopName: '雅蘭中心 (城巴)' }
-      ]
-    }
-  ];
-
-  let currentActiveZone = LOCATION_ZONES[0];
-
-  function initLocationSelector() {
-    const select = document.getElementById('location-select');
-    LOCATION_ZONES.forEach((zone, index) => {
-      const option = document.createElement('option');
-      option.value = index; option.textContent = zone.name; select.appendChild(option);
-    });
-    select.addEventListener('change', (e) => {
-      currentActiveZone = LOCATION_ZONES[e.target.value];
-      document.getElementById('gps-status-text').textContent = '手動選擇';
-      document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none;">載入新地點巴士資料中...</div>';
-      fetchBusETA();
-    });
-  }
+  let userLoc = null;
+  let allStopsCache = []; // 儲存全港巴士站座標的記憶體快取
 
   function deg2rad(deg) { return deg * (Math.PI/180) }
   function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -411,33 +320,162 @@
     return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
   }
 
-  function attemptGPSLocation() {
-    const statusText = document.getElementById('gps-status-text'); const select = document.getElementById('location-select');
+  // 1. 初始化下載全港巴士站點 (只會執行一次)
+  async function loadAllStops() {
+    if (allStopsCache.length > 0) return true;
+    try {
+      const [kmbRes, ctbRes] = await Promise.all([
+        fetch('https://data.etabus.gov.hk/v1/transport/kmb/stop').catch(()=>null),
+        fetch('https://rt.data.gov.hk/v2/transport/citybus/stop').catch(()=>null)
+      ]);
+      if (kmbRes && kmbRes.ok) {
+        const kmbData = await kmbRes.json();
+        kmbData.data.forEach(s => allStopsCache.push({ co: 'kmb', id: s.stop, name: s.name_tc, lat: parseFloat(s.lat), lng: parseFloat(s.long || s.lng) }));
+      }
+      if (ctbRes && ctbRes.ok) {
+        const ctbData = await ctbRes.json();
+        ctbData.data.forEach(s => allStopsCache.push({ co: 'ctb', id: s.stop, name: s.name_tc, lat: parseFloat(s.lat), lng: parseFloat(s.long || s.lng) }));
+      }
+      return allStopsCache.length > 0;
+    } catch(err) { return false; }
+  }
+
+  // 2. 獲取定位
+  function updateGPS() {
+    const statusText = document.getElementById('gps-status-text');
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          let minDistance = Infinity; let closestZoneIndex = 0;
-          LOCATION_ZONES.forEach((zone, index) => {
-            const distance = getDistanceFromLatLonInKm(position.coords.latitude, position.coords.longitude, zone.lat, zone.lng);
-            if (distance < minDistance) { minDistance = distance; closestZoneIndex = index; }
-          });
-          currentActiveZone = LOCATION_ZONES[closestZoneIndex]; select.value = closestZoneIndex;
-          statusText.textContent = `自動定位 (${minDistance.toFixed(1)}km)`; fetchBusETA();
+          userLoc = { lat: position.coords.latitude, lng: position.coords.longitude };
+          statusText.textContent = `📍 已定位附近車站`;
+          fetchDynamicBusETA();
         },
         (error) => { 
-          let errMsg = '定位失敗';
-          if (error.code === 1) errMsg = '拒絕定位';
-          else if (error.code === 2) errMsg = '無定位訊號';
-          else if (error.code === 3) errMsg = '定位超時';
-          statusText.textContent = `${errMsg}(預設)`; 
-          select.value = 0; currentActiveZone = LOCATION_ZONES[0]; fetchBusETA(); 
+          let errMsg = '無法獲取位置';
+          if (error.code === 1) errMsg = '定位權限被拒絕';
+          statusText.textContent = `📍 ${errMsg}`; 
+          document.getElementById('bus-container').innerHTML = `<div class="bus-item" style="border:none;">${errMsg}，請在瀏覽器設定中允許位置權限。</div>`;
         }, 
-        // 🚨 關鍵修改：關閉 enableHighAccuracy，允許使用 5 分鐘內的 Wi-Fi 定位快取
         { enableHighAccuracy: false, timeout: 15000, maximumAge: 300000 }
       );
-    } else { statusText.textContent = '不支援(預設)'; fetchBusETA(); }
+    } else { statusText.textContent = '📍 裝置不支援定位'; }
   }
 
+  // 3. 搜尋附近車站並獲取 ETA
+  async function fetchDynamicBusETA() {
+    if (!userLoc) return; // 等待定位完成
+    
+    // 如果尚未下載車站資料，顯示提示並下載
+    if (allStopsCache.length === 0) {
+      document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none;">首次啟動，下載全港車站資料中...</div>';
+      const ok = await loadAllStops();
+      if (!ok) {
+        document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none;">下載車站清單失敗，請檢查網絡。</div>';
+        return;
+      }
+    }
+
+    // 計算距離，篩選出半徑 500 米內的車站
+    const nearby = allStopsCache
+      .map(s => ({ ...s, dist: getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, s.lat, s.lng) }))
+      .filter(s => s.dist < 0.5)
+      .sort((a, b) => a.dist - b.dist);
+
+    // 取距離最近的 4 個實體車站
+    const topStops = nearby.slice(0, 4);
+
+    if (topStops.length === 0) {
+      document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none;">半徑 500 米內找不到九巴或城巴車站。</div>';
+      return;
+    }
+
+    let allEtas = [];
+    const now = new Date();
+
+    // 針對這幾個最近的車站，呼叫 ETA API
+    for (const stop of topStops) {
+      try {
+        let url = stop.co === 'kmb' 
+          ? `https://data.etabus.gov.hk/v1/transport/kmb/stop-eta/${stop.id}` 
+          : `https://rt.data.gov.hk/v2/transport/citybus/eta/CTB/${stop.id}`;
+        
+        const res = await fetch(url);
+        if (!res.ok) continue;
+        const result = await res.json();
+
+        (result.data || []).forEach(eta => {
+          if (eta.eta) {
+            const diffMs = new Date(eta.eta.replace(/-/g, '/').replace('T', ' ')).getTime() - now.getTime();
+            if (diffMs >= 0) {
+              allEtas.push({
+                co: stop.co, route: eta.route, dest: eta.dest_tc, stopName: stop.name, dist: stop.dist,
+                min: Math.floor(diffMs / 60000),
+                isScheduled: eta.rmk_tc && (eta.rmk_tc.includes('原定') || eta.rmk_tc.includes('預定'))
+              });
+            }
+          }
+        });
+      } catch(err) {}
+    }
+
+    // 將所有路線合併分組 (路線 + 目的地)
+    const grouped = {};
+    allEtas.forEach(e => {
+      const key = `${e.co}-${e.route}-${e.dest}-${e.stopName}`;
+      if (!grouped[key]) grouped[key] = { co: e.co, route: e.route, dest: e.dest, stopName: e.stopName, dist: e.dist, etas: [] };
+      grouped[key].etas.push({ min: e.min, isScheduled: e.isScheduled });
+    });
+
+    // 每個路線過濾掉重複的分鐘數，並排序
+    let groupArray = Object.values(grouped);
+    groupArray.forEach(g => {
+      const uniqueMins = new Set();
+      g.etas = g.etas.filter(e => {
+        if (uniqueMins.has(e.min)) return false;
+        uniqueMins.add(e.min); return true;
+      }).sort((a,b) => a.min - b.min).slice(0, 3);
+    });
+
+    // 剃除沒有 ETA 的群組，並根據最快到站時間排序
+    groupArray = groupArray.filter(g => g.etas.length > 0);
+    groupArray.sort((a, b) => {
+      if (a.etas[0].min === b.etas[0].min) return a.dist - b.dist; // 時間相同則按距離排序
+      return a.etas[0].min - b.etas[0].min;
+    });
+
+    // 顯示前 6 條即將到達的路線
+    const displayGroups = groupArray.slice(0, 6);
+    let htmlStr = '';
+    
+    if (displayGroups.length === 0) {
+      htmlStr = '<div class="bus-item" style="border:none;">附近車站暫無即將到來的班次。</div>';
+    } else {
+      displayGroups.forEach(g => {
+        const coBadge = g.co === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
+        const etaHtml = g.etas.map(m => `<span>${m.min}<span class="eta-min">分${m.isScheduled ? '*' : ''}</span></span>`).join('');
+        // 將距離轉換成好閱讀的格式
+        const distStr = g.dist < 0.1 ? '(<100m)' : `(${(g.dist * 1000).toFixed(0)}m)`;
+
+        htmlStr += `
+          <div class="bus-item">
+            <div class="bus-route">${g.route}</div>
+            <div class="bus-info">
+              <span class="bus-dest">${coBadge} 往 ${g.dest}</span>
+              <span class="bus-stop">${g.stopName} <span style="font-size:0.75rem; color:#666;">${distStr}</span></span>
+            </div>
+            <div class="bus-etas">${etaHtml}</div>
+          </div>
+        `;
+      });
+    }
+
+    document.getElementById('bus-container').innerHTML = htmlStr;
+    updateLastUpdateTime('巴士');
+  }
+
+  // =========================================
+  // 其他更新功能
+  // =========================================
   function updateClock() {
     const now = new Date(); const pad = n => n.toString().padStart(2, '0');
     document.getElementById('clock-time').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
@@ -459,57 +497,6 @@
       `).join('');
       updateLastUpdateTime('天氣');
     } catch (error) {}
-  }
-
-  async function fetchBusETA() {
-    const container = document.getElementById('bus-container'); let htmlStr = '';
-    for (const config of currentActiveZone.buses) {
-      const company = config.co || 'kmb';
-      try {
-        let validEtas = []; const now = new Date();
-        if (company === 'kmb') {
-          const res = await fetch(`https://data.etabus.gov.hk/v1/transport/kmb/route-eta/${config.route}/1`);
-          if (!res.ok) throw new Error(`HTTP 錯誤: ${res.status}`);
-          const result = await res.json();
-          if (!result || !result.data) throw new Error('API 格式異常');
-          
-          validEtas = result.data.filter(eta => eta.seq === config.seq && eta.dir === config.dir && eta.eta)
-            .map(eta => {
-              // 修復時區計算錯誤：直接使用原生 ISO 8601 解析
-              const diffMs = new Date(eta.eta).getTime() - now.getTime();
-              // 檢查九巴的備註，如果是原定/預定班次，標記起來
-              const isScheduled = eta.rmk_tc && (eta.rmk_tc.includes('原定') || eta.rmk_tc.includes('預定'));
-              return { min: Math.max(0, Math.floor(diffMs / 60000)), isScheduled: isScheduled };
-            })
-            .sort((a, b) => a.min - b.min).slice(0, 3);
-            
-        } else if (company === 'ctb') {
-          if (!config.stopId) throw new Error('設定缺少 stopId');
-          const res = await fetch(`https://rt.data.gov.hk/v2/transport/citybus/eta/CTB/${config.stopId}/${config.route}`);
-          if (!res.ok) throw new Error(`HTTP 錯誤: ${res.status}`);
-          const result = await res.json();
-          if (!result || !result.data) throw new Error('API 格式異常');
-          
-          validEtas = result.data.filter(eta => eta.eta && (!config.dir || eta.dir === config.dir))
-            .map(eta => {
-              const diffMs = new Date(eta.eta).getTime() - now.getTime();
-              const isScheduled = eta.rmk_tc && (eta.rmk_tc.includes('原定') || eta.rmk_tc.includes('預定'));
-              return { min: Math.max(0, Math.floor(diffMs / 60000)), isScheduled: isScheduled };
-            })
-            .sort((a, b) => a.min - b.min).slice(0, 3);
-        }
-        
-        // 渲染時間，如果是預定班次加上 * 號
-        let etaHtml = validEtas.length > 0 
-          ? validEtas.map(m => `<span>${Number.isNaN(m.min) ? '?' : m.min}<span class="eta-min">分${m.isScheduled ? '*' : ''}</span></span>`).join('') 
-          : '<span style="font-size:1.2rem; font-weight:normal;">暫無班次</span>';
-          
-        htmlStr += `<div class="bus-item"><div class="bus-route">${config.route}</div><div class="bus-info"><span class="bus-dest"><span class="co-badge">${company === 'ctb'?'城巴':'九巴'}</span> 往 ${config.dest}</span><span class="bus-stop">${config.stopName}</span></div><div class="bus-etas">${etaHtml}</div></div>`;
-      } catch (error) { 
-        htmlStr += `<div class="bus-item"><div class="bus-route">${config.route}</div><div class="bus-info"><span class="bus-dest">${company === 'ctb'?'城巴':'九巴'} API 錯誤</span><span class="bus-stop" style="color:#666;">原因: ${error.message}</span></div></div>`; 
-      }
-    }
-    container.innerHTML = htmlStr; updateLastUpdateTime('巴士');
   }
 
   async function fetchNews() {
@@ -535,15 +522,22 @@
     document.getElementById('last-update').textContent = `最後更新 (${type})：${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
   }
 
-  initLocationSelector(); updateClock(); setInterval(updateClock, 1000); attemptGPSLocation(); setInterval(fetchBusETA, 60 * 1000); fetchWeather(); fetchNews(); 
-  // 啟動時先嘗試載入飛書 (即使沒登入Google)
+  /* =========================================================
+     啟動程序
+     ========================================================= */
+  updateClock(); setInterval(updateClock, 1000); 
+  
+  // 啟動定位 (每 5 分鐘重新定位一次跟隨您的步伐)
+  updateGPS(); setInterval(updateGPS, 5 * 60 * 1000); 
+  
+  // 巴士 ETA 每 1 分鐘基於最新定位重新獲取一次
+  setInterval(fetchDynamicBusETA, 60 * 1000); 
+  
+  fetchWeather(); fetchNews(); 
   fetchCombinedCalendarData(); setInterval(fetchCombinedCalendarData, 15 * 60 * 1000);
   setInterval(() => { fetchWeather(); fetchNews(); }, 15 * 60 * 1000);
 
 </script>
 </body>
 </html>
-
-
-
 
