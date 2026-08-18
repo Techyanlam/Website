@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ink Dashboard (Hong Kong) - Dynamic GPS Transit</title>
+  <title>E-Ink Dashboard (Hong Kong) - Reordered Layout</title>
   <style>
     /* =========================================================
        全局重置與 E-ink 最佳化設定
@@ -33,9 +33,27 @@
     .panel-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 3px solid #000000; padding-bottom: 8px; margin-bottom: 12px; }
     .panel-title { font-size: 1.4rem; font-weight: 900; }
     .refresh-badge { font-size: 0.85rem; border: 1px solid #000000; padding: 2px 6px; font-weight: bold; }
+    .full-width-panel { border-top: 4px solid #000000; padding-top: 16px; margin-top: 8px; }
 
-    /* 巴士列表 */
-    .bus-list { display: flex; flex-direction: column; }
+    /* 工作助理 (Google & Gmail) */
+    .auth-buttons { display: flex; gap: 8px; }
+    .auth-btn { border: 2px solid #000; background: #fff; color: #000; font-weight: bold; padding: 4px 12px; cursor: pointer; font-family: inherit; font-size: 1rem; }
+    .auth-btn:hover { background: #000; color: #fff; }
+    .auth-btn:disabled { border-color: #ccc; color: #ccc; cursor: not-allowed; background: #fff; }
+    .google-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .google-item { border-bottom: 1px dashed #000; padding-bottom: 8px; }
+    .g-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .g-time { font-size: 0.9rem; }
+    .g-sender { font-size: 0.9rem; font-style: italic; }
+    .cal-badge { font-size: 0.75rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; margin-left: 6px; font-weight: bold; vertical-align: middle; border-radius: 2px;}
+
+    /* 即時新聞 */
+    .news-list { display: flex; flex-direction: column; gap: 12px; list-style: none; }
+    .news-item { font-size: 1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; padding-left: 16px; }
+    .news-item::before { content: "■"; position: absolute; left: 0; top: 0; font-size: 0.8rem; }
+
+    /* 巴士列表 (全寬雙欄網格) */
+    .bus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
     .bus-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 2px dashed #000000; }
     .bus-route { font-size: 2rem; font-weight: 900; width: 70px; }
     .co-badge { font-size: 0.75rem; border: 1px solid #000; padding: 1px 4px; display: inline-block; margin-bottom: 2px; font-weight: normal; }
@@ -55,35 +73,18 @@
     .fc-temp-rain { width: 25%; text-align: right; font-size: 1.1rem; font-weight: bold; }
     .fc-rain { font-size: 0.9rem; font-weight: normal; margin-top: 4px; }
 
-    /* =========================================================
-       Google 日曆與 Gmail 區塊
-       ========================================================= */
-    .google-section { border-top: 4px solid #000000; padding-top: 16px; margin-top: 8px; }
-    .auth-buttons { margin-bottom: 12px; display: flex; gap: 8px; }
-    .auth-btn { border: 2px solid #000; background: #fff; color: #000; font-weight: bold; padding: 4px 12px; cursor: pointer; font-family: inherit; font-size: 1rem; }
-    .auth-btn:hover { background: #000; color: #fff; }
-    .auth-btn:disabled { border-color: #ccc; color: #ccc; cursor: not-allowed; background: #fff; }
-    .google-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .google-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-    .google-item { border-bottom: 1px dashed #000; padding-bottom: 8px; }
-    .g-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .g-time { font-size: 0.9rem; }
-    .g-sender { font-size: 0.9rem; font-style: italic; }
-    .cal-badge { font-size: 0.75rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; margin-left: 6px; font-weight: bold; vertical-align: middle; border-radius: 2px;}
-
-    /* 底部區域：新聞 */
-    .news-panel { border-top: 4px solid #000000; padding-top: 16px; }
-    .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; margin-top: 12px; list-style: none; }
-    .news-item { font-size: 1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; padding-left: 16px; }
-    .news-item::before { content: "■"; position: absolute; left: 0; top: 0; font-size: 0.8rem; }
-
     /* 頁尾 */
     .footer-bar { margin-top: 8px; display: flex; justify-content: space-between; font-size: 0.85rem; border-top: 1px solid #000000; padding-top: 8px; font-weight: bold; }
 
+    /* 手機版響應式 */
     @media (max-width: 800px) {
       .header-panel { grid-template-columns: 1fr; text-align: center; gap: 12px; }
       .weather-current { align-items: center; }
-      .main-grid, .google-grid, .news-grid { grid-template-columns: 1fr; }
+      .main-grid, .bus-grid { grid-template-columns: 1fr; }
+      .bus-item { gap: 8px; }
+      .bus-route { width: 55px; font-size: 1.6rem; }
+      .bus-dest { font-size: 1.1rem; }
+      .bus-etas { font-size: 1.4rem; }
     }
   </style>
 
@@ -108,62 +109,60 @@
   </div>
 
   <div class="main-grid">
+    <!-- 左上：整合工作助理 (Google & 飛書) -->
     <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title">雷達: 附近車站預計到站時間</div>
-        <div class="refresh-badge">自動定位 更新</div>
+      <div class="panel-header" style="align-items: center;">
+        <div class="panel-title" style="font-size: 1.2rem;">整合工作助理</div>
+        <div class="auth-buttons">
+          <button id="authorize_button" class="auth-btn" onclick="handleAuthClick()" disabled>登入</button>
+          <button id="signout_button" class="auth-btn" onclick="handleSignoutClick()" style="display: none;">登出</button>
+        </div>
       </div>
-      <div class="bus-list" id="bus-container">
-        <div class="bus-item" style="border:none;">等待 GPS 權限以掃描附近車站...</div>
-      </div>
+      <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px;">📅 即將到來的行程</div>
+      <ul class="google-list" id="calendar-container">
+        <li class="google-item">載入中...</li>
+      </ul>
+      <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px; margin-top: 8px;">✉️ 未讀郵件 <span id="unread-count"></span></div>
+      <ul class="google-list" id="gmail-container" style="margin-bottom: 0;">
+        <li class="google-item">請先登入 Google 帳號授權。</li>
+      </ul>
     </div>
 
+    <!-- 右上：即時綜合新聞 -->
     <div class="panel">
       <div class="panel-header">
-        <div class="panel-title">香港天文台天氣預報</div>
+        <div class="panel-title" id="news-panel-title">即時綜合新聞</div>
         <div class="refresh-badge">15分鐘更新</div>
       </div>
-      <table class="forecast-table">
-        <thead>
-          <tr><th>日子</th><th>天氣預測</th><th style="text-align: right;">氣溫/降雨</th></tr>
-        </thead>
-        <tbody id="forecast-tbody"><tr><td colspan="3">載入資料中...</td></tr></tbody>
-      </table>
+      <ul class="news-list" id="news-container">
+        <li class="news-item">嘗試連接新聞伺服器中...</li>
+      </ul>
     </div>
   </div>
 
-  <div class="google-section">
-    <div class="panel-header" style="margin-bottom: 8px;">
-      <div class="panel-title" style="font-size: 1.1rem;">整合工作助理 (Google & 飛書)</div>
-      <div class="auth-buttons">
-        <button id="authorize_button" class="auth-btn" onclick="handleAuthClick()" disabled>登入 Google</button>
-        <button id="signout_button" class="auth-btn" onclick="handleSignoutClick()" style="display: none;">登出</button>
-      </div>
-    </div>
-    <div class="google-grid">
-      <div class="panel">
-        <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px;">📅 即將到來的行程</div>
-        <ul class="google-list" id="calendar-container">
-          <li class="google-item">載入中...</li>
-        </ul>
-      </div>
-      <div class="panel">
-        <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px;">✉️ 未讀郵件 <span id="unread-count"></span></div>
-        <ul class="google-list" id="gmail-container">
-          <li class="google-item">請先登入 Google 帳號授權。</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel news-panel">
+  <!-- 中間：巴士雷達 (全寬度) -->
+  <div class="panel full-width-panel">
     <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
-      <div class="panel-title" id="news-panel-title" style="font-size: 1.1rem;">即時綜合新聞</div>
+      <div class="panel-title">雷達: 附近車站預計到站時間</div>
+      <div class="refresh-badge">自動定位 更新</div>
+    </div>
+    <div class="bus-grid" id="bus-container">
+      <div class="bus-item" style="border:none;">等待 GPS 權限以掃描附近車站...</div>
+    </div>
+  </div>
+
+  <!-- 底部：天氣預報 (全寬度) -->
+  <div class="panel full-width-panel">
+    <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
+      <div class="panel-title">香港天文台天氣預報</div>
       <div class="refresh-badge">15分鐘更新</div>
     </div>
-    <ul class="news-grid" id="news-container">
-      <li class="news-item">嘗試連接新聞伺服器中...</li>
-    </ul>
+    <table class="forecast-table">
+      <thead>
+        <tr><th>日子</th><th>天氣預測</th><th style="text-align: right;">氣溫/降雨</th></tr>
+      </thead>
+      <tbody id="forecast-tbody"><tr><td colspan="3">載入資料中...</td></tr></tbody>
+    </table>
   </div>
 
   <div class="footer-bar">
@@ -311,7 +310,7 @@
      🌟 巴士引擎 2.0 (全自動動態雷達定位 + 九巴/城巴實時 API)
      ========================================================= */
   let userLoc = null;
-  let allStopsCache = []; // 儲存全港巴士站座標的記憶體快取
+  let allStopsCache = []; 
 
   function deg2rad(deg) { return deg * (Math.PI/180) }
   function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
@@ -320,7 +319,6 @@
     return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
   }
 
-  // 1. 初始化下載全港巴士站點 (只會執行一次)
   async function loadAllStops() {
     if (allStopsCache.length > 0) return true;
     try {
@@ -340,7 +338,6 @@
     } catch(err) { return false; }
   }
 
-  // 2. 獲取定位
   function updateGPS() {
     const statusText = document.getElementById('gps-status-text');
     if ("geolocation" in navigator) {
@@ -361,11 +358,9 @@
     } else { statusText.textContent = '📍 裝置不支援定位'; }
   }
 
-  // 3. 搜尋附近車站並獲取 ETA
   async function fetchDynamicBusETA() {
-    if (!userLoc) return; // 等待定位完成
+    if (!userLoc) return; 
     
-    // 如果尚未下載車站資料，顯示提示並下載
     if (allStopsCache.length === 0) {
       document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none;">首次啟動，下載全港車站資料中...</div>';
       const ok = await loadAllStops();
@@ -375,13 +370,11 @@
       }
     }
 
-    // 計算距離，篩選出半徑 500 米內的車站
     const nearby = allStopsCache
       .map(s => ({ ...s, dist: getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, s.lat, s.lng) }))
       .filter(s => s.dist < 0.5)
       .sort((a, b) => a.dist - b.dist);
 
-    // 取距離最近的 4 個實體車站
     const topStops = nearby.slice(0, 4);
 
     if (topStops.length === 0) {
@@ -392,7 +385,6 @@
     let allEtas = [];
     const now = new Date();
 
-    // 針對這幾個最近的車站，呼叫 ETA API
     for (const stop of topStops) {
       try {
         let url = stop.co === 'kmb' 
@@ -418,7 +410,6 @@
       } catch(err) {}
     }
 
-    // 將所有路線合併分組 (路線 + 目的地)
     const grouped = {};
     allEtas.forEach(e => {
       const key = `${e.co}-${e.route}-${e.dest}-${e.stopName}`;
@@ -426,7 +417,6 @@
       grouped[key].etas.push({ min: e.min, isScheduled: e.isScheduled });
     });
 
-    // 每個路線過濾掉重複的分鐘數，並排序
     let groupArray = Object.values(grouped);
     groupArray.forEach(g => {
       const uniqueMins = new Set();
@@ -436,14 +426,12 @@
       }).sort((a,b) => a.min - b.min).slice(0, 3);
     });
 
-    // 剃除沒有 ETA 的群組，並根據最快到站時間排序
     groupArray = groupArray.filter(g => g.etas.length > 0);
     groupArray.sort((a, b) => {
-      if (a.etas[0].min === b.etas[0].min) return a.dist - b.dist; // 時間相同則按距離排序
+      if (a.etas[0].min === b.etas[0].min) return a.dist - b.dist; 
       return a.etas[0].min - b.etas[0].min;
     });
 
-    // 顯示前 6 條即將到達的路線
     const displayGroups = groupArray.slice(0, 6);
     let htmlStr = '';
     
@@ -452,8 +440,8 @@
     } else {
       displayGroups.forEach(g => {
         const coBadge = g.co === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
-        const etaHtml = g.etas.map(m => `<span>${m.min}<span class="eta-min">分${m.isScheduled ? '*' : ''}</span></span>`).join('');
-        // 將距離轉換成好閱讀的格式
+        const etaVals = g.etas.map(m => m.min + (m.isScheduled ? '*' : ''));
+        const etaHtml = etaVals.join(', ') + '<span class="eta-min">分鐘</span>';
         const distStr = g.dist < 0.1 ? '(<100m)' : `(${(g.dist * 1000).toFixed(0)}m)`;
 
         htmlStr += `
@@ -527,10 +515,8 @@
      ========================================================= */
   updateClock(); setInterval(updateClock, 1000); 
   
-  // 啟動定位 (每 5 分鐘重新定位一次跟隨您的步伐)
   updateGPS(); setInterval(updateGPS, 5 * 60 * 1000); 
   
-  // 巴士 ETA 每 1 分鐘基於最新定位重新獲取一次
   setInterval(fetchDynamicBusETA, 60 * 1000); 
   
   fetchWeather(); fetchNews(); 
