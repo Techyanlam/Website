@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ink Dashboard (Hong Kong) - Custom Favorites</title>
+  <title>E-Ink Dashboard (Hong Kong) - Ultimate Layout</title>
   <style>
     /* =========================================================
        全局重置與 E-ink 最佳化設定
@@ -35,28 +35,11 @@
     .refresh-badge { font-size: 0.85rem; border: 1px solid #000000; padding: 2px 6px; font-weight: bold; }
     .full-width-panel { border-top: 4px solid #000000; padding-top: 16px; margin-top: 8px; }
 
-    /* 工作助理 (Google & Gmail) */
-    .auth-buttons { display: flex; gap: 8px; }
-    .auth-btn { border: 2px solid #000; background: #fff; color: #000; font-weight: bold; padding: 4px 12px; cursor: pointer; font-family: inherit; font-size: 1rem; }
-    .auth-btn:hover { background: #000; color: #fff; }
-    .auth-btn:disabled { border-color: #ccc; color: #ccc; cursor: not-allowed; background: #fff; }
-    .google-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-    .google-item { border-bottom: 1px dashed #000; padding-bottom: 8px; }
-    .g-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .g-time { font-size: 0.9rem; }
-    .g-sender { font-size: 0.9rem; font-style: italic; }
-    .cal-badge { font-size: 0.75rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; margin-left: 6px; font-weight: bold; vertical-align: middle; border-radius: 2px;}
-
-    /* 即時新聞 */
-    .news-list { display: flex; flex-direction: column; gap: 12px; list-style: none; }
-    .news-item { font-size: 1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; padding-left: 16px; }
-    .news-item::before { content: "■"; position: absolute; left: 0; top: 0; font-size: 0.8rem; }
-
     /* 巴士列表 (全寬雙欄網格) */
     .bus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
     .bus-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 2px dashed #000000; }
     .bus-item.is-fav { border-bottom: 3px solid #000000; } 
-    .bus-route { font-size: 2rem; font-weight: 900; width: 80px; display: flex; flex-direction: column; align-items: flex-start; }
+    .bus-route { font-size: 2.2rem; font-weight: 900; width: 85px; display: flex; flex-direction: column; align-items: flex-start; }
     .co-badge { font-size: 0.75rem; border: 1px solid #000; padding: 1px 4px; display: inline-block; margin-bottom: 2px; font-weight: normal; }
     .fav-badge { font-size: 0.7rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; display: inline-block; margin-top: 4px; font-weight: bold; border-radius: 2px; }
     
@@ -71,10 +54,27 @@
     .forecast-table { width: 100%; border-collapse: collapse; }
     .forecast-table th { text-align: left; font-size: 1rem; border-bottom: 2px solid #000000; padding: 8px 4px; }
     .forecast-table td { border-bottom: 2px dashed #000000; padding: 16px 4px; vertical-align: middle; }
-    .fc-day { font-size: 1.2rem; font-weight: bold; width: 20%; }
-    .fc-desc { font-size: 1rem; width: 55%; padding-right: 16px; }
-    .fc-temp-rain { width: 25%; text-align: right; font-size: 1.1rem; font-weight: bold; }
-    .fc-rain { font-size: 0.9rem; font-weight: normal; margin-top: 4px; }
+    .fc-day { font-size: 1.2rem; font-weight: bold; width: 25%; }
+    .fc-desc { font-size: 1rem; width: 50%; padding-right: 12px; }
+    .fc-temp-rain { width: 25%; text-align: right; font-size: 1rem; font-weight: bold; }
+    .fc-rain { font-size: 0.85rem; font-weight: normal; margin-top: 4px; }
+
+    /* 工作助理 (Google & Gmail) */
+    .auth-buttons { display: flex; gap: 8px; }
+    .auth-btn { border: 2px solid #000; background: #fff; color: #000; font-weight: bold; padding: 4px 12px; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
+    .auth-btn:hover { background: #000; color: #fff; }
+    .auth-btn:disabled { border-color: #ccc; color: #ccc; cursor: not-allowed; background: #fff; }
+    .google-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .google-item { border-bottom: 1px dashed #000; padding-bottom: 8px; }
+    .g-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .g-time { font-size: 0.9rem; }
+    .g-sender { font-size: 0.9rem; font-style: italic; }
+    .cal-badge { font-size: 0.75rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; margin-left: 6px; font-weight: bold; vertical-align: middle; border-radius: 2px;}
+
+    /* 即時新聞 */
+    .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; list-style: none; }
+    .news-item { font-size: 1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; padding-left: 16px; }
+    .news-item::before { content: "■"; position: absolute; left: 0; top: 0; font-size: 0.8rem; }
 
     /* 頁尾 */
     .footer-bar { margin-top: 8px; display: flex; justify-content: space-between; font-size: 0.85rem; border-top: 1px solid #000000; padding-top: 8px; font-weight: bold; }
@@ -83,7 +83,7 @@
     @media (max-width: 800px) {
       .header-panel { grid-template-columns: 1fr; text-align: center; gap: 12px; }
       .weather-current { align-items: center; }
-      .main-grid, .bus-grid { grid-template-columns: 1fr; }
+      .main-grid, .bus-grid, .news-grid { grid-template-columns: 1fr; }
       .bus-item { gap: 8px; }
       .bus-route { width: 65px; font-size: 1.6rem; }
       .bus-dest { font-size: 1.1rem; }
@@ -99,11 +99,12 @@
 
 <div class="dashboard-container">
   
+  <!-- 頂部資訊區 -->
   <div class="header-panel">
     <div class="time-display" id="clock-time">--:--</div>
     <div class="date-location-display">
       <div class="date-text" id="clock-date">----年--月--日 星期-</div>
-      <span class="gps-status" id="gps-status-text">📍 啟動 GPS 中...</span>
+      <span class="gps-status" id="gps-status-text">📍 系統啟動中...</span>
     </div>
     <div class="weather-current">
       <div class="temp-text"><span id="curr-temp">--</span>°C</div>
@@ -111,11 +112,38 @@
     </div>
   </div>
 
+  <!-- 第一層 (全寬)：巴士預計到站時間 (同一號碼同一行) -->
+  <div class="panel" style="border-bottom: 4px solid #000; padding-bottom: 16px; margin-bottom: 8px;">
+    <div class="panel-header">
+      <div class="panel-title">固定: 常用車站預計到站時間</div>
+      <div class="refresh-badge">1分鐘更新</div>
+    </div>
+    <div class="bus-grid" id="bus-container">
+      <div class="bus-item" style="border:none;">等待下載車站資料...</div>
+    </div>
+  </div>
+
+  <!-- 第二層 (雙欄)：天氣預報 ｜ 整合工作助理 -->
   <div class="main-grid">
-    <!-- 左上：整合工作助理 (Google & 飛書) -->
+    
+    <!-- 左：天氣預報 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">香港天文台天氣預報</div>
+        <div class="refresh-badge">15分鐘更新</div>
+      </div>
+      <table class="forecast-table">
+        <thead>
+          <tr><th>日子</th><th>天氣預測</th><th style="text-align: right;">氣溫/降雨</th></tr>
+        </thead>
+        <tbody id="forecast-tbody"><tr><td colspan="3">載入資料中...</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- 右：整合工作助理 -->
     <div class="panel">
       <div class="panel-header" style="align-items: center;">
-        <div class="panel-title" style="font-size: 1.2rem;">整合工作助理</div>
+        <div class="panel-title">整合工作助理</div>
         <div class="auth-buttons">
           <button id="authorize_button" class="auth-btn" onclick="handleAuthClick()" disabled>登入</button>
           <button id="signout_button" class="auth-btn" onclick="handleSignoutClick()" style="display: none;">登出</button>
@@ -130,42 +158,17 @@
         <li class="google-item">請先登入 Google 帳號授權。</li>
       </ul>
     </div>
-
-    <!-- 右上：即時綜合新聞 -->
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title" id="news-panel-title">即時綜合新聞</div>
-        <div class="refresh-badge">15分鐘更新</div>
-      </div>
-      <ul class="news-list" id="news-container">
-        <li class="news-item">嘗試連接新聞伺服器中...</li>
-      </ul>
-    </div>
   </div>
 
-  <!-- 中間：巴士雷達 (全寬度) -->
+  <!-- 第三層 (全寬)：即時新聞 -->
   <div class="panel full-width-panel">
-    <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
-      <div class="panel-title">固定: 常用車站預計到站時間</div>
-      <div class="refresh-badge">自動定位 更新</div>
-    </div>
-    <div class="bus-grid" id="bus-container">
-      <div class="bus-item" style="border:none;">等待下載車站資料...</div>
-    </div>
-  </div>
-
-  <!-- 底部：天氣預報 (全寬度) -->
-  <div class="panel full-width-panel">
-    <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
-      <div class="panel-title">香港天文台天氣預報</div>
+    <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px;">
+      <div class="panel-title" id="news-panel-title">即時綜合新聞</div>
       <div class="refresh-badge">15分鐘更新</div>
     </div>
-    <table class="forecast-table">
-      <thead>
-        <tr><th>日子</th><th>天氣預測</th><th style="text-align: right;">氣溫/降雨</th></tr>
-      </thead>
-      <tbody id="forecast-tbody"><tr><td colspan="3">載入資料中...</td></tr></tbody>
-    </table>
+    <ul class="news-grid" id="news-container">
+      <li class="news-item">嘗試連接新聞伺服器中...</li>
+    </ul>
   </div>
 
   <div class="footer-bar">
@@ -183,17 +186,17 @@
   const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
   const LARK_ICS_URL = ''; 
   
-  // 👉 設定為 true 時，畫面將「只」顯示您下方設定的固定巴士，不再顯示其他路人甲巴士
+  // 👉 僅顯示您指定的這些常用路線
   const ONLY_SHOW_FAVORITES = true;
   
-  // 👉 智能綁定功能：將特定路線綁定到包含以下核心關鍵字的車站
+  // 👉 智能綁定功能：擴展了關鍵字陣列以對應九巴與城巴的不同命名
   const FAVORITE_CONFIGS = [
-    { route: '171', keyword: '奶路臣街' },
-    { route: '171', keyword: '利澤' },      // 使用「利澤」即可同時精準匹配九巴與城巴的不同命名
-    { route: '24', keyword: '13座' },        
-    { route: '24', keyword: '西洋菜南街' },
-    { route: '107', keyword: '香港仔隧道' },
-    { route: '592', keyword: '利澤' }
+    { route: '171', keyword: ['奶路臣', '銀行中心'] },  // 涵蓋 MK516
+    { route: '171', keyword: ['利澤'] },
+    { route: '24',  keyword: ['13座'] },             // 涵蓋 KT486
+    { route: '24',  keyword: ['西洋菜南街'] },         // 涵蓋 MK343
+    { route: '107', keyword: ['香港仔隧道'] },
+    { route: '592', keyword: ['利澤'] }
   ];
 
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
@@ -323,7 +326,7 @@
   }
 
   /* =========================================================
-     🌟 巴士引擎 3.0 (混合模式：GPS雷達 + 固定常用車站)
+     🌟 巴士引擎 4.0 (同一號碼排同一行，智能過海站點匹配)
      ========================================================= */
   let userLoc = null;
   let allStopsCache = []; 
@@ -364,16 +367,14 @@
           fetchDynamicBusETA();
         },
         (error) => { 
-          let errMsg = '無法獲取位置';
-          if (error.code === 1) errMsg = '定位權限被拒絕';
-          statusText.textContent = `📍 ${errMsg} (使用備用模式)`; 
+          statusText.textContent = `📍 固定模式 (無 GPS 亦可運作)`; 
           userLoc = null;
-          fetchDynamicBusETA(); // 即使 GPS 失敗，也會繼續執行抓取「固定常用路線」
+          fetchDynamicBusETA(); 
         }, 
         { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
       );
     } else { 
-      statusText.textContent = '📍 裝置不支援定位'; 
+      statusText.textContent = '📍 固定模式'; 
       userLoc = null;
       fetchDynamicBusETA();
     }
@@ -401,10 +402,10 @@
       stopsToFetch.push(...nearby);
     }
 
-    // 2. 加入無條件置頂的「常用車站」 (無視距離)
+    // 2. 獲取「常用車站」 (加大抓取範圍至 50 個，確保不錯過指定站牌)
     FAVORITE_CONFIGS.forEach(fav => {
-      const matches = allStopsCache.filter(s => s.name.includes(fav.keyword));
-      matches.slice(0, 8).forEach(m => {
+      const matches = allStopsCache.filter(s => fav.keyword.some(k => s.name.includes(k)));
+      matches.slice(0, 50).forEach(m => {
         const dist = userLoc ? getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, m.lat, m.lng) : 999;
         stopsToFetch.push({ ...m, dist });
       });
@@ -455,23 +456,17 @@
 
     await Promise.all(fetchPromises);
 
-    // 4. 判斷哪些是符合條件的「常用路線」，過濾掉太遠的無關路線
+    // 4. 過濾出最終要顯示的資料
     const validEtas = allEtas.filter(e => {
       let isFav = false;
       FAVORITE_CONFIGS.forEach(fav => {
-        if (e.route === fav.route && e.stopName.includes(fav.keyword)) isFav = true;
+        if (e.route === fav.route && fav.keyword.some(k => e.stopName.includes(k))) isFav = true;
       });
       e.isFav = isFav;
-      
-      if (ONLY_SHOW_FAVORITES) {
-        return isFav; // 如果開啟了固定模式，非常用路線一律剃除
-      }
-      
-      // 保留規則：是常用路線 (無懼距離)，或者距離在 500 米內 (雷達)
-      return isFav || e.dist < 0.5;
+      return ONLY_SHOW_FAVORITES ? isFav : (isFav || e.dist < 0.5);
     });
 
-    // 5. 分組與排序
+    // 5. 將結果群組化
     const grouped = {};
     validEtas.forEach(e => {
       const key = `${e.co}-${e.route}-${e.dest}-${e.stopName}`;
@@ -487,55 +482,81 @@
         uniqueMins.add(e.min); return true;
       }).sort((a,b) => a.min - b.min).slice(0, 3);
     });
-
     groupArray = groupArray.filter(g => g.etas.length > 0);
-    
-    // 🚦 排序：常用路線強制置頂，其次依時間排序
-    groupArray.sort((a, b) => {
-      if (a.isFav && !b.isFav) return -1;
-      if (!a.isFav && b.isFav) return 1;
-      if (a.etas[0].min === b.etas[0].min) return a.dist - b.dist; 
-      return a.etas[0].min - b.etas[0].min;
+
+    // 6. 🚦 關鍵邏輯：依據路線號碼進行分類，實現「同一號碼同一行」
+    const routeGroups = {};
+    groupArray.forEach(g => {
+      if (!routeGroups[g.route]) routeGroups[g.route] = [];
+      routeGroups[g.route].push(g);
     });
 
-    // 將顯示數量增加到 10 條
-    const displayGroups = groupArray.slice(0, 10);
-    let htmlStr = '';
-    
-    if (displayGroups.length === 0) {
-      htmlStr = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">附近車站暫無即將到來的班次。</div>';
-    } else {
-      displayGroups.forEach(g => {
-        const coBadge = g.co === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
-        const favBadge = g.isFav ? '<span class="fav-badge">★ 常用</span>' : '';
-        const etaVals = g.etas.map(m => m.min + (m.isScheduled ? '*' : ''));
-        const etaHtml = etaVals.join(', ') + '<span class="eta-min">分鐘</span>';
-        
-        // 優化距離顯示，如果是極遠的常用車站，顯示「固定位置」
-        let distStr = '';
-        if (g.dist === 999) distStr = '(固定位置)';
-        else if (g.dist > 2) distStr = `(${(g.dist).toFixed(1)}km)`;
-        else if (g.dist < 0.1) distStr = '(<100m)';
-        else distStr = `(${(g.dist * 1000).toFixed(0)}m)`;
+    // 按照我們設定的常用清單順序排列路線 (171 -> 24 -> 107 -> 592)
+    const orderedRoutes = [];
+    FAVORITE_CONFIGS.forEach(f => { if (!orderedRoutes.includes(f.route)) orderedRoutes.push(f.route); });
+    Object.keys(routeGroups).forEach(r => { if (!orderedRoutes.includes(r)) orderedRoutes.push(r); });
 
-        htmlStr += `
-          <div class="bus-item ${g.isFav ? 'is-fav' : ''}">
-            <div class="bus-route">
-              ${g.route}
-              ${favBadge}
-            </div>
-            <div class="bus-info">
-              <span class="bus-dest">${coBadge} 往 ${g.dest}</span>
-              <span class="bus-stop">${g.stopName} <span style="font-size:0.75rem; color:#666;">${distStr}</span></span>
-            </div>
-            <div class="bus-etas">${etaHtml}</div>
-          </div>
-        `;
-      });
-    }
+    let htmlStr = '';
+    let renderedCount = 0;
+
+    orderedRoutes.forEach(r => {
+      if (routeGroups[r]) {
+        const items = routeGroups[r];
+        // 依照目的地排序，讓畫面看起來更穩
+        items.sort((a,b) => a.dest.localeCompare(b.dest));
+        
+        // 將同號碼的巴士兩兩成對輸出 (填滿一列)
+        for (let i = 0; i < items.length; i += 2) {
+          htmlStr += createBusHtml(items[i]);
+          renderedCount++;
+          
+          if (items[i+1]) {
+            htmlStr += createBusHtml(items[i+1]);
+            renderedCount++;
+          } else {
+            // 如果只有單個項目，塞入一個隱形的 spacer 來強制換行
+            htmlStr += `<div class="bus-item empty" style="border:none;"></div>`;
+          }
+        }
+      }
+    });
+
+    if (renderedCount === 0) {
+      htmlStr = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">附近車站暫無即將到來的班次。</div>';
+    } 
 
     document.getElementById('bus-container').innerHTML = htmlStr;
     updateLastUpdateTime('巴士');
+  }
+
+  // 生成個別巴士項目的 HTML
+  function createBusHtml(g) {
+    const coBadge = g.co === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
+    const favBadge = g.isFav ? '<span class="fav-badge">★ 常用</span>' : '';
+    const etaVals = g.etas.map(m => m.min + (m.isScheduled ? '*' : ''));
+    const etaHtml = etaVals.join(', ') + '<span class="eta-min">分鐘</span>';
+    
+    // 如果是固定模式，或者無法計算距離，就完全隱藏距離文字讓畫面更乾淨
+    let distStr = '';
+    if (g.dist !== 999 && !ONLY_SHOW_FAVORITES) {
+      if (g.dist > 2) distStr = `(${(g.dist).toFixed(1)}km)`;
+      else if (g.dist < 0.1) distStr = '(<100m)';
+      else distStr = `(${(g.dist * 1000).toFixed(0)}m)`;
+    }
+
+    return `
+      <div class="bus-item ${g.isFav ? 'is-fav' : ''}">
+        <div class="bus-route">
+          ${g.route}
+          ${favBadge}
+        </div>
+        <div class="bus-info">
+          <span class="bus-dest">${coBadge} 往 ${g.dest}</span>
+          <span class="bus-stop">${g.stopName} <span style="font-size:0.75rem; color:#666;">${distStr}</span></span>
+        </div>
+        <div class="bus-etas">${etaHtml}</div>
+      </div>
+    `;
   }
 
   // =========================================
@@ -603,5 +624,4 @@
 </script>
 </body>
 </html>
-
 
