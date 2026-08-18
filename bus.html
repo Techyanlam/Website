@@ -146,11 +146,11 @@
   <!-- 中間：巴士雷達 (全寬度) -->
   <div class="panel full-width-panel">
     <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
-      <div class="panel-title">雷達: 附近車站預計到站時間</div>
+      <div class="panel-title">固定: 常用車站預計到站時間</div>
       <div class="refresh-badge">自動定位 更新</div>
     </div>
     <div class="bus-grid" id="bus-container">
-      <div class="bus-item" style="border:none;">等待 GPS 權限以掃描附近車站...</div>
+      <div class="bus-item" style="border:none;">等待下載車站資料...</div>
     </div>
   </div>
 
@@ -183,14 +183,17 @@
   const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
   const LARK_ICS_URL = ''; 
   
+  // 👉 設定為 true 時，畫面將「只」顯示您下方設定的固定巴士，不再顯示其他路人甲巴士
+  const ONLY_SHOW_FAVORITES = true;
+  
   // 👉 智能綁定功能：將特定路線綁定到包含以下核心關鍵字的車站
   const FAVORITE_CONFIGS = [
     { route: '171', keyword: '奶路臣街' },
-    { route: '171', keyword: '利澤樓' },
-    { route: '24', keyword: '13座' },        // 涵蓋「麗晶花園 13 座」等變體
+    { route: '171', keyword: '利澤' },      // 使用「利澤」即可同時精準匹配九巴與城巴的不同命名
+    { route: '24', keyword: '13座' },        
     { route: '24', keyword: '西洋菜南街' },
     { route: '107', keyword: '香港仔隧道' },
-    { route: '592', keyword: '利澤樓' }
+    { route: '592', keyword: '利澤' }
   ];
 
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
@@ -388,8 +391,8 @@
 
     let stopsToFetch = [];
 
-    // 1. 如果有 GPS，加入半徑 500 米內的雷達車站
-    if (userLoc) {
+    // 1. 如果有 GPS 且未開啟「僅顯示常用」，才加入半徑 500 米內的雷達車站
+    if (userLoc && !ONLY_SHOW_FAVORITES) {
       const nearby = allStopsCache
         .map(s => ({ ...s, dist: getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, s.lat, s.lng) }))
         .filter(s => s.dist < 0.5)
@@ -459,6 +462,11 @@
         if (e.route === fav.route && e.stopName.includes(fav.keyword)) isFav = true;
       });
       e.isFav = isFav;
+      
+      if (ONLY_SHOW_FAVORITES) {
+        return isFav; // 如果開啟了固定模式，非常用路線一律剃除
+      }
+      
       // 保留規則：是常用路線 (無懼距離)，或者距離在 500 米內 (雷達)
       return isFav || e.dist < 0.5;
     });
@@ -595,4 +603,5 @@
 </script>
 </body>
 </html>
+
 
