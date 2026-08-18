@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ink Dashboard (Hong Kong) - Favorites Prioritized</title>
+  <title>E-Ink Dashboard (Hong Kong) - Custom Favorites</title>
   <style>
     /* =========================================================
        全局重置與 E-ink 最佳化設定
@@ -55,7 +55,7 @@
     /* 巴士列表 (全寬雙欄網格) */
     .bus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
     .bus-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 2px dashed #000000; }
-    .bus-item.is-fav { border-bottom: 3px solid #000000; } /* 常用路線加粗底線 */
+    .bus-item.is-fav { border-bottom: 3px solid #000000; } 
     .bus-route { font-size: 2rem; font-weight: 900; width: 80px; display: flex; flex-direction: column; align-items: flex-start; }
     .co-badge { font-size: 0.75rem; border: 1px solid #000; padding: 1px 4px; display: inline-block; margin-bottom: 2px; font-weight: normal; }
     .fav-badge { font-size: 0.7rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; display: inline-block; margin-top: 4px; font-weight: bold; border-radius: 2px; }
@@ -177,14 +177,21 @@
 
 <script>
   /* =========================================================
-     🛑🛑🛑 設定區 (Google API, 飛書, 常用巴士) 🛑🛑🛑
+     🛑🛑🛑 設定區 (Google API, 飛書, 常用巴士與車站) 🛑🛑🛑
      ========================================================= */
   const GOOGLE_CLIENT_ID = '32327213493-1dqkm15k6kn8dorc6iaf37v4rlqneljt.apps.googleusercontent.com';
   const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
-  const LARK_ICS_URL = ''; // 若有飛書訂閱連結請填入此處
+  const LARK_ICS_URL = ''; 
   
-  // 👉 在這裡填入您的「常用巴士路線」，只要附近有這些車，就會強制置頂顯示！
-  const FAVORITE_ROUTES = ['24', '171', '592'];
+  // 👉 智能綁定功能：將特定路線綁定到包含以下核心關鍵字的車站
+  const FAVORITE_CONFIGS = [
+    { route: '171', keyword: '奶路臣街' },
+    { route: '171', keyword: '利澤樓' },
+    { route: '24', keyword: '13座' },        // 涵蓋「麗晶花園 13 座」等變體
+    { route: '24', keyword: '西洋菜南街' },
+    { route: '107', keyword: '香港仔隧道' },
+    { route: '592', keyword: '利澤樓' }
+  ];
 
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
   const DISCOVERY_DOCS = [ 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest', 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest' ];
@@ -313,7 +320,7 @@
   }
 
   /* =========================================================
-     🌟 巴士引擎 2.0 (自動定位 + 置頂常用路線)
+     🌟 巴士引擎 3.0 (混合模式：GPS雷達 + 固定常用車站)
      ========================================================= */
   let userLoc = null;
   let allStopsCache = []; 
@@ -356,49 +363,76 @@
         (error) => { 
           let errMsg = '無法獲取位置';
           if (error.code === 1) errMsg = '定位權限被拒絕';
-          statusText.textContent = `📍 ${errMsg}`; 
-          document.getElementById('bus-container').innerHTML = `<div class="bus-item" style="border:none;">${errMsg}，請在瀏覽器設定中允許位置權限。</div>`;
+          statusText.textContent = `📍 ${errMsg} (使用備用模式)`; 
+          userLoc = null;
+          fetchDynamicBusETA(); // 即使 GPS 失敗，也會繼續執行抓取「固定常用路線」
         }, 
-        { enableHighAccuracy: false, timeout: 15000, maximumAge: 300000 }
+        { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
       );
-    } else { statusText.textContent = '📍 裝置不支援定位'; }
+    } else { 
+      statusText.textContent = '📍 裝置不支援定位'; 
+      userLoc = null;
+      fetchDynamicBusETA();
+    }
   }
 
   async function fetchDynamicBusETA() {
-    if (!userLoc) return; 
-    
     if (allStopsCache.length === 0) {
-      document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none;">首次啟動，下載全港車站資料中...</div>';
+      document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">首次啟動，下載全港車站資料中...</div>';
       const ok = await loadAllStops();
       if (!ok) {
-        document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none;">下載車站清單失敗，請檢查網絡。</div>';
+        document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">下載車站清單失敗，請檢查網絡。</div>';
         return;
       }
     }
 
-    const nearby = allStopsCache
-      .map(s => ({ ...s, dist: getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, s.lat, s.lng) }))
-      .filter(s => s.dist < 0.5)
-      .sort((a, b) => a.dist - b.dist);
+    let stopsToFetch = [];
 
-    const topStops = nearby.slice(0, 4);
+    // 1. 如果有 GPS，加入半徑 500 米內的雷達車站
+    if (userLoc) {
+      const nearby = allStopsCache
+        .map(s => ({ ...s, dist: getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, s.lat, s.lng) }))
+        .filter(s => s.dist < 0.5)
+        .sort((a, b) => a.dist - b.dist)
+        .slice(0, 4);
+      stopsToFetch.push(...nearby);
+    }
 
-    if (topStops.length === 0) {
-      document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none;">半徑 500 米內找不到九巴或城巴車站。</div>';
+    // 2. 加入無條件置頂的「常用車站」 (無視距離)
+    FAVORITE_CONFIGS.forEach(fav => {
+      const matches = allStopsCache.filter(s => s.name.includes(fav.keyword));
+      matches.slice(0, 8).forEach(m => {
+        const dist = userLoc ? getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, m.lat, m.lng) : 999;
+        stopsToFetch.push({ ...m, dist });
+      });
+    });
+
+    // 過濾重複的車站請求
+    const uniqueStops = [];
+    const seenStopIds = new Set();
+    stopsToFetch.forEach(s => {
+      if (!seenStopIds.has(s.id + s.co)) {
+        seenStopIds.add(s.id + s.co);
+        uniqueStops.push(s);
+      }
+    });
+
+    if (uniqueStops.length === 0) {
+      document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">找不到任何車站。</div>';
       return;
     }
 
+    // 3. 獲取所有車站的 ETA 資料
     let allEtas = [];
     const now = new Date();
-
-    for (const stop of topStops) {
+    const fetchPromises = uniqueStops.map(async (stop) => {
       try {
         let url = stop.co === 'kmb' 
           ? `https://data.etabus.gov.hk/v1/transport/kmb/stop-eta/${stop.id}` 
           : `https://rt.data.gov.hk/v2/transport/citybus/eta/CTB/${stop.id}`;
         
         const res = await fetch(url);
-        if (!res.ok) continue;
+        if (!res.ok) return;
         const result = await res.json();
 
         (result.data || []).forEach(eta => {
@@ -413,13 +447,27 @@
             }
           }
         });
-      } catch(err) {}
-    }
+      } catch(e) {}
+    });
 
+    await Promise.all(fetchPromises);
+
+    // 4. 判斷哪些是符合條件的「常用路線」，過濾掉太遠的無關路線
+    const validEtas = allEtas.filter(e => {
+      let isFav = false;
+      FAVORITE_CONFIGS.forEach(fav => {
+        if (e.route === fav.route && e.stopName.includes(fav.keyword)) isFav = true;
+      });
+      e.isFav = isFav;
+      // 保留規則：是常用路線 (無懼距離)，或者距離在 500 米內 (雷達)
+      return isFav || e.dist < 0.5;
+    });
+
+    // 5. 分組與排序
     const grouped = {};
-    allEtas.forEach(e => {
+    validEtas.forEach(e => {
       const key = `${e.co}-${e.route}-${e.dest}-${e.stopName}`;
-      if (!grouped[key]) grouped[key] = { co: e.co, route: e.route, dest: e.dest, stopName: e.stopName, dist: e.dist, etas: [] };
+      if (!grouped[key]) grouped[key] = { co: e.co, route: e.route, dest: e.dest, stopName: e.stopName, dist: e.dist, isFav: e.isFav, etas: [] };
       grouped[key].etas.push({ min: e.min, isScheduled: e.isScheduled });
     });
 
@@ -434,39 +482,36 @@
 
     groupArray = groupArray.filter(g => g.etas.length > 0);
     
-    // 🚦 重點排序邏輯：常用路線置頂！
+    // 🚦 排序：常用路線強制置頂，其次依時間排序
     groupArray.sort((a, b) => {
-      const aIsFav = FAVORITE_ROUTES.includes(a.route);
-      const bIsFav = FAVORITE_ROUTES.includes(b.route);
-      
-      // 如果 A 是常用，B 不是，A 優先
-      if (aIsFav && !bIsFav) return -1;
-      // 如果 B 是常用，A 不是，B 優先
-      if (!aIsFav && bIsFav) return 1;
-      
-      // 其他情況 (兩者都是，或兩者都不是)：先比到站時間，時間相同比距離
+      if (a.isFav && !b.isFav) return -1;
+      if (!a.isFav && b.isFav) return 1;
       if (a.etas[0].min === b.etas[0].min) return a.dist - b.dist; 
       return a.etas[0].min - b.etas[0].min;
     });
 
-    // 將顯示數量增加到 8 條，讓雙排版面更豐富
-    const displayGroups = groupArray.slice(0, 8);
+    // 將顯示數量增加到 10 條
+    const displayGroups = groupArray.slice(0, 10);
     let htmlStr = '';
     
     if (displayGroups.length === 0) {
-      htmlStr = '<div class="bus-item" style="border:none;">附近車站暫無即將到來的班次。</div>';
+      htmlStr = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">附近車站暫無即將到來的班次。</div>';
     } else {
       displayGroups.forEach(g => {
-        const isFav = FAVORITE_ROUTES.includes(g.route);
         const coBadge = g.co === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
-        const favBadge = isFav ? '<span class="fav-badge">★ 常用</span>' : '';
-        
+        const favBadge = g.isFav ? '<span class="fav-badge">★ 常用</span>' : '';
         const etaVals = g.etas.map(m => m.min + (m.isScheduled ? '*' : ''));
         const etaHtml = etaVals.join(', ') + '<span class="eta-min">分鐘</span>';
-        const distStr = g.dist < 0.1 ? '(<100m)' : `(${(g.dist * 1000).toFixed(0)}m)`;
+        
+        // 優化距離顯示，如果是極遠的常用車站，顯示「固定位置」
+        let distStr = '';
+        if (g.dist === 999) distStr = '(固定位置)';
+        else if (g.dist > 2) distStr = `(${(g.dist).toFixed(1)}km)`;
+        else if (g.dist < 0.1) distStr = '(<100m)';
+        else distStr = `(${(g.dist * 1000).toFixed(0)}m)`;
 
         htmlStr += `
-          <div class="bus-item ${isFav ? 'is-fav' : ''}">
+          <div class="bus-item ${g.isFav ? 'is-fav' : ''}">
             <div class="bus-route">
               ${g.route}
               ${favBadge}
