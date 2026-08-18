@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ink Dashboard (Hong Kong) - Reordered Layout</title>
+  <title>E-Ink Dashboard (Hong Kong) - Favorites Prioritized</title>
   <style>
     /* =========================================================
        全局重置與 E-ink 最佳化設定
@@ -55,8 +55,11 @@
     /* 巴士列表 (全寬雙欄網格) */
     .bus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
     .bus-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 2px dashed #000000; }
-    .bus-route { font-size: 2rem; font-weight: 900; width: 70px; }
+    .bus-item.is-fav { border-bottom: 3px solid #000000; } /* 常用路線加粗底線 */
+    .bus-route { font-size: 2rem; font-weight: 900; width: 80px; display: flex; flex-direction: column; align-items: flex-start; }
     .co-badge { font-size: 0.75rem; border: 1px solid #000; padding: 1px 4px; display: inline-block; margin-bottom: 2px; font-weight: normal; }
+    .fav-badge { font-size: 0.7rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; display: inline-block; margin-top: 4px; font-weight: bold; border-radius: 2px; }
+    
     .bus-info { display: flex; flex-direction: column; align-items: flex-start; }
     .bus-dest { font-size: 1.2rem; font-weight: bold; }
     .bus-stop { font-size: 0.9rem; }
@@ -82,7 +85,7 @@
       .weather-current { align-items: center; }
       .main-grid, .bus-grid { grid-template-columns: 1fr; }
       .bus-item { gap: 8px; }
-      .bus-route { width: 55px; font-size: 1.6rem; }
+      .bus-route { width: 65px; font-size: 1.6rem; }
       .bus-dest { font-size: 1.1rem; }
       .bus-etas { font-size: 1.4rem; }
     }
@@ -174,12 +177,15 @@
 
 <script>
   /* =========================================================
-     🛑🛑🛑 Google API 與 飛書日曆 設定區 🛑🛑🛑
+     🛑🛑🛑 設定區 (Google API, 飛書, 常用巴士) 🛑🛑🛑
      ========================================================= */
   const GOOGLE_CLIENT_ID = '32327213493-1dqkm15k6kn8dorc6iaf37v4rlqneljt.apps.googleusercontent.com';
   const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
   const LARK_ICS_URL = ''; // 若有飛書訂閱連結請填入此處
   
+  // 👉 在這裡填入您的「常用巴士路線」，只要附近有這些車，就會強制置頂顯示！
+  const FAVORITE_ROUTES = ['24', '171', '592'];
+
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
   const DISCOVERY_DOCS = [ 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest', 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest' ];
 
@@ -307,7 +313,7 @@
   }
 
   /* =========================================================
-     🌟 巴士引擎 2.0 (全自動動態雷達定位 + 九巴/城巴實時 API)
+     🌟 巴士引擎 2.0 (自動定位 + 置頂常用路線)
      ========================================================= */
   let userLoc = null;
   let allStopsCache = []; 
@@ -427,26 +433,44 @@
     });
 
     groupArray = groupArray.filter(g => g.etas.length > 0);
+    
+    // 🚦 重點排序邏輯：常用路線置頂！
     groupArray.sort((a, b) => {
+      const aIsFav = FAVORITE_ROUTES.includes(a.route);
+      const bIsFav = FAVORITE_ROUTES.includes(b.route);
+      
+      // 如果 A 是常用，B 不是，A 優先
+      if (aIsFav && !bIsFav) return -1;
+      // 如果 B 是常用，A 不是，B 優先
+      if (!aIsFav && bIsFav) return 1;
+      
+      // 其他情況 (兩者都是，或兩者都不是)：先比到站時間，時間相同比距離
       if (a.etas[0].min === b.etas[0].min) return a.dist - b.dist; 
       return a.etas[0].min - b.etas[0].min;
     });
 
-    const displayGroups = groupArray.slice(0, 6);
+    // 將顯示數量增加到 8 條，讓雙排版面更豐富
+    const displayGroups = groupArray.slice(0, 8);
     let htmlStr = '';
     
     if (displayGroups.length === 0) {
       htmlStr = '<div class="bus-item" style="border:none;">附近車站暫無即將到來的班次。</div>';
     } else {
       displayGroups.forEach(g => {
+        const isFav = FAVORITE_ROUTES.includes(g.route);
         const coBadge = g.co === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
+        const favBadge = isFav ? '<span class="fav-badge">★ 常用</span>' : '';
+        
         const etaVals = g.etas.map(m => m.min + (m.isScheduled ? '*' : ''));
         const etaHtml = etaVals.join(', ') + '<span class="eta-min">分鐘</span>';
         const distStr = g.dist < 0.1 ? '(<100m)' : `(${(g.dist * 1000).toFixed(0)}m)`;
 
         htmlStr += `
-          <div class="bus-item">
-            <div class="bus-route">${g.route}</div>
+          <div class="bus-item ${isFav ? 'is-fav' : ''}">
+            <div class="bus-route">
+              ${g.route}
+              ${favBadge}
+            </div>
             <div class="bus-info">
               <span class="bus-dest">${coBadge} 往 ${g.dest}</span>
               <span class="bus-stop">${g.stopName} <span style="font-size:0.75rem; color:#666;">${distStr}</span></span>
