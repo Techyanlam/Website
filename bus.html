@@ -1,255 +1,261 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ink Dashboard (Hong Kong) - Calendar Grid</title>
-  <style>
-    /* =========================================================
-       全局重置與 E-ink 最佳化設定
-       ========================================================= */
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-    body { background-color: #ffffff; color: #000000; font-family: "PingFang TC", "Noto Sans CJK TC", "Microsoft JhengHei", -apple-system, sans-serif; padding: 16px; line-height: 1.4; display: flex; justify-content: center; }
-    .dashboard-container { width: 100%; max-width: 1200px; border: 4px solid #000000; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>E-Ink Dashboard (Hong Kong) - Calendar Grid</title>
+ <style>
+ /* =========================================================
+ 全局重置與 E-ink 最佳化設定
+ ========================================================= */
+ * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+ body { background-color: #ffffff; color: #000000; font-family: "PingFang TC", "Noto Sans CJK TC", "Microsoft JhengHei", -apple-system, sans-serif; padding: 16px; line-height: 1.4; display: flex; justify-content: center; }
+ .dashboard-container { width: 100%; max-width: 1200px; border: 4px solid #000000; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
 
-    /* =========================================================
-       頂部：時鐘、日期與即時天氣
-       ========================================================= */
-    .header-panel { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; border-bottom: 4px solid #000000; padding-bottom: 16px; }
-    .time-display { font-size: 5rem; font-weight: 900; line-height: 1; letter-spacing: -2px; }
-    .date-location-display { text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center;}
-    .date-text { font-size: 1.6rem; font-weight: bold; }
-    .gps-status { font-size: 1.2rem; font-weight: bold; padding: 4px 8px; display: inline-block; border: 2px solid #000; }
-    
-    .weather-current { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
-    .temp-text { font-size: 3.5rem; font-weight: bold; line-height: 1; }
-    .weather-desc-text { font-size: 1.1rem; font-weight: bold; margin-top: 4px; }
+ /* =========================================================
+ 頂部：時鐘、日期與即時天氣
+ ========================================================= */
+ .header-panel { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; border-bottom: 4px solid #000000; padding-bottom: 16px; }
+ .time-display { font-size: 5rem; font-weight: 900; line-height: 1; letter-spacing: -2px; }
+ .date-location-display { text-align: center; display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center;}
+ .date-text { font-size: 1.6rem; font-weight: bold; }
+ .gps-status { font-size: 1.2rem; font-weight: bold; padding: 4px 8px; display: inline-block; border: 2px solid #000; }
 
-    /* =========================================================
-       主體區域共用
-       ========================================================= */
-    .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    .panel { display: flex; flex-direction: column; }
-    .panel-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 3px solid #000000; padding-bottom: 8px; margin-bottom: 12px; }
-    .panel-title { font-size: 1.4rem; font-weight: 900; }
-    .refresh-badge { font-size: 0.85rem; border: 1px solid #000000; padding: 2px 6px; font-weight: bold; }
-    .full-width-panel { border-top: 4px solid #000000; padding-top: 16px; margin-top: 8px; }
+ .weather-current { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+ .temp-text { font-size: 3.5rem; font-weight: bold; line-height: 1; }
+ .weather-desc-text { font-size: 1.1rem; font-weight: bold; margin-top: 4px; }
 
-    /* 工作助理 (Google & Gmail) & 月曆樣式 */
-    .auth-buttons { display: flex; gap: 8px; }
-    .auth-btn { border: 2px solid #000; background: #fff; color: #000; font-weight: bold; padding: 4px 12px; cursor: pointer; font-family: inherit; font-size: 1rem; }
-    .auth-btn:hover { background: #000; color: #fff; }
-    .auth-btn:disabled { border-color: #ccc; color: #ccc; cursor: not-allowed; background: #fff; }
-    
-    /* 月曆網格設計 (E-Ink 高對比) */
-    .calendar-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; table-layout: fixed; }
-    .calendar-table th { font-size: 0.85rem; padding: 4px 2px; border-bottom: 2px solid #000; text-align: left; }
-    .calendar-table td { text-align: left; vertical-align: top; height: 75px; padding: 2px; border: 1px dashed #ccc; border-top: none; }
-    .calendar-table td:first-child { border-left: none; }
-    .calendar-table td:last-child { border-right: none; }
-    .calendar-today { background-color: #f9f9f9; border: 1px solid #000 !important; }
-    .day-number { display: inline-block; padding: 2px 4px; font-weight: bold; font-size: 0.9rem; margin-bottom: 2px; border-radius: 4px; }
-    .calendar-today .day-number { background-color: #000; color: #fff; }
-    
-    .cal-cell-event { font-size: 0.65rem; line-height: 1.2; border: 1px solid #000; border-radius: 2px; margin-bottom: 2px; padding: 1px 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: #fff; }
-    .cal-cell-event.lark { background: #000; color: #fff; border: 1px solid #000; }
-    .cal-cell-event-more { font-size: 0.65rem; font-weight: bold; text-align: center; margin-top: 2px;}
+ /* =========================================================
+ 主體區域共用
+ ========================================================= */
+ .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+ .panel { display: flex; flex-direction: column; }
+ .panel-header { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 3px solid #000000; padding-bottom: 8px; margin-bottom: 12px; }
+ .panel-title { font-size: 1.4rem; font-weight: 900; }
+ .refresh-badge { font-size: 0.85rem; border: 1px solid #000000; padding: 2px 6px; font-weight: bold; }
+ .full-width-panel { border-top: 4px solid #000000; padding-top: 16px; margin-top: 8px; }
 
-    .google-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-    .google-item { border-bottom: 1px dashed #000; padding-bottom: 8px; }
-    .g-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .g-time { font-size: 0.9rem; }
-    .g-sender { font-size: 0.9rem; font-style: italic; }
-    .cal-badge { font-size: 0.75rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; margin-left: 6px; font-weight: bold; vertical-align: middle; border-radius: 2px;}
+ /* 工作助理 (Google & Gmail) & 月曆樣式 */
+ .auth-buttons { display: flex; gap: 8px; }
+ .auth-btn { border: 2px solid #000; background: #fff; color: #000; font-weight: bold; padding: 4px 12px; cursor: pointer; font-family: inherit; font-size: 1rem; }
+ .auth-btn:hover { background: #000; color: #fff; }
+ .auth-btn:disabled { border-color: #ccc; color: #ccc; cursor: not-allowed; background: #fff; }
 
-    /* 即時新聞 */
-    .news-list { display: flex; flex-direction: column; gap: 12px; list-style: none; }
-    .news-item { font-size: 1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; padding-left: 16px; }
-    .news-item::before { content: "■"; position: absolute; left: 0; top: 0; font-size: 0.8rem; }
+ /* 月曆網格設計 (E-Ink 高對比) */
+ .calendar-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; table-layout: fixed; }
+ .calendar-table th { font-size: 0.85rem; padding: 4px 2px; border-bottom: 2px solid #000; text-align: left; }
+ .calendar-table td { text-align: left; vertical-align: top; height: 75px; padding: 2px; border: 1px dashed #ccc; border-top: none; }
+ .calendar-table td:first-child { border-left: none; }
+ .calendar-table td:last-child { border-right: none; }
+ .calendar-today { background-color: #f9f9f9; border: 1px solid #000 !important; }
+ .day-number { display: inline-block; padding: 2px 4px; font-weight: bold; font-size: 0.9rem; margin-bottom: 2px; border-radius: 4px; }
+ .calendar-today .day-number { background-color: #000; color: #fff; }
 
-    /* 巴士列表 (全寬雙欄網格) */
-    .bus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
-    .bus-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 2px dashed #000000; }
-    .bus-item.is-fav { border-bottom: 3px solid #000000; } 
-    .bus-route { font-size: 2rem; font-weight: 900; width: 80px; display: flex; flex-direction: column; align-items: flex-start; }
-    .co-badge { font-size: 0.75rem; border: 1px solid #000; padding: 1px 4px; display: inline-block; margin-bottom: 2px; font-weight: normal; }
-    .fav-badge { font-size: 0.7rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; display: inline-block; margin-top: 4px; font-weight: bold; border-radius: 2px; }
-    
-    .bus-info { display: flex; flex-direction: column; align-items: flex-start; }
-    .bus-dest { font-size: 1.2rem; font-weight: bold; }
-    .bus-stop { font-size: 0.9rem; }
-    .bus-etas { font-size: 1.6rem; font-weight: bold; text-align: right; }
-    .bus-etas span { margin-left: 12px; }
-    .eta-min { font-size: 1rem; font-weight: normal; }
+ .cal-cell-event { font-size: 0.65rem; line-height: 1.2; border: 1px solid #000; border-radius: 2px; margin-bottom: 2px; padding: 1px 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: #fff; }
+ .cal-cell-event.lark { background: #000; color: #fff; border: 1px solid #000; }
+ .cal-cell-event-more { font-size: 0.65rem; font-weight: bold; text-align: center; margin-top: 2px;}
 
-    /* 天氣預報表格 */
-    .forecast-table { width: 100%; border-collapse: collapse; }
-    .forecast-table th { text-align: left; font-size: 1rem; border-bottom: 2px solid #000000; padding: 8px 4px; }
-    .forecast-table td { border-bottom: 2px dashed #000000; padding: 16px 4px; vertical-align: middle; }
-    .fc-day { font-size: 1.2rem; font-weight: bold; width: 20%; }
-    .fc-desc { font-size: 1rem; width: 55%; padding-right: 16px; }
-    .fc-temp-rain { width: 25%; text-align: right; font-size: 1.1rem; font-weight: bold; }
-    .fc-rain { font-size: 0.9rem; font-weight: normal; margin-top: 4px; }
+ .google-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+ .google-item { border-bottom: 1px dashed #000; padding-bottom: 8px; }
+ .g-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+ .g-time { font-size: 0.9rem; }
+ .g-sender { font-size: 0.9rem; font-style: italic; }
+ .cal-badge { font-size: 0.75rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; margin-left: 6px; font-weight: bold; vertical-align: middle; border-radius: 2px;}
 
-    /* 頁尾 */
-    .footer-bar { margin-top: 8px; display: flex; justify-content: space-between; font-size: 0.85rem; border-top: 1px solid #000000; padding-top: 8px; font-weight: bold; }
+ /* 即時新聞 */
+ .news-list { display: flex; flex-direction: column; gap: 12px; list-style: none; }
+ .news-item { font-size: 1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; padding-left: 16px; }
+ .news-item::before { content: "■"; position: absolute; left: 0; top: 0; font-size: 0.8rem; }
 
-    /* 手機版響應式 */
-    @media (max-width: 800px) {
-      .header-panel { grid-template-columns: 1fr; text-align: center; gap: 12px; }
-      .weather-current { align-items: center; }
-      .main-grid, .bus-grid { grid-template-columns: 1fr; }
-      .bus-item { gap: 8px; }
-      .bus-route { width: 65px; font-size: 1.6rem; }
-      .bus-dest { font-size: 1.1rem; }
-      .bus-etas { font-size: 1.4rem; }
-    }
-  </style>
+ /* 巴士列表 (全寬雙欄網格) */
+ .bus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+ .bus-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 2px dashed #000000; }
+ .bus-item.is-fav { border-bottom: 3px solid #000000; }
+ .bus-route { font-size: 2rem; font-weight: 900; width: 80px; display: flex; flex-direction: column; align-items: flex-start; }
+ .co-badge { font-size: 0.75rem; border: 1px solid #000; padding: 1px 4px; display: inline-block; margin-bottom: 2px; font-weight: normal; }
+ .fav-badge { font-size: 0.7rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; display: inline-block; margin-top: 4px; font-weight: bold; border-radius: 2px; }
 
-  <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
-  <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ical.js/1.5.0/ical.min.js"></script>
+ .bus-info { display: flex; flex-direction: column; align-items: flex-start; }
+ .bus-dest { font-size: 1.2rem; font-weight: bold; }
+ .bus-stop { font-size: 0.9rem; }
+ .bus-etas { font-size: 1.6rem; font-weight: bold; text-align: right; }
+ .bus-etas span { margin-left: 12px; }
+ .eta-min { font-size: 1rem; font-weight: normal; }
+
+ /* 天氣預報表格 */
+ .forecast-table { width: 100%; border-collapse: collapse; }
+ .forecast-table th { text-align: left; font-size: 1rem; border-bottom: 2px solid #000000; padding: 8px 4px; }
+ .forecast-table td { border-bottom: 2px dashed #000000; padding: 16px 4px; vertical-align: middle; }
+ .fc-day { font-size: 1.2rem; font-weight: bold; width: 20%; }
+ .fc-desc { font-size: 1rem; width: 55%; padding-right: 16px; }
+ .fc-temp-rain { width: 25%; text-align: right; font-size: 1.1rem; font-weight: bold; }
+ .fc-rain { font-size: 0.9rem; font-weight: normal; margin-top: 4px; }
+
+ /* 頁尾 */
+ .footer-bar { margin-top: 8px; display: flex; justify-content: space-between; font-size: 0.85rem; border-top: 1px solid #000000; padding-top: 8px; font-weight: bold; }
+
+ /* 手機版響應式 */
+ @media (max-width: 800px) {
+ .header-panel { grid-template-columns: 1fr; text-align: center; gap: 12px; }
+ .weather-current { align-items: center; }
+ .main-grid, .bus-grid { grid-template-columns: 1fr; }
+ .bus-item { gap: 8px; }
+ .bus-route { width: 65px; font-size: 1.6rem; }
+ .bus-dest { font-size: 1.1rem; }
+ .bus-etas { font-size: 1.4rem; }
+ }
+ </style>
+
+ <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+ <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+ <!-- REMOVED: ical.js no longer needed for Lark -->
 </head>
 <body>
 
 <div class="dashboard-container">
-  
-  <div class="header-panel">
-    <div class="time-display" id="clock-time">--:--</div>
-    <div class="date-location-display">
-      <div class="date-text" id="clock-date">----年--月--日 星期-</div>
-      <span class="gps-status" id="gps-status-text">📍 啟動 GPS 中...</span>
-    </div>
-    <div class="weather-current">
-      <div class="temp-text"><span id="curr-temp">--</span>°C</div>
-      <div class="weather-desc-text" id="curr-desc">載入中... 濕度 --%</div>
-    </div>
-  </div>
 
-  <div class="main-grid">
-    <!-- 左上：整合工作助理 (Google & 飛書 月曆) -->
-    <div class="panel">
-      <div class="panel-header" style="align-items: center;">
-        <div class="panel-title" style="font-size: 1.2rem;">整合工作助理</div>
-        <div class="auth-buttons">
-          <button id="authorize_button" class="auth-btn" onclick="handleAuthClick()" disabled>登入</button>
-          <button id="signout_button" class="auth-btn" onclick="handleSignoutClick()" style="display: none;">登出</button>
-        </div>
-      </div>
-      
-      <!-- 動態月曆標題 -->
-      <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px;" id="cal-panel-title">📅 本月行程與日曆</div>
-      
-      <!-- 月曆網格將生成在此 -->
-      <div id="calendar-grid-container">載入中...</div>
-      
-      <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px; margin-top: 8px;">✉️ 未讀郵件 <span id="unread-count"></span></div>
-      <ul class="google-list" id="gmail-container" style="margin-bottom: 0;">
-        <li class="google-item">請先登入 Google 帳號授權。</li>
-      </ul>
-    </div>
+ <div class="header-panel">
+ <div class="time-display" id="clock-time">--:--</div>
+ <div class="date-location-display">
+ <div class="date-text" id="clock-date">----年--月--日 星期-</div>
+ <span class="gps-status" id="gps-status-text">📍 啟動 GPS 中...</span>
+ </div>
+ <div class="weather-current">
+ <div class="temp-text"><span id="curr-temp">--</span>°C</div>
+ <div class="weather-desc-text" id="curr-desc">載入中... 濕度 --%</div>
+ </div>
+ </div>
 
-    <!-- 右上：即時綜合新聞 -->
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title" id="news-panel-title">即時綜合新聞</div>
-        <div class="refresh-badge">15分鐘更新</div>
-      </div>
-      <ul class="news-list" id="news-container">
-        <li class="news-item">嘗試連接新聞伺服器中...</li>
-      </ul>
-    </div>
-  </div>
+ <div class="main-grid">
+ <!-- 左上：整合工作助理 (Google & 飛書 月曆) -->
+ <div class="panel">
+ <div class="panel-header" style="align-items: center;">
+ <div class="panel-title" style="font-size: 1.2rem;">整合工作助理</div>
+ <div class="auth-buttons">
+ <button id="authorize_button" class="auth-btn" onclick="handleAuthClick()" disabled>登入</button>
+ <button id="signout_button" class="auth-btn" onclick="handleSignoutClick()" style="display: none;">登出</button>
+ </div>
+ </div>
 
-  <!-- 中間：巴士雷達 (全寬度) -->
-  <div class="panel full-width-panel">
-    <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
-      <div class="panel-title">固定: 常用車站預計到站時間</div>
-      <div class="refresh-badge">自動定位 更新</div>
-    </div>
-    <div class="bus-grid" id="bus-container">
-      <div class="bus-item" style="border:none;">等待下載車站資料...</div>
-    </div>
-  </div>
+ <!-- 動態月曆標題 -->
+ <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px;" id="cal-panel-title">📅 本月行程與日曆</div>
 
-  <!-- 底部：天氣預報 (全寬度) -->
-  <div class="panel full-width-panel">
-    <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
-      <div class="panel-title">香港天文台天氣預報</div>
-      <div class="refresh-badge">15分鐘更新</div>
-    </div>
-    <table class="forecast-table">
-      <thead>
-        <tr><th>日子</th><th>天氣預測</th><th style="text-align: right;">氣溫/降雨</th></tr>
-      </thead>
-      <tbody id="forecast-tbody"><tr><td colspan="3">載入資料中...</td></tr></tbody>
-    </table>
-  </div>
+ <!-- 月曆網格將生成在此 -->
+ <div id="calendar-grid-container">載入中...</div>
 
-  <div class="footer-bar">
-    <div>資料來源：天文台 / 運輸署動態站點 / 綜合新聞 / Google / 飛書</div>
-    <div id="last-update">系統啟動中...</div>
-  </div>
+ <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px; margin-top: 8px;">✉️ 未讀郵件 <span id="unread-count"></span></div>
+ <ul class="google-list" id="gmail-container" style="margin-bottom: 0;">
+ <li class="google-item">請先登入 Google 帳號授權。</li>
+ </ul>
+ </div>
+
+ <!-- 右上：即時綜合新聞 -->
+ <div class="panel">
+ <div class="panel-header">
+ <div class="panel-title" id="news-panel-title">即時綜合新聞</div>
+ <div class="refresh-badge">15分鐘更新</div>
+ </div>
+ <ul class="news-list" id="news-container">
+ <li class="news-item">嘗試連接新聞伺服器中...</li>
+ </ul>
+ </div>
+ </div>
+
+ <!-- 中間：巴士雷達 (全寬度) -->
+ <div class="panel full-width-panel">
+ <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
+ <div class="panel-title">固定: 常用車站預計到站時間</div>
+ <div class="refresh-badge">自動定位 更新</div>
+ </div>
+ <div class="bus-grid" id="bus-container">
+ <div class="bus-item" style="border:none;">等待下載車站資料...</div>
+ </div>
+ </div>
+
+ <!-- 底部：天氣預報 (全寬度) -->
+ <div class="panel full-width-panel">
+ <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
+ <div class="panel-title">香港天文台天氣預報</div>
+ <div class="refresh-badge">15分鐘更新</div>
+ </div>
+ <table class="forecast-table">
+ <thead>
+ <tr><th>日子</th><th>天氣預測</th><th style="text-align: right;">氣溫/降雨</th></tr>
+ </thead>
+ <tbody id="forecast-tbody"><tr><td colspan="3">載入資料中...</td></tr></tbody>
+ </table>
+ </div>
+
+ <div class="footer-bar">
+ <div>資料來源：天文台 / 運輸署動態站點 / 綜合新聞 / Google / 飛書 API</div>
+ <div id="last-update">系統啟動中...</div>
+ </div>
 
 </div>
 
 <script>
-  /* =========================================================
-     🛑🛑🛑 設定區 (Google API, 飛書, 常用巴士與車站) 🛑🛑🛑
-     ========================================================= */
-  const GOOGLE_CLIENT_ID = '32327213493-1dqkm15k6kn8dorc6iaf37v4rlqneljt.apps.googleusercontent.com';
-  const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
-  const LARK_ICS_URL = ''; 
-  
-  const ONLY_SHOW_FAVORITES = true;
-  
-  const FAVORITE_CONFIGS = [
+ /* =========================================================
+ 🛑🛑🛑 設定區 (Google API, 常用巴士與車站) 🛑🛑🛑
+ ========================================================= */
+ const GOOGLE_CLIENT_ID = '32327213493-1dqkm15k6kn8dorc6iaf37v4rlqneljt.apps.googleusercontent.com';
+ const GOOGLE_API_KEY = 'AIzaSy…mbWE';
+
+ // 👇 本地飛書日曆 JSON 路徑（由 lark-cli 定時產生）
+ const LARK_JSON_URL = './data/lark_calendar.json';
+
+ const ONLY_SHOW_FAVORITES = true;
+
+ const FAVORITE_CONFIGS = [
     { route: '171', keyword: '奶路臣街' },
-    { route: '171', keyword: '利澤' },      
-    { route: '24', keyword: '13座' },        
+    { route: '171', keyword: '利澤' },
+    { route: '24', keyword: '13座' },
     { route: '24', keyword: '西洋菜南街' },
     { route: '107', keyword: '香港仔隧道' },
     { route: '592', keyword: '利澤' }
-  ];
+ ];
 
-  const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
-  const DISCOVERY_DOCS = [ 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest', 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest' ];
+ const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
+ const DISCOVERY_DOCS = [ 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest', 'https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest' ];
 
-  let tokenClient; let gapiInited = false; let gisInited = false;
-  function gapiLoaded() { gapi.load('client', initializeGapiClient); }
-  async function initializeGapiClient() {
+ let tokenClient; let gapiInited = false; let gisInited = false;
+ function gapiLoaded() { gapi.load('client', initializeGapiClient); }
+ async function initializeGapiClient() {
     try { await gapi.client.init({ apiKey: GOOGLE_API_KEY, discoveryDocs: DISCOVERY_DOCS }); gapiInited = true; maybeEnableButtons(); } catch (err) {}
-  }
-  function gisLoaded() {
+ }
+ function gisLoaded() {
     try {
-      tokenClient = google.accounts.oauth2.initTokenClient({
-        client_id: GOOGLE_CLIENT_ID, scope: SCOPES,
-        callback: (t) => {
-          if (t && t.access_token) {
-            document.getElementById('authorize_button').style.display = 'none'; document.getElementById('signout_button').style.display = 'inline-block';
-            fetchCombinedCalendarData(); setInterval(fetchCombinedCalendarData, 15 * 60 * 1000);
-          }
-        },
-      });
-      gisInited = true; maybeEnableButtons();
+        tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: GOOGLE_CLIENT_ID, scope: SCOPES,
+            callback: (t) => {
+                if (t && t.access_token) {
+                    document.getElementById('authorize_button').style.display = 'none';
+                    document.getElementById('signout_button').style.display = 'inline-block';
+                    fetchCombinedCalendarData();
+                    setInterval(fetchCombinedCalendarData, 15 * 60 * 1000);
+                }
+            },
+        });
+        gisInited = true; maybeEnableButtons();
     } catch (err) {}
-  }
-  function maybeEnableButtons() { if (gapiInited && gisInited) document.getElementById('authorize_button').disabled = false; }
-  function handleAuthClick() { tokenClient.requestAccessToken({prompt: 'consent'}); }
-  function handleSignoutClick() {
+ }
+ function maybeEnableButtons() { if (gapiInited && gisInited) document.getElementById('authorize_button').disabled = false; }
+ function handleAuthClick() { tokenClient.requestAccessToken({prompt: 'consent'}); }
+ function handleSignoutClick() {
     const t = gapi.client.getToken();
     if (t !== null) {
-      google.accounts.oauth2.revoke(t.access_token); gapi.client.setToken('');
-      document.getElementById('gmail-container').innerHTML = '<li class="google-item">已登出，請重新授權。</li>';
-      document.getElementById('authorize_button').style.display = 'inline-block'; document.getElementById('signout_button').style.display = 'none';
-      fetchCombinedCalendarData(); 
+        google.accounts.oauth2.revoke(t.access_token);
+        gapi.client.setToken('');
+        document.getElementById('gmail-container').innerHTML = '<li class="google-item">已登出，請重新授權。</li>';
+        document.getElementById('authorize_button').style.display = 'inline-block';
+        document.getElementById('signout_button').style.display = 'none';
+        fetchCombinedCalendarData();
     }
-  }
+ }
 
-  // =========================================
-  // 月曆渲染引擎
-  // =========================================
-  function renderCalendarGrid(events) {
+ // =========================================
+ // 月曆渲染引擎
+ // =========================================
+ function renderCalendarGrid(events) {
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth();
@@ -264,12 +270,12 @@
     // 依據日期將行程分組
     const eventsByDay = {};
     events.forEach(e => {
-      const d = e.time;
-      if (d.getFullYear() === year && d.getMonth() === month) {
-        const date = d.getDate();
-        if (!eventsByDay[date]) eventsByDay[date] = [];
-        eventsByDay[date].push(e);
-      }
+        const d = e.time;
+        if (d.getFullYear() === year && d.getMonth() === month) {
+            const date = d.getDate();
+            if (!eventsByDay[date]) eventsByDay[date] = [];
+            eventsByDay[date].push(e);
+        }
     });
 
     let html = '<table class="calendar-table"><tr>';
@@ -278,403 +284,409 @@
     html += '</tr><tr>';
 
     let dayCount = 1;
-    for (let i = 0; i < 42; i++) { // 最多 6 週
-      if (i < firstDay || dayCount > daysInMonth) {
-        html += '<td></td>';
-      } else {
-        let tdClass = dayCount === todayDate ? 'calendar-today' : '';
-        html += `<td class="${tdClass}">`;
-        html += `<div class="day-number">${dayCount}</div>`;
+    for (let i = 0; i < 42; i++) {
+        if (i < firstDay || dayCount > daysInMonth) {
+            html += '<td></td>';
+        } else {
+            let tdClass = dayCount === todayDate ? 'calendar-today' : '';
+            html += `<td class="${tdClass}">`;
+            html += `<div class="day-number">${dayCount}</div>`;
 
-        // 渲染當天行程
-        if (eventsByDay[dayCount]) {
-          const dayEvents = eventsByDay[dayCount];
-          // 每個格子最多顯示 3 個行程以免撐爆畫面
-          for (let j = 0; j < Math.min(dayEvents.length, 3); j++) {
-            const ev = dayEvents[j];
-            const isLark = ev.source ? 'lark' : '';
-            let timeStr = ev.isAllDay ? '' : `${ev.time.getHours().toString().padStart(2,'0')}:${ev.time.getMinutes().toString().padStart(2,'0')} `;
-            html += `<div class="cal-cell-event ${isLark}" title="${timeStr}${ev.summary}">${timeStr}${ev.summary}</div>`;
-          }
-          if (dayEvents.length > 3) {
-            html += `<div class="cal-cell-event-more">+${dayEvents.length - 3} 更多</div>`;
-          }
+            if (eventsByDay[dayCount]) {
+                const dayEvents = eventsByDay[dayCount];
+                for (let j = 0; j < Math.min(dayEvents.length, 3); j++) {
+                    const ev = dayEvents[j];
+                    const isLark = ev.source === '飛書' ? 'lark' : '';
+                    let timeStr = ev.isAllDay ? '' : `${ev.time.getHours().toString().padStart(2,'0')}:${ev.time.getMinutes().toString().padStart(2,'0')} `;
+                    html += `<div class="cal-cell-event ${isLark}" title="${timeStr}${ev.summary}">${timeStr}${ev.summary}</div>`;
+                }
+                if (dayEvents.length > 3) {
+                    html += `<div class="cal-cell-event-more">+${dayEvents.length - 3} 更多</div>`;
+                }
+            }
+            html += `</td>`;
+            dayCount++;
         }
-
-        html += `</td>`;
-        dayCount++;
-      }
-      // 換行
-      if ((i + 1) % 7 === 0) {
-        if (dayCount > daysInMonth && i >= 27) break; // 若該月已結束且印完，提早結束表格
-        html += '</tr><tr>';
-      }
+        if ((i + 1) % 7 === 0) {
+            if (dayCount > daysInMonth && i >= 27) break;
+            html += '</tr><tr>';
+        }
     }
     html += '</tr></table>';
     document.getElementById('calendar-grid-container').innerHTML = html;
-  }
+ }
 
-  // =========================================
-  // 飛書與 Google 行程解析
-  // =========================================
-  async function fetchLarkEvents() {
-    if (!LARK_ICS_URL) return [];
+ // =========================================
+ // 飛書日程 (新版：讀本地 JSON，唔再靠 ICS)
+ // =========================================
+ async function fetchLarkEvents() {
     try {
-      const cacheBusterUrl = LARK_ICS_URL + (LARK_ICS_URL.includes('?') ? '&' : '?') + 'cb=' + Date.now();
-      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(cacheBusterUrl)}`;
-      const res = await fetch(proxyUrl);
-      const data = await res.json();
-      if (!data.contents) return [];
-      
-      const jcalData = ICAL.parse(data.contents);
-      const comp = new ICAL.Component(jcalData);
-      const vevents = comp.getAllSubcomponents("vevent");
-      const events = []; 
-      
-      // 從本月1號開始抓取
-      const startOfMonthJS = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-      const startOfMonth = ICAL.Time.fromJSDate(startOfMonthJS);
-      
-      vevents.forEach(vevent => {
-        try {
-          const event = new ICAL.Event(vevent);
-          if (event.isRecurring()) {
-            const expand = event.iterator(); let next; let count = 0;
-            while ((next = expand.next()) && count < 20) {
-              if (next.compare(startOfMonth) >= 0) { events.push({ summary: event.summary, time: next.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' }); count++; }
+        const res = await fetch(LARK_JSON_URL + '?cb=' + Date.now());
+        if (!res.ok) return [];
+        const data = await res.json();
+        if (!data.events) return [];
+
+        return data.events.map(e => {
+            const dateStr = e.date;
+            const [y, m, d] = dateStr.split('-').map(Number);
+            let timeObj;
+            if (e.isAllDay) {
+                timeObj = new Date(y, m - 1, d);
+            } else {
+                const [hh, mm] = e.time.split(':');
+                timeObj = new Date(y, m - 1, d, parseInt(hh), parseInt(mm));
             }
-          } else {
-            if (event.endDate.compare(startOfMonth) >= 0) events.push({ summary: event.summary, time: event.startDate.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' });
-          }
-        } catch(e) {} 
-      });
-      return events;
-    } catch (err) { return []; }
-  }
+            return {
+                summary: e.summary,
+                time: timeObj,
+                isAllDay: e.isAllDay,
+                source: '飛書'
+            };
+        });
+    } catch (err) {
+        console.error('Lark JSON load failed:', err);
+        return [];
+    }
+ }
 
-  async function fetchGmail() {
+ async function fetchGmail() {
     try {
-      const gmailRes = await gapi.client.gmail.users.messages.list({ 'userId': 'me', 'q': 'is:unread in:inbox', 'maxResults': 3 });
-      document.getElementById('unread-count').textContent = `(共 ${gmailRes.result.resultSizeEstimate || 0} 封)`;
-      const messages = gmailRes.result.messages || [];
-      if (messages.length === 0) {
-        document.getElementById('gmail-container').innerHTML = '<li class="google-item">收件匣沒有未讀郵件。</li>';
-      } else {
-        let htmlStr = '';
-        for (const msg of messages) {
-          const detail = await gapi.client.gmail.users.messages.get({ 'userId': 'me', 'id': msg.id, 'format': 'metadata', 'metadataHeaders': ['Subject', 'From'] });
-          let sub = '無主旨', from = '未知';
-          detail.result.payload.headers.forEach(h => { if(h.name==='Subject') sub=h.value; if(h.name==='From') from=h.value.replace(/<.*>/, '').trim(); });
-          htmlStr += `<li class="google-item"><div class="g-title">▪ ${sub}</div><div class="g-sender">來自: ${from}</div></li>`;
+        const gmailRes = await gapi.client.gmail.users.messages.list({ 'userId': 'me', 'q': 'is:unread in:inbox', 'maxResults': 3 });
+        document.getElementById('unread-count').textContent = `(共 ${gmailRes.result.resultSizeEstimate || 0} 封)`;
+        const messages = gmailRes.result.messages || [];
+        if (messages.length === 0) {
+            document.getElementById('gmail-container').innerHTML = '<li class="google-item">收件匣沒有未讀郵件。</li>';
+        } else {
+            let htmlStr = '';
+            for (const msg of messages) {
+                const detail = await gapi.client.gmail.users.messages.get({ 'userId': 'me', 'id': msg.id, 'format': 'metadata', 'metadataHeaders': ['Subject', 'From'] });
+                let sub = '無主旨', from = '未知';
+                detail.result.payload.headers.forEach(h => { if(h.name==='Subject') sub=h.value; if(h.name==='From') from=h.value.replace(/<.*>/, '').trim(); });
+                htmlStr += `<li class="google-item"><div class="g-title">▪ ${sub}</div><div class="g-sender">來自: ${from}</div></li>`;
+            }
+            document.getElementById('gmail-container').innerHTML = htmlStr;
         }
-        document.getElementById('gmail-container').innerHTML = htmlStr;
-      }
     } catch(err) {}
-  }
+ }
 
-  async function fetchCombinedCalendarData() {
+ async function fetchCombinedCalendarData() {
     let allEvents = [];
     const token = gapi.client.getToken();
 
-    if (LARK_ICS_URL) allEvents = allEvents.concat(await fetchLarkEvents());
+    // 1. 先加飛書事件（新版：本地 JSON）
+    allEvents = allEvents.concat(await fetchLarkEvents());
+
+    // 2. 再加 Google Calendar（需登入）
     if (token) {
-      fetchGmail();
-      try {
-        const calListRes = await gapi.client.calendar.calendarList.list();
-        // 改為從「本月 1 號」開始抓取，讓整個月曆都有資料
-        const startOfMonthIso = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
-        for (const cal of calListRes.result.items) {
-          try {
-            const eventsRes = await gapi.client.calendar.events.list({ 'calendarId': cal.id, 'timeMin': startOfMonthIso, 'showDeleted': false, 'singleEvents': true, 'maxResults': 20, 'orderBy': 'startTime' });
-            if (eventsRes.result.items) {
-              eventsRes.result.items.forEach(e => {
-                let timeObj = e.start.dateTime ? new Date(e.start.dateTime) : new Date(e.start.date);
-                allEvents.push({ summary: e.summary, time: timeObj, isAllDay: !e.start.dateTime, source: cal.primary ? '' : cal.summary });
-              });
+        fetchGmail();
+        try {
+            const calListRes = await gapi.client.calendar.calendarList.list();
+            const startOfMonthIso = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+            for (const cal of calListRes.result.items) {
+                try {
+                    const eventsRes = await gapi.client.calendar.events.list({
+                        'calendarId': cal.id,
+                        'timeMin': startOfMonthIso,
+                        'showDeleted': false,
+                        'singleEvents': true,
+                        'maxResults': 20,
+                        'orderBy': 'startTime'
+                    });
+                    if (eventsRes.result.items) {
+                        eventsRes.result.items.forEach(e => {
+                            let timeObj = e.start.dateTime ? new Date(e.start.dateTime) : new Date(e.start.date);
+                            allEvents.push({
+                                summary: e.summary,
+                                time: timeObj,
+                                isAllDay: !e.start.dateTime,
+                                source: cal.primary ? '' : cal.summary
+                            });
+                        });
+                    }
+                } catch (err) {}
             }
-          } catch (err) {}
-        }
-      } catch (err) {}
+        } catch (err) {}
     }
 
     if (allEvents.length > 0) {
-      allEvents.sort((a, b) => a.time - b.time);
-      renderCalendarGrid(allEvents);
+        allEvents.sort((a, b) => a.time - b.time);
+        renderCalendarGrid(allEvents);
     } else {
-      renderCalendarGrid([]);
+        renderCalendarGrid([]);
     }
-  }
+ }
 
-  /* =========================================================
-     🌟 巴士引擎 3.0 (混合模式：GPS雷達 + 固定常用車站)
-     ========================================================= */
-  let userLoc = null;
-  let allStopsCache = []; 
+ /* =========================================================
+ 🌟 巴士引擎 3.0 (混合模式：GPS雷達 + 固定常用車站)
+ ========================================================= */
+ let userLoc = null;
+ let allStopsCache = [];
 
-  function deg2rad(deg) { return deg * (Math.PI/180) }
-  function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
-    var R = 6371; var dLat = deg2rad(lat2-lat1); var dLon = deg2rad(lon2-lon1); 
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2); 
+ function deg2rad(deg) { return deg * (Math.PI/180) }
+ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+    var R = 6371;
+    var dLat = deg2rad(lat2-lat1);
+    var dLon = deg2rad(lon2-lon1);
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
     return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
-  }
+ }
 
-  async function loadAllStops() {
+ async function loadAllStops() {
     if (allStopsCache.length > 0) return true;
     try {
-      const [kmbRes, ctbRes] = await Promise.all([
-        fetch('https://data.etabus.gov.hk/v1/transport/kmb/stop').catch(()=>null),
-        fetch('https://rt.data.gov.hk/v2/transport/citybus/stop').catch(()=>null)
-      ]);
-      if (kmbRes && kmbRes.ok) {
-        const kmbData = await kmbRes.json();
-        kmbData.data.forEach(s => allStopsCache.push({ co: 'kmb', id: s.stop, name: s.name_tc, lat: parseFloat(s.lat), lng: parseFloat(s.long || s.lng) }));
-      }
-      if (ctbRes && ctbRes.ok) {
-        const ctbData = await ctbRes.json();
-        ctbData.data.forEach(s => allStopsCache.push({ co: 'ctb', id: s.stop, name: s.name_tc, lat: parseFloat(s.lat), lng: parseFloat(s.long || s.lng) }));
-      }
-      return allStopsCache.length > 0;
+        const [kmbRes, ctbRes] = await Promise.all([
+            fetch('https://data.etabus.gov.hk/v1/transport/kmb/stop').catch(()=>null),
+            fetch('https://rt.data.gov.hk/v2/transport/citybus/stop').catch(()=>null)
+        ]);
+        if (kmbRes && kmbRes.ok) {
+            const kmbData = await kmbRes.json();
+            kmbData.data.forEach(s => allStopsCache.push({ co: 'kmb', id: s.stop, name: s.name_tc, lat: parseFloat(s.lat), lng: parseFloat(s.long || s.lng) }));
+        }
+        if (ctbRes && ctbRes.ok) {
+            const ctbData = await ctbRes.json();
+            ctbData.data.forEach(s => allStopsCache.push({ co: 'ctb', id: s.stop, name: s.name_tc, lat: parseFloat(s.lat), lng: parseFloat(s.long || s.lng) }));
+        }
+        return allStopsCache.length > 0;
     } catch(err) { return false; }
-  }
+ }
 
-  function updateGPS() {
+ function updateGPS() {
     const statusText = document.getElementById('gps-status-text');
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          userLoc = { lat: position.coords.latitude, lng: position.coords.longitude };
-          statusText.textContent = `📍 已定位附近車站`;
-          fetchDynamicBusETA();
-        },
-        (error) => { 
-          let errMsg = '無法獲取位置';
-          if (error.code === 1) errMsg = '定位權限被拒絕';
-          statusText.textContent = `📍 ${errMsg} (使用備用模式)`; 
-          userLoc = null;
-          fetchDynamicBusETA(); 
-        }, 
-        { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
-      );
-    } else { 
-      statusText.textContent = '📍 裝置不支援定位'; 
-      userLoc = null;
-      fetchDynamicBusETA();
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                userLoc = { lat: position.coords.latitude, lng: position.coords.longitude };
+                statusText.textContent = `📍 已定位附近車站`;
+                fetchDynamicBusETA();
+            },
+            (error) => {
+                let errMsg = '無法獲取位置';
+                if (error.code === 1) errMsg = '定位權限被拒絕';
+                statusText.textContent = `📍 ${errMsg} (使用備用模式)`;
+                userLoc = null;
+                fetchDynamicBusETA();
+            },
+            { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+        );
+    } else {
+        statusText.textContent = '📍 裝置不支援定位';
+        userLoc = null;
+        fetchDynamicBusETA();
     }
-  }
+ }
 
-  async function fetchDynamicBusETA() {
+ async function fetchDynamicBusETA() {
     if (allStopsCache.length === 0) {
-      document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">首次啟動，下載全港車站資料中...</div>';
-      const ok = await loadAllStops();
-      if (!ok) {
-        document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">下載車站清單失敗，請檢查網絡。</div>';
-        return;
-      }
+        document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">首次啟動，下載全港車站資料中...</div>';
+        const ok = await loadAllStops();
+        if (!ok) {
+            document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">下載車站清單失敗，請檢查網絡。</div>';
+            return;
+        }
     }
 
     let stopsToFetch = [];
 
     if (userLoc && !ONLY_SHOW_FAVORITES) {
-      const nearby = allStopsCache
-        .map(s => ({ ...s, dist: getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, s.lat, s.lng) }))
-        .filter(s => s.dist < 0.5)
-        .sort((a, b) => a.dist - b.dist)
-        .slice(0, 4);
-      stopsToFetch.push(...nearby);
+        const nearby = allStopsCache
+            .map(s => ({ ...s, dist: getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, s.lat, s.lng) }))
+            .filter(s => s.dist < 0.5)
+            .sort((a, b) => a.dist - b.dist)
+            .slice(0, 4);
+        stopsToFetch.push(...nearby);
     }
 
     FAVORITE_CONFIGS.forEach(fav => {
-      const matches = allStopsCache.filter(s => s.name.includes(fav.keyword));
-      matches.slice(0, 8).forEach(m => {
-        const dist = userLoc ? getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, m.lat, m.lng) : 999;
-        stopsToFetch.push({ ...m, dist });
-      });
+        const matches = allStopsCache.filter(s => s.name.includes(fav.keyword));
+        matches.slice(0, 8).forEach(m => {
+            const dist = userLoc ? getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, m.lat, m.lng) : 999;
+            stopsToFetch.push({ ...m, dist });
+        });
     });
 
     const uniqueStops = [];
     const seenStopIds = new Set();
     stopsToFetch.forEach(s => {
-      if (!seenStopIds.has(s.id + s.co)) {
-        seenStopIds.add(s.id + s.co);
-        uniqueStops.push(s);
-      }
+        if (!seenStopIds.has(s.id + s.co)) {
+            seenStopIds.add(s.id + s.co);
+            uniqueStops.push(s);
+        }
     });
 
     if (uniqueStops.length === 0) {
-      document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">找不到任何車站。</div>';
-      return;
+        document.getElementById('bus-container').innerHTML = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">找不到任何車站。</div>';
+        return;
     }
 
     let allEtas = [];
     const now = new Date();
     const fetchPromises = uniqueStops.map(async (stop) => {
-      try {
-        let url = stop.co === 'kmb' 
-          ? `https://data.etabus.gov.hk/v1/transport/kmb/stop-eta/${stop.id}` 
-          : `https://rt.data.gov.hk/v2/transport/citybus/eta/CTB/${stop.id}`;
-        
-        const res = await fetch(url);
-        if (!res.ok) return;
-        const result = await res.json();
+        try {
+            let url = stop.co === 'kmb'
+                ? `https://data.etabus.gov.hk/v1/transport/kmb/stop-eta/${stop.id}`
+                : `https://rt.data.gov.hk/v2/transport/citybus/eta/CTB/${stop.id}`;
 
-        (result.data || []).forEach(eta => {
-          if (eta.eta) {
-            const diffMs = new Date(eta.eta.replace(/-/g, '/').replace('T', ' ')).getTime() - now.getTime();
-            if (diffMs >= 0) {
-              allEtas.push({
-                co: stop.co, route: eta.route, dest: eta.dest_tc, stopName: stop.name, dist: stop.dist,
-                min: Math.floor(diffMs / 60000),
-                isScheduled: eta.rmk_tc && (eta.rmk_tc.includes('原定') || eta.rmk_tc.includes('預定'))
-              });
-            }
-          }
-        });
-      } catch(e) {}
+            const res = await fetch(url);
+            if (!res.ok) return;
+            const result = await res.json();
+
+            (result.data || []).forEach(eta => {
+                if (eta.eta) {
+                    const diffMs = new Date(eta.eta.replace(/-/g, '/').replace('T', ' ')).getTime() - now.getTime();
+                    if (diffMs >= 0) {
+                        allEtas.push({
+                            co: stop.co, route: eta.route, dest: eta.dest_tc, stopName: stop.name, dist: stop.dist,
+                            min: Math.floor(diffMs / 60000),
+                            isScheduled: eta.rmk_tc && (eta.rmk_tc.includes('原定') || eta.rmk_tc.includes('預定'))
+                        });
+                    }
+                }
+            });
+        } catch(e) {}
     });
 
     await Promise.all(fetchPromises);
 
     const validEtas = allEtas.filter(e => {
-      let isFav = false;
-      FAVORITE_CONFIGS.forEach(fav => {
-        if (e.route === fav.route && e.stopName.includes(fav.keyword)) isFav = true;
-      });
-      e.isFav = isFav;
-      if (ONLY_SHOW_FAVORITES) return isFav;
-      return isFav || e.dist < 0.5;
+        let isFav = false;
+        FAVORITE_CONFIGS.forEach(fav => {
+            if (e.route === fav.route && e.stopName.includes(fav.keyword)) isFav = true;
+        });
+        e.isFav = isFav;
+        if (ONLY_SHOW_FAVORITES) return isFav;
+        return isFav || e.dist < 0.5;
     });
 
     const grouped = {};
     validEtas.forEach(e => {
-      const key = `${e.co}-${e.route}-${e.dest}-${e.stopName}`;
-      if (!grouped[key]) grouped[key] = { co: e.co, route: e.route, dest: e.dest, stopName: e.stopName, dist: e.dist, isFav: e.isFav, etas: [] };
-      grouped[key].etas.push({ min: e.min, isScheduled: e.isScheduled });
+        const key = `${e.co}-${e.route}-${e.dest}-${e.stopName}`;
+        if (!grouped[key]) grouped[key] = { co: e.co, route: e.route, dest: e.dest, stopName: e.stopName, dist: e.dist, isFav: e.isFav, etas: [] };
+        grouped[key].etas.push({ min: e.min, isScheduled: e.isScheduled });
     });
 
     let groupArray = Object.values(grouped);
     groupArray.forEach(g => {
-      const uniqueMins = new Set();
-      g.etas = g.etas.filter(e => {
-        if (uniqueMins.has(e.min)) return false;
-        uniqueMins.add(e.min); return true;
-      }).sort((a,b) => a.min - b.min).slice(0, 3);
+        const uniqueMins = new Set();
+        g.etas = g.etas.filter(e => {
+            if (uniqueMins.has(e.min)) return false;
+            uniqueMins.add(e.min); return true;
+        }).sort((a,b) => a.min - b.min).slice(0, 3);
     });
 
     groupArray = groupArray.filter(g => g.etas.length > 0);
-    
+
     groupArray.sort((a, b) => {
-      if (a.isFav && !b.isFav) return -1;
-      if (!a.isFav && b.isFav) return 1;
-      if (a.etas[0].min === b.etas[0].min) return a.dist - b.dist; 
-      return a.etas[0].min - b.etas[0].min;
+        if (a.isFav && !b.isFav) return -1;
+        if (!a.isFav && b.isFav) return 1;
+        if (a.etas[0].min === b.etas[0].min) return a.dist - b.dist;
+        return a.etas[0].min - b.etas[0].min;
     });
 
     const displayGroups = groupArray.slice(0, 10);
     let htmlStr = '';
-    
-    if (displayGroups.length === 0) {
-      htmlStr = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">附近車站暫無即將到來的班次。</div>';
-    } else {
-      displayGroups.forEach(g => {
-        const coBadge = g.co === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
-        const favBadge = g.isFav ? '<span class="fav-badge">★ 常用</span>' : '';
-        const etaVals = g.etas.map(m => m.min + (m.isScheduled ? '*' : ''));
-        const etaHtml = etaVals.join(', ') + '<span class="eta-min">分鐘</span>';
-        
-        let distStr = '';
-        if (g.dist === 999) distStr = '(固定位置)';
-        else if (g.dist > 2) distStr = `(${(g.dist).toFixed(1)}km)`;
-        else if (g.dist < 0.1) distStr = '(<100m)';
-        else distStr = `(${(g.dist * 1000).toFixed(0)}m)`;
 
-        htmlStr += `
-          <div class="bus-item ${g.isFav ? 'is-fav' : ''}">
-            <div class="bus-route">
-              ${g.route}
-              ${favBadge}
+    if (displayGroups.length === 0) {
+        htmlStr = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">附近車站暫無即將到來的班次。</div>';
+    } else {
+        displayGroups.forEach(g => {
+            const coBadge = g.co === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
+            const favBadge = g.isFav ? '<span class="fav-badge">★ 常用</span>' : '';
+            const etaVals = g.etas.map(m => m.min + (m.isScheduled ? '*' : ''));
+            const etaHtml = etaVals.join(', ') + '<span class="eta-min">分鐘</span>';
+
+            let distStr = '';
+            if (g.dist === 999) distStr = '(固定位置)';
+            else if (g.dist > 2) distStr = `(${(g.dist).toFixed(1)}km)`;
+            else if (g.dist < 0.1) distStr = '(<100m)';
+            else distStr = `(${(g.dist * 1000).toFixed(0)}m)`;
+
+            htmlStr += `
+            <div class="bus-item ${g.isFav ? 'is-fav' : ''}">
+                <div class="bus-route">
+                    ${g.route}
+                    ${favBadge}
+                </div>
+                <div class="bus-info">
+                    <span class="bus-dest">${coBadge} 往 ${g.dest}</span>
+                    <span class="bus-stop">${g.stopName} <span style="font-size:0.75rem; color:#666;">${distStr}</span></span>
+                </div>
+                <div class="bus-etas">${etaHtml}</div>
             </div>
-            <div class="bus-info">
-              <span class="bus-dest">${coBadge} 往 ${g.dest}</span>
-              <span class="bus-stop">${g.stopName} <span style="font-size:0.75rem; color:#666;">${distStr}</span></span>
-            </div>
-            <div class="bus-etas">${etaHtml}</div>
-          </div>
-        `;
-      });
+            `;
+        });
     }
 
     document.getElementById('bus-container').innerHTML = htmlStr;
     updateLastUpdateTime('巴士');
-  }
+ }
 
-  // =========================================
-  // 其他更新功能
-  // =========================================
-  function updateClock() {
+ // =========================================
+ // 其他更新功能
+ // =========================================
+ function updateClock() {
     const now = new Date(); const pad = n => n.toString().padStart(2, '0');
     document.getElementById('clock-time').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
     const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
     document.getElementById('clock-date').textContent = `${now.getFullYear()}年${pad(now.getMonth() + 1)}月${pad(now.getDate())}日 ${days[now.getDay()]}`;
-  }
+ }
 
-  async function fetchWeather() {
+ async function fetchWeather() {
     try {
-      const currentRes = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc');
-      const currentData = await currentRes.json();
-      document.getElementById('curr-temp').textContent = currentData.temperature.data[0].value;
-      document.getElementById('curr-desc').textContent = `${currentData.warningMessage ? '有天氣警告' : '大致多雲'} · 濕度 ${currentData.humidity.data[0].value}%`;
+        const currentRes = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=rhrread&lang=tc');
+        const currentData = await currentRes.json();
+        document.getElementById('curr-temp').textContent = currentData.temperature.data[0].value;
+        document.getElementById('curr-desc').textContent = `${currentData.warningMessage ? '有天氣警告' : '大致多雲'} · 濕度 ${currentData.humidity.data[0].value}%`;
 
-      const forecastRes = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc');
-      const forecastData = await forecastRes.json();
-      document.getElementById('forecast-tbody').innerHTML = forecastData.weatherForecast.slice(0, 4).map(day => `
-        <tr><td class="fc-day">${day.week}</td><td class="fc-desc">${day.forecastWeather}</td><td class="fc-temp-rain">${day.forecastMintemp.value}° - ${day.forecastMaxtemp.value}°<br><span class="fc-rain">降雨: ${day.PSR}</span></td></tr>
-      `).join('');
-      updateLastUpdateTime('天氣');
+        const forecastRes = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=tc');
+        const forecastData = await forecastRes.json();
+        document.getElementById('forecast-tbody').innerHTML = forecastData.weatherForecast.slice(0, 4).map(day => `
+            <tr><td class="fc-day">${day.week}</td><td class="fc-desc">${day.forecastWeather}</td><td class="fc-temp-rain">${day.forecastMintemp.value}° - ${day.forecastMaxtemp.value}°<br><span class="fc-rain">降雨: ${day.PSR}</span></td></tr>
+        `).join('');
+        updateLastUpdateTime('天氣');
     } catch (error) {}
-  }
+ }
 
-  async function fetchNews() {
+ async function fetchNews() {
     const sources = [
-      { name: '香港電台', url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://rthk9.rthk.hk/rthk/news/rss/c_expressnews_cnews.xml') },
-      { name: 'Yahoo 港聞', url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://hk.news.yahoo.com/rss/hong-kong') }
+        { name: '香港電台', url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://rthk9.rthk.hk/rthk/news/rss/c_expressnews_cnews.xml') },
+        { name: 'Yahoo 港聞', url: 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://hk.news.yahoo.com/rss/hong-kong') }
     ];
     for (let source of sources) {
-      try {
-        const res = await fetch(source.url); if (!res.ok) continue;
-        const data = await res.json();
-        if (data.status === 'ok' && data.items && data.items.length > 0) {
-          document.getElementById('news-container').innerHTML = data.items.slice(0, 6).map(item => `<li class="news-item" title="${item.title}">${item.title}</li>`).join('');
-          document.getElementById('news-panel-title').textContent = `即時綜合新聞 (${source.name})`; updateLastUpdateTime('新聞'); return;
-        }
-      } catch (err) {}
+        try {
+            const res = await fetch(source.url); if (!res.ok) continue;
+            const data = await res.json();
+            if (data.status === 'ok' && data.items && data.items.length > 0) {
+                document.getElementById('news-container').innerHTML = data.items.slice(0, 6).map(item => `<li class="news-item" title="${item.title}">${item.title}</li>`).join('');
+                document.getElementById('news-panel-title').textContent = `即時綜合新聞 (${source.name})`; updateLastUpdateTime('新聞'); return;
+            }
+        } catch (err) {}
     }
     document.getElementById('news-container').innerHTML = '<li class="news-item">新聞載入失敗</li>';
-  }
+ }
 
-  function updateLastUpdateTime(type) {
+ function updateLastUpdateTime(type) {
     const pad = n => n.toString().padStart(2, '0'); const now = new Date();
     document.getElementById('last-update').textContent = `最後更新 (${type})：${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  }
+ }
 
-  /* =========================================================
-     啟動程序
-     ========================================================= */
-  updateClock(); setInterval(updateClock, 1000); 
-  
-  updateGPS(); setInterval(updateGPS, 5 * 60 * 1000); 
-  
-  setInterval(fetchDynamicBusETA, 60 * 1000); 
-  
-  fetchWeather(); fetchNews(); 
-  
-  // 啟動月曆與信件抓取 (初次先畫出空月曆)
-  renderCalendarGrid([]);
-  fetchCombinedCalendarData(); setInterval(fetchCombinedCalendarData, 15 * 60 * 1000);
-  
-  setInterval(() => { fetchWeather(); fetchNews(); }, 15 * 60 * 1000);
+ /* =========================================================
+ 啟動程序
+ ========================================================= */
+ updateClock(); setInterval(updateClock, 1000);
+
+ updateGPS(); setInterval(updateGPS, 5 * 60 * 1000);
+
+ setInterval(fetchDynamicBusETA, 60 * 1000);
+
+ fetchWeather(); fetchNews();
+
+ // 啟動月曆（先畫空月曆，再讀飛書 JSON + Google）
+ renderCalendarGrid([]);
+ fetchCombinedCalendarData();
+ setInterval(fetchCombinedCalendarData, 15 * 60 * 1000);
+
+ setInterval(() => { fetchWeather(); fetchNews(); }, 15 * 60 * 1000);
 
 </script>
 </body>
 </html>
-
-
