@@ -197,21 +197,22 @@
  🛑🛑🛑 設定區 (Google API, 常用巴士與車站) 🛑🛑🛑
  ========================================================= */
  const GOOGLE_CLIENT_ID = '32327213493-1dqkm15k6kn8dorc6iaf37v4rlqneljt.apps.googleusercontent.com';
- // 👇 已經修復完整的 API Key！
  const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
 
  // 👇 本地飛書日曆 JSON 路徑（由 lark-cli 定時產生）
  const LARK_JSON_URL = './data/lark_calendar.json';
 
+ // 開啟純固定模式
  const ONLY_SHOW_FAVORITES = true;
 
+ // 👉 設定固定巴士與對應車站關鍵字
  const FAVORITE_CONFIGS = [
-    { route: '171', keyword: '奶路臣街' },
-    { route: '171', keyword: '利澤' },
-    { route: '24', keyword: '13座' },
-    { route: '24', keyword: '西洋菜南街' },
-    { route: '107', keyword: '香港仔隧道' },
-    { route: '592', keyword: '利澤' }
+    { route: '171', keyword: '奶路臣' },     // 優化：包含旺角奶路臣街 (MK516)
+    { route: '171', keyword: '利澤' },       // 包含利澤樓
+    { route: '24', keyword: '13座' },        // 包含麗晶花園13座 (KT486)
+    { route: '24', keyword: '西洋菜南街' },  // 包含西洋菜南街 旺角站 (MK343)
+    { route: '107', keyword: '香港仔隧道' }, // 包含香港仔隧道
+    { route: '592', keyword: '利澤' }        // 包含鴨脷洲邨利澤樓
  ];
 
  const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
@@ -271,13 +272,11 @@
     const month = now.getMonth();
     const todayDate = now.getDate();
 
-    // 更新月曆標題
     document.getElementById('cal-panel-title').innerHTML = `📅 ${year}年${month + 1}月 行程日曆`;
 
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    // 依據日期將行程分組
     const eventsByDay = {};
     events.forEach(e => {
         const d = e.time;
@@ -354,7 +353,6 @@
             };
         });
     } catch (err) {
-        console.warn('飛書 JSON 檔案讀取失敗，可能是尚未產生該檔案。', err);
         return [];
     }
  }
@@ -383,10 +381,8 @@
     let allEvents = [];
     const token = gapi.client.getToken();
 
-    // 1. 先加飛書事件
     allEvents = allEvents.concat(await fetchLarkEvents());
 
-    // 2. 再加 Google Calendar
     if (token) {
         fetchGmail();
         try {
@@ -508,7 +504,7 @@
 
     FAVORITE_CONFIGS.forEach(fav => {
         const matches = allStopsCache.filter(s => s.name.includes(fav.keyword));
-        matches.slice(0, 8).forEach(m => {
+        matches.slice(0, 20).forEach(m => {
             const dist = userLoc ? getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, m.lat, m.lng) : 999;
             stopsToFetch.push({ ...m, dist });
         });
