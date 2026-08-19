@@ -43,11 +43,17 @@
     
     /* 月曆網格設計 (E-Ink 高對比) */
     .calendar-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; table-layout: fixed; }
-    .calendar-table th { font-size: 0.85rem; padding: 4px 0; border-bottom: 2px solid #000; }
-    .calendar-table td { text-align: center; vertical-align: middle; height: 36px; font-size: 1.1rem; position: relative; }
-    .calendar-today { background-color: #000; color: #fff; border-radius: 4px; font-weight: bold; }
-    .calendar-has-event::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background-color: #000; border-radius: 50%; }
-    .calendar-today.calendar-has-event::after { background-color: #fff; } /* 今天的點反白 */
+    .calendar-table th { font-size: 0.85rem; padding: 4px 2px; border-bottom: 2px solid #000; text-align: left; }
+    .calendar-table td { text-align: left; vertical-align: top; height: 75px; padding: 2px; border: 1px dashed #ccc; border-top: none; }
+    .calendar-table td:first-child { border-left: none; }
+    .calendar-table td:last-child { border-right: none; }
+    .calendar-today { background-color: #f9f9f9; border: 1px solid #000 !important; }
+    .day-number { display: inline-block; padding: 2px 4px; font-weight: bold; font-size: 0.9rem; margin-bottom: 2px; border-radius: 4px; }
+    .calendar-today .day-number { background-color: #000; color: #fff; }
+    
+    .cal-cell-event { font-size: 0.65rem; line-height: 1.2; border: 1px solid #000; border-radius: 2px; margin-bottom: 2px; padding: 1px 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: #fff; }
+    .cal-cell-event.lark { background: #000; color: #fff; border: 1px solid #000; }
+    .cal-cell-event-more { font-size: 0.65rem; font-weight: bold; text-align: center; margin-top: 2px;}
 
     .google-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
     .google-item { border-bottom: 1px dashed #000; padding-bottom: 8px; }
@@ -136,9 +142,6 @@
       
       <!-- 月曆網格將生成在此 -->
       <div id="calendar-grid-container">載入中...</div>
-      
-      <!-- 近期行程清單 -->
-      <ul class="google-list" id="calendar-list-container" style="margin-top: 8px;"></ul>
       
       <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px; margin-top: 8px;">✉️ 未讀郵件 <span id="unread-count"></span></div>
       <ul class="google-list" id="gmail-container" style="margin-bottom: 0;">
@@ -258,12 +261,14 @@
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    // 取出當月有行程的日期
-    const eventDays = new Set();
+    // 依據日期將行程分組
+    const eventsByDay = {};
     events.forEach(e => {
       const d = e.time;
       if (d.getFullYear() === year && d.getMonth() === month) {
-        eventDays.add(d.getDate());
+        const date = d.getDate();
+        if (!eventsByDay[date]) eventsByDay[date] = [];
+        eventsByDay[date].push(e);
       }
     });
 
@@ -277,15 +282,31 @@
       if (i < firstDay || dayCount > daysInMonth) {
         html += '<td></td>';
       } else {
-        let classes = [];
-        if (dayCount === todayDate) classes.push('calendar-today');
-        if (eventDays.has(dayCount)) classes.push('calendar-has-event');
-        html += `<td class="${classes.join(' ')}">${dayCount}</td>`;
+        let tdClass = dayCount === todayDate ? 'calendar-today' : '';
+        html += `<td class="${tdClass}">`;
+        html += `<div class="day-number">${dayCount}</div>`;
+
+        // 渲染當天行程
+        if (eventsByDay[dayCount]) {
+          const dayEvents = eventsByDay[dayCount];
+          // 每個格子最多顯示 3 個行程以免撐爆畫面
+          for (let j = 0; j < Math.min(dayEvents.length, 3); j++) {
+            const ev = dayEvents[j];
+            const isLark = ev.source ? 'lark' : '';
+            let timeStr = ev.isAllDay ? '' : `${ev.time.getHours().toString().padStart(2,'0')}:${ev.time.getMinutes().toString().padStart(2,'0')} `;
+            html += `<div class="cal-cell-event ${isLark}" title="${timeStr}${ev.summary}">${timeStr}${ev.summary}</div>`;
+          }
+          if (dayEvents.length > 3) {
+            html += `<div class="cal-cell-event-more">+${dayEvents.length - 3} 更多</div>`;
+          }
+        }
+
+        html += `</td>`;
         dayCount++;
       }
       // 換行
       if ((i + 1) % 7 === 0) {
-        if (dayCount > daysInMonth && i >= 27) break; // 若該月已結束且印完，提早結束表格以省空間
+        if (dayCount > daysInMonth && i >= 27) break; // 若該月已結束且印完，提早結束表格
         html += '</tr><tr>';
       }
     }
@@ -308,19 +329,22 @@
       const jcalData = ICAL.parse(data.contents);
       const comp = new ICAL.Component(jcalData);
       const vevents = comp.getAllSubcomponents("vevent");
-      const events = []; const now = ICAL.Time.now();
+      const events = []; 
+      
+      // 從本月1號開始抓取
+      const startOfMonthJS = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+      const startOfMonth = ICAL.Time.fromJSDate(startOfMonthJS);
       
       vevents.forEach(vevent => {
         try {
           const event = new ICAL.Event(vevent);
           if (event.isRecurring()) {
             const expand = event.iterator(); let next; let count = 0;
-            // 抓取更多以涵蓋整個月
             while ((next = expand.next()) && count < 20) {
-              if (next.compare(now) >= 0) { events.push({ summary: event.summary, time: next.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' }); count++; }
+              if (next.compare(startOfMonth) >= 0) { events.push({ summary: event.summary, time: next.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' }); count++; }
             }
           } else {
-            if (event.endDate.compare(now) >= 0) events.push({ summary: event.summary, time: event.startDate.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' });
+            if (event.endDate.compare(startOfMonth) >= 0) events.push({ summary: event.summary, time: event.startDate.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' });
           }
         } catch(e) {} 
       });
@@ -350,7 +374,6 @@
 
   async function fetchCombinedCalendarData() {
     let allEvents = [];
-    const listContainer = document.getElementById('calendar-list-container');
     const token = gapi.client.getToken();
 
     if (LARK_ICS_URL) allEvents = allEvents.concat(await fetchLarkEvents());
@@ -358,11 +381,11 @@
       fetchGmail();
       try {
         const calListRes = await gapi.client.calendar.calendarList.list();
-        // 將 timeMin 設為今日，並抓取較大數量(20)以點亮月曆
-        const nowIso = (new Date()).toISOString();
+        // 改為從「本月 1 號」開始抓取，讓整個月曆都有資料
+        const startOfMonthIso = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
         for (const cal of calListRes.result.items) {
           try {
-            const eventsRes = await gapi.client.calendar.events.list({ 'calendarId': cal.id, 'timeMin': nowIso, 'showDeleted': false, 'singleEvents': true, 'maxResults': 20, 'orderBy': 'startTime' });
+            const eventsRes = await gapi.client.calendar.events.list({ 'calendarId': cal.id, 'timeMin': startOfMonthIso, 'showDeleted': false, 'singleEvents': true, 'maxResults': 20, 'orderBy': 'startTime' });
             if (eventsRes.result.items) {
               eventsRes.result.items.forEach(e => {
                 let timeObj = e.start.dateTime ? new Date(e.start.dateTime) : new Date(e.start.date);
@@ -376,23 +399,9 @@
 
     if (allEvents.length > 0) {
       allEvents.sort((a, b) => a.time - b.time);
-      
-      // 1. 渲染月曆網格
       renderCalendarGrid(allEvents);
-      
-      // 2. 渲染清單 (只顯示最靠近的 3 筆，節省垂直空間)
-      listContainer.innerHTML = allEvents.slice(0, 3).map(event => {
-        let when = event.isAllDay ? `${event.time.getMonth()+1}/${event.time.getDate()} (全天)` : `${event.time.getMonth()+1}/${event.time.getDate()} ${event.time.getHours().toString().padStart(2,'0')}:${event.time.getMinutes().toString().padStart(2,'0')}`;
-        const badge = event.source ? `<span class="cal-badge">${event.source}</span>` : '';
-        return `<li class="google-item" style="border:none; padding-bottom:0;"><div class="g-title">▪ ${event.summary || '無標題'} ${badge}</div><div class="g-time" style="color:#444; padding-left:14px;">${when}</div></li>`;
-      }).join('');
     } else {
       renderCalendarGrid([]);
-      if (!LARK_ICS_URL && !token) {
-        listContainer.innerHTML = '<li class="google-item" style="border:none;">請登入 Google 或設定飛書。</li>';
-      } else {
-        listContainer.innerHTML = '<li class="google-item" style="border:none;">近期沒有行程。</li>';
-      }
     }
   }
 
@@ -667,4 +676,5 @@
 </script>
 </body>
 </html>
+
 
