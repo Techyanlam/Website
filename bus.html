@@ -108,7 +108,6 @@
 
  <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
  <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
- <!-- REMOVED: ical.js no longer needed for Lark -->
 </head>
 <body>
 
@@ -198,7 +197,8 @@
  🛑🛑🛑 設定區 (Google API, 常用巴士與車站) 🛑🛑🛑
  ========================================================= */
  const GOOGLE_CLIENT_ID = '32327213493-1dqkm15k6kn8dorc6iaf37v4rlqneljt.apps.googleusercontent.com';
- const GOOGLE_API_KEY = 'AIzaSy…mbWE';
+ // 👇 已經修復完整的 API Key！
+ const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
 
  // 👇 本地飛書日曆 JSON 路徑（由 lark-cli 定時產生）
  const LARK_JSON_URL = './data/lark_calendar.json';
@@ -220,7 +220,13 @@
  let tokenClient; let gapiInited = false; let gisInited = false;
  function gapiLoaded() { gapi.load('client', initializeGapiClient); }
  async function initializeGapiClient() {
-    try { await gapi.client.init({ apiKey: GOOGLE_API_KEY, discoveryDocs: DISCOVERY_DOCS }); gapiInited = true; maybeEnableButtons(); } catch (err) {}
+    try { 
+        await gapi.client.init({ apiKey: GOOGLE_API_KEY, discoveryDocs: DISCOVERY_DOCS }); 
+        gapiInited = true; 
+        maybeEnableButtons(); 
+    } catch (err) {
+        console.error("Google API 初始化失敗:", err);
+    }
  }
  function gisLoaded() {
     try {
@@ -238,7 +244,11 @@
         gisInited = true; maybeEnableButtons();
     } catch (err) {}
  }
- function maybeEnableButtons() { if (gapiInited && gisInited) document.getElementById('authorize_button').disabled = false; }
+ function maybeEnableButtons() { 
+     if (gapiInited && gisInited) {
+         document.getElementById('authorize_button').disabled = false; 
+     }
+ }
  function handleAuthClick() { tokenClient.requestAccessToken({prompt: 'consent'}); }
  function handleSignoutClick() {
     const t = gapi.client.getToken();
@@ -317,7 +327,7 @@
  }
 
  // =========================================
- // 飛書日程 (新版：讀本地 JSON，唔再靠 ICS)
+ // 飛書日程 (讀本地 JSON)
  // =========================================
  async function fetchLarkEvents() {
     try {
@@ -344,7 +354,7 @@
             };
         });
     } catch (err) {
-        console.error('Lark JSON load failed:', err);
+        console.warn('飛書 JSON 檔案讀取失敗，可能是尚未產生該檔案。', err);
         return [];
     }
  }
@@ -373,10 +383,10 @@
     let allEvents = [];
     const token = gapi.client.getToken();
 
-    // 1. 先加飛書事件（新版：本地 JSON）
+    // 1. 先加飛書事件
     allEvents = allEvents.concat(await fetchLarkEvents());
 
-    // 2. 再加 Google Calendar（需登入）
+    // 2. 再加 Google Calendar
     if (token) {
         fetchGmail();
         try {
@@ -690,3 +700,4 @@
 </script>
 </body>
 </html>
+
