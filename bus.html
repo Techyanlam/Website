@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Ink Dashboard (Hong Kong) - Ultimate Layout</title>
+  <title>E-Ink Dashboard (Hong Kong) - Calendar Grid</title>
   <style>
     /* =========================================================
        全局重置與 E-ink 最佳化設定
@@ -35,11 +35,37 @@
     .refresh-badge { font-size: 0.85rem; border: 1px solid #000000; padding: 2px 6px; font-weight: bold; }
     .full-width-panel { border-top: 4px solid #000000; padding-top: 16px; margin-top: 8px; }
 
+    /* 工作助理 (Google & Gmail) & 月曆樣式 */
+    .auth-buttons { display: flex; gap: 8px; }
+    .auth-btn { border: 2px solid #000; background: #fff; color: #000; font-weight: bold; padding: 4px 12px; cursor: pointer; font-family: inherit; font-size: 1rem; }
+    .auth-btn:hover { background: #000; color: #fff; }
+    .auth-btn:disabled { border-color: #ccc; color: #ccc; cursor: not-allowed; background: #fff; }
+    
+    /* 月曆網格設計 (E-Ink 高對比) */
+    .calendar-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; table-layout: fixed; }
+    .calendar-table th { font-size: 0.85rem; padding: 4px 0; border-bottom: 2px solid #000; }
+    .calendar-table td { text-align: center; vertical-align: middle; height: 36px; font-size: 1.1rem; position: relative; }
+    .calendar-today { background-color: #000; color: #fff; border-radius: 4px; font-weight: bold; }
+    .calendar-has-event::after { content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; background-color: #000; border-radius: 50%; }
+    .calendar-today.calendar-has-event::after { background-color: #fff; } /* 今天的點反白 */
+
+    .google-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+    .google-item { border-bottom: 1px dashed #000; padding-bottom: 8px; }
+    .g-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .g-time { font-size: 0.9rem; }
+    .g-sender { font-size: 0.9rem; font-style: italic; }
+    .cal-badge { font-size: 0.75rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; margin-left: 6px; font-weight: bold; vertical-align: middle; border-radius: 2px;}
+
+    /* 即時新聞 */
+    .news-list { display: flex; flex-direction: column; gap: 12px; list-style: none; }
+    .news-item { font-size: 1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; padding-left: 16px; }
+    .news-item::before { content: "■"; position: absolute; left: 0; top: 0; font-size: 0.8rem; }
+
     /* 巴士列表 (全寬雙欄網格) */
     .bus-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
     .bus-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 2px dashed #000000; }
     .bus-item.is-fav { border-bottom: 3px solid #000000; } 
-    .bus-route { font-size: 2.2rem; font-weight: 900; width: 85px; display: flex; flex-direction: column; align-items: flex-start; }
+    .bus-route { font-size: 2rem; font-weight: 900; width: 80px; display: flex; flex-direction: column; align-items: flex-start; }
     .co-badge { font-size: 0.75rem; border: 1px solid #000; padding: 1px 4px; display: inline-block; margin-bottom: 2px; font-weight: normal; }
     .fav-badge { font-size: 0.7rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; display: inline-block; margin-top: 4px; font-weight: bold; border-radius: 2px; }
     
@@ -54,27 +80,10 @@
     .forecast-table { width: 100%; border-collapse: collapse; }
     .forecast-table th { text-align: left; font-size: 1rem; border-bottom: 2px solid #000000; padding: 8px 4px; }
     .forecast-table td { border-bottom: 2px dashed #000000; padding: 16px 4px; vertical-align: middle; }
-    .fc-day { font-size: 1.2rem; font-weight: bold; width: 25%; }
-    .fc-desc { font-size: 1rem; width: 50%; padding-right: 12px; }
-    .fc-temp-rain { width: 25%; text-align: right; font-size: 1rem; font-weight: bold; }
-    .fc-rain { font-size: 0.85rem; font-weight: normal; margin-top: 4px; }
-
-    /* 工作助理 (Google & Gmail) */
-    .auth-buttons { display: flex; gap: 8px; }
-    .auth-btn { border: 2px solid #000; background: #fff; color: #000; font-weight: bold; padding: 4px 12px; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
-    .auth-btn:hover { background: #000; color: #fff; }
-    .auth-btn:disabled { border-color: #ccc; color: #ccc; cursor: not-allowed; background: #fff; }
-    .google-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
-    .google-item { border-bottom: 1px dashed #000; padding-bottom: 8px; }
-    .g-title { font-weight: bold; font-size: 1.1rem; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .g-time { font-size: 0.9rem; }
-    .g-sender { font-size: 0.9rem; font-style: italic; }
-    .cal-badge { font-size: 0.75rem; border: 1px solid #000; background: #000; color: #fff; padding: 1px 4px; margin-left: 6px; font-weight: bold; vertical-align: middle; border-radius: 2px;}
-
-    /* 即時新聞 */
-    .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; list-style: none; }
-    .news-item { font-size: 1rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; position: relative; padding-left: 16px; }
-    .news-item::before { content: "■"; position: absolute; left: 0; top: 0; font-size: 0.8rem; }
+    .fc-day { font-size: 1.2rem; font-weight: bold; width: 20%; }
+    .fc-desc { font-size: 1rem; width: 55%; padding-right: 16px; }
+    .fc-temp-rain { width: 25%; text-align: right; font-size: 1.1rem; font-weight: bold; }
+    .fc-rain { font-size: 0.9rem; font-weight: normal; margin-top: 4px; }
 
     /* 頁尾 */
     .footer-bar { margin-top: 8px; display: flex; justify-content: space-between; font-size: 0.85rem; border-top: 1px solid #000000; padding-top: 8px; font-weight: bold; }
@@ -83,7 +92,7 @@
     @media (max-width: 800px) {
       .header-panel { grid-template-columns: 1fr; text-align: center; gap: 12px; }
       .weather-current { align-items: center; }
-      .main-grid, .bus-grid, .news-grid { grid-template-columns: 1fr; }
+      .main-grid, .bus-grid { grid-template-columns: 1fr; }
       .bus-item { gap: 8px; }
       .bus-route { width: 65px; font-size: 1.6rem; }
       .bus-dest { font-size: 1.1rem; }
@@ -99,12 +108,11 @@
 
 <div class="dashboard-container">
   
-  <!-- 頂部資訊區 -->
   <div class="header-panel">
     <div class="time-display" id="clock-time">--:--</div>
     <div class="date-location-display">
       <div class="date-text" id="clock-date">----年--月--日 星期-</div>
-      <span class="gps-status" id="gps-status-text">📍 系統啟動中...</span>
+      <span class="gps-status" id="gps-status-text">📍 啟動 GPS 中...</span>
     </div>
     <div class="weather-current">
       <div class="temp-text"><span id="curr-temp">--</span>°C</div>
@@ -112,63 +120,67 @@
     </div>
   </div>
 
-  <!-- 第一層 (全寬)：巴士預計到站時間 (同一號碼同一行) -->
-  <div class="panel" style="border-bottom: 4px solid #000; padding-bottom: 16px; margin-bottom: 8px;">
-    <div class="panel-header">
+  <div class="main-grid">
+    <!-- 左上：整合工作助理 (Google & 飛書 月曆) -->
+    <div class="panel">
+      <div class="panel-header" style="align-items: center;">
+        <div class="panel-title" style="font-size: 1.2rem;">整合工作助理</div>
+        <div class="auth-buttons">
+          <button id="authorize_button" class="auth-btn" onclick="handleAuthClick()" disabled>登入</button>
+          <button id="signout_button" class="auth-btn" onclick="handleSignoutClick()" style="display: none;">登出</button>
+        </div>
+      </div>
+      
+      <!-- 動態月曆標題 -->
+      <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px;" id="cal-panel-title">📅 本月行程與日曆</div>
+      
+      <!-- 月曆網格將生成在此 -->
+      <div id="calendar-grid-container">載入中...</div>
+      
+      <!-- 近期行程清單 -->
+      <ul class="google-list" id="calendar-list-container" style="margin-top: 8px;"></ul>
+      
+      <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px; margin-top: 8px;">✉️ 未讀郵件 <span id="unread-count"></span></div>
+      <ul class="google-list" id="gmail-container" style="margin-bottom: 0;">
+        <li class="google-item">請先登入 Google 帳號授權。</li>
+      </ul>
+    </div>
+
+    <!-- 右上：即時綜合新聞 -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title" id="news-panel-title">即時綜合新聞</div>
+        <div class="refresh-badge">15分鐘更新</div>
+      </div>
+      <ul class="news-list" id="news-container">
+        <li class="news-item">嘗試連接新聞伺服器中...</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 中間：巴士雷達 (全寬度) -->
+  <div class="panel full-width-panel">
+    <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
       <div class="panel-title">固定: 常用車站預計到站時間</div>
-      <div class="refresh-badge">1分鐘更新</div>
+      <div class="refresh-badge">自動定位 更新</div>
     </div>
     <div class="bus-grid" id="bus-container">
       <div class="bus-item" style="border:none;">等待下載車站資料...</div>
     </div>
   </div>
 
-  <!-- 第二層 (雙欄)：天氣預報 ｜ 整合工作助理 -->
-  <div class="main-grid">
-    
-    <!-- 左：天氣預報 -->
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-title">香港天文台天氣預報</div>
-        <div class="refresh-badge">15分鐘更新</div>
-      </div>
-      <table class="forecast-table">
-        <thead>
-          <tr><th>日子</th><th>天氣預測</th><th style="text-align: right;">氣溫/降雨</th></tr>
-        </thead>
-        <tbody id="forecast-tbody"><tr><td colspan="3">載入資料中...</td></tr></tbody>
-      </table>
-    </div>
-
-    <!-- 右：整合工作助理 -->
-    <div class="panel">
-      <div class="panel-header" style="align-items: center;">
-        <div class="panel-title">整合工作助理</div>
-        <div class="auth-buttons">
-          <button id="authorize_button" class="auth-btn" onclick="handleAuthClick()" disabled>登入</button>
-          <button id="signout_button" class="auth-btn" onclick="handleSignoutClick()" style="display: none;">登出</button>
-        </div>
-      </div>
-      <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px;">📅 即將到來的行程</div>
-      <ul class="google-list" id="calendar-container">
-        <li class="google-item">載入中...</li>
-      </ul>
-      <div style="font-weight: bold; border-bottom: 2px solid #000; margin-bottom: 8px; padding-bottom: 4px; margin-top: 8px;">✉️ 未讀郵件 <span id="unread-count"></span></div>
-      <ul class="google-list" id="gmail-container" style="margin-bottom: 0;">
-        <li class="google-item">請先登入 Google 帳號授權。</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- 第三層 (全寬)：即時新聞 -->
+  <!-- 底部：天氣預報 (全寬度) -->
   <div class="panel full-width-panel">
-    <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 12px;">
-      <div class="panel-title" id="news-panel-title">即時綜合新聞</div>
+    <div class="panel-header" style="border-bottom: 2px solid #000; padding-bottom: 4px; margin-bottom: 8px;">
+      <div class="panel-title">香港天文台天氣預報</div>
       <div class="refresh-badge">15分鐘更新</div>
     </div>
-    <ul class="news-grid" id="news-container">
-      <li class="news-item">嘗試連接新聞伺服器中...</li>
-    </ul>
+    <table class="forecast-table">
+      <thead>
+        <tr><th>日子</th><th>天氣預測</th><th style="text-align: right;">氣溫/降雨</th></tr>
+      </thead>
+      <tbody id="forecast-tbody"><tr><td colspan="3">載入資料中...</td></tr></tbody>
+    </table>
   </div>
 
   <div class="footer-bar">
@@ -186,17 +198,15 @@
   const GOOGLE_API_KEY = 'AIzaSyAf6qFHgmZrjl6Q1f9y0AfiTv0GKRDmbWE';
   const LARK_ICS_URL = ''; 
   
-  // 👉 僅顯示您指定的這些常用路線
   const ONLY_SHOW_FAVORITES = true;
   
-  // 👉 智能綁定功能：擴展了關鍵字陣列以對應九巴與城巴的不同命名
   const FAVORITE_CONFIGS = [
-    { route: '171', keyword: ['奶路臣', '銀行中心'] },  // 涵蓋 MK516
-    { route: '171', keyword: ['利澤'] },
-    { route: '24',  keyword: ['13座'] },             // 涵蓋 KT486
-    { route: '24',  keyword: ['西洋菜南街'] },         // 涵蓋 MK343
-    { route: '107', keyword: ['香港仔隧道'] },
-    { route: '592', keyword: ['利澤'] }
+    { route: '171', keyword: '奶路臣街' },
+    { route: '171', keyword: '利澤' },      
+    { route: '24', keyword: '13座' },        
+    { route: '24', keyword: '西洋菜南街' },
+    { route: '107', keyword: '香港仔隧道' },
+    { route: '592', keyword: '利澤' }
   ];
 
   const SCOPES = 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/gmail.readonly';
@@ -234,6 +244,56 @@
   }
 
   // =========================================
+  // 月曆渲染引擎
+  // =========================================
+  function renderCalendarGrid(events) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const todayDate = now.getDate();
+
+    // 更新月曆標題
+    document.getElementById('cal-panel-title').innerHTML = `📅 ${year}年${month + 1}月 行程日曆`;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // 取出當月有行程的日期
+    const eventDays = new Set();
+    events.forEach(e => {
+      const d = e.time;
+      if (d.getFullYear() === year && d.getMonth() === month) {
+        eventDays.add(d.getDate());
+      }
+    });
+
+    let html = '<table class="calendar-table"><tr>';
+    const days = ['日', '一', '二', '三', '四', '五', '六'];
+    days.forEach(d => html += `<th>${d}</th>`);
+    html += '</tr><tr>';
+
+    let dayCount = 1;
+    for (let i = 0; i < 42; i++) { // 最多 6 週
+      if (i < firstDay || dayCount > daysInMonth) {
+        html += '<td></td>';
+      } else {
+        let classes = [];
+        if (dayCount === todayDate) classes.push('calendar-today');
+        if (eventDays.has(dayCount)) classes.push('calendar-has-event');
+        html += `<td class="${classes.join(' ')}">${dayCount}</td>`;
+        dayCount++;
+      }
+      // 換行
+      if ((i + 1) % 7 === 0) {
+        if (dayCount > daysInMonth && i >= 27) break; // 若該月已結束且印完，提早結束表格以省空間
+        html += '</tr><tr>';
+      }
+    }
+    html += '</tr></table>';
+    document.getElementById('calendar-grid-container').innerHTML = html;
+  }
+
+  // =========================================
   // 飛書與 Google 行程解析
   // =========================================
   async function fetchLarkEvents() {
@@ -255,7 +315,8 @@
           const event = new ICAL.Event(vevent);
           if (event.isRecurring()) {
             const expand = event.iterator(); let next; let count = 0;
-            while ((next = expand.next()) && count < 5) {
+            // 抓取更多以涵蓋整個月
+            while ((next = expand.next()) && count < 20) {
               if (next.compare(now) >= 0) { events.push({ summary: event.summary, time: next.toJSDate(), isAllDay: event.startDate.isDate, source: '飛書' }); count++; }
             }
           } else {
@@ -289,7 +350,7 @@
 
   async function fetchCombinedCalendarData() {
     let allEvents = [];
-    const calContainer = document.getElementById('calendar-container');
+    const listContainer = document.getElementById('calendar-list-container');
     const token = gapi.client.getToken();
 
     if (LARK_ICS_URL) allEvents = allEvents.concat(await fetchLarkEvents());
@@ -297,10 +358,11 @@
       fetchGmail();
       try {
         const calListRes = await gapi.client.calendar.calendarList.list();
+        // 將 timeMin 設為今日，並抓取較大數量(20)以點亮月曆
         const nowIso = (new Date()).toISOString();
         for (const cal of calListRes.result.items) {
           try {
-            const eventsRes = await gapi.client.calendar.events.list({ 'calendarId': cal.id, 'timeMin': nowIso, 'showDeleted': false, 'singleEvents': true, 'maxResults': 4, 'orderBy': 'startTime' });
+            const eventsRes = await gapi.client.calendar.events.list({ 'calendarId': cal.id, 'timeMin': nowIso, 'showDeleted': false, 'singleEvents': true, 'maxResults': 20, 'orderBy': 'startTime' });
             if (eventsRes.result.items) {
               eventsRes.result.items.forEach(e => {
                 let timeObj = e.start.dateTime ? new Date(e.start.dateTime) : new Date(e.start.date);
@@ -314,19 +376,28 @@
 
     if (allEvents.length > 0) {
       allEvents.sort((a, b) => a.time - b.time);
-      calContainer.innerHTML = allEvents.slice(0, 4).map(event => {
+      
+      // 1. 渲染月曆網格
+      renderCalendarGrid(allEvents);
+      
+      // 2. 渲染清單 (只顯示最靠近的 3 筆，節省垂直空間)
+      listContainer.innerHTML = allEvents.slice(0, 3).map(event => {
         let when = event.isAllDay ? `${event.time.getMonth()+1}/${event.time.getDate()} (全天)` : `${event.time.getMonth()+1}/${event.time.getDate()} ${event.time.getHours().toString().padStart(2,'0')}:${event.time.getMinutes().toString().padStart(2,'0')}`;
         const badge = event.source ? `<span class="cal-badge">${event.source}</span>` : '';
-        return `<li class="google-item"><div class="g-title">▪ ${event.summary || '無標題'} ${badge}</div><div class="g-time">時間: ${when}</div></li>`;
+        return `<li class="google-item" style="border:none; padding-bottom:0;"><div class="g-title">▪ ${event.summary || '無標題'} ${badge}</div><div class="g-time" style="color:#444; padding-left:14px;">${when}</div></li>`;
       }).join('');
     } else {
-      if (!LARK_ICS_URL && !token) calContainer.innerHTML = '<li class="google-item">請登入 Google 或設定飛書日曆連結。</li>';
-      else calContainer.innerHTML = '<li class="google-item">近期沒有行程。</li>';
+      renderCalendarGrid([]);
+      if (!LARK_ICS_URL && !token) {
+        listContainer.innerHTML = '<li class="google-item" style="border:none;">請登入 Google 或設定飛書。</li>';
+      } else {
+        listContainer.innerHTML = '<li class="google-item" style="border:none;">近期沒有行程。</li>';
+      }
     }
   }
 
   /* =========================================================
-     🌟 巴士引擎 4.0 (同一號碼排同一行，智能過海站點匹配)
+     🌟 巴士引擎 3.0 (混合模式：GPS雷達 + 固定常用車站)
      ========================================================= */
   let userLoc = null;
   let allStopsCache = []; 
@@ -367,14 +438,16 @@
           fetchDynamicBusETA();
         },
         (error) => { 
-          statusText.textContent = `📍 固定模式 (無 GPS 亦可運作)`; 
+          let errMsg = '無法獲取位置';
+          if (error.code === 1) errMsg = '定位權限被拒絕';
+          statusText.textContent = `📍 ${errMsg} (使用備用模式)`; 
           userLoc = null;
           fetchDynamicBusETA(); 
         }, 
         { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
       );
     } else { 
-      statusText.textContent = '📍 固定模式'; 
+      statusText.textContent = '📍 裝置不支援定位'; 
       userLoc = null;
       fetchDynamicBusETA();
     }
@@ -392,7 +465,6 @@
 
     let stopsToFetch = [];
 
-    // 1. 如果有 GPS 且未開啟「僅顯示常用」，才加入半徑 500 米內的雷達車站
     if (userLoc && !ONLY_SHOW_FAVORITES) {
       const nearby = allStopsCache
         .map(s => ({ ...s, dist: getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, s.lat, s.lng) }))
@@ -402,16 +474,14 @@
       stopsToFetch.push(...nearby);
     }
 
-    // 2. 獲取「常用車站」 (加大抓取範圍至 50 個，確保不錯過指定站牌)
     FAVORITE_CONFIGS.forEach(fav => {
-      const matches = allStopsCache.filter(s => fav.keyword.some(k => s.name.includes(k)));
-      matches.slice(0, 50).forEach(m => {
+      const matches = allStopsCache.filter(s => s.name.includes(fav.keyword));
+      matches.slice(0, 8).forEach(m => {
         const dist = userLoc ? getDistanceFromLatLonInKm(userLoc.lat, userLoc.lng, m.lat, m.lng) : 999;
         stopsToFetch.push({ ...m, dist });
       });
     });
 
-    // 過濾重複的車站請求
     const uniqueStops = [];
     const seenStopIds = new Set();
     stopsToFetch.forEach(s => {
@@ -426,7 +496,6 @@
       return;
     }
 
-    // 3. 獲取所有車站的 ETA 資料
     let allEtas = [];
     const now = new Date();
     const fetchPromises = uniqueStops.map(async (stop) => {
@@ -456,17 +525,16 @@
 
     await Promise.all(fetchPromises);
 
-    // 4. 過濾出最終要顯示的資料
     const validEtas = allEtas.filter(e => {
       let isFav = false;
       FAVORITE_CONFIGS.forEach(fav => {
-        if (e.route === fav.route && fav.keyword.some(k => e.stopName.includes(k))) isFav = true;
+        if (e.route === fav.route && e.stopName.includes(fav.keyword)) isFav = true;
       });
       e.isFav = isFav;
-      return ONLY_SHOW_FAVORITES ? isFav : (isFav || e.dist < 0.5);
+      if (ONLY_SHOW_FAVORITES) return isFav;
+      return isFav || e.dist < 0.5;
     });
 
-    // 5. 將結果群組化
     const grouped = {};
     validEtas.forEach(e => {
       const key = `${e.co}-${e.route}-${e.dest}-${e.stopName}`;
@@ -482,81 +550,52 @@
         uniqueMins.add(e.min); return true;
       }).sort((a,b) => a.min - b.min).slice(0, 3);
     });
+
     groupArray = groupArray.filter(g => g.etas.length > 0);
-
-    // 6. 🚦 關鍵邏輯：依據路線號碼進行分類，實現「同一號碼同一行」
-    const routeGroups = {};
-    groupArray.forEach(g => {
-      if (!routeGroups[g.route]) routeGroups[g.route] = [];
-      routeGroups[g.route].push(g);
+    
+    groupArray.sort((a, b) => {
+      if (a.isFav && !b.isFav) return -1;
+      if (!a.isFav && b.isFav) return 1;
+      if (a.etas[0].min === b.etas[0].min) return a.dist - b.dist; 
+      return a.etas[0].min - b.etas[0].min;
     });
 
-    // 按照我們設定的常用清單順序排列路線 (171 -> 24 -> 107 -> 592)
-    const orderedRoutes = [];
-    FAVORITE_CONFIGS.forEach(f => { if (!orderedRoutes.includes(f.route)) orderedRoutes.push(f.route); });
-    Object.keys(routeGroups).forEach(r => { if (!orderedRoutes.includes(r)) orderedRoutes.push(r); });
-
+    const displayGroups = groupArray.slice(0, 10);
     let htmlStr = '';
-    let renderedCount = 0;
-
-    orderedRoutes.forEach(r => {
-      if (routeGroups[r]) {
-        const items = routeGroups[r];
-        // 依照目的地排序，讓畫面看起來更穩
-        items.sort((a,b) => a.dest.localeCompare(b.dest));
-        
-        // 將同號碼的巴士兩兩成對輸出 (填滿一列)
-        for (let i = 0; i < items.length; i += 2) {
-          htmlStr += createBusHtml(items[i]);
-          renderedCount++;
-          
-          if (items[i+1]) {
-            htmlStr += createBusHtml(items[i+1]);
-            renderedCount++;
-          } else {
-            // 如果只有單個項目，塞入一個隱形的 spacer 來強制換行
-            htmlStr += `<div class="bus-item empty" style="border:none;"></div>`;
-          }
-        }
-      }
-    });
-
-    if (renderedCount === 0) {
+    
+    if (displayGroups.length === 0) {
       htmlStr = '<div class="bus-item" style="border:none; grid-column: 1 / -1;">附近車站暫無即將到來的班次。</div>';
-    } 
+    } else {
+      displayGroups.forEach(g => {
+        const coBadge = g.co === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
+        const favBadge = g.isFav ? '<span class="fav-badge">★ 常用</span>' : '';
+        const etaVals = g.etas.map(m => m.min + (m.isScheduled ? '*' : ''));
+        const etaHtml = etaVals.join(', ') + '<span class="eta-min">分鐘</span>';
+        
+        let distStr = '';
+        if (g.dist === 999) distStr = '(固定位置)';
+        else if (g.dist > 2) distStr = `(${(g.dist).toFixed(1)}km)`;
+        else if (g.dist < 0.1) distStr = '(<100m)';
+        else distStr = `(${(g.dist * 1000).toFixed(0)}m)`;
+
+        htmlStr += `
+          <div class="bus-item ${g.isFav ? 'is-fav' : ''}">
+            <div class="bus-route">
+              ${g.route}
+              ${favBadge}
+            </div>
+            <div class="bus-info">
+              <span class="bus-dest">${coBadge} 往 ${g.dest}</span>
+              <span class="bus-stop">${g.stopName} <span style="font-size:0.75rem; color:#666;">${distStr}</span></span>
+            </div>
+            <div class="bus-etas">${etaHtml}</div>
+          </div>
+        `;
+      });
+    }
 
     document.getElementById('bus-container').innerHTML = htmlStr;
     updateLastUpdateTime('巴士');
-  }
-
-  // 生成個別巴士項目的 HTML
-  function createBusHtml(g) {
-    const coBadge = g.co === 'ctb' ? '<span class="co-badge">城巴</span>' : '<span class="co-badge">九巴</span>';
-    const favBadge = g.isFav ? '<span class="fav-badge">★ 常用</span>' : '';
-    const etaVals = g.etas.map(m => m.min + (m.isScheduled ? '*' : ''));
-    const etaHtml = etaVals.join(', ') + '<span class="eta-min">分鐘</span>';
-    
-    // 如果是固定模式，或者無法計算距離，就完全隱藏距離文字讓畫面更乾淨
-    let distStr = '';
-    if (g.dist !== 999 && !ONLY_SHOW_FAVORITES) {
-      if (g.dist > 2) distStr = `(${(g.dist).toFixed(1)}km)`;
-      else if (g.dist < 0.1) distStr = '(<100m)';
-      else distStr = `(${(g.dist * 1000).toFixed(0)}m)`;
-    }
-
-    return `
-      <div class="bus-item ${g.isFav ? 'is-fav' : ''}">
-        <div class="bus-route">
-          ${g.route}
-          ${favBadge}
-        </div>
-        <div class="bus-info">
-          <span class="bus-dest">${coBadge} 往 ${g.dest}</span>
-          <span class="bus-stop">${g.stopName} <span style="font-size:0.75rem; color:#666;">${distStr}</span></span>
-        </div>
-        <div class="bus-etas">${etaHtml}</div>
-      </div>
-    `;
   }
 
   // =========================================
@@ -618,7 +657,11 @@
   setInterval(fetchDynamicBusETA, 60 * 1000); 
   
   fetchWeather(); fetchNews(); 
+  
+  // 啟動月曆與信件抓取 (初次先畫出空月曆)
+  renderCalendarGrid([]);
   fetchCombinedCalendarData(); setInterval(fetchCombinedCalendarData, 15 * 60 * 1000);
+  
   setInterval(() => { fetchWeather(); fetchNews(); }, 15 * 60 * 1000);
 
 </script>
