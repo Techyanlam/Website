@@ -225,6 +225,15 @@
         await gapi.client.init({ apiKey: GOOGLE_API_KEY, discoveryDocs: DISCOVERY_DOCS }); 
         gapiInited = true; 
         maybeEnableButtons(); 
+        
+        // 自動恢復未過期的金鑰 (Google token 期限為 1 小時)
+        const savedToken = localStorage.getItem('g_token');
+        const savedTime = localStorage.getItem('g_time');
+        if (savedToken && savedTime && (Date.now() - savedTime < 3500000)) {
+            gapi.client.setToken({ access_token: savedToken });
+            document.getElementById('authorize_button').style.display = 'none';
+            document.getElementById('signout_button').style.display = 'inline-block';
+        }
     } catch (err) {
         console.error("Google API 初始化失敗:", err);
     }
@@ -235,6 +244,8 @@
             client_id: GOOGLE_CLIENT_ID, scope: SCOPES,
             callback: (t) => {
                 if (t && t.access_token) {
+                    localStorage.setItem('g_token', t.access_token);
+                    localStorage.setItem('g_time', Date.now());
                     document.getElementById('authorize_button').style.display = 'none';
                     document.getElementById('signout_button').style.display = 'inline-block';
                     fetchCombinedCalendarData();
@@ -250,12 +261,15 @@
          document.getElementById('authorize_button').disabled = false; 
      }
  }
- function handleAuthClick() { tokenClient.requestAccessToken({prompt: 'consent'}); }
+ // 移除了強制授權畫面，只要瀏覽器有登入 Google，視窗閃一下就會自動完成
+ function handleAuthClick() { tokenClient.requestAccessToken({prompt: ''}); } 
  function handleSignoutClick() {
     const t = gapi.client.getToken();
     if (t !== null) {
         google.accounts.oauth2.revoke(t.access_token);
         gapi.client.setToken('');
+        localStorage.removeItem('g_token');
+        localStorage.removeItem('g_time');
         document.getElementById('gmail-container').innerHTML = '<li class="google-item">已登出，請重新授權。</li>';
         document.getElementById('authorize_button').style.display = 'inline-block';
         document.getElementById('signout_button').style.display = 'none';
@@ -374,15 +388,19 @@
             }
             document.getElementById('gmail-container').innerHTML = htmlStr;
         }
-    } catch(err) {}
+    } catch(err) {
+        if (err.status === 401) handleTokenExpired();
+    }
  }
 
  async function fetchCombinedCalendarData() {
     let allEvents = [];
     const token = gapi.client.getToken();
 
+    // 1. 先加飛書事件
     allEvents = allEvents.concat(await fetchLarkEvents());
 
+    // 2. 再加 Google Calendar
     if (token) {
         fetchGmail();
         try {
@@ -411,7 +429,9 @@
                     }
                 } catch (err) {}
             }
-        } catch (err) {}
+        } catch (err) {
+            if (err.status === 401) handleTokenExpired();
+        }
     }
 
     if (allEvents.length > 0) {
@@ -420,6 +440,16 @@
     } else {
         renderCalendarGrid([]);
     }
+ }
+
+ // 新增：處理金鑰過期的防呆機制
+ function handleTokenExpired() {
+    gapi.client.setToken('');
+    localStorage.removeItem('g_token');
+    localStorage.removeItem('g_time');
+    document.getElementById('authorize_button').style.display = 'inline-block';
+    document.getElementById('signout_button').style.display = 'none';
+    document.getElementById('gmail-container').innerHTML = '<li class="google-item" style="color:#d32f2f; font-weight:bold;">Google 授權已過期<br>請點擊上方按鈕續期。</li>';
  }
 
  /* =========================================================
@@ -696,4 +726,5 @@
 </script>
 </body>
 </html>
+
 
