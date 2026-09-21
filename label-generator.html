@@ -150,10 +150,10 @@
             border-radius: 4px;
         }
 
-        /* 標籤樣式 - 80mm × 50mm */
+        /* 標籤樣式 - 80mm × 60mm */
         .label {
             width: 80mm;
-            height: 50mm;
+            height: 60mm;
             background: white;
             border: 1px solid #ddd;
             padding: 3mm;
@@ -181,17 +181,17 @@
 
         .label-field {
             margin-bottom: 2mm;
-            font-size: 12pt;
+            font-size: 15pt;
         }
 
         .label-field-label {
             font-weight: bold;
             color: #333;
-            font-size: 10pt;
+            font-size: 15pt;
         }
 
         .label-field-value {
-            font-size: 13pt;
+            font-size: 15pt;
             color: #000;
             word-break: break-all;
         }
@@ -235,6 +235,9 @@
                 border: none;
                 margin-bottom: 5mm;
                 page-break-after: always;
+                page-break-inside: avoid;
+                break-after: page;
+                break-inside: avoid;
             }
 
             .label:last-child {
