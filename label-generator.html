@@ -168,7 +168,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            height: 100%;
+            flex: 1;
         }
 
         .label-left {
@@ -181,31 +181,32 @@
         }
 
         .label-field {
-            margin-bottom: 2mm;
-            font-size: 15pt;
+            margin-bottom: 1mm;
+            font-size: 14pt;
         }
 
         .label-field-label {
             font-weight: bold;
             color: #333;
-            font-size: 15pt;
+            font-size: 13pt;
         }
 
         .label-field-value {
-            font-size: 15pt;
+            font-size: 14pt;
             color: #000;
             word-break: break-all;
         }
 
         .barcode-container {
             text-align: center;
-            margin-top: 1mm;
-            overflow: hidden;
+            margin-top: 0;
+            flex-shrink: 0;
+            page-break-inside: avoid;
         }
 
         .barcode-container svg {
             max-width: 100%;
-            height: 12mm;
+            height: 10mm;
         }
 
         /* 列印樣式 */
@@ -455,7 +456,7 @@
                     JsBarcode(`#barcode-${index}`, itemNo, {
                         format: 'CODE128',
                         width: 1.5,
-                        height: 35,
+                        height: 30,
                         displayValue: false,
                         margin: 0
                     });
