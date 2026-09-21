@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>標籤生成工具 - 80×50mm</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .input-methods {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .input-methods button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #e0e0e0;
+            transition: background 0.3s;
+        }
+
+        .input-methods button.active {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .input-area {
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .csv-upload {
+            display: none;
+        }
+
+        .csv-upload.active {
+            display: block;
+        }
+
+        .csv-upload input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        .format-hint {
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .format-hint code {
+            background: #e8e8e8;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #45a049;
+        }
+
+        .btn-secondary {
+            background: #2196F3;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-secondary:hover {
+            background: #0b7dda;
+        }
+
+        .preview-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .labels-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        /* 標籤樣式 - 80mm × 50mm */
+        .label {
+            width: 80mm;
+            height: 50mm;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 3mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            page-break-inside: avoid;
+        }
+
+        .label-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            height: 100%;
+        }
+
+        .label-left {
+            flex: 1;
+        }
+
+        .label-right {
+            width: 45%;
+            text-align: right;
+        }
+
+        .label-field {
+            margin-bottom: 2mm;
+            font-size: 12pt;
+        }
+
+        .label-field-label {
+            font-weight: bold;
+            color: #333;
+            font-size: 10pt;
+        }
+
+        .label-field-value {
+            font-size: 13pt;
+            color: #000;
+            word-break: break-all;
+        }
+
+        .barcode-container {
+            text-align: center;
+            margin-top: 2mm;
+        }
+
+        .barcode-container svg {
+            max-width: 100%;
+            height: 15mm;
+        }
+
+        /* 列印樣式 */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .input-section,
+            .preview-header,
+            .no-print,
+            h1 {
+                display: none !important;
+            }
+
+            .preview-section {
+                box-shadow: none;
+                padding: 0;
+            }
+
+            .labels-container {
+                display: block;
+                padding: 0;
+                background: white;
+            }
+
+            .label {
+                border: none;
+                margin-bottom: 5mm;
+                page-break-after: always;
+            }
+
+            .label:last-child {
+                page-break-after: auto;
+            }
+        }
+
+        .stats {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏷️ 標籤生成工具 (80×50mm)</h1>
+
+        <div class="input-section no-print">
+            <div class="input-methods">
+                <button class="active" onclick="switchInput('manual')">手動輸入</button>
+                <button onclick="switchInput('csv')">CSV 上傳</button>
+            </div>
+
+            <div id="manual-input" class="input-area">
+                <div class="format-hint">
+                    <strong>格式說明：</strong>每行一個標籤，欄位用逗號分隔<br>
+                    順序：<code>Item No., Unit, WH#, Location</code><br>
+                    範例：<code>LP-VC11-014, pack, HK01, R04-B01-L01</code>
+                </div>
+                <textarea id="manual-data" placeholder="LP-VC11-014, pack, HK01, R04-B01-L01&#10;LP-VC11-015, pack, HK01, R04-B01-L02&#10;LP-VC11-016, pack, HK01, R04-B01-L03"></textarea>
+            </div>
+
+            <div id="csv-input" class="input-area csv-upload">
+                <div class="format-hint">
+                    <strong>CSV 格式：</strong>第一行為標題，之後每行一個標籤<br>
+                    欄位：<code>Item No., Unit, WH#, Location</code>
+                </div>
+                <input type="file" id="csv-file" accept=".csv" onchange="handleCSVUpload(event)">
+            </div>
+
+            <div id="error-msg" class="error"></div>
+
+            <div style="margin-top: 15px;">
+                <button class="btn-primary" onclick="generateLabels()">生成標籤</button>
+                <button class="btn-secondary" onclick="printLabels()">列印標籤</button>
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <div class="preview-header no-print">
+                <h2>標籤預覽</h2>
+                <div class="stats" id="stats">尚未生成標籤</div>
+            </div>
+            <div class="labels-container" id="labels-container">
+                <p style="color: #999; text-align: center; width: 100%;">請輸入資料並點擊「生成標籤」</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentInput = 'manual';
+
+        function switchInput(method) {
+            currentInput = method;
+            document.querySelectorAll('.input-methods button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            document.getElementById('manual-input').style.display = method === 'manual' ? 'block' : 'none';
+            document.getElementById('csv-input').classList.toggle('active', method === 'csv');
+        }
+
+        function showError(msg) {
+            const errorEl = document.getElementById('error-msg');
+            errorEl.textContent = msg;
+            errorEl.classList.add('show');
+            setTimeout(() => errorEl.classList.remove('show'), 5000);
+        }
+
+        function parseCSVLine(line) {
+            // 處理 CSV 格式（支持引號包圍的欄位）
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    if (inQuotes && line[i + 1] === '"') {
+                        current += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            return result;
+        }
+
+        function handleCSVUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const lines = text.split('\n').filter(line => line.trim());
+                
+                if (lines.length < 2) {
+                    showError('CSV 檔案內容為空或格式不正確');
+                    return;
+                }
+
+                // 跳過第一行（標題）
+                const dataLines = lines.slice(1);
+                const textarea = document.getElementById('manual-data');
+                textarea.value = dataLines.join('\n');
+                
+                // 切換到手動輸入顯示
+                switchInput('manual');
+                document.querySelectorAll('.input-methods button')[0].click();
+            };
+            reader.readAsText(file);
+        }
+
+        function generateLabels() {
+            const container = document.getElementById('labels-container');
+            const stats = document.getElementById('stats');
+            
+            let data = [];
+            
+            if (currentInput === 'manual') {
+                const text = document.getElementById('manual-data').value.trim();
+                if (!text) {
+                    showError('請輸入資料');
+                    return;
+                }
+                data = text.split('\n').filter(line => line.trim());
+            }
+
+            if (data.length === 0) {
+                showError('沒有有效的資料');
+                return;
+            }
+
+            container.innerHTML = '';
+            let validCount = 0;
+
+            data.forEach((line, index) => {
+                const fields = parseCSVLine(line);
+                
+                if (fields.length < 4) {
+                    console.warn(`第 ${index + 1} 行資料不完整，已跳過`);
+                    return;
+                }
+
+                const [itemNo, unit, wh, location] = fields;
+                validCount++;
+
+                const label = document.createElement('div');
+                label.className = 'label';
+                label.innerHTML = `
+                    <div class="label-content">
+                        <div class="label-left">
+                            <div class="label-field">
+                                <div class="label-field-label">Item No.:</div>
+                                <div class="label-field-value">${itemNo}</div>
+                            </div>
+                            <div class="label-field">
+                                <div class="label-field-label">Unit:</div>
+                                <div class="label-field-value">${unit}</div>
+                            </div>
+                        </div>
+                        <div class="label-right">
+                            <div class="label-field">
+                                <div class="label-field-label">WH#:</div>
+                                <div class="label-field-value">${wh}</div>
+                            </div>
+                            <div class="label-field">
+                                <div class="label-field-label">Location:</div>
+                                <div class="label-field-value">${location}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="barcode-container">
+                        <svg class="barcode" id="barcode-${index}"></svg>
+                    </div>
+                `;
+                container.appendChild(label);
+
+                // 生成條碼
+                try {
+                    JsBarcode(`#barcode-${index}`, itemNo, {
+                        format: 'CODE128',
+                        width: 1.5,
+                        height: 40,
+                        displayValue: false,
+                        margin: 0
+                    });
+                } catch (e) {
+                    console.warn(`第 ${index + 1} 行條碼生成失敗:`, e);
+                }
+            });
+
+            stats.textContent = `已生成 ${validCount} 個標籤`;
+            
+            if (validCount === 0) {
+                showError('沒有生成任何有效標籤，請檢查資料格式');
+            }
+        }
+
+        function printLabels() {
+            const container = document.getElementById('labels-container');
+            if (container.children.length === 0 || container.querySelector('p')) {
+                showError('請先生成標籤');
+                return;
+            }
+            window.print();
+        }
+
+        // 支援拖放 CSV 檔案
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.getElementById('csv-input');
+            
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.style.background = '#e3f2fd';
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.style.background = '';
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.style.background = '';
+                const file = e.dataTransfer.files[0];
+                if (file && file.name.endsWith('.csv')) {
+                    document.getElementById('csv-file').files = e.dataTransfer.files;
+                    handleCSVUpload({ target: { files: [file] } });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
