@@ -150,17 +150,15 @@
             border-radius: 4px;
         }
 
-        /* 標籤樣式 - 85mm × 60mm */
+        /* 標籤樣式 - 80mm × 50mm */
         .label {
-            width: 85mm;
-            height: 60mm;
+            width: 80mm;
+            height: 50mm;
             background: white;
             border: 1px solid #ddd;
-            padding: 3mm;
+            padding: 2mm;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            page-break-inside: avoid;
             overflow: hidden;
         }
 
@@ -172,20 +170,20 @@
 
         .barcode-container {
             text-align: center;
-            margin-bottom: 2mm;
             flex-shrink: 0;
-            page-break-inside: avoid;
+            line-height: 0;
         }
 
         .barcode-container svg {
-            max-width: 100%;
-            height: 12mm;
+            width: 100%;
+            height: 11mm;
         }
 
         .label-fields {
             display: flex;
             justify-content: space-between;
             flex: 1;
+            align-items: flex-start;
         }
 
         .label-left {
@@ -198,39 +196,32 @@
         }
 
         .label-field {
-            margin-bottom: 1mm;
-            font-size: 13pt;
+            margin-bottom: 0.5mm;
         }
 
         .label-field-label {
             font-weight: bold;
             color: #333;
-            font-size: 12pt;
+            font-size: 10pt;
         }
 
         .label-field-value {
-            font-size: 13pt;
+            font-size: 11pt;
             color: #000;
             word-break: break-all;
         }
 
-        .barcode-container {
-            text-align: center;
-            margin-bottom: 2mm;
-            flex-shrink: 0;
-            page-break-inside: avoid;
-        }
-
-        .barcode-container svg {
-            max-width: 100%;
-            height: 12mm;
-        }
-
         /* 列印樣式 */
+        @page {
+            size: 80mm 50mm;
+            margin: 0;
+        }
+
         @media print {
             body {
                 background: white;
                 padding: 0;
+                margin: 0;
             }
 
             .input-section,
@@ -243,25 +234,32 @@
             .preview-section {
                 box-shadow: none;
                 padding: 0;
+                margin: 0;
             }
 
             .labels-container {
                 display: block;
                 padding: 0;
+                margin: 0;
                 background: white;
             }
 
             .label {
+                width: 80mm;
+                height: 50mm;
                 border: none;
-                margin-bottom: 5mm;
+                padding: 2mm;
+                margin: 0;
                 page-break-after: always;
                 page-break-inside: avoid;
                 break-after: page;
                 break-inside: avoid;
+                overflow: hidden;
             }
 
             .label:last-child {
                 page-break-after: auto;
+                break-after: auto;
             }
         }
 
@@ -286,7 +284,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>🏷️ UPGL  標籤生成工具 </h1>
+        <h1>🏷️ 標籤生成工具 (80×50mm)</h1>
 
         <div class="input-section no-print">
             <div class="input-methods">
@@ -352,7 +350,6 @@
         }
 
         function parseCSVLine(line) {
-            // 處理 CSV 格式（支持引號包圍的欄位）
             const result = [];
             let current = '';
             let inQuotes = false;
@@ -391,12 +388,10 @@
                     return;
                 }
 
-                // 跳過第一行（標題）
                 const dataLines = lines.slice(1);
                 const textarea = document.getElementById('manual-data');
                 textarea.value = dataLines.join('\n');
                 
-                // 切換到手動輸入顯示
                 switchInput('manual');
                 document.querySelectorAll('.input-methods button')[0].click();
             };
@@ -470,12 +465,11 @@
                 `;
                 container.appendChild(label);
 
-                // 生成條碼
                 try {
                     JsBarcode(`#barcode-${index}`, itemNo, {
                         format: 'CODE128',
                         width: 1.5,
-                        height: 30,
+                        height: 28,
                         displayValue: false,
                         margin: 0
                     });
@@ -500,7 +494,6 @@
             window.print();
         }
 
-        // 支援拖放 CSV 檔案
         document.addEventListener('DOMContentLoaded', function() {
             const dropZone = document.getElementById('csv-input');
             
