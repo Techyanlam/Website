@@ -166,8 +166,25 @@
 
         .label-content {
             display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .barcode-container {
+            text-align: center;
+            margin-bottom: 2mm;
+            flex-shrink: 0;
+            page-break-inside: avoid;
+        }
+
+        .barcode-container svg {
+            max-width: 100%;
+            height: 12mm;
+        }
+
+        .label-fields {
+            display: flex;
             justify-content: space-between;
-            align-items: flex-start;
             flex: 1;
         }
 
@@ -182,31 +199,31 @@
 
         .label-field {
             margin-bottom: 1mm;
-            font-size: 14pt;
+            font-size: 13pt;
         }
 
         .label-field-label {
             font-weight: bold;
             color: #333;
-            font-size: 13pt;
+            font-size: 12pt;
         }
 
         .label-field-value {
-            font-size: 14pt;
+            font-size: 13pt;
             color: #000;
             word-break: break-all;
         }
 
         .barcode-container {
             text-align: center;
-            margin-top: 0;
+            margin-bottom: 2mm;
             flex-shrink: 0;
             page-break-inside: avoid;
         }
 
         .barcode-container svg {
             max-width: 100%;
-            height: 10mm;
+            height: 12mm;
         }
 
         /* 列印樣式 */
@@ -269,7 +286,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>UPG GR 標籤生成工具</h1>
+        <h1>🏷️ 標籤生成工具 (80×50mm)</h1>
 
         <div class="input-section no-print">
             <div class="input-methods">
@@ -424,29 +441,31 @@
                 label.className = 'label';
                 label.innerHTML = `
                     <div class="label-content">
-                        <div class="label-left">
-                            <div class="label-field">
-                                <div class="label-field-label">Item No.:</div>
-                                <div class="label-field-value">${itemNo}</div>
+                        <div class="barcode-container">
+                            <svg class="barcode" id="barcode-${index}"></svg>
+                        </div>
+                        <div class="label-fields">
+                            <div class="label-left">
+                                <div class="label-field">
+                                    <div class="label-field-label">Item No.:</div>
+                                    <div class="label-field-value">${itemNo}</div>
+                                </div>
+                                <div class="label-field">
+                                    <div class="label-field-label">Unit:</div>
+                                    <div class="label-field-value">${unit}</div>
+                                </div>
                             </div>
-                            <div class="label-field">
-                                <div class="label-field-label">Unit:</div>
-                                <div class="label-field-value">${unit}</div>
+                            <div class="label-right">
+                                <div class="label-field">
+                                    <div class="label-field-label">WH#:</div>
+                                    <div class="label-field-value">${wh}</div>
+                                </div>
+                                <div class="label-field">
+                                    <div class="label-field-label">Location:</div>
+                                    <div class="label-field-value">${location}</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="label-right">
-                            <div class="label-field">
-                                <div class="label-field-label">WH#:</div>
-                                <div class="label-field-value">${wh}</div>
-                            </div>
-                            <div class="label-field">
-                                <div class="label-field-label">Location:</div>
-                                <div class="label-field-value">${location}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="barcode-container">
-                        <svg class="barcode" id="barcode-${index}"></svg>
                     </div>
                 `;
                 container.appendChild(label);
