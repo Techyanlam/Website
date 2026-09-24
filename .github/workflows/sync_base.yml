@@ -1,8 +1,8 @@
 name: Sync Feishu Base Data
 
 on:
-  workflow_dispatch:
-  repository_dispatch:
+  workflow_dispatch:           # 支援手動觸發
+  repository_dispatch:         # 必須包含這兩個事件！
     types: [feishu_record_updated, update_to_feishu]
 
 jobs:
