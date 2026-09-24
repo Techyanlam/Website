@@ -1,11 +1,9 @@
 name: Sync Feishu Base Data
 
 on:
-  workflow_dispatch:           # 支援手動觸發
-  repository_dispatch:         # 支援飛書 Webhook 外部觸發
-    types: [feishu_record_updated]
-  schedule:
-    - cron: '0 2 * * *'        # 每日備份定時排程
+  workflow_dispatch:
+  # 加入 repository_dispatch，並移除 types 限制，讓所有 dispatches 事件都能觸發
+  repository_dispatch:
 
 jobs:
   sync:
@@ -27,7 +25,7 @@ jobs:
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
         run: python3 scripts/sync_base.py
 
-     - name: Commit and push changes
+      - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -35,7 +33,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes"
           else
-            # 將原本的 "Auto-sync from Feishu update [skip ci]" 改為以下內容（去掉 [skip ci]）：
             git commit -m "Auto-sync from Feishu update"
             git push origin main
           fi
