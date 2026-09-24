@@ -3,7 +3,7 @@ name: Sync Feishu Base Data
 on:
   workflow_dispatch:
   repository_dispatch:
-    types: [feishu_record_updated, update_to_feishu]
+    types: [feishu_record_updated]
 
 jobs:
   sync:
@@ -19,19 +19,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      # 加入這一步安裝 requests 套件
-      - name: Install dependencies
-        run: |
-          pip install requests
-
-      - name: Update or Sync to Feishu
+      - name: Sync data
         env:
           FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
-          CLIENT_PAYLOAD: ${{ toJson(github.event.client_payload) }}
-        run: |
-          python3 scripts/update_feishu.py
-          python3 scripts/sync_base.py
+        run: python3 scripts/sync_base.py[cite: 3]
 
       - name: Commit and push changes
         run: |
