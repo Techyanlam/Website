@@ -2,7 +2,7 @@
 """Sync Feishu Bitable records into the invoice print tool HTML."""
 import json, os, re, sys, urllib.request, urllib.error
 
-APP_TOKEN = "TAG2b4…xndh"
+APP_TOKEN = "YOUR_APP_TOKEN"
 TABLE_ID = "tbl2jFGYqmMfZjNC"
 API_ENDPOINT = "https://open.feishu.cn"
 APP_ID = os.environ.get("FEISHU_APP_ID", "")
