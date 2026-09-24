@@ -293,6 +293,16 @@
             </div>
         </div>
 
+        <!-- 系統設定 (GitHub Token 設定，避免寫死失效) -->
+        <div class="card" style="padding:14px 24px; background:#fff8e1; border-color:#ffe082;">
+            <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <span style="font-size:13px; font-weight:600; color:#b78103;">⚙️ GitHub Token 設定：</span>
+                <input type="password" id="ghTokenInput" placeholder="填入 ghp_ 開頭的 Classic Token" style="flex:1; min-width:260px; padding:6px 10px; font-size:13px; border:1px solid #ccc; border-radius:4px;">
+                <button type="button" class="btn btn-warning" id="btnSaveToken" style="padding:6px 12px; font-size:13px;">儲存 Token</button>
+                <span id="tokenStatusText" style="font-size:12px; color:#666;"></span>
+            </div>
+        </div>
+
         <!-- 搜尋與快速載入 -->
         <div class="card">
             <div class="card-title">🔍 客戶快速搜尋</div>
@@ -464,8 +474,15 @@
         'use strict';
 
         let currentType = 'repair_invoice';
-        let currentRecordId = ''; // 當前載入記錄的飛書 record_id（如有）
+        let currentRecordId = '';
         window.BASE_DATA = window.BASE_DATA || [];
+
+        // 預設經典 Token（可透過上方介面替換並儲存在瀏覽器）
+        const DEFAULT_TOKEN = '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';
+
+        function getActiveToken() {
+            return localStorage.getItem('nv_gh_token') || DEFAULT_TOKEN;
+        }
 
         function showToast(msg, type) {
             const toast = document.createElement('div');
@@ -490,7 +507,6 @@
             return `${yyyy}/${mm}/${dd} ${hh}:${min}`;
         }
 
-        // 強制讀取最新數據（優先請求 GitHub 雲端最新 JSON，避開本地快取）
         function forceFetchLatestData(isUserClick) {
             if (isUserClick) showToast('正在向伺服器檢查最新飛書記錄...', 'info');
 
@@ -729,9 +745,8 @@
                 return;
             }
 
+            const token = getActiveToken();
             showToast('正在傳送至飛書...', 'info');
-
-            const ghToken = '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';
 
             const payloadFields = {
                 "Number": no,
@@ -749,7 +764,7 @@
                 method: 'POST',
                 headers: {
                     'Accept': 'application/vnd.github.v3+json',
-                    'Authorization': 'Bearer ' + ghToken,
+                    'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
@@ -763,11 +778,13 @@
             .then(res => {
                 if (res.status === 204) {
                     showToast('已成功提交！飛書將在 10-15 秒內完成寫入並自動同步。', 'success');
+                } else if (res.status === 401 || res.status === 403) {
+                    showToast('Token 權限無效或過期，請檢查頂部 Token 設定！', 'error');
                 } else {
-                    showToast('傳送失敗，請確認 Token 權限', 'error');
+                    showToast('傳送失敗（HTTP ' + res.status + '）', 'error');
                 }
             })
-            .catch(() => showToast('傳送出錯，請稍候重試', 'error'));
+            .catch(() => showToast('傳送出錯，請檢查網絡連接', 'error'));
         }
 
         // ================= 生成 A4 預覽 HTML =================
@@ -1031,16 +1048,40 @@
                 if (el) el.value = now;
             });
 
+            // 初始化 Token 介面狀態
+            const savedToken = localStorage.getItem('nv_gh_token');
+            const tokenInput = document.getElementById('ghTokenInput');
+            const tokenStatus = document.getElementById('tokenStatusText');
+            if (savedToken) {
+                tokenInput.value = savedToken;
+                tokenStatus.textContent = '✔️ 已載入自訂 Token';
+            } else {
+                tokenStatus.textContent = 'ℹ️ 使用系統預設 Token';
+            }
+
+            document.getElementById('btnSaveToken').addEventListener('click', function () {
+                const val = tokenInput.value.trim();
+                if (val) {
+                    localStorage.setItem('nv_gh_token', val);
+                    tokenStatus.textContent = '✔️ 已成功儲存！';
+                    showToast('Token 已更新儲存', 'success');
+                } else {
+                    localStorage.removeItem('nv_gh_token');
+                    tokenStatus.textContent = 'ℹ️ 已還原為預設 Token';
+                    showToast('已還原預設 Token', 'info');
+                }
+            });
+
             addGenericItem('ri_itemsBody', '維修服務費用', 0);
             addGenericItem('ro_itemsBody', '維修服務費', 0);
 
-            // 初始化 INVOICE 項目
+            // 初始化 INVOICE
             const invTr = document.createElement('tr');
             invTr.innerHTML = `<td><input type="text" class="inv-n"></td><td><input type="text" class="inv-spec"></td><td><input type="number" class="inv-p" value="0"></td><td><input type="number" class="inv-q" value="1"></td><td><input type="number" class="inv-d" value="0"></td><td><input type="text" class="inv-sub" readonly value="0.00"></td>`;
             document.getElementById('inv_itemsBody').appendChild(invTr);
             invTr.querySelectorAll('input').forEach(i => i.addEventListener('input', calcTotals));
 
-            // 初始化 SALES ORDER 項目
+            // 初始化 SALES ORDER
             const soTr = document.createElement('tr');
             soTr.innerHTML = `<td><input type="text" class="so-n"></td><td><input type="text" class="so-spec"></td><td><input type="number" class="so-p" value="0"></td><td><input type="number" class="so-q" value="1"></td><td><input type="number" class="so-d" value="0"></td><td><input type="text" class="so-sub" readonly value="0.00"></td>`;
             document.getElementById('so_itemsBody').appendChild(soTr);
