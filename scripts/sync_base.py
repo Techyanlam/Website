@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+[9/24/26, 6:23:44 PM] Yan Lam Ai: #!/usr/bin/env python3
 """
 Sync Feishu Bitable records into the invoice print tool HTML.
 Run inside GitHub Actions with FEISHU_APP_ID and FEISHU_APP_SECRET env vars.
@@ -10,11 +10,11 @@ import sys
 import urllib.request
 import urllib.error
 
-APP_TOKEN = "TAG2b4…xndh"
+APP_TOKEN = "TAG2b4...xndh"
 TABLE_ID = "tbl2jFGYqmMfZjNC"
 API_ENDPOINT = "https://open.feishu.cn"
 APP_ID = os.environ.get("FEISHU_APP_ID", "")
-APP_SECRET = ${$}{{ secrets.FEISHU_APP_SECRET }}
+APP_SECRET = ***"FEISHU_APP_SECRET", "")
 
 
 def get_access_token():
@@ -48,7 +48,7 @@ def fetch_base_records(token):
     while True:
         params = "page_size=100"
         if page_token:
-            params += f"&page_token=***}
+            params += f"&page_token=***"
 
         url = f"{API_ENDPOINT}/open-apis/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records?{params}"
         req = urllib.request.Request(url, headers=headers)
@@ -98,19 +98,19 @@ def convert_record(record):
         "name": get_text(fields.get("Name", "")),
         "phone": get_text(fields.get("聯絡電話 Tel", "")),
         "model": get_text(fields.get("Model", "")),
+
+[9/24/26, 6:23:44 PM] Yan Lam Ai: 
         "sn": get_text(fields.get("SN", "")),
         "service": get_text(fields.get("服務內容", "")),
+
+[9/24/26, 6:23:45 PM] Yan Lam Ai: 
         "serviceFee": get_number(fields.get("服務費用 1", 0)),
         "deepClean": get_number(fields.get("深層清潔費用", 0)),
         "deliveryFee": get_number(fields.get("送貨費", 0)),
         "parts": get_number(fields.get("Parts amount", 0)),
         "total": get_number(fields.get("Total Amount", 0)),
         "status": get_text(fields.get("Status", "")),
-
-[9/24/26, 5:40:20 PM] Yan Lam Ai: 
         "payment": get_array(fields.get("Payment Methods", [])),
-
-[9/24/26, 5:40:21 PM] Yan Lam Ai: 
         "remark": get_text(fields.get("Remark", "")),
         "deliveryAddr": get_text(fields.get("Address (Delivery)", "")),
     }
