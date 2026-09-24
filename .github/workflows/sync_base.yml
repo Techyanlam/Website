@@ -19,20 +19,25 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Sync data
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Sync Feishu Base Data
         env:
           FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
-        run: python3 scripts/sync_base.py[cite: 3]
+        run: |
+          python3 scripts/sync_base.py
 
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add base_data.json newvision-print-tool.html
+          git add base_data.json
           if git diff --staged --quiet; then
             echo "No changes"
           else
-            git commit -m "Auto-sync from Feishu update"
+            git commit -m "Auto-sync from Feishu update [skip ci]"
             git push origin main
           fi
