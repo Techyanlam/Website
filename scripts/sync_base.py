@@ -2,11 +2,11 @@
 """Sync Feishu Bitable records into the invoice print tool HTML."""
 import json, os, re, sys, urllib.request, urllib.error
 
-APP_TOKEN = "YOUR_APP_TOKEN"
+APP_TOKEN = "TAG2b406ja23OHsIXH6c6Kbxndh"
 TABLE_ID = "tbl2jFGYqmMfZjNC"
 API_ENDPOINT = "https://open.feishu.cn"
 APP_ID = os.environ.get("FEISHU_APP_ID", "")
-APP_SECRET = os.environ.get("FEISHU_APP_SECRET", "")
+APP_SECRET = ***"FEISHU_APP_SECRET", "")
 
 def get_access_token():
     url = f"{API_ENDPOINT}/open-apis/auth/v3/tenant_access_token/internal"
@@ -32,7 +32,7 @@ def fetch_base_records(token):
     while True:
         params = "page_size=100"
         if page_token:
-            params += f"&page_token={page_token}"
+            params += f"&page_token=***}
         url = (
             f"{API_ENDPOINT}/open-apis/bitable/v1/apps/{APP_TOKEN}"
             f"/tables/{TABLE_ID}/records?{params}"
@@ -94,10 +94,10 @@ def convert_record(record):
 def main():
     print("Starting sync from Feishu Base...")
     if not APP_ID or not APP_SECRET:
-        print("Error: FEISHU_APP_ID and FEISHU_APP_SECRET must be set")
+        ***"Error: FEISHU_APP_ID and FEISHU_APP_SECRET must be set")
         sys.exit(1)
 
-    token = get_access_token()
+    token = ***)
     print("Access token obtained")
 
     records = fetch_base_records(token)
