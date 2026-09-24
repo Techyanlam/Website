@@ -113,7 +113,7 @@ def convert_record(record):
 
 
 def main():
-    print("Starting sync from Feishu Base...")
+ print("Starting sync from Feishu Base...")
 
     if not APP_ID or not APP_SECRET:
         ***"Error: FEISHU_APP_ID and FEISHU_APP_SECRET must be set")
@@ -127,12 +127,10 @@ def main():
 
     records_data = [convert_record(r) for r in records]
 
-    # Save JSON snapshot
     with open("base_data.json", "w", encoding="utf-8") as f:
         json.dump(records_data, f, ensure_ascii=False, indent=2)
     print("Saved base_data.json")
 
-    # Update HTML
     html_file = "newvision-print-tool.html"
     if not os.path.exists(html_file):
         print(f"Error: {html_file} not found")
@@ -141,14 +139,12 @@ def main():
     with open(html_file, "r", encoding="utf-8") as f:
         html_content = f.read()
 
-    # Replace BASE_DATA array with the new data (escaped safely by json.dumps)
     pattern = re.compile(r"const BASE_DATA = \[[\s\S]*?\];")
     replacement = f"const BASE_DATA = {json.dumps(records_data, ensure_ascii=False)};"
     html_content, count = pattern.subn(replacement, html_content, count=1)
     if count != 1:
         print(f"Warning: replaced {count} BASE_DATA occurrences")
 
-    # Update visible record count
     html_content = re.sub(
         r'共 <span id="recordCount">\d+</span> 筆記錄',
         f'共 <span id="recordCount">{len(records_data)}</span> 筆記錄',
