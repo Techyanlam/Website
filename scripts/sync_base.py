@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sync Feishu Bitable records into the invoice print tool HTML."""
+"""Sync Feishu Bitable records into base_data.json and invoice print tool HTML."""
 import json
 import os
 import re
@@ -7,16 +7,12 @@ import sys
 import urllib.error
 import urllib.request
 
-# 已填入你的 Base Token 與 Table ID
 APP_TOKEN = os.environ.get("FEISHU_APP_TOKEN", "TAG2b406ja23OHsIXH6c6Kbxndh")
 TABLE_ID = os.environ.get("FEISHU_TABLE_ID", "tbl2jFGYqmMfZjNC")
 API_ENDPOINT = "https://open.feishu.cn"
-
-# 優先讀取環境變數
 APP_ID = os.environ.get("FEISHU_APP_ID", "cli_a94e743517781bd8").strip()
 APP_SECRET = os.environ.get("FEISHU_APP_SECRET", "IDOrtoojYjrJTeDOg9DMsb5Z8vPuxCxH").strip()
 
-# 確保路徑指向專案根目錄（無論在根目錄或 scripts/ 資料夾執行都能定位）
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..")) if os.path.basename(SCRIPT_DIR) == "scripts" else SCRIPT_DIR
 
@@ -30,16 +26,12 @@ def get_access_token():
     try:
         with urllib.request.urlopen(req) as resp:
             data = json.loads(resp.read().decode("utf-8"))
-    except urllib.error.HTTPError as e:
-        error_body = e.read().decode("utf-8", errors="replace")
-        print(f"Token HTTP Error {e.code}: {error_body}")
-        sys.exit(1)
-    except urllib.error.URLError as e:
-        print(f"Token Network Error: {e.reason}")
+    except Exception as e:
+        print(f"Token Error: {e}")
         sys.exit(1)
 
     if data.get("code") != 0:
-        print(f"Feishu Auth Error (code {data.get('code')}): {data.get('msg')}")
+        print(f"Feishu Auth Error: {data.get('msg')}")
         sys.exit(1)
 
     return data["tenant_access_token"]
@@ -60,17 +52,12 @@ def fetch_base_records(token):
         try:
             with urllib.request.urlopen(req) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
-        except urllib.error.HTTPError as e:
-            error_body = e.read().decode("utf-8", errors="replace")
-            print(f"Records HTTP Error {e.code}: {error_body}")
-            print("請檢查：1. 是否已在飛書多維表格右上角「分享」將應用加為協作者？ 2. 應用權限是否已開通並發布？")
-            sys.exit(1)
-        except urllib.error.URLError as e:
-            print(f"Records Network Error: {e.reason}")
+        except Exception as e:
+            print(f"Records Error: {e}")
             sys.exit(1)
 
         if data.get("code") != 0:
-            print(f"Feishu Bitable API Error (code {data.get('code')}): {data.get('msg')}")
+            print(f"Records API Error: {data.get('msg')}")
             sys.exit(1)
 
         records = data.get("data", {}).get("items", [])
@@ -130,57 +117,43 @@ def convert_record(record):
 
 
 def main():
-    print("Starting sync from Feishu Base...")
-
-    if not APP_ID or not APP_SECRET:
-        print("Error: Missing FEISHU_APP_ID or FEISHU_APP_SECRET.")
-        sys.exit(1)
-
-    print("Requesting tenant access token...")
+    print("Starting sync...")
     token = get_access_token()
-    print("Access token obtained successfully.")
-
-    print(f"Fetching records from Table ({TABLE_ID}) in Base ({APP_TOKEN})...")
     records = fetch_base_records(token)
-    print(f"Fetched {len(records)} records.")
+    print(f"Fetched {len(records)} records from Feishu.")
 
     records_data = [convert_record(r) for r in records]
 
-    # 儲存至根目錄的 base_data.json
+    # 1. 寫入 base_data.json
     json_path = os.path.join(PROJECT_ROOT, "base_data.json")
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(records_data, f, ensure_ascii=False, indent=2)
-    print(f"Saved {json_path}.")
+    print("Saved base_data.json.")
 
-    # 更新根目錄的 HTML 檔案
+    # 2. 同步更新 newvision-print-tool.html
     html_file = os.path.join(PROJECT_ROOT, "newvision-print-tool.html")
-    if not os.path.exists(html_file):
-        print(f"Error: Target file '{html_file}' not found.")
-        sys.exit(1)
+    if os.path.exists(html_file):
+        with open(html_file, "r", encoding="utf-8") as f:
+            html = f.read()
 
-    with open(html_file, "r", encoding="utf-8") as f:
-        html_content = f.read()
+        json_str = json.dumps(records_data, ensure_ascii=False)
+        # 兼容替換 window.BASE_DATA 或 const BASE_DATA
+        if "window.BASE_DATA = " in html:
+            html = re.sub(r"window\.BASE_DATA = \[[\s\S]*?\];", f"window.BASE_DATA = {json_str};", html, count=1)
+        elif "const BASE_DATA = " in html:
+            html = re.sub(r"const BASE_DATA = \[[\s\S]*?\];", f"window.BASE_DATA = {json_str};", html, count=1)
 
-    pattern = re.compile(r"const BASE_DATA = \[[\s\S]*?\];")
-    replacement = "const BASE_DATA = " + json.dumps(records_data, ensure_ascii=False) + ";"
-    html_content, count = pattern.subn(replacement, html_content, count=1)
+        html = re.sub(
+            r'共 <span id="recordCount">\d*</span> 筆記錄',
+            f'共 <span id="recordCount">{len(records_data)}</span> 筆記錄',
+            html
+        )
 
-    if count == 0:
-        print("Warning: Pattern 'const BASE_DATA = [...];' not found in HTML file.")
-    else:
-        print("Updated BASE_DATA variable in HTML.")
+        with open(html_file, "w", encoding="utf-8") as f:
+            f.write(html)
+        print(f"Updated {html_file} successfully.")
 
-    html_content = re.sub(
-        r'共 <span id="recordCount">\d*</span> 筆記錄',
-        f'共 <span id="recordCount">{len(records_data)}</span> 筆記錄',
-        html_content,
-    )
-
-    with open(html_file, "w", encoding="utf-8") as f:
-        f.write(html_content)
-
-    print(f"Updated {html_file}.")
-    print("Sync completed successfully.")
+    print("Sync finished.")
 
 
 if __name__ == "__main__":
