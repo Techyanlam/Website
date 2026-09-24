@@ -2,14 +2,14 @@
 """Sync Feishu Bitable records into the invoice print tool HTML."""
 import json, os, re, sys, urllib.request, urllib.error
 
-APP_TOKEN = "TAG2b406ja23OHsIXH6c6Kbxndh"
+APP_TOKEN = "***"
 TABLE_ID = "tbl2jFGYqmMfZjNC"
 API_ENDPOINT = "https://open.feishu.cn"
 APP_ID = os.environ.get("FEISHU_APP_ID", "")
 APP_SECRET = ***"FEISHU_APP_SECRET", "")
 
 def get_access_token():
-    url = f"{API_ENDPOINT}/open-apis/auth/v3/tenant_access_token/internal"
+    url = API_ENDPOINT + "/open-apis/auth/v3/tenant_access_token/internal"
     payload = json.dumps({"app_id": APP_ID, "app_secret": APP_SECRET}).encode("utf-8")
     req = urllib.request.Request(
         url, data=payload, headers={"Content-Type": "application/json"}, method="POST"
@@ -18,34 +18,31 @@ def get_access_token():
         with urllib.request.urlopen(req) as resp:
             data = json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
-        print(f"Token request failed: {e.code} {e.read().decode()}")
+        print("Token request failed: " + str(e.code) + " " + e.read().decode())
         sys.exit(1)
     if data.get("code") != 0:
-        print(f"Token request failed: {data.get('msg')}")
+        print("Token request failed: " + str(data.get("msg")))
         sys.exit(1)
     return data["tenant_access_token"]
 
 def fetch_base_records(token):
     all_records = []
     page_token = None
-    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+    headers = {"Authorization": "Bearer " + token, "Content-Type": "application/json"}
     while True:
         params = "page_size=100"
         if page_token:
-            params += f"&page_token=***}
-        url = (
-            f"{API_ENDPOINT}/open-apis/bitable/v1/apps/{APP_TOKEN}"
-            f"/tables/{TABLE_ID}/records?{params}"
-        )
+            params = params + "&page_token=" + page_token
+        url = API_ENDPOINT + "/open-apis/bitable/v1/apps/" + APP_TOKEN + "/tables/" + TABLE_ID + "/records?" + params
         req = urllib.request.Request(url, headers=headers)
         try:
             with urllib.request.urlopen(req) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
-            print(f"Records request failed: {e.code} {e.read().decode()}")
+            print("Records request failed: " + str(e.code) + " " + e.read().decode())
             sys.exit(1)
         if data.get("code") != 0:
-            print(f"Records API error: {data.get('msg')}")
+            print("Records API error: " + str(data.get("msg")))
             sys.exit(1)
         records = data.get("data", {}).get("items", [])
         all_records.extend(records)
@@ -94,14 +91,14 @@ def convert_record(record):
 def main():
     print("Starting sync from Feishu Base...")
     if not APP_ID or not APP_SECRET:
-        ***"Error: FEISHU_APP_ID and FEISHU_APP_SECRET must be set")
+        print("Error: FEISHU_APP_ID and FEISHU_APP_SECRET must be set")
         sys.exit(1)
 
-    token = ***)
+    token = get_access_token()
     print("Access token obtained")
 
     records = fetch_base_records(token)
-    print(f"Fetched {len(records)} records")
+    print("Fetched " + str(len(records)) + " records")
 
     records_data = [convert_record(r) for r in records]
 
@@ -111,27 +108,27 @@ def main():
 
     html_file = "newvision-print-tool.html"
     if not os.path.exists(html_file):
-        print(f"Error: {html_file} not found")
+        print("Error: " + html_file + " not found")
         sys.exit(1)
 
     with open(html_file, "r", encoding="utf-8") as f:
         html_content = f.read()
 
     pattern = re.compile(r"const BASE_DATA = \[[\s\S]*?\];")
-    replacement = f"const BASE_DATA = {json.dumps(records_data, ensure_ascii=False)};"
+    replacement = "const BASE_DATA = " + json.dumps(records_data, ensure_ascii=False) + ";"
     html_content, count = pattern.subn(replacement, html_content, count=1)
     if count != 1:
-        print(f"Warning: replaced {count} BASE_DATA occurrences")
+        print("Warning: replaced " + str(count) + " BASE_DATA occurrences")
 
     html_content = re.sub(
         r'共 <span id="recordCount">\d+</span> 筆記錄',
-        f'共 <span id="recordCount">{len(records_data)}</span> 筆記錄',
+        '共 <span id="recordCount">' + str(len(records_data)) + '</span> 筆記錄',
         html_content,
     )
 
     with open(html_file, "w", encoding="utf-8") as f:
         f.write(html_content)
-    print(f"Updated {html_file}")
+    print("Updated " + html_file)
     print("Sync completed successfully")
 
 if __name__ == "__main__":
