@@ -71,7 +71,7 @@
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
             border-color: var(--primary);
         }
-        .form-group textarea { resize: vertical; min-height: 80px; }
+        .form-group textarea { resize: vertical; min-height: 70px; }
         .btn {
             display: inline-flex; align-items: center; gap: 6px;
             padding: 10px 16px; border: none; border-radius: 6px;
@@ -111,13 +111,11 @@
         }
         .items-table th { background: #f8f9fa; font-weight: 600; color: var(--text-secondary); }
         .items-table td input {
-            width: 100%; padding: 6px 8px; border: 1px solid transparent;
+            width: 100%; padding: 6px 8px; border: 1px solid #ddd;
             border-radius: 4px; font-size: 13px;
         }
-        .items-table td input:focus { border-color: var(--primary); outline: none; }
         .total-section { text-align: right; padding: 16px 0; font-size: 18px; font-weight: 600; color: var(--danger); }
-        
-        /* 彈窗樣式 */
+
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.5); z-index: 1000;
@@ -126,40 +124,118 @@
         .modal-overlay.active { display: flex; }
         .modal-content {
             background: white; border-radius: var(--radius);
-            width: 100%; max-width: 850px; max-height: 90vh;
+            width: 100%; max-width: 900px; max-height: 92vh;
             overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         .modal-header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 24px; border-bottom: 1px solid var(--border);
+            padding: 14px 24px; border-bottom: 1px solid var(--border);
         }
         .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-secondary); }
-        .modal-body { padding: 24px; }
+        .modal-body { padding: 30px; }
 
-        /* A4 規範樣式 */
-        .print-preview { 
+        /* ================= 嚴格參照格式的 A4 預覽樣式 ================= */
+        .print-sheet {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
             color: #000;
-            padding: 10px;
-            max-width: 800px;
+            background: #fff;
+            max-width: 780px;
             margin: 0 auto;
+            padding: 10px;
         }
-        .print-preview .company-header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 16px; }
-        .print-preview .company-name { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
-        .print-preview .company-address { font-size: 12px; color: #444; line-height: 1.5; }
-        .print-preview .invoice-title { text-align: center; font-size: 18px; font-weight: bold; margin: 12px 0; padding: 6px; background: #f2f2f2; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        .print-preview .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; margin-bottom: 16px; font-size: 12px; }
-        .print-preview .info-item { display: flex; gap: 8px; }
-        .print-preview .info-label { font-weight: bold; min-width: 85px; }
-        .print-preview table { width: 100%; border-collapse: collapse; margin: 12px 0; }
-        .print-preview table th, .print-preview table td { border: 1px solid #333; padding: 6px 8px; font-size: 12px; text-align: left; }
-        .print-preview table th { background: #ececec; font-weight: bold; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        .print-preview .total-row { font-weight: bold; font-size: 13px; background: #f9f9f9; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        .print-preview .terms { margin-top: 18px; padding-top: 10px; border-top: 1px dashed #777; font-size: 11px; color: #444; line-height: 1.6; }
+        .print-sheet .comp-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .print-sheet .comp-sub {
+            text-align: center;
+            font-size: 12px;
+            color: #111;
+            line-height: 1.4;
+        }
+        .print-sheet .top-divider {
+            border: none;
+            border-top: 1.5px solid #222;
+            margin: 12px 0 16px 0;
+        }
+        .print-sheet .sheet-main-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 0 14px 0;
+            letter-spacing: 0.5px;
+        }
+        .print-sheet .meta-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .print-sheet .client-card-box {
+            border: 1px solid #666;
+            padding: 12px 14px;
+            font-size: 13px;
+            line-height: 1.9;
+            margin-bottom: 14px;
+        }
+        .print-sheet .box-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .print-sheet .box-col { flex: 1; }
+        .print-sheet .section-headline {
+            font-size: 13px;
+            font-weight: bold;
+            margin: 10px 0 6px 0;
+        }
+        .print-sheet .dashed-desc-box {
+            border: 1px dashed #777;
+            min-height: 58px;
+            padding: 8px 10px;
+            font-size: 12px;
+            margin-bottom: 14px;
+            white-space: pre-wrap;
+            color: #222;
+        }
+        .print-sheet table.sheet-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0 12px 0;
+        }
+        .print-sheet table.sheet-table th,
+        .print-sheet table.sheet-table td {
+            border: 1px solid #444;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+        .print-sheet table.sheet-table th {
+            text-align: center;
+            font-weight: bold;
+            background: #fff;
+        }
+        .print-sheet .final-amount-line {
+            text-align: right;
+            font-size: 15px;
+            font-weight: bold;
+            margin: 10px 0 14px 0;
+        }
+        .print-sheet .terms-block {
+            margin-top: 14px;
+            font-size: 11px;
+            color: #333;
+            line-height: 1.6;
+        }
+        .print-sheet .terms-block ul {
+            padding-left: 18px;
+            margin-top: 4px;
+        }
 
         @page {
             size: A4 portrait;
-            margin: 12mm 15mm 12mm 15mm;
+            margin: 10mm 15mm 10mm 15mm;
         }
         @media print {
             html, body {
@@ -167,7 +243,6 @@
                 background: white !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                color: #000 !important;
             }
             .no-print { display: none !important; }
             .modal-overlay {
@@ -181,17 +256,13 @@
                 border: none !important;
                 max-width: 100% !important;
                 width: 100% !important;
-                overflow: visible !important;
                 padding: 0 !important;
             }
-            .print-preview {
+            .print-sheet {
                 max-width: 100% !important;
-                width: 100% !important;
                 padding: 0 !important;
                 page-break-inside: avoid;
             }
-            table { page-break-inside: auto; }
-            tr { page-break-inside: avoid; }
         }
 
         .toast {
@@ -248,11 +319,11 @@
                 </div>
                 <div class="invoice-type-card" data-type="invoice">
                     <div class="icon">📄</div>
-                    <div class="name">INVOICE 通用發票</div>
+                    <div class="name">INVOICE 發票</div>
                 </div>
                 <div class="invoice-type-card" data-type="sale_order">
                     <div class="icon">🛒</div>
-                    <div class="name">Sale Order 銷售單</div>
+                    <div class="name">SALES ORDER 銷售單</div>
                 </div>
             </div>
         </div>
@@ -271,65 +342,97 @@
             </div>
         </div>
 
-        <!-- 維修發票表單 -->
-        <div class="card" id="repairInvoiceForm">
-            <div class="card-title">🔧 維修服務資料輸入</div>
+        <!-- 1. 維修服務發票表單 -->
+        <div class="card" id="form_repair_invoice">
+            <div class="card-title">🧾 維修服務發票資料</div>
             <div class="form-grid">
                 <div class="form-group"><label>單據編號</label><input type="text" id="ri_orderNo"></div>
-                <div class="form-group"><label>開單日期</label><input type="date" id="ri_date"></div>
-                <div class="form-group"><label>付款到期日</label><input type="date" id="ri_dueDate"></div>
+                <div class="form-group"><label>開單日期時間</label><input type="text" id="ri_date"></div>
                 <div class="form-group"><label>客戶姓名</label><input type="text" id="ri_name"></div>
                 <div class="form-group"><label>聯絡電話</label><input type="text" id="ri_phone"></div>
-                <div class="form-group"><label>WhatsApp 號碼</label><input type="text" id="ri_whatsapp"></div>
                 <div class="form-group" style="grid-column:1/-1;"><label>送貨地址</label><input type="text" id="ri_address"></div>
-                <div class="form-group"><label>設備型號 Model</label><input type="text" id="ri_model"></div>
-                <div class="form-group"><label>SN 編號</label><input type="text" id="ri_sn"></div>
-                <div class="form-group"><label>保固月數</label><input type="number" id="ri_warranty" value="3"></div>
+                <div class="form-group"><label>設備型號</label><input type="text" id="ri_model"></div>
+                <div class="form-group"><label>SN序號</label><input type="text" id="ri_sn"></div>
+                <div class="form-group"><label>保固期限 (月數)</label><input type="number" id="ri_warranty" value="0"></div>
+                <div class="form-group" style="grid-column:1/-1;"><label>維修內容說明</label><textarea id="ri_desc"></textarea></div>
+                <div class="form-group" style="grid-column:1/-1;"><label>備註</label><textarea id="ri_remark"></textarea></div>
             </div>
-            <h4 style="margin:20px 0 12px; font-size:14px; color:var(--text-secondary);">服務收費項目</h4>
+            <h4 style="margin:20px 0 12px; font-size:14px; color:var(--text-secondary);">維修項目清單</h4>
             <table class="items-table">
-                <thead><tr><th style="width:40%">項目</th><th style="width:15%">單價</th><th style="width:15%">數量</th><th style="width:20%">小計</th><th style="width:10%">操作</th></tr></thead>
+                <thead><tr><th style="width:60%">項目</th><th style="width:30%">金額 (HK$)</th><th style="width:10%">操作</th></tr></thead>
                 <tbody id="ri_itemsBody"></tbody>
             </table>
             <button type="button" class="btn btn-outline" id="btnAddRiItem">+ 新增項目</button>
-            <div class="total-section">應付總金額：HK$ <span id="ri_total">0.00</span></div>
+            <div class="total-section">總金額 HK$ <span id="ri_total">0.00</span></div>
         </div>
 
-        <!-- 維修服務單表單 -->
-        <div class="card section-hidden" id="repairOrderForm">
+        <!-- 2. 維修服務單表單 -->
+        <div class="card section-hidden" id="form_repair_order">
             <div class="card-title">🔧 維修服務單資料</div>
             <div class="form-grid">
                 <div class="form-group"><label>單據編號</label><input type="text" id="ro_orderNo"></div>
-                <div class="form-group"><label>開單日期</label><input type="date" id="ro_date"></div>
+                <div class="form-group"><label>開單日期時間</label><input type="text" id="ro_date"></div>
                 <div class="form-group"><label>客戶姓名</label><input type="text" id="ro_name"></div>
                 <div class="form-group"><label>聯絡電話</label><input type="text" id="ro_phone"></div>
-                <div class="form-group" style="grid-column:1/-1;"><label>故障描述</label><textarea id="ro_faultDesc"></textarea></div>
-                <div class="form-group"><label>維修金額 (HK$)</label><input type="number" id="ro_total_input" value="0"></div>
+                <div class="form-group" style="grid-column:1/-1;"><label>送貨地址</label><input type="text" id="ro_address"></div>
+                <div class="form-group"><label>設備型號</label><input type="text" id="ro_model"></div>
+                <div class="form-group"><label>SN序號</label><input type="text" id="ro_sn"></div>
+                <div class="form-group"><label>保固期限 (月數)</label><input type="number" id="ro_warranty" value="0"></div>
+                <div class="form-group" style="grid-column:1/-1;"><label>維修故障描述</label><textarea id="ro_faultDesc"></textarea></div>
+                <div class="form-group" style="grid-column:1/-1;"><label>內部備註</label><textarea id="ro_remark"></textarea></div>
             </div>
-            <div class="total-section">合計金額：HK$ <span id="ro_total">0.00</span></div>
+            <h4 style="margin:20px 0 12px; font-size:14px; color:var(--text-secondary);">收費項目清單</h4>
+            <table class="items-table">
+                <thead><tr><th style="width:60%">收費項目</th><th style="width:30%">金額 HK$</th><th style="width:10%">操作</th></tr></thead>
+                <tbody id="ro_itemsBody"></tbody>
+            </table>
+            <button type="button" class="btn btn-outline" id="btnAddRoItem">+ 新增項目</button>
+            <div class="total-section">合計金額 HK$ <span id="ro_total">0.00</span></div>
         </div>
 
-        <!-- 通用發票與銷售單表單 -->
-        <div class="card section-hidden" id="invoiceForm">
-            <div class="card-title">📄 INVOICE 通用發票</div>
+        <!-- 3. INVOICE 發票表單 -->
+        <div class="card section-hidden" id="form_invoice">
+            <div class="card-title">📄 INVOICE 發票資料</div>
             <div class="form-grid">
                 <div class="form-group"><label>發票編號</label><input type="text" id="inv_no"></div>
-                <div class="form-group"><label>開單日期</label><input type="date" id="inv_date"></div>
-                <div class="form-group"><label>客戶姓名</label><input type="text" id="inv_name"></div>
-                <div class="form-group"><label>金額 (HK$)</label><input type="number" id="inv_total_input" value="0"></div>
+                <div class="form-group"><label>開單日期時間</label><input type="text" id="inv_date"></div>
+                <div class="form-group"><label>客戶名稱</label><input type="text" id="inv_name"></div>
+                <div class="form-group"><label>聯絡電話</label><input type="text" id="inv_phone"></div>
+                <div class="form-group"><label>WhatsApp</label><input type="text" id="inv_whatsapp"></div>
+                <div class="form-group" style="grid-column:1/-1;"><label>地址</label><input type="text" id="inv_address"></div>
+                <div class="form-group" style="grid-column:1/-1;"><label>備註</label><textarea id="inv_remark"></textarea></div>
             </div>
-            <div class="total-section">應付總額：HK$ <span id="inv_total">0.00</span></div>
+            <h4 style="margin:20px 0 12px; font-size:14px; color:var(--text-secondary);">項目清單</h4>
+            <table class="items-table">
+                <thead><tr><th style="width:30%">項目名稱</th><th style="width:20%">規格</th><th style="width:15%">單價</th><th style="width:10%">數量</th><th style="width:10%">折扣</th><th style="width:15%">小計</th></tr></thead>
+                <tbody id="inv_itemsBody"></tbody>
+            </table>
+            <button type="button" class="btn btn-outline" id="btnAddInvItem">+ 新增項目</button>
+            <div class="total-section">應付總額 HK$ <span id="inv_total">0.00</span></div>
         </div>
 
-        <div class="card section-hidden" id="saleOrderForm">
-            <div class="card-title">🛒 Sale Order 銷售單</div>
+        <!-- 4. SALES ORDER 銷售單表單 -->
+        <div class="card section-hidden" id="form_sale_order">
+            <div class="card-title">🛒 SALES ORDER 銷售單資料</div>
             <div class="form-grid">
                 <div class="form-group"><label>單據編號</label><input type="text" id="so_no"></div>
-                <div class="form-group"><label>開單日期</label><input type="date" id="so_date"></div>
+                <div class="form-group"><label>開單日期時間</label><input type="text" id="so_date"></div>
                 <div class="form-group"><label>客戶姓名</label><input type="text" id="so_name"></div>
-                <div class="form-group"><label>金額 (HK$)</label><input type="number" id="so_total_input" value="0"></div>
+                <div class="form-group"><label>聯絡電話</label><input type="text" id="so_phone"></div>
+                <div class="form-group"><label>WhatsApp</label><input type="text" id="so_whatsapp"></div>
+                <div class="form-group" style="grid-column:1/-1;"><label>送貨地址</label><input type="text" id="so_address"></div>
+                <div class="form-group"><label>送貨方式</label><input type="text" id="so_deliveryMethod"></div>
+                <div class="form-group"><label>保固期限</label><input type="text" id="so_warranty"></div>
+                <div class="form-group"><label>付款方式</label><input type="text" id="so_payment"></div>
+                <div class="form-group" style="grid-column:1/-1;"><label>訂單備註</label><textarea id="so_remark"></textarea></div>
             </div>
-            <div class="total-section">合計金額：HK$ <span id="so_total">0.00</span></div>
+            <h4 style="margin:20px 0 12px; font-size:14px; color:var(--text-secondary);">銷售項目清單</h4>
+            <table class="items-table">
+                <thead><tr><th style="width:25%">機型</th><th style="width:20%">規格</th><th style="width:15%">售價</th><th style="width:10%">數量</th><th style="width:10%">折扣</th><th style="width:15%">金額</th></tr></thead>
+                <tbody id="so_itemsBody"></tbody>
+            </table>
+            <button type="button" class="btn btn-outline" id="btnAddSoItem">+ 新增項目</button>
+            <div class="total-section">合計金額 HK$ <span id="so_total">0.00</span></div>
         </div>
 
         <!-- 動作按鈕 -->
@@ -355,29 +458,12 @@
         </div>
     </div>
 
-    <!-- 預設內建資料（確保無網絡時仍能立即可用） -->
-    <script>
-    window.BASE_DATA = [{"number": "NV2025090422", "name": "Wiliam", "phone": "9481 4797", "model": "AM07", "sn": "", "service": "Dyson 風扇清潔服務", "serviceFee": 0, "deepClean": 200.0, "deliveryFee": 75.0, "parts": 498.0, "total": 1271, "status": "Completed", "payment": ["Visa", "Cash"], "remark": "Keith", "deliveryAddr": "青山公路33號深井段碧堤半島三座25C (15 Sep PM14:00-18:00)"}, {"number": "NV2025090492", "name": "", "phone": "", "model": "Parts", "sn": "Parts(967834-07)", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 698.0, "total": 698, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2025090493", "name": "", "phone": "61166371", "model": "TP02", "sn": "NK9-HK-HDA1526A", "service": "Dyson 風扇維修服務(風扇開唔到)", "serviceFee": 0.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Rejected", "payment": ["Waived"], "remark": "Reject", "deliveryAddr": ""}, {"number": "NV2025100494", "name": "", "phone": "96269280", "model": "HD01", "sn": "RX7-HK-KFJ2747A", "service": "Dyson 風筒電線維修服務", "serviceFee": 216.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 216, "status": "Completed", "payment": ["Cash"], "remark": "Keith", "deliveryAddr": ""}, {"number": "NV2025100495", "name": "", "phone": "", "model": "", "sn": "", "service": "吸塵機不能差電", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Cancelled", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2025100497", "name": "", "phone": "", "model": "HS03", "sn": "F1Y-XC
-RBJ1387A", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 900, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2025100498", "name": "陳先生", "phone": "97554782", "model": "HD02", "sn": "-", "service": "風筒維修", "serviceFee": 150.0, "deepClean": 0.0, "deliveryFee": 0, "parts": 0, "total": 150, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2025110499", "name": "范樹蛙", "phone": "63369807", "model": "TP03", "sn": "SR7-XC-KBA0205A", "service": "TP03 風扇維修(不轉動)", "serviceFee": 525.0, "deepClean": 0, "deliveryFee": 0, "parts": 0.0, "total": 525, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2025110501", "name": "", "phone": "68886101", "model": "HD", "sn": "翻新的:2CV-XC-SHJ0836A", "service": "風筒維修
-維修過程中發現電線有安全風險不建議使用
-客人同意加 $600 換購翻新的機", "serviceFee": 600.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 600, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2025110502", "name": "Connie", "phone": "98096179", "model": "HD06", "sn": "E2X-HK-NKA3141A", "service": "風扇維修", "serviceFee": 252.0, "deepClean": 0, "deliveryFee": 0, "parts": 525.0, "total": 852, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": "香港南區貝沙灣一期5座20樓A室"}, {"number": "NV2025110503", "name": "Connie", "phone": "98096179", "model": "HD06", "sn": "E2W-HK-NNA0397A", "service": "風扇維修", "serviceFee": 252.0, "deepClean": 0, "deliveryFee": 75.0, "parts": 525.0, "total": 852, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": "香港南區貝沙灣一期5座20樓A室"}, {"number": "NV2025120504", "name": "", "phone": "92071298", "model": "SV18", "sn": "M6U-XD-PGJ4265A", "service": "吸塵機膠圈脫落維修, 另購買一個新  post filter", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 270.0, "total": 270, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026010505", "name": "", "phone": "61726783", "model": "", "sn": "", "service": "風扇出現！", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Cancelled", "payment": ["NA"], "remark": "Reject", "deliveryAddr": ""}, {"number": "NV2026010507", "name": "李先生", "phone": "91769369", "model": "HD08", "sn": "P3Y-XC-PNA487A", "service": "時著時唔著", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 250.0, "total": 250, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026010508", "name": "Leehingling", "phone": "69542588", "model": "", "sn": "", "service": "風筒維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 202.0, "total": 202, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026010509", "name": "CarCar", "phone": "9778 8235", "model": "", "sn": "", "service": "風筒維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Rejected", "payment": ["NA"], "remark": "Reject", "deliveryAddr": ""}, {"number": "NV2026010510", "name": "Kenny Chow Caleb Chow", "phone": "9662 2910", "model": "", "sn": "", "service": "風筒維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Rejected", "payment": ["NA"], "remark": "Reject", "deliveryAddr": ""}, {"number": "NV2026010511", "name": "Alex Chan", "phone": "+852 9464 1275", "model": "", "sn": "", "service": "吸塵機維修", "serviceFee": 900.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 900, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026010512", "name": "Garychan", "phone": "+852 9374 3060", "model": "", "sn": "", "service": "吸塵機深層清潔費用", "serviceFee": 0, "deepClean": 200.0, "deliveryFee": 0, "parts": 0, "total": 200, "status": "Completed", "payment": ["FPS"], "remark": "Keith", "deliveryAddr": ""}, {"number": "NV2026020513", "name": "", "phone": "68087508", "model": "", "sn": "", "service": "直髮夾維修換電", "serviceFee": 800.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 800, "status": "Completed", "payment": ["FPS"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026020514", "name": "~Terrie", "phone": "9400 7995", "model": "", "sn": "", "service": "深層清潔dyson digital slim fluffy", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Completed", "payment": ["Cash"], "remark": "Reject", "deliveryAddr": ""}, {"number": "NV2026020515", "name": "~Matt", "phone": "+852 9226 7557", "model": "", "sn": "", "service": "Dyson風筒時着時唔着", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 200.0, "total": 200, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026020516", "name": "", "phone": "98677780", "model": "HD01", "sn": "RX7-HK-KAA3073A", "service": "Dyson 風筒吹吹下閃燈停機", "serviceFee": 300.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 300, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026020517", "name": "Kenji", "phone": "9019 1610", "model": "HP06", "sn": "", "service": "風扇深層清潔", "serviceFee": 0, "deepClean": 200.0, "deliveryFee": 0, "parts": 0, "total": 200, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026030518", "name": "Keith Wong", "phone": "12345678", "model": "HD08", "sn": "P3K-XC-SHA0201A", "service": "Dyson風筒", "serviceFee": 0, "deepClean": 1000.0, "deliveryFee": 0, "parts": 0, "total": 1000, "status": "Completed", "payment": ["NA"], "remark": "Keith", "deliveryAddr": ""}, {"number": "NV2026040521", "name": "cckkam", "phone": "9152 5689", "model": "", "sn": "", "service": "風扇維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Completed", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026040522", "name": "周", "phone": "96622910", "model": "HD", "sn": "", "service": "Dyson風筒風筒吹吹下閃燈停機", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Completed", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026050523", "name": "Leehingling", "phone": "69542588", "model": "HD", "sn": "C7B-XC-NEA0682A", "service": "Dyson風筒風筒吹吹下閃燈停機", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Completed", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026050524", "name": "", "phone": "96622910", "model": "", "sn": "", "service": "GHD直髮夾維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Rejected", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026050525", "name": "", "phone": "66246198", "model": "", "sn": "", "service": "吸塵機維修", "serviceFee": 850.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 850, "status": "Completed", "payment": ["NA"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026050526", "name": "", "phone": " 9360 6160", "model": "", "sn": "", "service": "風筒維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Rejected", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026050527", "name": "Leung", "phone": "+852 9035 5670", "model": "SV15", "sn": "G4K-XC-NHA2409A", "service": "吸塵機維修", "serviceFee": 200.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 200, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026060528", "name": "Paul Chan", "phone": "62376956", "model": "", "sn": "", "service": "清洗dyson  v10吸塵機", "serviceFee": 0, "deepClean": 0.0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Cancelled", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026060529", "name": "68237208", "phone": "96680617", "model": "", "sn": "4BX-XC-SDA2034A", "service": "風筒維修", "serviceFee": 250.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 250, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026070201", "name": "", "phone": "98720888", "model": "", "sn": "TK7-SA-KNA41176A", "service": "風筒維修", "serviceFee": 250.0, "deepClean": 0, "deliveryFee": 0, "parts": 100.0, "total": 350, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026070601", "name": "", "phone": "98720888", "model": "TP09", "sn": "X2C-XD-RGA1120A", "service": "風扇維修", "serviceFee": 599.0, "deepClean": 0, "deliveryFee": 75.0, "parts": 500.0, "total": 1174, "status": "Cancelled", "payment": ["FPS"], "remark": "Keith", "deliveryAddr": "Flat E,12/F,Block 6,Banyan Garden,Lai Chi Kok"}, {"number": "NV2026083101", "name": "", "phone": "", "model": "", "sn": "", "service": "風筒維修", "serviceFee": 300.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 300, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026090701", "name": "", "phone": "52607551", "model": "", "sn": "", "service": "吸塵機深層清潔費用", "serviceFee": 250.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 250, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026092301", "name": "", "phone": "97731833", "model": "", "sn": "", "service": "吸塵機維修開關制", "serviceFee": 300.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 300, "status": "In process", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "Ten", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}];
-    </script>
-
-    <!-- 核心功能邏輯 -->
     <script>
     (function () {
         'use strict';
 
         let currentType = 'repair_invoice';
-        const servicePrices = {
-            'fan_clean': { name: '深層清潔（Dyson 風扇）', price: 270 },
-            'vacuum_clean': { name: '深層清潔（吸塵機）', price: 300 },
-            'dryer_clean': { name: '深層清潔（風筒）', price: 200 },
-            'fan_repair': { name: '風扇維修', price: 0 },
-            'dryer_repair': { name: '風筒維修', price: 0 },
-            'straightener_repair': { name: '直髮夾維修', price: 0 },
-            'vacuum_repair': { name: '吸塵機維修', price: 0 }
-        };
+        window.BASE_DATA = window.BASE_DATA || [];
 
         function showToast(msg, type) {
             const toast = document.createElement('div');
@@ -387,40 +473,44 @@ RBJ1387A", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFe
             setTimeout(function () { toast.remove(); }, 3000);
         }
 
-        function getBaseData() {
-            return Array.isArray(window.BASE_DATA) ? window.BASE_DATA : [];
-        }
-
         function updateCount() {
             const el = document.getElementById('recordCount');
-            if (el) el.textContent = getBaseData().length;
+            if (el) el.textContent = window.BASE_DATA.length;
         }
 
-        // 強制穿透伺服器快取讀取最新 base_data.json
+        function getNowFormatted() {
+            const d = new Date();
+            const yyyy = d.getFullYear();
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            const hh = String(d.getHours()).padStart(2, '0');
+            const min = String(d.getMinutes()).padStart(2, '0');
+            return `${yyyy}/${mm}/${dd} ${hh}:${min}`;
+        }
+
+        // 強制讀取最新數據（優先請求 GitHub 雲端最新 JSON，避開 NAS 本地快取）
         function forceFetchLatestData(isUserClick) {
             if (isUserClick) showToast('正在向伺服器檢查最新飛書記錄...', 'info');
 
-            fetch('base_data.json?nocache=' + Date.now(), {
-                cache: 'no-store',
-                headers: { 'Pragma': 'no-cache', 'Cache-Control': 'no-cache' }
-            })
-            .then(function (res) {
-                if (!res.ok) throw new Error('網絡或檔案未找到');
-                return res.json();
-            })
-            .then(function (data) {
-                if (Array.isArray(data) && data.length > 0) {
-                    window.BASE_DATA = data;
+            const primaryUrl = 'https://raw.githubusercontent.com/Techyanlam/Website/main/base_data.json?nocache=' + Date.now();
+            const fallbackUrl = 'base_data.json?nocache=' + Date.now();
+
+            fetch(primaryUrl, { cache: 'no-store' })
+                .catch(() => fetch(fallbackUrl, { cache: 'no-store' }))
+                .then(res => res.json())
+                .then(data => {
+                    if (Array.isArray(data) && data.length > 0) {
+                        window.BASE_DATA = data;
+                        updateCount();
+                        if (isUserClick) showToast('已即時同步最新 ' + data.length + ' 筆記錄！', 'success');
+                    } else {
+                        updateCount();
+                    }
+                })
+                .catch(() => {
                     updateCount();
-                    if (isUserClick) showToast('已即時同步最新 ' + data.length + ' 筆記錄！', 'success');
-                } else {
-                    updateCount();
-                }
-            })
-            .catch(function (err) {
-                updateCount();
-                if (isUserClick) showToast('讀取完成（目前保持本地 ' + getBaseData().length + ' 筆）', 'info');
-            });
+                    if (isUserClick) showToast('目前讀取到 ' + window.BASE_DATA.length + ' 筆記錄', 'info');
+                });
         }
 
         function selectType(type) {
@@ -428,58 +518,80 @@ RBJ1387A", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFe
             document.querySelectorAll('.invoice-type-card').forEach(function (c) {
                 c.classList.toggle('active', c.getAttribute('data-type') === type);
             });
-            ['repairInvoiceForm', 'repairOrderForm', 'invoiceForm', 'saleOrderForm'].forEach(function (id) {
+            ['form_repair_invoice', 'form_repair_order', 'form_invoice', 'form_sale_order'].forEach(function (id) {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('section-hidden');
             });
             const map = {
-                'repair_invoice': 'repairInvoiceForm',
-                'repair_order': 'repairOrderForm',
-                'invoice': 'invoiceForm',
-                'sale_order': 'saleOrderForm'
+                'repair_invoice': 'form_repair_invoice',
+                'repair_order': 'form_repair_order',
+                'invoice': 'form_invoice',
+                'sale_order': 'form_sale_order'
             };
             const target = document.getElementById(map[type]);
             if (target) target.classList.remove('section-hidden');
         }
 
-        function addRiItem(name, price, qty) {
-            const tbody = document.getElementById('ri_itemsBody');
+        function addGenericItem(tbodyId, name, price) {
+            const tbody = document.getElementById(tbodyId);
             if (!tbody) return;
             const tr = document.createElement('tr');
-            tr.innerHTML = '<td><input type="text" class="ri-name" value="' + (name || '') + '" placeholder="項目"></td>' +
-                '<td><input type="number" class="ri-price" value="' + (price || 0) + '"></td>' +
-                '<td><input type="number" class="ri-qty" value="' + (qty || 1) + '" min="1"></td>' +
-                '<td><input type="text" class="ri-subtotal" readonly></td>' +
-                '<td><button type="button" class="btn btn-danger btn-del">×</button></td>';
+            tr.innerHTML = `<td><input type="text" class="item-name" value="${name || ''}"></td>
+                <td><input type="number" class="item-price" value="${price || 0}" step="any"></td>
+                <td><button type="button" class="btn btn-danger btn-del">×</button></td>`;
             tbody.appendChild(tr);
 
             tr.querySelector('.btn-del').addEventListener('click', function () {
                 tr.remove();
-                calcRiTotal();
+                calcTotals();
             });
-            tr.querySelectorAll('input').forEach(function (inp) {
-                inp.addEventListener('input', calcRiTotal);
-            });
-            calcRiTotal();
+            tr.querySelectorAll('input').forEach(inp => inp.addEventListener('input', calcTotals));
+            calcTotals();
         }
 
-        function calcRiTotal() {
-            let sum = 0;
-            document.querySelectorAll('#ri_itemsBody tr').forEach(function (tr) {
-                const p = parseFloat(tr.querySelector('.ri-price').value) || 0;
-                const q = parseInt(tr.querySelector('.ri-qty').value, 10) || 1;
-                const sub = p * q;
-                const subInput = tr.querySelector('.ri-subtotal');
-                if (subInput) subInput.value = '$ ' + sub.toFixed(2);
-                sum += sub;
+        function calcTotals() {
+            // 維修發票
+            let riSum = 0;
+            document.querySelectorAll('#ri_itemsBody tr').forEach(tr => {
+                riSum += parseFloat(tr.querySelector('.item-price').value) || 0;
             });
-            const totalEl = document.getElementById('ri_total');
-            if (totalEl) totalEl.textContent = sum.toFixed(2);
+            document.getElementById('ri_total').textContent = riSum.toFixed(2);
+
+            // 維修服務單
+            let roSum = 0;
+            document.querySelectorAll('#ro_itemsBody tr').forEach(tr => {
+                roSum += parseFloat(tr.querySelector('.item-price').value) || 0;
+            });
+            document.getElementById('ro_total').textContent = roSum.toFixed(2);
+
+            // INVOICE
+            let invSum = 0;
+            document.querySelectorAll('#inv_itemsBody tr').forEach(tr => {
+                const price = parseFloat(tr.querySelector('.inv-p').value) || 0;
+                const qty = parseFloat(tr.querySelector('.inv-q').value) || 1;
+                const disc = parseFloat(tr.querySelector('.inv-d').value) || 0;
+                const sub = (price * qty) - disc;
+                tr.querySelector('.inv-sub').value = sub.toFixed(2);
+                invSum += sub;
+            });
+            document.getElementById('inv_total').textContent = invSum.toFixed(2);
+
+            // SALES ORDER
+            let soSum = 0;
+            document.querySelectorAll('#so_itemsBody tr').forEach(tr => {
+                const price = parseFloat(tr.querySelector('.so-p').value) || 0;
+                const qty = parseFloat(tr.querySelector('.so-q').value) || 1;
+                const disc = parseFloat(tr.querySelector('.so-d').value) || 0;
+                const sub = (price * qty) - disc;
+                tr.querySelector('.so-sub').value = sub.toFixed(2);
+                soSum += sub;
+            });
+            document.getElementById('so_total').textContent = soSum.toFixed(2);
         }
 
         function generateOrderNo() {
             const d = new Date();
-            const y = d.getFullYear().toString().slice(-2);
+            const y = d.getFullYear().toString();
             const m = String(d.getMonth() + 1).padStart(2, '0');
             const day = String(d.getDate()).padStart(2, '0');
             const rnd = String(Math.floor(Math.random() * 90) + 10);
@@ -501,7 +613,7 @@ RBJ1387A", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFe
             const q = (input ? input.value : '').trim().toLowerCase();
             if (!q) { showToast('請輸入電話、單號或姓名', 'error'); return; }
 
-            const list = getBaseData().filter(function (r) {
+            const list = window.BASE_DATA.filter(function (r) {
                 const p = (r.phone || '').replace(/\s+/g, '');
                 const n = (r.name || '').toLowerCase();
                 const no = (r.number || '').toLowerCase();
@@ -511,153 +623,373 @@ RBJ1387A", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFe
             const res = document.getElementById('searchResults');
             if (!res) return;
             if (list.length === 0) {
-                res.innerHTML = '<div style="padding:10px; color:#d93025; background:#fce8e6; border-radius:4px;">未找到匹配記錄（如飛書剛新增，請先按上方綠色「🔄 重新載入」）</div>';
+                res.innerHTML = '<div style="padding:10px; color:#d93025; background:#fce8e6; border-radius:4px;">未找到匹配記錄（如飛書剛新增，請先點擊綠色「🔄 重新載入」）</div>';
                 return;
             }
 
-            res.innerHTML = '<div style="font-size:12px; margin-bottom:6px;">找到 ' + list.length + ' 筆記錄（點擊載入）：</div>';
+            res.innerHTML = `<div style="font-size:12px; margin-bottom:6px;">找到 ${list.length} 筆記錄（點擊載入）：</div>`;
             list.forEach(function (r) {
                 const item = document.createElement('div');
                 item.className = 'search-result-item';
-                item.innerHTML = '<strong>' + (r.number || '無單號') + '</strong> ' + (r.name || '') + ' · 📱 ' + (r.phone || '') + ' · HK$' + (r.total || 0);
+                item.innerHTML = `<strong>${r.number || '無單號'}</strong> ${r.name || ''} · 📱 ${r.phone || ''} · HK$ ${r.total || 0}`;
                 item.addEventListener('click', function () {
-                    selectType('repair_invoice');
+                    // 同步填入各表單
                     document.getElementById('ri_orderNo').value = r.number || '';
                     document.getElementById('ri_name').value = r.name || '';
                     document.getElementById('ri_phone').value = r.phone || '';
-                    document.getElementById('ri_whatsapp').value = r.phone || '';
                     document.getElementById('ri_model').value = r.model || '';
                     document.getElementById('ri_sn').value = r.sn || '';
                     document.getElementById('ri_address').value = r.deliveryAddr || '';
+                    document.getElementById('ri_desc').value = r.service || '';
+                    document.getElementById('ri_remark').value = r.remark || '';
 
+                    document.getElementById('ro_orderNo').value = r.number || '';
+                    document.getElementById('ro_name').value = r.name || '';
+                    document.getElementById('ro_phone').value = r.phone || '';
+                    document.getElementById('ro_model').value = r.model || '';
+                    document.getElementById('ro_sn').value = r.sn || '';
+                    document.getElementById('ro_address').value = r.deliveryAddr || '';
+                    document.getElementById('ro_faultDesc').value = r.service || '';
+                    document.getElementById('ro_remark').value = r.remark || '';
+
+                    document.getElementById('inv_no').value = r.number || '';
+                    document.getElementById('inv_name').value = r.name || '';
+                    document.getElementById('inv_phone').value = r.phone || '';
+                    document.getElementById('inv_whatsapp').value = r.phone || '';
+                    document.getElementById('inv_address').value = r.deliveryAddr || '';
+                    document.getElementById('inv_remark').value = r.remark || '';
+
+                    document.getElementById('so_no').value = r.number || '';
+                    document.getElementById('so_name').value = r.name || '';
+                    document.getElementById('so_phone').value = r.phone || '';
+                    document.getElementById('so_whatsapp').value = r.phone || '';
+                    document.getElementById('so_address').value = r.deliveryAddr || '';
+                    document.getElementById('so_remark').value = r.remark || '';
+
+                    // 填入項目
                     const tbody = document.getElementById('ri_itemsBody');
-                    if (tbody) tbody.innerHTML = '';
-                    if (r.deepClean > 0) addRiItem('深層清潔', r.deepClean, 1);
-                    if (r.serviceFee > 0) addRiItem('維修服務費', r.serviceFee, 1);
-                    if (r.parts > 0) addRiItem('零件費用', r.parts, 1);
-                    if (r.deliveryFee > 0) addRiItem('送貨費', r.deliveryFee, 1);
-                    calcRiTotal();
-                    showToast('已載入單據：' + r.number, 'success');
+                    tbody.innerHTML = '';
+                    if (r.deepClean > 0) addGenericItem('ri_itemsBody', '深層清潔費用', r.deepClean);
+                    if (r.serviceFee > 0) addGenericItem('ri_itemsBody', '維修服務費用', r.serviceFee);
+                    if (r.parts > 0) addGenericItem('ri_itemsBody', '零件費用', r.parts);
+                    if (r.deliveryFee > 0) addGenericItem('ri_itemsBody', '送貨費用', r.deliveryFee);
+                    if (tbody.children.length === 0) addGenericItem('ri_itemsBody', '維修服務費用', r.total || 0);
+
+                    const roBody = document.getElementById('ro_itemsBody');
+                    roBody.innerHTML = tbody.innerHTML;
+
+                    calcTotals();
+                    showToast('已載入記錄：' + r.number, 'success');
                     res.innerHTML = '';
                 });
                 res.appendChild(item);
             });
         }
 
-        function openA4Preview() {
-            const no = document.getElementById('ri_orderNo').value;
-            const date = document.getElementById('ri_date').value;
-            const name = document.getElementById('ri_name').value;
-            const phone = document.getElementById('ri_phone').value;
-            const model = document.getElementById('ri_model').value;
-            const sn = document.getElementById('ri_sn').value;
-            const total = document.getElementById('ri_total').textContent;
+        // ================= 生成精準對齊圖片的 A4 HTML =================
+        function generatePrintHTML() {
+            const compHeader = `
+                <div class="comp-title">New Vision Tech Co Limited</div>
+                <div class="comp-sub">
+                    Room 1015–1016, Hollywood Plaza, 610 Nathan Road, Mong Kok, Kowloon<br>
+                    Tel : +852 2887 8820
+                </div>
+                <hr class="top-divider">
+            `;
 
-            let itemsHtml = '';
-            document.querySelectorAll('#ri_itemsBody tr').forEach(function (tr) {
-                const n = tr.querySelector('.ri-name').value;
-                const p = tr.querySelector('.ri-price').value;
-                const q = tr.querySelector('.ri-qty').value;
-                const sub = tr.querySelector('.ri-subtotal').value;
-                itemsHtml += '<tr><td>' + n + '</td><td>$' + p + '</td><td>' + q + '</td><td>' + sub + '</td></tr>';
-            });
+            if (currentType === 'repair_invoice') {
+                const orderNo = document.getElementById('ri_orderNo').value;
+                const date = document.getElementById('ri_date').value;
+                const name = document.getElementById('ri_name').value;
+                const phone = document.getElementById('ri_phone').value;
+                const addr = document.getElementById('ri_address').value;
+                const model = document.getElementById('ri_model').value;
+                const sn = document.getElementById('ri_sn').value;
+                const warranty = document.getElementById('ri_warranty').value || '0';
+                const desc = document.getElementById('ri_desc').value;
+                const remark = document.getElementById('ri_remark').value;
+                const total = document.getElementById('ri_total').textContent;
 
-            const html = '<div class="print-preview">' +
-                '<div class="company-header">' +
-                '<div class="company-name">NEW VISION TECH CO LIMITED</div>' +
-                '<div class="company-address">Room 1015-1016, Hollywood Plaza, 610 Nathan Road, Mong Kok, Kowloon<br>Tel: +852 2887 8820</div>' +
-                '</div>' +
-                '<div class="invoice-title">維修服務發票（INVOICE）</div>' +
-                '<div class="info-grid">' +
-                '<div class="info-item"><span class="info-label">單據編號：</span>' + (no || '-') + '</div>' +
-                '<div class="info-item"><span class="info-label">開單日期：</span>' + (date || '-') + '</div>' +
-                '<div class="info-item"><span class="info-label">客戶姓名：</span>' + (name || '-') + '</div>' +
-                '<div class="info-item"><span class="info-label">聯絡電話：</span>' + (phone || '-') + '</div>' +
-                '<div class="info-item"><span class="info-label">設備型號：</span>' + (model || '-') + '</div>' +
-                '<div class="info-item"><span class="info-label">SN 序號：</span>' + (sn || '-') + '</div>' +
-                '</div>' +
-                '<table>' +
-                '<thead><tr><th>項目</th><th>單價</th><th>數量</th><th>小計</th></tr></thead>' +
-                '<tbody>' + itemsHtml + '</tbody>' +
-                '<tfoot><tr class="total-row"><td colspan="3" style="text-align:right;">應付總金額：</td><td>HK$ ' + total + '</td></tr></tfoot>' +
-                '</table>' +
-                '<div class="terms"><strong>服務條款：</strong><ul><li>憑此票取機，非人為故障享 3 個月保固。</li></ul></div>' +
-                '</div>';
+                let itemsTr = '';
+                document.querySelectorAll('#ri_itemsBody tr').forEach(tr => {
+                    const n = tr.querySelector('.item-name').value;
+                    const p = parseFloat(tr.querySelector('.item-price').value) || 0;
+                    itemsTr += `<tr><td style="width:70%">${n}</td><td style="width:30%; text-align:right;">${p.toFixed(2)}</td></tr>`;
+                });
+                if (!itemsTr) itemsTr = '<tr><td style="width:70%">維修服務費用</td><td style="width:30%; text-align:right;">0.00</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td></tr>';
 
-            const preview = document.getElementById('previewContent');
-            if (preview) preview.innerHTML = html;
-            const modal = document.getElementById('previewModal');
-            if (modal) modal.classList.add('active');
+                return `
+                    <div class="print-sheet">
+                        ${compHeader}
+                        <div class="meta-row">
+                            <div>單據編號：${orderNo}</div>
+                            <div>開單日期：${date}</div>
+                        </div>
+                        <div class="client-card-box">
+                            <div class="box-row">
+                                <div class="box-col">客戶姓名：${name}</div>
+                                <div class="box-col">聯絡電話：${phone}</div>
+                            </div>
+                            <div>送貨地址：${addr}</div>
+                            <div class="box-row">
+                                <div class="box-col">設備型號：${model}</div>
+                                <div class="box-col">SN序號：${sn}</div>
+                            </div>
+                            <div>保固期限：${warranty} 個月</div>
+                        </div>
+
+                        <div class="section-headline">維修項目清單</div>
+                        <div class="section-headline" style="font-weight:600; font-size:12px;">維修內容說明</div>
+                        <div class="dashed-desc-box">${desc}</div>
+
+                        <table class="sheet-table">
+                            <thead><tr><th>項目</th><th style="width:30%;">金額 (HK$)</th></tr></thead>
+                            <tbody>${itemsTr}</tbody>
+                        </table>
+
+                        <div class="final-amount-line">總金額 HK$ ${total}</div>
+
+                        <div class="section-headline" style="font-weight:600; font-size:12px;">備註</div>
+                        <div class="dashed-desc-box" style="min-height:50px;">${remark}</div>
+
+                        <div class="terms-block">
+                            <div>服務條款 (Terms)</div>
+                            <ul>
+                                <li>本單據為維修付款憑證，請妥善保管，取機時出示</li>
+                                <li>維修設備享有單據標註保固，人為損壞不在保固範圍</li>
+                                <li>逾期未付款將按每日0.5%收取滯納金</li>
+                                <li>如有爭議，請於開單7日內聯絡客服核實</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } else if (currentType === 'repair_order') {
+                const orderNo = document.getElementById('ro_orderNo').value;
+                const date = document.getElementById('ro_date').value;
+                const name = document.getElementById('ro_name').value;
+                const phone = document.getElementById('ro_phone').value;
+                const addr = document.getElementById('ro_address').value;
+                const model = document.getElementById('ro_model').value;
+                const sn = document.getElementById('ro_sn').value;
+                const warranty = document.getElementById('ro_warranty').value || '0';
+                const desc = document.getElementById('ro_faultDesc').value;
+                const remark = document.getElementById('ro_remark').value;
+                const total = document.getElementById('ro_total').textContent;
+
+                let itemsTr = '';
+                document.querySelectorAll('#ro_itemsBody tr').forEach(tr => {
+                    const n = tr.querySelector('.item-name').value;
+                    const p = parseFloat(tr.querySelector('.item-price').value) || 0;
+                    itemsTr += `<tr><td style="width:70%">${n}</td><td style="width:30%; text-align:right;">${p.toFixed(2)}</td></tr>`;
+                });
+                if (!itemsTr) itemsTr = '<tr><td style="width:70%">維修服務費</td><td style="width:30%; text-align:right;">0.00</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td></tr>';
+
+                return `
+                    <div class="print-sheet">
+                        ${compHeader}
+                        <div class="sheet-main-title">維修服務單</div>
+                        <div class="meta-row">
+                            <div>單據編號：${orderNo}</div>
+                            <div>開單日期：${date}</div>
+                        </div>
+                        <div class="client-card-box">
+                            <div class="box-row">
+                                <div class="box-col">客戶姓名：${name}</div>
+                                <div class="box-col">聯絡電話：${phone}</div>
+                            </div>
+                            <div>送貨地址：${addr}</div>
+                            <div class="box-row">
+                                <div class="box-col">設備型號：${model}</div>
+                                <div class="box-col">SN序號：${sn}</div>
+                            </div>
+                            <div>保固期限：${warranty} 個月</div>
+                        </div>
+
+                        <div class="section-headline">維修項目清單</div>
+                        <div class="section-headline" style="font-weight:600; font-size:12px;">維修故障描述</div>
+                        <div class="dashed-desc-box">${desc}</div>
+
+                        <table class="sheet-table">
+                            <thead><tr><th>收費項目</th><th style="width:30%;">金額 HK$</th></tr></thead>
+                            <tbody>${itemsTr}</tbody>
+                        </table>
+
+                        <div class="final-amount-line">合計金額 HK$ ${total}</div>
+
+                        <div class="section-headline" style="font-weight:600; font-size:12px;">內部備註</div>
+                        <div class="dashed-desc-box" style="min-height:50px;">${remark}</div>
+
+                        <div class="terms-block">
+                            <div>服務備註</div>
+                            <ul>
+                                <li>維修完成後憑本單據取件，遺失需核實身份證明</li>
+                                <li>更換零件享有單據標註保固，人為損壞不保</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            } else if (currentType === 'invoice') {
+                const orderNo = document.getElementById('inv_no').value;
+                const date = document.getElementById('inv_date').value;
+                const name = document.getElementById('inv_name').value;
+                const phone = document.getElementById('inv_phone').value;
+                const wa = document.getElementById('inv_whatsapp').value;
+                const addr = document.getElementById('inv_address').value;
+                const remark = document.getElementById('inv_remark').value;
+                const total = document.getElementById('inv_total').textContent;
+
+                let itemsTr = '';
+                document.querySelectorAll('#inv_itemsBody tr').forEach(tr => {
+                    const n = tr.querySelector('.inv-n').value;
+                    const spec = tr.querySelector('.inv-spec').value;
+                    const p = parseFloat(tr.querySelector('.inv-p').value) || 0;
+                    const q = parseFloat(tr.querySelector('.inv-q').value) || 1;
+                    const d = parseFloat(tr.querySelector('.inv-d').value) || 0;
+                    const sub = tr.querySelector('.inv-sub').value;
+                    itemsTr += `<tr><td>${n}</td><td>${spec}</td><td style="text-align:right;">${p.toFixed(2)}</td><td style="text-align:center;">${q}</td><td style="text-align:right;">${d.toFixed(2)}</td><td style="text-align:right;">${sub}</td></tr>`;
+                });
+                if (!itemsTr) itemsTr = '<tr><td>&nbsp;</td><td>&nbsp;</td><td style="text-align:right;">0.00</td><td style="text-align:center;">1</td><td style="text-align:right;">0.00</td><td style="text-align:right;">0.00</td></tr>';
+
+                return `
+                    <div class="print-sheet">
+                        ${compHeader}
+                        <div class="sheet-main-title">INVOICE 發票</div>
+                        <div class="meta-row">
+                            <div>發票編號：${orderNo}</div>
+                            <div>開單日期：${date}</div>
+                        </div>
+                        <div class="client-card-box">
+                            <div class="box-row">
+                                <div class="box-col">客戶名稱：${name}</div>
+                                <div class="box-col">聯絡電話：${phone}</div>
+                            </div>
+                            <div>WhatsApp：${wa}</div>
+                            <div>地址：${addr}</div>
+                        </div>
+
+                        <table class="sheet-table">
+                            <thead><tr><th>項目名稱</th><th>規格</th><th>單價</th><th>數量</th><th>折扣</th><th>小計</th></tr></thead>
+                            <tbody>${itemsTr}</tbody>
+                        </table>
+
+                        <div class="final-amount-line">應付總額 HK$ ${total}</div>
+
+                        <div class="section-headline" style="font-weight:600; font-size:12px;">備註</div>
+                        <div class="dashed-desc-box" style="min-height:60px;">${remark}</div>
+                    </div>
+                `;
+            } else if (currentType === 'sale_order') {
+                const orderNo = document.getElementById('so_no').value;
+                const date = document.getElementById('so_date').value;
+                const name = document.getElementById('so_name').value;
+                const phone = document.getElementById('so_phone').value;
+                const wa = document.getElementById('so_whatsapp').value;
+                const addr = document.getElementById('so_address').value;
+                const deliveryMethod = document.getElementById('so_deliveryMethod').value;
+                const warranty = document.getElementById('so_warranty').value;
+                const payment = document.getElementById('so_payment').value;
+                const remark = document.getElementById('so_remark').value;
+                const total = document.getElementById('so_total').textContent;
+
+                let itemsTr = '';
+                document.querySelectorAll('#so_itemsBody tr').forEach(tr => {
+                    const n = tr.querySelector('.so-n').value;
+                    const spec = tr.querySelector('.so-spec').value;
+                    const p = parseFloat(tr.querySelector('.so-p').value) || 0;
+                    const q = parseFloat(tr.querySelector('.so-q').value) || 1;
+                    const d = parseFloat(tr.querySelector('.so-d').value) || 0;
+                    const sub = tr.querySelector('.so-sub').value;
+                    itemsTr += `<tr><td>${n}</td><td>${spec}</td><td style="text-align:right;">${p.toFixed(2)}</td><td style="text-align:center;">${q}</td><td style="text-align:right;">${d.toFixed(2)}</td><td style="text-align:right;">${sub}</td></tr>`;
+                });
+                if (!itemsTr) itemsTr = '<tr><td>&nbsp;</td><td>&nbsp;</td><td style="text-align:right;">0.00</td><td style="text-align:center;">1</td><td style="text-align:right;">0.00</td><td style="text-align:right;">0.00</td></tr>';
+
+                return `
+                    <div class="print-sheet">
+                        ${compHeader}
+                        <div class="sheet-main-title">SALES ORDER 銷售單</div>
+                        <div class="meta-row">
+                            <div>單據編號：${orderNo}</div>
+                            <div>開單日期：${date}</div>
+                        </div>
+                        <div class="client-card-box">
+                            <div class="box-row">
+                                <div class="box-col">客戶姓名：${name}</div>
+                                <div class="box-col">聯絡電話：${phone}</div>
+                            </div>
+                            <div>WhatsApp：${wa}</div>
+                            <div>送貨地址：${addr}</div>
+                        </div>
+
+                        <table class="sheet-table">
+                            <thead><tr><th>機型</th><th>規格</th><th>售價</th><th>數量</th><th>折扣</th><th>金額</th></tr></thead>
+                            <tbody>${itemsTr}</tbody>
+                        </table>
+
+                        <div class="box-row" style="font-size:12px; margin: 8px 0;">
+                            <div class="box-col">送貨方式：${deliveryMethod}</div>
+                            <div class="box-col">保固期限：${warranty}</div>
+                        </div>
+                        <div style="font-size:12px; margin-bottom:8px;">付款方式：${payment}</div>
+
+                        <div class="final-amount-line">合計金額 HK$ ${total}</div>
+
+                        <div class="section-headline" style="font-weight:600; font-size:12px;">訂單備註</div>
+                        <div class="dashed-desc-box" style="min-height:60px;">${remark}</div>
+                    </div>
+                `;
+            }
         }
 
         window.addEventListener('DOMContentLoaded', function () {
-            const today = new Date().toISOString().split('T')[0];
-            document.querySelectorAll('input[type="date"]').forEach(function (el) { el.value = today; });
-
-            addRiItem('維修檢查服務', 0, 1);
-            updateCount();
-
-            // 進入頁面時自動默默檢查一次最新 json
-            forceFetchLatestData(false);
-
-            // 綁定各按鈕
-            const btnSearch = document.getElementById('btnSearch');
-            if (btnSearch) btnSearch.addEventListener('click', searchCustomer);
-
-            const btnRefresh = document.getElementById('btnForceRefresh');
-            if (btnRefresh) btnRefresh.addEventListener('click', function () {
-                forceFetchLatestData(true);
+            const now = getNowFormatted();
+            ['ri_date', 'ro_date', 'inv_date', 'so_date'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = now;
             });
 
-            const btnGen = document.getElementById('btnGenOrder');
-            if (btnGen) btnGen.addEventListener('click', generateOrderNo);
+            addGenericItem('ri_itemsBody', '維修服務費用', 0);
+            addGenericItem('ro_itemsBody', '維修服務費', 0);
 
-            const btnAdd = document.getElementById('btnAddRiItem');
-            if (btnAdd) btnAdd.addEventListener('click', function () { addRiItem(); });
+            // 初始化 INVOICE 項目
+            const invTr = document.createElement('tr');
+            invTr.innerHTML = `<td><input type="text" class="inv-n"></td><td><input type="text" class="inv-spec"></td><td><input type="number" class="inv-p" value="0"></td><td><input type="number" class="inv-q" value="1"></td><td><input type="number" class="inv-d" value="0"></td><td><input type="text" class="inv-sub" readonly value="0.00"></td>`;
+            document.getElementById('inv_itemsBody').appendChild(invTr);
+            invTr.querySelectorAll('input').forEach(i => i.addEventListener('input', calcTotals));
 
-            const btnPreview = document.getElementById('btnOpenPreview');
-            if (btnPreview) btnPreview.addEventListener('click', openA4Preview);
+            // 初始化 SALES ORDER 項目
+            const soTr = document.createElement('tr');
+            soTr.innerHTML = `<td><input type="text" class="so-n"></td><td><input type="text" class="so-spec"></td><td><input type="number" class="so-p" value="0"></td><td><input type="number" class="so-q" value="1"></td><td><input type="number" class="so-d" value="0"></td><td><input type="text" class="so-sub" readonly value="0.00"></td>`;
+            document.getElementById('so_itemsBody').appendChild(soTr);
+            soTr.querySelectorAll('input').forEach(i => i.addEventListener('input', calcTotals));
 
-            const btnPrint = document.getElementById('btnPrintA4');
-            if (btnPrint) btnPrint.addEventListener('click', function () { window.print(); });
+            forceFetchLatestData(false);
 
-            const btnClose = document.getElementById('btnClosePreview');
-            if (btnClose) btnClose.addEventListener('click', function () {
+            document.getElementById('btnSearch').addEventListener('click', searchCustomer);
+            document.getElementById('btnForceRefresh').addEventListener('click', () => forceFetchLatestData(true));
+            document.getElementById('btnGenOrder').addEventListener('click', generateOrderNo);
+            document.getElementById('btnAddRiItem').addEventListener('click', () => addGenericItem('ri_itemsBody', '', 0));
+            document.getElementById('btnAddRoItem').addEventListener('click', () => addGenericItem('ro_itemsBody', '', 0));
+
+            document.getElementById('btnOpenPreview').addEventListener('click', function () {
+                const html = generatePrintHTML();
+                document.getElementById('previewContent').innerHTML = html;
+                document.getElementById('previewModal').classList.add('active');
+            });
+
+            document.getElementById('btnPrintA4').addEventListener('click', () => window.print());
+            document.getElementById('btnClosePreview').addEventListener('click', () => {
                 document.getElementById('previewModal').classList.remove('active');
             });
 
-            const btnClear = document.getElementById('btnClearForm');
-            if (btnClear) btnClear.addEventListener('click', function () {
-                if (confirm('確定清空所有資料？')) {
-                    document.querySelectorAll('input[type="text"]').forEach(function (i) { i.value = ''; });
-                    document.getElementById('ri_itemsBody').innerHTML = '';
-                    addRiItem('維修檢查服務', 0, 1);
-                    showToast('表單已清空', 'info');
-                }
-            });
-
-            document.querySelectorAll('.invoice-type-card').forEach(function (card) {
+            document.querySelectorAll('.invoice-type-card').forEach(card => {
                 card.addEventListener('click', function () {
                     selectType(this.getAttribute('data-type'));
                 });
             });
 
-            document.querySelectorAll('.service-item').forEach(function (item) {
-                item.addEventListener('click', function () {
-                    const key = this.getAttribute('data-svc');
-                    const svc = servicePrices[key];
-                    if (svc) {
-                        addRiItem(svc.name, svc.price, 1);
-                        showToast('已加入：' + svc.name, 'success');
-                    }
-                });
-            });
-
             const searchInput = document.getElementById('customerSearch');
             if (searchInput) {
-                searchInput.addEventListener('keyup', function (e) {
-                    if (e.key === 'Enter') searchCustomer();
-                });
+                searchInput.addEventListener('keyup', e => { if (e.key === 'Enter') searchCustomer(); });
             }
         });
     })();
