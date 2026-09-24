@@ -1,30 +1,18 @@
-[9/24/26, 6:23:44 PM] Yan Lam Ai: #!/usr/bin/env python3
-"""
-Sync Feishu Bitable records into the invoice print tool HTML.
-Run inside GitHub Actions with FEISHU_APP_ID and FEISHU_APP_SECRET env vars.
-"""
-import json
-import os
-import re
-import sys
-import urllib.request
-import urllib.error
+#!/usr/bin/env python3
+"""Sync Feishu Bitable records into the invoice print tool HTML."""
+import json, os, re, sys, urllib.request, urllib.error
 
-APP_TOKEN = "TAG2b4...xndh"
+APP_TOKEN = "TAG2b4…xndh"
 TABLE_ID = "tbl2jFGYqmMfZjNC"
 API_ENDPOINT = "https://open.feishu.cn"
 APP_ID = os.environ.get("FEISHU_APP_ID", "")
-APP_SECRET = ***"FEISHU_APP_SECRET", "")
-
+APP_SECRET = os.environ.get("FEISHU_APP_SECRET", "")
 
 def get_access_token():
     url = f"{API_ENDPOINT}/open-apis/auth/v3/tenant_access_token/internal"
     payload = json.dumps({"app_id": APP_ID, "app_secret": APP_SECRET}).encode("utf-8")
     req = urllib.request.Request(
-        url,
-        data=payload,
-        headers={"Content-Type": "application/json"},
-        method="POST",
+        url, data=payload, headers={"Content-Type": "application/json"}, method="POST"
     )
     try:
         with urllib.request.urlopen(req) as resp:
@@ -32,47 +20,39 @@ def get_access_token():
     except urllib.error.HTTPError as e:
         print(f"Token request failed: {e.code} {e.read().decode()}")
         sys.exit(1)
-
     if data.get("code") != 0:
         print(f"Token request failed: {data.get('msg')}")
         sys.exit(1)
-
     return data["tenant_access_token"]
-
 
 def fetch_base_records(token):
     all_records = []
     page_token = None
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-
     while True:
         params = "page_size=100"
         if page_token:
-            params += f"&page_token=***"
-
-        url = f"{API_ENDPOINT}/open-apis/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records?{params}"
+            params += f"&page_token={page_token}"
+        url = (
+            f"{API_ENDPOINT}/open-apis/bitable/v1/apps/{APP_TOKEN}"
+            f"/tables/{TABLE_ID}/records?{params}"
+        )
         req = urllib.request.Request(url, headers=headers)
-
         try:
             with urllib.request.urlopen(req) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
             print(f"Records request failed: {e.code} {e.read().decode()}")
             sys.exit(1)
-
         if data.get("code") != 0:
             print(f"Records API error: {data.get('msg')}")
             sys.exit(1)
-
         records = data.get("data", {}).get("items", [])
         all_records.extend(records)
-
         if not data.get("data", {}).get("has_more"):
             break
         page_token = data["data"].get("page_token")
-
     return all_records
-
 
 def convert_record(record):
     fields = record.get("fields", {})
@@ -98,12 +78,8 @@ def convert_record(record):
         "name": get_text(fields.get("Name", "")),
         "phone": get_text(fields.get("聯絡電話 Tel", "")),
         "model": get_text(fields.get("Model", "")),
-
-[9/24/26, 6:23:44 PM] Yan Lam Ai: 
         "sn": get_text(fields.get("SN", "")),
         "service": get_text(fields.get("服務內容", "")),
-
-[9/24/26, 6:23:45 PM] Yan Lam Ai: 
         "serviceFee": get_number(fields.get("服務費用 1", 0)),
         "deepClean": get_number(fields.get("深層清潔費用", 0)),
         "deliveryFee": get_number(fields.get("送貨費", 0)),
@@ -115,15 +91,13 @@ def convert_record(record):
         "deliveryAddr": get_text(fields.get("Address (Delivery)", "")),
     }
 
-
 def main():
     print("Starting sync from Feishu Base...")
-
     if not APP_ID or not APP_SECRET:
-        ***"Error: FEISHU_APP_ID and FEISHU_APP_SECRET must be set")
+        print("Error: FEISHU_APP_ID and FEISHU_APP_SECRET must be set")
         sys.exit(1)
 
-    token = ***)
+    token = get_access_token()
     print("Access token obtained")
 
     records = fetch_base_records(token)
@@ -158,9 +132,7 @@ def main():
     with open(html_file, "w", encoding="utf-8") as f:
         f.write(html_content)
     print(f"Updated {html_file}")
-
     print("Sync completed successfully")
-
 
 if __name__ == "__main__":
     main()
