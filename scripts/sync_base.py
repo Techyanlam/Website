@@ -7,11 +7,18 @@ import sys
 import urllib.error
 import urllib.request
 
-APP_TOKEN = os.environ.get("FEISHU_APP_TOKEN", "tbl2jFGYqmMfZjNC") # Replace or pass via env
+# 已填入你的 Base Token 與 Table ID
+APP_TOKEN = os.environ.get("FEISHU_APP_TOKEN", "TAG2b406ja23OHsIXH6c6Kbxndh")
 TABLE_ID = os.environ.get("FEISHU_TABLE_ID", "tbl2jFGYqmMfZjNC")
 API_ENDPOINT = "https://open.feishu.cn"
-APP_ID = os.environ.get("FEISHU_APP_ID", "").strip()
-APP_SECRET = os.environ.get("FEISHU_APP_SECRET", "").strip()
+
+# 優先讀取環境變數
+APP_ID = os.environ.get("FEISHU_APP_ID", "cli_a94e743517781bd8").strip()
+APP_SECRET = os.environ.get("FEISHU_APP_SECRET", "IDOrtoojYjrJTeDOg9DMsb5Z8vPuxCxH").strip()
+
+# 確保路徑指向專案根目錄（無論在根目錄或 scripts/ 資料夾執行都能定位）
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..")) if os.path.basename(SCRIPT_DIR) == "scripts" else SCRIPT_DIR
 
 
 def get_access_token():
@@ -56,6 +63,7 @@ def fetch_base_records(token):
         except urllib.error.HTTPError as e:
             error_body = e.read().decode("utf-8", errors="replace")
             print(f"Records HTTP Error {e.code}: {error_body}")
+            print("請檢查：1. 是否已在飛書多維表格右上角「分享」將應用加為協作者？ 2. 應用權限是否已開通並發布？")
             sys.exit(1)
         except urllib.error.URLError as e:
             print(f"Records Network Error: {e.reason}")
@@ -124,32 +132,30 @@ def convert_record(record):
 def main():
     print("Starting sync from Feishu Base...")
 
-    if not APP_ID:
-        print("Error: Missing FEISHU_APP_ID environment variable.")
-        sys.exit(1)
-    if not APP_SECRET:
-        print("Error: Missing FEISHU_APP_SECRET environment variable.")
+    if not APP_ID or not APP_SECRET:
+        print("Error: Missing FEISHU_APP_ID or FEISHU_APP_SECRET.")
         sys.exit(1)
 
     print("Requesting tenant access token...")
     token = get_access_token()
     print("Access token obtained successfully.")
 
-    print(f"Fetching records from Table ({TABLE_ID})...")
+    print(f"Fetching records from Table ({TABLE_ID}) in Base ({APP_TOKEN})...")
     records = fetch_base_records(token)
     print(f"Fetched {len(records)} records.")
 
     records_data = [convert_record(r) for r in records]
 
-    # Save to base_data.json
-    with open("base_data.json", "w", encoding="utf-8") as f:
+    # 儲存至根目錄的 base_data.json
+    json_path = os.path.join(PROJECT_ROOT, "base_data.json")
+    with open(json_path, "w", encoding="utf-8") as f:
         json.dump(records_data, f, ensure_ascii=False, indent=2)
-    print("Saved base_data.json.")
+    print(f"Saved {json_path}.")
 
-    # Update newvision-print-tool.html
-    html_file = "newvision-print-tool.html"
+    # 更新根目錄的 HTML 檔案
+    html_file = os.path.join(PROJECT_ROOT, "newvision-print-tool.html")
     if not os.path.exists(html_file):
-        print(f"Error: Target file '{html_file}' not found in working directory.")
+        print(f"Error: Target file '{html_file}' not found.")
         sys.exit(1)
 
     with open(html_file, "r", encoding="utf-8") as f:
@@ -162,7 +168,7 @@ def main():
     if count == 0:
         print("Warning: Pattern 'const BASE_DATA = [...];' not found in HTML file.")
     else:
-        print("Updated BASE_DATA variable.")
+        print("Updated BASE_DATA variable in HTML.")
 
     html_content = re.sub(
         r'共 <span id="recordCount">\d*</span> 筆記錄',
