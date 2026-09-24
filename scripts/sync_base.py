@@ -14,7 +14,8 @@ APP_TOKEN = "TAG2b4…xndh"
 TABLE_ID = "tbl2jFGYqmMfZjNC"
 API_ENDPOINT = "https://open.feishu.cn"
 APP_ID = os.environ.get("FEISHU_APP_ID", "")
-APP_SECRET = ***"FEISHU_APP_SECRET", "")
+⁠APP_SECRET = os.environ.get("FEISHU_APP_SECRET", "")
+
 
 
 def get_access_token():
