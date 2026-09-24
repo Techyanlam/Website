@@ -27,7 +27,7 @@ jobs:
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
         run: python3 scripts/sync_base.py
 
-      - name: Commit and push changes
+     - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -35,6 +35,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes"
           else
-            git commit -m "Auto-sync from Feishu update [skip ci]"
+            # 將原本的 "Auto-sync from Feishu update [skip ci]" 改為以下內容（去掉 [skip ci]）：
+            git commit -m "Auto-sync from Feishu update"
             git push origin main
           fi
