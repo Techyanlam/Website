@@ -140,7 +140,7 @@
         .modal-overlay.active { display: flex; }
         .modal-content {
             background: white; border-radius: var(--radius);
-            width: 100%; max-width: 800px; max-height: 90vh;
+            width: 100%; max-width: 850px; max-height: 90vh;
             overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         .modal-header {
@@ -150,20 +150,77 @@
         .modal-header h3 { font-size: 16px; }
         .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-secondary); }
         .modal-body { padding: 24px; }
-        .print-preview { font-family: 'Times New Roman', serif; padding: 40px; max-width: 800px; margin: 0 auto; }
-        .print-preview .company-header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 16px; margin-bottom: 20px; }
-        .print-preview .company-name { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
-        .print-preview .company-address { font-size: 11px; color: #555; }
-        .print-preview .invoice-title { text-align: center; font-size: 18px; font-weight: bold; margin: 16px 0; padding: 8px; background: #f5f5f5; }
-        .print-preview .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; font-size: 13px; }
+        
+        /* 預覽與列印樣式 */
+        .print-preview { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
+            color: #000;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .print-preview .company-header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 14px; margin-bottom: 16px; }
+        .print-preview .company-name { font-size: 20px; font-weight: bold; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .print-preview .company-address { font-size: 12px; color: #444; line-height: 1.5; }
+        .print-preview .invoice-title { text-align: center; font-size: 18px; font-weight: bold; margin: 14px 0; padding: 6px; background: #f2f2f2; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .print-preview .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; margin-bottom: 16px; font-size: 12px; }
         .print-preview .info-item { display: flex; gap: 8px; }
-        .print-preview .info-label { font-weight: bold; min-width: 100px; }
-        .print-preview table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-        .print-preview table th, .print-preview table td { border: 1px solid #333; padding: 8px 10px; font-size: 12px; text-align: left; }
-        .print-preview table th { background: #e0e0e0; font-weight: bold; }
-        .print-preview .total-row { font-weight: bold; font-size: 14px; background: #f5f5f5; }
-        .print-preview .terms { margin-top: 24px; padding-top: 16px; border-top: 1px solid #ccc; font-size: 11px; color: #555; }
-        .print-preview .terms li { margin-bottom: 4px; }
+        .print-preview .info-label { font-weight: bold; min-width: 85px; color: #222; }
+        .print-preview table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+        .print-preview table th, .print-preview table td { border: 1px solid #333; padding: 6px 8px; font-size: 12px; text-align: left; }
+        .print-preview table th { background: #ececec; font-weight: bold; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .print-preview .total-row { font-weight: bold; font-size: 13px; background: #f9f9f9; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .print-preview .terms { margin-top: 20px; padding-top: 12px; border-top: 1px dashed #777; font-size: 11px; color: #444; line-height: 1.6; }
+        .print-preview .terms li { margin-bottom: 3px; }
+
+        /* A4 紙張專用標準列印配置 */
+        @page {
+            size: A4 portrait;
+            margin: 12mm 15mm 12mm 15mm;
+        }
+        @media print {
+            html, body {
+                width: 210mm;
+                height: auto;
+                background: white !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                color: #000 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .modal-overlay {
+                position: static !important;
+                background: none !important;
+                padding: 0 !important;
+                display: block !important;
+            }
+            .modal-content {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                max-height: none !important;
+                overflow: visible !important;
+                padding: 0 !important;
+            }
+            .print-preview {
+                max-width: 100% !important;
+                width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                page-break-inside: avoid;
+            }
+            table {
+                page-break-inside: auto;
+            }
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+        }
+
         .toast {
             position: fixed; bottom: 20px; right: 20px; padding: 12px 20px;
             border-radius: 6px; color: white; font-size: 14px; z-index: 2000;
@@ -178,12 +235,6 @@
             .form-grid { grid-template-columns: 1fr; }
             .invoice-types { grid-template-columns: 1fr 1fr; }
             .btn-group { flex-direction: column; }
-        }
-        @media print {
-            body { background: white; }
-            .no-print { display: none !important; }
-            .container { max-width: 100%; padding: 0; }
-            .card { box-shadow: none; border: none; padding: 0; }
         }
         .checkbox-group { display: flex; flex-wrap: wrap; gap: 12px; }
         .checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 13px; }
@@ -204,7 +255,7 @@
     <div class="container no-print">
         <div class="header">
             <h1>📝 New Vision 發票打印工具</h1>
-            <p>可從飛書 Base 載入/發送訂單 · 共 <span id="recordCount">40</span> 筆記錄</p>
+            <p>已連接飛書 Base 資料庫 · 共 <span id="recordCount">0</span> 筆記錄</p>
             <div class="company-info">
                 New Vision Tech Co Limited<br>
                 Room 1015-1016, Hollywood Plaza, 610 Nathan Road, Mong Kok, Kowloon<br>
@@ -217,7 +268,7 @@
             <div class="card-title"> 飛書 Base 連接設定</div>
             <div class="base-config">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <span>連接狀態：<span id="baseStatus" class="status status-connected">● 已連接（本地數據）</span></span>
+                    <span>連接狀態：<span id="baseStatus" class="status status-connected">● 已連接（本地同步數據）</span></span>
                     <button class="btn btn-outline" onclick="toggleBaseConfig()" style="font-size:12px; padding:6px 12px;">⚙️ 設定</button>
                 </div>
                 <div id="baseConfigPanel" style="display:none;">
@@ -236,21 +287,16 @@
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-primary" onclick="connectBase()"> 連接 Base</button>
-                        <button class="btn btn-success" onclick="importFromBase()">📥 導入 Base 數據</button>
+                        <button class="btn btn-primary" onclick="connectBase()">更新設定</button>
+                        <button class="btn btn-success" onclick="showPasteDialog()">📥 手動貼上 JSON 數據</button>
                         <button class="btn btn-outline" onclick="refreshData()">🔄 刷新數據</button>
                     </div>
                 </div>
             </div>
             <div class="search-box">
-                <input type="text" id="customerSearch" placeholder="📱 輸入客戶電話或姓名搜尋..." onkeyup="handleSearchKeyup(event)">
+                <input type="text" id="customerSearch" placeholder="📱 輸入客戶電話、單號或姓名搜尋..." onkeyup="handleSearchKeyup(event)">
                 <button class="btn btn-primary" onclick="searchCustomer()">搜尋客戶</button>
                 <button class="btn btn-warning" onclick="generateOrderNo()">🔢 產生單號</button>
-            </div>
-            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;">
-                <button class="btn btn-success" onclick="importFromBase()">📥 導入 Base 數據</button>
-                <button class="btn btn-info" onclick="autoSyncFromBase()">⚡ 自動同步</button>
-                <button class="btn btn-outline" onclick="refreshData()">🔄 刷新數據</button>
             </div>
             <div id="searchResults" style="margin-top:12px;"></div>
             <div class="data-count" id="dataCount"></div>
@@ -325,7 +371,7 @@
             </table>
             <button class="btn btn-outline" onclick="addRepairItem()" style="margin-top:8px; font-size:12px;">+ 新增項目</button>
             <div class="form-grid" style="margin-top:16px;">
-                <div class="form-group"><label>優惠</label><input type="text" id="ri_discount" placeholder="例如：新張75折" oninput="calcRepairTotal()"></div>
+                <div class="form-group"><label>優惠說明</label><input type="text" id="ri_discount" placeholder="例如：新張75折" oninput="calcRepairTotal()"></div>
                 <div class="form-group"><label>折扣率 (%)</label><input type="number" id="ri_discountRate" value="100" min="0" max="100" oninput="calcRepairTotal()"></div>
                 <div class="form-group"><label>備註</label><input type="text" id="ri_remark" placeholder="備註"></div>
             </div>
@@ -398,7 +444,7 @@
             <div class="form-grid" style="margin-top:16px;">
                 <div class="form-group"><label>送貨方式</label><select id="so_delivery"><option>客戶自取</option><option>公司送貨</option><option>順豐速運</option></select></div>
                 <div class="form-group"><label>保固期限</label><input type="text" id="so_warranty" placeholder="例如：12個月"></div>
-                <div class="form-group"><label>付款方式</label><select id="so_payment"><option>現金 Cash</option><option>銀行轉賬 Bank Transfer</option><option>電子支付 EPS</option></select></div>
+                <div class="form-group"><label>付款方式</label><select id="so_payment"><option>現金 Cash</option><option>銀行轉賬 Bank Transfer</option><option>轉數快 FPS</option><option>電子支付 EPS</option></select></div>
             </div>
             <div class="form-group" style="margin-top:12px;"><label>備註</label><textarea id="so_remark"></textarea></div>
             <div class="total-section">合計金額：HK$ <span id="so_total">0.00</span></div>
@@ -407,8 +453,7 @@
         <!-- Action Buttons -->
         <div class="card">
             <div class="btn-group" style="justify-content:center;">
-                <button class="btn btn-primary" onclick="openPreview()" style="padding:14px 32px; font-size:16px;">👁️ 開啟打印預覽</button>
-                <button class="btn btn-success" onclick="sendToBase()" style="padding:14px 32px; font-size:16px;">📤 傳送到 Base</button>
+                <button class="btn btn-primary" onclick="openPreview()" style="padding:14px 32px; font-size:16px;">👁️ 開啟 A4 打印預覽</button>
                 <button class="btn btn-outline" onclick="copyOrderData()" style="padding:14px 32px; font-size:16px;">📋 複製訂單數據</button>
                 <button class="btn btn-outline" onclick="clearForm()" style="padding:14px 32px; font-size:16px;">🗑️ 清空表單</button>
             </div>
@@ -419,9 +464,9 @@
     <div class="modal-overlay" id="previewModal">
         <div class="modal-content">
             <div class="modal-header no-print">
-                <h3>📄 打印預覽</h3>
+                <h3>📄 A4 發票打印預覽</h3>
                 <div style="display:flex; gap:8px;">
-                    <button class="btn btn-primary" onclick="window.print()">🖨️ 打印</button>
+                    <button class="btn btn-primary" onclick="window.print()">🖨️ 打印 (A4)</button>
                     <button class="modal-close" onclick="closePreview()">×</button>
                 </div>
             </div>
@@ -430,15 +475,17 @@
     </div>
 
     <script>
-    // ============ Base Data (38 records from Feishu Bitable) ============
-    const BASE_DATA = [{"number": "NV2025090422", "name": "Wiliam", "phone": "9481 4797", "model": "AM07", "sn": "", "service": "Dyson 風扇清潔服務", "serviceFee": 0, "deepClean": 200.0, "deliveryFee": 75.0, "parts": 498.0, "total": 1271, "status": "Completed", "payment": ["Visa", "Cash"], "remark": "Keith", "deliveryAddr": "青山公路33號深井段碧堤半島三座25C (15 Sep PM14:00-18:00)"}, {"number": "NV2025090492", "name": "", "phone": "", "model": "Parts", "sn": "Parts(967834-07)", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 698.0, "total": 698, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2025090493", "name": "", "phone": "61166371", "model": "TP02", "sn": "NK9-HK-HDA1526A", "service": "Dyson 風扇維修服務(風扇開唔到)", "serviceFee": 0.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Rejected", "payment": ["Waived"], "remark": "Reject", "deliveryAddr": ""}, {"number": "NV2025100494", "name": "", "phone": "96269280", "model": "HD01", "sn": "RX7-HK-KFJ2747A", "service": "Dyson 風筒電線維修服務", "serviceFee": 216.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 216, "status": "Completed", "payment": ["Cash"], "remark": "Keith", "deliveryAddr": ""}, {"number": "NV2025100495", "name": "", "phone": "", "model": "", "sn": "", "service": "吸塵機不能差電", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Cancelled", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2025100497", "name": "", "phone": "", "model": "HS03", "sn": "F1Y-XC
-RBJ1387A", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 900, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2025100498", "name": "陳先生", "phone": "97554782", "model": "HD02", "sn": "-", "service": "風筒維修", "serviceFee": 150.0, "deepClean": 0.0, "deliveryFee": 0, "parts": 0, "total": 150, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2025110499", "name": "范樹蛙", "phone": "63369807", "model": "TP03", "sn": "SR7-XC-KBA0205A", "service": "TP03 風扇維修(不轉動)", "serviceFee": 525.0, "deepClean": 0, "deliveryFee": 0, "parts": 0.0, "total": 525, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2025110501", "name": "", "phone": "68886101", "model": "HD", "sn": "翻新的:2CV-XC-SHJ0836A", "service": "風筒維修
-維修過程中發現電線有安全風險不建議使用
-客人同意加 $600 換購翻新的機", "serviceFee": 600.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 600, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2025110502", "name": "Connie", "phone": "98096179", "model": "HD06", "sn": "E2X-HK-NKA3141A", "service": "風扇維修", "serviceFee": 252.0, "deepClean": 0, "deliveryFee": 0, "parts": 525.0, "total": 852, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": "香港南區貝沙灣一期5座20樓A室"}, {"number": "NV2025110503", "name": "Connie", "phone": "98096179", "model": "HD06", "sn": "E2W-HK-NNA0397A", "service": "風扇維修", "serviceFee": 252.0, "deepClean": 0, "deliveryFee": 75.0, "parts": 525.0, "total": 852, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": "香港南區貝沙灣一期5座20樓A室"}, {"number": "NV2025120504", "name": "", "phone": "92071298", "model": "SV18", "sn": "M6U-XD-PGJ4265A", "service": "吸塵機膠圈脫落維修, 另購買一個新  post filter", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 270.0, "total": 270, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026010505", "name": "", "phone": "61726783", "model": "", "sn": "", "service": "風扇出現！", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Cancelled", "payment": ["NA"], "remark": "Reject", "deliveryAddr": ""}, {"number": "NV2026010507", "name": "李先生", "phone": "91769369", "model": "HD08", "sn": "P3Y-XC-PNA487A", "service": "時著時唔著", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 250.0, "total": 250, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026010508", "name": "Leehingling", "phone": "69542588", "model": "", "sn": "", "service": "風筒維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 202.0, "total": 202, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026010509", "name": "CarCar", "phone": "9778 8235", "model": "", "sn": "", "service": "風筒維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Rejected", "payment": ["NA"], "remark": "Reject", "deliveryAddr": ""}, {"number": "NV2026010510", "name": "Kenny Chow Caleb Chow", "phone": "9662 2910", "model": "", "sn": "", "service": "風筒維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Rejected", "payment": ["NA"], "remark": "Reject", "deliveryAddr": ""}, {"number": "NV2026010511", "name": "Alex Chan", "phone": "+852 9464 1275", "model": "", "sn": "", "service": "吸塵機維修", "serviceFee": 900.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 900, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026010512", "name": "Garychan", "phone": "+852 9374 3060", "model": "", "sn": "", "service": "吸塵機深層清潔費用", "serviceFee": 0, "deepClean": 200.0, "deliveryFee": 0, "parts": 0, "total": 200, "status": "Completed", "payment": ["FPS"], "remark": "Keith", "deliveryAddr": ""}, {"number": "NV2026020513", "name": "", "phone": "68087508", "model": "", "sn": "", "service": "直髮夾維修換電", "serviceFee": 800.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 800, "status": "Completed", "payment": ["FPS"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026020514", "name": "~Terrie", "phone": "9400 7995", "model": "", "sn": "", "service": "深層清潔dyson digital slim fluffy", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Completed", "payment": ["Cash"], "remark": "Reject", "deliveryAddr": ""}, {"number": "NV2026020515", "name": "~Matt", "phone": "+852 9226 7557", "model": "", "sn": "", "service": "Dyson風筒時着時唔着", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 200.0, "total": 200, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026020516", "name": "", "phone": "98677780", "model": "HD01", "sn": "RX7-HK-KAA3073A", "service": "Dyson 風筒吹吹下閃燈停機", "serviceFee": 300.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 300, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026020517", "name": "Kenji", "phone": "9019 1610", "model": "HP06", "sn": "", "service": "風扇深層清潔", "serviceFee": 0, "deepClean": 200.0, "deliveryFee": 0, "parts": 0, "total": 200, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026030518", "name": "Keith Wong", "phone": "12345678", "model": "HD08", "sn": "P3K-XC-SHA0201A", "service": "Dyson風筒", "serviceFee": 0, "deepClean": 1000.0, "deliveryFee": 0, "parts": 0, "total": 1000, "status": "Completed", "payment": ["NA"], "remark": "Keith", "deliveryAddr": ""}, {"number": "NV2026040521", "name": "cckkam", "phone": "9152 5689", "model": "", "sn": "", "service": "風扇維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Completed", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026040522", "name": "周", "phone": "96622910", "model": "HD", "sn": "", "service": "Dyson風筒風筒吹吹下閃燈停機", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Completed", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026050523", "name": "Leehingling", "phone": "69542588", "model": "HD", "sn": "C7B-XC-NEA0682A", "service": "Dyson風筒風筒吹吹下閃燈停機", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Completed", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026050524", "name": "", "phone": "96622910", "model": "", "sn": "", "service": "GHD直髮夾維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Rejected", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026050525", "name": "", "phone": "66246198", "model": "", "sn": "", "service": "吸塵機維修", "serviceFee": 850.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 850, "status": "Completed", "payment": ["NA"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026050526", "name": "", "phone": " 9360 6160", "model": "", "sn": "", "service": "風筒維修", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Rejected", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026050527", "name": "Leung", "phone": "+852 9035 5670", "model": "SV15", "sn": "G4K-XC-NHA2409A", "service": "吸塵機維修", "serviceFee": 200.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 200, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026060528", "name": "Paul Chan", "phone": "62376956", "model": "", "sn": "", "service": "清洗dyson  v10吸塵機", "serviceFee": 0, "deepClean": 0.0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "Cancelled", "payment": ["NA"], "remark": "Cancal", "deliveryAddr": ""}, {"number": "NV2026060529", "name": "68237208", "phone": "96680617", "model": "", "sn": "4BX-XC-SDA2034A", "service": "風筒維修", "serviceFee": 250.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 250, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026070201", "name": "", "phone": "98720888", "model": "", "sn": "TK7-SA-KNA41176A", "service": "風筒維修", "serviceFee": 250.0, "deepClean": 0, "deliveryFee": 0, "parts": 100.0, "total": 350, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026070601", "name": "", "phone": "98720888", "model": "TP09", "sn": "X2C-XD-RGA1120A", "service": "風扇維修", "serviceFee": 599.0, "deepClean": 0, "deliveryFee": 75.0, "parts": 500.0, "total": 1174, "status": "Cancelled", "payment": ["FPS"], "remark": "Keith", "deliveryAddr": "Flat E,12/F,Block 6,Banyan Garden,Lai Chi Kok"}, {"number": "NV2026083101", "name": "", "phone": "", "model": "", "sn": "", "service": "風筒維修", "serviceFee": 300.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 300, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026090701", "name": "", "phone": "52607551", "model": "", "sn": "", "service": "吸塵機深層清潔費用", "serviceFee": 250.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 250, "status": "Completed", "payment": ["Cash"], "remark": "Office", "deliveryAddr": ""}, {"number": "NV2026092301", "name": "", "phone": "97731833", "model": "", "sn": "", "service": "吸塵機維修開關制", "serviceFee": 300.0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 300, "status": "In process", "payment": [], "remark": "", "deliveryAddr": ""}, {"number": "TEST", "name": "", "phone": "92201208", "model": "", "sn": "", "service": "", "serviceFee": 0, "deepClean": 0, "deliveryFee": 0, "parts": 0, "total": 0, "status": "", "payment": [], "remark": "", "deliveryAddr": ""}];
+    // ============ Base Data (由 GitHub Actions sync_base.py 自動覆寫替換) ============
+    const BASE_DATA = [];
 
     // ============ State ============
     let currentType = 'repair_invoice';
-    let baseConfig = { appToken: 'TAG2b406ja23OHsIXH6c6Kbxndh', tableId: 'tbl2jFGYqmMfZjNC', endpoint: 'https://open.feishu.cn', connected: true };
+    let baseConfig = { 
+        appToken: 'TAG2b406ja23OHsIXH6c6Kbxndh', 
+        tableId: 'tbl2jFGYqmMfZjNC', 
+        endpoint: 'https://open.feishu.cn', 
+        connected: true 
+    };
 
     const servicePrices = {
         'fan_clean': { name: '深層清潔（Dyson 風扇）', price: 270 },
@@ -455,9 +502,13 @@ RBJ1387A", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFe
         const today = new Date().toISOString().split('T')[0];
         document.querySelectorAll('input[type="date"]').forEach(el => el.value = today);
         addRepairItem();
-        document.getElementById('recordCount').textContent = BASE_DATA.length;
-        document.getElementById('dataCount').textContent = `📊 已載入 ${BASE_DATA.length} 筆客戶記錄（來自飛書 Base）`;
+        updateRecordUI();
     });
+
+    function updateRecordUI() {
+        document.getElementById('recordCount').textContent = BASE_DATA.length;
+        document.getElementById('dataCount').textContent = `📊 目前載入 ${BASE_DATA.length} 筆客戶記錄（來自飛書 Base 同步）`;
+    }
 
     // ============ Invoice Type ============
     function selectInvoiceType(type) {
@@ -653,14 +704,12 @@ RBJ1387A", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFe
 
         const today = new Date().toISOString().split('T')[0];
 
-        // Determine type based on service content
         if (record.service && record.service.toLowerCase().includes('sale order')) {
             selectInvoiceType('sale_order');
         } else {
             selectInvoiceType('repair_invoice');
         }
 
-        // Fill repair invoice form
         document.getElementById('ri_orderNo').value = record.number;
         document.getElementById('ri_date').value = today;
         document.getElementById('ri_name').value = record.name || '';
@@ -671,7 +720,6 @@ RBJ1387A", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFe
         document.getElementById('ri_address').value = record.deliveryAddr || '';
         document.getElementById('ri_remark').value = record.remark || '';
 
-        // Fill items
         document.getElementById('ri_itemsBody').innerHTML = '';
         if (record.deepClean > 0) addRepairItem('深層清潔', record.deepClean, 1);
         if (record.serviceFee > 0) addRepairItem('維修服務費', record.serviceFee, 1);
@@ -690,7 +738,6 @@ RBJ1387A", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFe
         setTimeout(() => openPreview(), 300);
     }
 
-    // ============ Base Connection ============
     function toggleBaseConfig() {
         const panel = document.getElementById('baseConfigPanel');
         panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
@@ -702,166 +749,20 @@ RBJ1387A", "service": "Sale Order", "serviceFee": 0, "deepClean": 0, "deliveryFe
         baseConfig.endpoint = document.getElementById('baseEndpoint').value.trim();
         baseConfig.connected = true;
         document.getElementById('baseStatus').className = 'status status-connected';
-        document.getElementById('baseStatus').textContent = '● 已連接（本地數據）';
-        showToast('Base 設定已更新！', 'success');
-    }
-
-    function apiUpdate() {
-        if (!baseConfig.connected || !baseConfig.appToken || !baseConfig.tableId) {
-            showToast('請先連接 Base', 'error');
-            return;
-        }
-        
-        const container = document.getElementById('searchResults');
-        container.innerHTML = `
-            <div style="padding:16px; background:#fff3e0; border-radius:6px; border-left:4px solid var(--warning);">
-                <h4 style="margin-bottom:8px; color:var(--warning);">⚡ API 更新 Base 數據</h4>
-                <p style="font-size:13px; margin-bottom:12px;">
-                    正在準備從 Base 獲取最新數據...<br>
-                    <strong>App Token:</strong> ${baseConfig.appToken}<br>
-                    <strong>Table ID:</strong> ${baseConfig.tableId}
-                </p>
-                <p style="font-size:13px; margin-bottom:12px;">
-                    請複製以下消息並發送給 AI 助手：
-                </p>
-                <textarea id="apiRequest" readonly style="width:100%; min-height:80px; padding:12px; border:1px solid var(--border); border-radius:6px; font-family:monospace; font-size:12px; background:#f5f5f5;">請幫我從飛書 Base 獲取最新數據並更新到打印工具：
-App Token: ${baseConfig.appToken}
-Table ID: ${baseConfig.tableId}
-請返回完整的 JSON 數據數組。</textarea>
-                <div style="display:flex; gap:8px; margin-top:12px;">
-                    <button class="btn btn-warning" onclick="copyApiRequest()">📋 複製並發送</button>
-                    <button class="btn btn-outline" onclick="showPasteDialog()">📄 貼上返回數據</button>
-                    <button class="btn btn-outline" onclick="document.getElementById('searchResults').innerHTML=''">✕ 關閉</button>
-                </div>
-            </div>
-        `;
-        showToast('請複製消息並發送給 AI 助手', 'info');
-    }
-
-    function copyApiRequest() {
-        const request = document.getElementById('apiRequest').value;
-        navigator.clipboard.writeText(request).then(() => {
-            showToast('已複製！請發送給 AI 助手，然後點擊「貼上返回數據」', 'success');
-        }).catch(() => {
-            const ta = document.createElement('textarea');
-            ta.value = request;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            showToast('已複製！', 'success');
-        });
-    }
-
-    function autoSyncFromBase() {
-        if (!baseConfig.connected || !baseConfig.appToken || !baseConfig.tableId) {
-            showToast('請先連接 Base（填寫 App Token 和 Table ID）', 'error');
-            return;
-        }
-        
-        const container = document.getElementById('searchResults');
-        container.innerHTML = `
-            <div style="padding:16px; background:#e3f2fd; border-radius:6px;">
-                <h4 style="margin-bottom:8px; color:var(--primary);">⚡ 自動同步 Base 數據</h4>
-                <p style="font-size:13px; margin-bottom:12px;">
-                    瀏覽器無法直接調用飛書 API（需要憑證/權限）。請透過 AI 助手完成同步：
-                </p>
-                <ol style="font-size:13px; margin-left:20px; margin-bottom:12px;">
-                    <li>點擊下方「📋 複製同步請求」</li>
-                    <li>在對話中貼上並發送（我會自動從 Base 拉取最新數據）</li>
-                    <li>我返回 JSON 後，點擊「📄 貼上同步數據」</li>
-                    <li>貼上後點「✅ 確認導入」即完成</li>
-                </ol>
-                <div style="display:flex; gap:8px; margin-top:12px;">
-                    <button class="btn btn-info" onclick="copySyncRequest()">📋 複製同步請求</button>
-                    <button class="btn btn-outline" onclick="showPasteDialog()">📄 貼上同步數據</button>
-                </div>
-            </div>
-        `;
-        showToast('請複製同步請求並發送給 AI 助手', 'info');
-    }
-
-    function copySyncRequest() {
-        const request = `請幫我從飛書 Base 同步最新數據到發票打印工具：
-App Token: ${baseConfig.appToken}
-Table ID: ${baseConfig.tableId}
-
-請調用飛書 Bitable API 拉取全部記錄，並返回完整的 JSON 數組（轉換為內部格式，欄位：number, name, phone, model, sn, service, serviceFee, deepClean, deliveryFee, parts, total, status, payment, remark, deliveryAddr）。`;
-        
-        navigator.clipboard.writeText(request).then(() => {
-            showToast('同步請求已複製！請發送給 AI 助手', 'success');
-        }).catch(() => {
-            const ta = document.createElement('textarea');
-            ta.value = request;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            showToast('同步請求已複製！', 'success');
-        });
-    }
-
-    function importFromBase() {
-        if (!baseConfig.connected || !baseConfig.appToken || !baseConfig.tableId) {
-            showToast('請先連接 Base（填寫 App Token 和 Table ID）', 'error');
-            return;
-        }
-        
-        const container = document.getElementById('searchResults');
-        container.innerHTML = `
-            <div style="padding:16px; background:#e8f0fe; border-radius:6px;">
-                <h4 style="margin-bottom:8px; color:var(--primary);"> 導入 Base 數據</h4>
-                <p style="font-size:13px; margin-bottom:12px;">
-                    由於瀏覽器安全限制，需要透過 AI 助手獲取 Base 數據。<br>
-                    請按以下步驟操作：
-                </p>
-                <ol style="font-size:13px; margin-left:20px; margin-bottom:12px;">
-                    <li>點擊下方「複製請求」按鈕</li>
-                    <li>將內容傳送給我（AI 助手）</li>
-                    <li>我會返回最新的 Base 數據</li>
-                    <li>複製返回的 JSON 數據</li>
-                    <li>點擊「貼上數據」並貼上</li>
-                </ol>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn btn-primary" onclick="copyImportRequest()"> 複製請求</button>
-                    <button class="btn btn-outline" onclick="showPasteDialog()"> 貼上數據</button>
-                </div>
-            </div>
-        `;
-        showToast('請按照指引導入 Base 數據', 'info');
-    }
-
-    function copyImportRequest() {
-        const request = `請幫我從飛書 Base 導入數據：
-App Token: ${baseConfig.appToken}
-Table ID: ${baseConfig.tableId}
-
-請返回完整的記錄數據（JSON 格式），包含以下欄位：
-Number, Name, 聯絡電話 Tel, Model, SN, 服務內容，服務費用 1, 深層清潔費用，送貨費，Parts amount, Total Amount, Address (Delivery), Payment Methods, Remark, Status`;
-        
-        navigator.clipboard.writeText(request).then(() => {
-            showToast('請求已複製！請傳送給 AI 助手', 'success');
-        }).catch(() => {
-            const ta = document.createElement('textarea');
-            ta.value = request;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            showToast('請求已複製！', 'success');
-        });
+        document.getElementById('baseStatus').textContent = '● 已連接（本地同步數據）';
+        showToast('設定已更新！', 'success');
     }
 
     function showPasteDialog() {
         const container = document.getElementById('searchResults');
         container.innerHTML = `
-            <div style="padding:16px; background:#f8f9fa; border-radius:6px;">
-                <h4 style="margin-bottom:8px;"> 貼上 Base 數據</h4>
-                <p style="font-size:13px; margin-bottom:12px;">請將 AI 助手返回的 JSON 數據貼上：</p>
-                <textarea id="pasteData" style="width:100%; min-height:200px; padding:12px; border:1px solid var(--border); border-radius:6px; font-family:monospace; font-size:12px;" placeholder='[{"number":"NV...","name":"...",...}]'></textarea>
+            <div style="padding:16px; background:#f8f9fa; border-radius:6px; border:1px solid var(--border);">
+                <h4 style="margin-bottom:8px;">📥 手動貼上 JSON 數據</h4>
+                <p style="font-size:13px; margin-bottom:12px;">直接貼上最新生成的 base_data.json 內容：</p>
+                <textarea id="pasteData" style="width:100%; min-height:180px; padding:12px; border:1px solid var(--border); border-radius:6px; font-family:monospace; font-size:12px;" placeholder='[{"number":"NV...","name":"...",...}]'></textarea>
                 <div style="display:flex; gap:8px; margin-top:12px;">
-                    <button class="btn btn-success" onclick="processPastedData()"> 確認導入</button>
-                    <button class="btn btn-outline" onclick="importFromBase()"> 返回</button>
+                    <button class="btn btn-success" onclick="processPastedData()">確認導入</button>
+                    <button class="btn btn-outline" onclick="document.getElementById('searchResults').innerHTML=''">取消</button>
                 </div>
             </div>
         `;
@@ -873,56 +774,13 @@ Number, Name, 聯絡電話 Tel, Model, SN, 服務內容，服務費用 1, 深層
             showToast('請貼上數據', 'error');
             return;
         }
-        
         try {
             let data = JSON.parse(jsonStr);
-            
-            // Support both single object and array
-            if (!Array.isArray(data)) {
-                data = [data];
-            }
-            
-            // Convert from Base format to internal format if needed
-            const converted = data.map(item => {
-                // If it has "Number" field, it's from Base format
-                if (item.Number !== undefined) {
-                    return {
-                        number: item.Number || '',
-                        name: (item.Name && item.Name[0] && item.Name[0].text) || item.Name || '',
-                        phone: (item['聯絡電話 Tel'] && item['聯絡電話 Tel'][0] && item['聯絡電話 Tel'][0].text) || item['聯絡電話 Tel'] || '',
-                        model: (item.Model && item.Model[0] && item.Model[0].text) || item.Model || '',
-                        sn: (item.SN && item.SN[0] && item.SN[0].text) || item.SN || '',
-                        service: (item['服務內容'] && item['服務內容'][0] && item['服務內容'][0].text) || item['服務內容'] || '',
-                        serviceFee: item['服務費用 1'] || 0,
-                        deepClean: item['深層清潔費用'] || 0,
-                        deliveryFee: item['送貨費'] || 0,
-                        parts: item['Parts amount'] || 0,
-                        total: item['Total Amount'] || 0,
-                        status: item.Status || '',
-                        payment: item['Payment Methods'] || [],
-                        remark: item.Remark || '',
-                        deliveryAddr: (item['Address (Delivery)'] && item['Address (Delivery)'][0] && item['Address (Delivery)'][0].text) || item['Address (Delivery)'] || ''
-                    };
-                }
-                // Already in internal format
-                return item;
-            });
-            
-            // Check if this is import (replace all) or append
-            const isImport = BASE_DATA.length === 0 || converted.length > 1;
-            
-            if (isImport) {
-                BASE_DATA.length = 0;
-                BASE_DATA.push(...converted);
-            } else {
-                // Append single record
-                BASE_DATA.push(...converted);
-            }
-            
-            document.getElementById('recordCount').textContent = BASE_DATA.length;
-            document.getElementById('dataCount').textContent = ` 已從 Base 導入 ${BASE_DATA.length} 筆記錄`;
-            
-            showToast(`成功導入 ${converted.length} 筆記錄！`, 'success');
+            if (!Array.isArray(data)) data = [data];
+            BASE_DATA.length = 0;
+            BASE_DATA.push(...data);
+            updateRecordUI();
+            showToast(`成功載入 ${BASE_DATA.length} 筆記錄！`, 'success');
             document.getElementById('searchResults').innerHTML = '';
         } catch (e) {
             showToast('JSON 解析失敗：' + e.message, 'error');
@@ -930,6 +788,7 @@ Number, Name, 聯絡電話 Tel, Model, SN, 服務內容，服務費用 1, 深層
     }
 
     function refreshData() {
+        updateRecordUI();
         showToast('數據已刷新（共 ' + BASE_DATA.length + ' 筆記錄）', 'info');
     }
 
@@ -997,87 +856,17 @@ Number, Name, 聯絡電話 Tel, Model, SN, 服務內容，服務費用 1, 深層
         return data;
     }
 
-    // ============ Send to Base ============
-    function sendToBase() {
-        const data = collectFormData();
-        
-        // Convert to Base format
-        const baseRecord = {
-            "Number": data.orderNo || data.invoiceNo || '',
-            "Name": data.name || '',
-            "聯絡電話 Tel": data.phone || '',
-            "Model": data.model || '',
-            "SN": data.sn || '',
-            "服務內容": data.items ? data.items.map(i => i.name).join(', ') : (data.faultDesc || ''),
-            "服務費用 1": parseFloat(data.total) || 0,
-            "深層清潔費用": 0,
-            "送貨費": 0,
-            "Parts amount": 0,
-            "Total Amount": parseFloat(data.total) || 0,
-            "Address (Delivery)": data.address || '',
-            "Payment Methods": ["Cash"],
-            "Remark": data.remark || 'Office',
-            "Status": "In process"
-        };
-        
-        const json = JSON.stringify(baseRecord, null, 2);
-        
-        const container = document.getElementById('searchResults');
-        container.innerHTML = `
-            <div style="padding:16px; background:#e6f4ea; border-radius:6px;">
-                <h4 style="margin-bottom:8px; color:var(--success);">📤 傳送到 Base</h4>
-                <p style="font-size:13px; margin-bottom:12px;">
-                    請按以下步驟操作：
-                </p>
-                <ol style="font-size:13px; margin-left:20px; margin-bottom:12px;">
-                    <li>點擊「複製數據」按鈕</li>
-                    <li>將內容傳送給我（AI 助手）</li>
-                    <li>我會幫你寫入 Base</li>
-                </ol>
-                <textarea id="sendData" style="width:100%; min-height:150px; padding:12px; border:1px solid var(--border); border-radius:6px; font-family:monospace; font-size:12px; margin-bottom:12px;">${json}</textarea>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn btn-success" onclick="copySendData()">📋 複製數據</button>
-                    <button class="btn btn-outline" onclick="document.getElementById('searchResults').innerHTML=''">✕ 關閉</button>
-                </div>
-            </div>
-        `;
-        showToast('請複製數據並傳送給 AI 助手', 'info');
-    }
-
-    function copySendData() {
-        const json = document.getElementById('sendData').value;
-        navigator.clipboard.writeText(json).then(() => {
-            showToast('數據已複製！請傳送給 AI 助手', 'success');
-        }).catch(() => {
-            const ta = document.createElement('textarea');
-            ta.value = json;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            showToast('數據已複製！', 'success');
-        });
-    }
-
-    // ============ Copy Order Data ============
     function copyOrderData() {
         const data = collectFormData();
         const json = JSON.stringify(data, null, 2);
         navigator.clipboard.writeText(json).then(() => {
-            showToast('訂單數據已複製到剪貼簿！傳送給 AI 助手即可保存到 Base', 'success');
+            showToast('訂單數據已複製到剪貼簿！', 'success');
         }).catch(() => {
-            // Fallback
-            const ta = document.createElement('textarea');
-            ta.value = json;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            showToast('訂單數據已複製！', 'success');
+            showToast('複製失敗，請手動複製', 'error');
         });
     }
 
-    // ============ Preview ============
+    // ============ Preview (A4 Formatted) ============
     function openPreview() {
         const data = collectFormData();
         let html = '';
@@ -1104,20 +893,19 @@ Number, Name, 聯絡電話 Tel, Model, SN, 服務內容，服務費用 1, 深層
                     <div class="info-item" style="grid-column:1/-1;"><span class="info-label">送貨地址：</span>${data.address||''}</div>
                     <div class="info-item"><span class="info-label">設備型號：</span>${data.model||''}</div>
                     <div class="info-item"><span class="info-label">SN序號：</span>${data.sn||''}</div>
-                    <div class="info-item"><span class="info-label">保固期限：</span>${data.warranty||''} 個月</div>
+                    <div class="info-item"><span class="info-label">保固期限：</span>${data.warranty||'3'} 個月</div>
                 </div>
-                <h4 style="margin:16px 0 8px;">維修服務明細（Service Details）</h4>
+                <h4 style="margin:14px 0 6px; font-size:13px;">維修服務明細（Service Details）</h4>
                 <table>
-                    <thead><tr><th>服務項目</th><th>單價 (HK$)</th><th>數量</th><th>小計 (HK$)</th><th>備註</th></tr></thead>
-                    <tbody>${(data.items||[]).map(item => `<tr><td>${item.name}</td><td>$ ${parseFloat(item.price||0).toFixed(2)}</td><td>${item.qty}</td><td>$ ${(parseFloat(item.price||0)*parseInt(item.qty||1)).toFixed(2)}</td><td>${item.note||''}</td></tr>`).join('')}</tbody>
+                    <thead><tr><th style="width:40%;">服務項目</th><th style="width:15%;">單價 (HK$)</th><th style="width:10%;">數量</th><th style="width:15%;">小計 (HK$)</th><th style="width:20%;">備註</th></tr></thead>
+                    <tbody>${(data.items||[]).map(item => `<tr><td>${item.name}</td><td>$ ${parseFloat(item.price||0).toFixed(2)}</td><td>${item.qty}</td><td>$ ${(parseFloat(item.price\vert{}\vert{}0)*parseInt(item.qty\vert{}\vert{}1)).toFixed(2)}</td><td>${item.note||''}</td></tr>`).join('')}</tbody>
                     <tfoot><tr class="total-row"><td colspan="3" style="text-align:right;">${data.discount?'優惠：'+data.discount:'應付總金額'}</td><td colspan="2">HK$ ${data.total}</td></tr></tfoot>
                 </table>
-                ${data.remark?`<p style="margin-top:12px; font-size:12px;"><strong>備註：</strong>${data.remark}</p>`:''}
+                ${data.remark?`<p style="margin-top:10px; font-size:12px;"><strong>備註：</strong>${data.remark}</p>`:''}
                 <div class="terms"><strong>服務條款 (Terms)：</strong><ul>
-                    <li>本發票為維修服務付款憑證，請妥善保管，維修後憑此票取機</li>
-                    <li>維修設備享【${data.warranty||'__'}個月】保固（非人為損壞），保固期自開單日起算</li>
-                    <li>逾期未付款，將按應付金額的 0.5%/日 收取滯納金</li>
-                    <li>如有疑問，請於開單後 7 日內聯絡客服核實</li>
+                    <li>本發票為維修服務付款憑證，請妥善保管，維修後憑此票取機。</li>
+                    <li>維修設備享【${data.warranty||'3'}個月】保固（人為損壞及進水除外），保固期自開單日起算。</li>
+                    <li>如有任何疑問，請於開單後 7 日內聯絡客服核實。</li>
                 </ul></div>`;
         } else if (currentType === 'repair_order') {
             html = companyHeader + `
@@ -1130,18 +918,18 @@ Number, Name, 聯絡電話 Tel, Model, SN, 服務內容，服務費用 1, 深層
                     <div class="info-item" style="grid-column:1/-1;"><span class="info-label">送貨地址：</span>${data.address||''}</div>
                     <div class="info-item"><span class="info-label">設備型號：</span>${data.model||''}</div>
                     <div class="info-item"><span class="info-label">SN序號：</span>${data.sn||''}</div>
-                    <div class="info-item"><span class="info-label">保固期限：</span>${data.warranty||''} 個月</div>
+                    <div class="info-item"><span class="info-label">保固期限：</span>${data.warranty||'3'} 個月</div>
                 </div>
-                <h4 style="margin:16px 0 8px;">維修故障描述</h4>
-                <p style="padding:12px; background:#f9f9f9; border-radius:4px; font-size:13px; min-height:40px;">${data.faultDesc||'（無描述）'}</p>
-                <h4 style="margin:16px 0 8px;">收費項目</h4>
+                <h4 style="margin:14px 0 6px; font-size:13px;">維修故障描述</h4>
+                <p style="padding:10px; background:#f9f9f9; border:1px solid #ddd; font-size:12px; min-height:40px;">${data.faultDesc||'（無描述）'}</p>
+                <h4 style="margin:14px 0 6px; font-size:13px;">收費項目</h4>
                 <table><thead><tr><th>收費項目</th><th>金額 (HK$)</th></tr></thead>
                 <tbody><tr><td>維修服務費</td><td>HK$ ${data.total}</td></tr></tbody>
                 <tfoot><tr class="total-row"><td style="text-align:right;">合計金額</td><td>HK$ ${data.total}</td></tr></tfoot></table>
-                ${data.internalNote?`<p style="margin-top:12px; font-size:12px;"><strong>內部備註：</strong>${data.internalNote}</p>`:''}
+                ${data.internalNote?`<p style="margin-top:10px; font-size:12px;"><strong>內部備註：</strong>${data.internalNote}</p>`:''}
                 <div class="terms"><ul>
-                    <li>維修完成後憑本單據取件，遺失需核實身份證明</li>
-                    <li>更換零件享有單據標註保固，人為損壞不保</li>
+                    <li>維修完成後憑本單據取件，遺失需核實身份證明。</li>
+                    <li>更換零件享有單據標註保固，人為損壞及自行拆解恕不保固。</li>
                 </ul></div>`;
         } else if (currentType === 'invoice') {
             html = companyHeader + `
@@ -1156,7 +944,7 @@ Number, Name, 聯絡電話 Tel, Model, SN, 服務內容，服務費用 1, 深層
                 </div>
                 <table><thead><tr><th>項目名稱</th><th>規格</th><th>單價</th><th>數量</th><th>折扣</th><th>小計</th></tr></thead>
                 <tbody><tr><td colspan="5" style="text-align:right; font-weight:bold;">應付總額</td><td>HK$ ${data.total}</td></tr></tbody></table>
-                ${data.remark?`<p style="margin-top:12px;"><strong>備註：</strong>${data.remark}</p>`:''}`;
+                ${data.remark?`<p style="margin-top:10px; font-size:12px;"><strong>備註：</strong>${data.remark}</p>`:''}`;
         } else if (currentType === 'sale_order') {
             html = companyHeader + `
                 <div class="invoice-title">SALES ORDER 銷售單</div>
@@ -1170,12 +958,12 @@ Number, Name, 聯絡電話 Tel, Model, SN, 服務內容，服務費用 1, 深層
                 </div>
                 <table><thead><tr><th>機型</th><th>規格</th><th>售價</th><th>數量</th><th>折扣</th><th>金額</th></tr></thead>
                 <tbody><tr><td colspan="5" style="text-align:right; font-weight:bold;">合計金額</td><td>HK$ ${data.total}</td></tr></tbody></table>
-                <div class="info-grid" style="margin-top:16px;">
+                <div class="info-grid" style="margin-top:14px;">
                     <div class="info-item"><span class="info-label">送貨方式：</span>${data.delivery||''}</div>
                     <div class="info-item"><span class="info-label">保固期限：</span>${data.warranty||''}</div>
                     <div class="info-item"><span class="info-label">付款方式：</span>${data.payment||''}</div>
                 </div>
-                ${data.remark?`<p style="margin-top:12px;"><strong>訂單備註：</strong>${data.remark}</p>`:''}`;
+                ${data.remark?`<p style="margin-top:10px; font-size:12px;"><strong>訂單備註：</strong>${data.remark}</p>`:''}`;
         }
 
         document.getElementById('previewContent').innerHTML = `<div class="print-preview">${html}</div>`;
