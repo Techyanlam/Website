@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+[9/24/26, 5:40:20 PM] Yan Lam Ai: #!/usr/bin/env python3
 """
 Sync Feishu Bitable records into the invoice print tool HTML.
 Run inside GitHub Actions with FEISHU_APP_ID and FEISHU_APP_SECRET env vars.
@@ -48,7 +48,7 @@ def fetch_base_records(token):
     while True:
         params = "page_size=100"
         if page_token:
-            params += f"&page_token={page_token}"
+            params += f"&page_token=***}
 
         url = f"{API_ENDPOINT}/open-apis/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records?{params}"
         req = urllib.request.Request(url, headers=headers)
@@ -102,11 +102,15 @@ def convert_record(record):
         "service": get_text(fields.get("服務內容", "")),
         "serviceFee": get_number(fields.get("服務費用 1", 0)),
         "deepClean": get_number(fields.get("深層清潔費用", 0)),
-          "deliveryFee": get_number(fields.get("送貨費", 0)),
+        "deliveryFee": get_number(fields.get("送貨費", 0)),
         "parts": get_number(fields.get("Parts amount", 0)),
         "total": get_number(fields.get("Total Amount", 0)),
         "status": get_text(fields.get("Status", "")),
+
+[9/24/26, 5:40:20 PM] Yan Lam Ai: 
         "payment": get_array(fields.get("Payment Methods", [])),
+
+[9/24/26, 5:40:21 PM] Yan Lam Ai: 
         "remark": get_text(fields.get("Remark", "")),
         "deliveryAddr": get_text(fields.get("Address (Delivery)", "")),
     }
@@ -119,7 +123,7 @@ def main():
         ***"Error: FEISHU_APP_ID and FEISHU_APP_SECRET must be set")
         sys.exit(1)
 
-    token = get_access_token()
+    token = ***)
     print("Access token obtained")
 
     records = fetch_base_records(token)
@@ -160,5 +164,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
