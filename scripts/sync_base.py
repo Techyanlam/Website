@@ -1,4 +1,4 @@
-[9/24/26, 5:40:20 PM] Yan Lam Ai: #!/usr/bin/env python3
+#!/usr/bin/env python3
 """
 Sync Feishu Bitable records into the invoice print tool HTML.
 Run inside GitHub Actions with FEISHU_APP_ID and FEISHU_APP_SECRET env vars.
