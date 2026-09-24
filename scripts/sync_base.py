@@ -14,8 +14,7 @@ APP_TOKEN = "TAG2b4…xndh"
 TABLE_ID = "tbl2jFGYqmMfZjNC"
 API_ENDPOINT = "https://open.feishu.cn"
 APP_ID = os.environ.get("FEISHU_APP_ID", "")
-APP_SECRET = os.environ.get("FEISHU_APP_SECRET", "")
-
+APP_SECRET = ***"FEISHU_APP_SECRET", "")
 
 
 def get_access_token():
@@ -103,7 +102,7 @@ def convert_record(record):
         "service": get_text(fields.get("服務內容", "")),
         "serviceFee": get_number(fields.get("服務費用 1", 0)),
         "deepClean": get_number(fields.get("深層清潔費用", 0)),
-        "deliveryFee": get_number(fields.get("送貨費", 0)),
+          "deliveryFee": get_number(fields.get("送貨費", 0)),
         "parts": get_number(fields.get("Parts amount", 0)),
         "total": get_number(fields.get("Total Amount", 0)),
         "status": get_text(fields.get("Status", "")),
@@ -114,13 +113,13 @@ def convert_record(record):
 
 
 def main():
- print("Starting sync from Feishu Base...")
+    print("Starting sync from Feishu Base...")
 
     if not APP_ID or not APP_SECRET:
         ***"Error: FEISHU_APP_ID and FEISHU_APP_SECRET must be set")
         sys.exit(1)
 
-    token=***
+    token = get_access_token()
     print("Access token obtained")
 
     records = fetch_base_records(token)
@@ -161,3 +160,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
