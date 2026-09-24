@@ -2,8 +2,8 @@ name: Sync Feishu Base Data
 
 on:
   workflow_dispatch:
+  # 加入 repository_dispatch，並移除 types 限制，讓所有 dispatches 事件都能觸發
   repository_dispatch:
-    types: [feishu_record_updated]
 
 jobs:
   sync:
@@ -23,7 +23,7 @@ jobs:
         env:
           FEISHU_APP_ID: ${{ secrets.FEISHU_APP_ID }}
           FEISHU_APP_SECRET: ${{ secrets.FEISHU_APP_SECRET }}
-        run: python3 scripts/sync_base.py[cite: 3]
+        run: python3 scripts/sync_base.py
 
       - name: Commit and push changes
         run: |
