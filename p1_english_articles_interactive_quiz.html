@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小一英文科互動溫習測驗卷 (Articles 專題)</title>
+<style>
+  :root {
+    --primary-color: #2b6cb0;
+    --primary-dark: #1a365d;
+    --accent-color: #3182ce;
+    --bg-page: #f7fafc;
+    --card-bg: #ffffff;
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --border-color: #e2e8f0;
+    --correct-bg: #c6f6d5;
+    --correct-border: #38a169;
+    --wrong-bg: #fed7d7;
+    --wrong-border: #e53e3e;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    line-height: 1.6;
+    padding: 24px 16px;
+  }
+
+  .quiz-wrapper {
+    max-width: 820px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+  }
+
+  .quiz-header {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+    color: white;
+    padding: 24px 28px;
+    text-align: center;
+  }
+
+  .quiz-header h1 {
+    font-size: 24px;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .quiz-header p {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  .student-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    background-color: #ebf8ff;
+    padding: 14px 24px;
+    border-bottom: 1px solid #bee3f8;
+    font-size: 14px;
+  }
+
+  .student-bar label {
+    font-weight: 600;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .student-bar input {
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    background: white;
+  }
+
+  .content-area {
+    padding: 24px 28px;
+  }
+
+  .section-card {
+    margin-bottom: 24px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: #ffffff;
+    overflow: hidden;
+  }
+
+  .section-title {
+    background-color: #f1f5f9;
+    border-left: 5px solid var(--primary-color);
+    padding: 10px 16px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section-body {
+    padding: 18px 20px;
+  }
+
+  .instruction {
+    font-size: 13.5px;
+    color: #4a5568;
+    margin-bottom: 14px;
+    background-color: #f8fafc;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px dashed #cbd5e0;
+  }
+
+  .q-item {
+    margin-bottom: 14px;
+    font-size: 15px;
+    line-height: 2;
+  }
+
+  .q-num {
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-right: 4px;
+  }
+
+  select.art-select {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a202c;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1.5px solid #a0aec0;
+    background-color: #fff;
+    cursor: pointer;
+    margin: 0 4px;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  select.art-select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2);
+  }
+
+  .story-container {
+    background-color: #fafbfc;
+    border: 1px solid #e2e8f0;
+    padding: 18px 20px;
+    border-radius: 8px;
+    font-size: 15.5px;
+    line-height: 2.3;
+  }
+
+  .correct-field {
+    border-color: var(--correct-border) !important;
+    background-color: var(--correct-bg) !important;
+    color: #22543d !important;
+  }
+
+  .wrong-field {
+    border-color: var(--wrong-border) !important;
+    background-color: var(--wrong-bg) !important;
+    color: #742a2a !important;
+  }
+
+  .action-bar {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid var(--border-color);
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .btn {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-submit {
+    background-color: #2b6cb0;
+    color: white;
+  }
+
+  .btn-submit:hover {
+    background-color: #2c5282;
+  }
+
+  .btn-reset {
+    background-color: #edf2f7;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+  }
+
+  .btn-reset:hover {
+    background-color: #e2e8f0;
+  }
+
+  #score-report {
+    display: none;
+    margin-top: 24px;
+    padding: 20px;
+    background-color: #ebf8ff;
+    border-radius: 8px;
+    border: 1.5px solid #3182ce;
+    text-align: center;
+  }
+
+  #score-report h3 {
+    font-size: 20px;
+    color: #2b6cb0;
+    margin-bottom: 8px;
+  }
+
+  .score-badge {
+    font-size: 32px;
+    font-weight: bold;
+    color: #2b6cb0;
+  }
+
+  .explanation-box {
+    margin-top: 16px;
+    text-align: left;
+    background: #fff;
+    padding: 14px 18px;
+    border-radius: 6px;
+    font-size: 13.5px;
+    color: #4a5568;
+    border: 1px solid #bee3f8;
+  }
+
+  .explanation-box h4 {
+    color: #2c5282;
+    margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="quiz-wrapper">
+  <div class="quiz-header">
+    <h1>Primary 1 English Revision Quiz</h1>
+    <p>Focus Topic: Articles (a / an / the / ✕)</p>
+  </div>
+
+  <div class="student-bar">
+    <label>姓名 Name: <input type="text" id="stu-name" placeholder="請輸入姓名" style="width: 140px;"></label>
+    <label>班別 Class: <input type="text" id="stu-class" placeholder="1C" style="width: 70px;"></label>
+    <label>日期 Date: <input type="text" id="stu-date" style="width: 120px;"></label>
+  </div>
+
+  <div class="content-area">
+
+    <!-- Part A -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Part A: Sentences Completion</span>
+        <span style="font-size: 13px; font-weight: normal; color: #4a5568;">共 14 分</span>
+      </div>
+      <div class="section-body">
+        <div class="instruction">
+          選擇最合適的冠詞填入空格：<b>a</b> / <b>an</b> / <b>the</b>，若不需要冠詞請選 <b>✕</b>。
+        </div>
+
+        <div class="q-item">
+          <span class="q-num">1.</span> Peter is 
+          <select class="art-select" id="pa1" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          student. He eats 
+          <select class="art-select" id="pa2" data-ans="an">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          orange every morning.
+        </div>
+
+        <div class="q-item">
+          <span class="q-num">2.</span> Look at 
+          <select class="art-select" id="pa3" data-ans="the">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          sun in the sky! It is very bright today.
+        </div>
+
+        <div class="q-item">
+          <span class="q-num">3.</span> Mum bought me 
+          <select class="art-select" id="pa4" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          nice schoolbag. 
+          <select class="art-select" id="pa5" data-ans="the">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          schoolbag is purple.
+        </div>
+
+        <div class="q-item">
+          <span class="q-num">4.</span> I have 
+          <select class="art-select" id="pa6" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          ham sandwich and 
+          <select class="art-select" id="pa7" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          glass of milk for breakfast.
+        </div>
+
+        <div class="q-item">
+          <span class="q-num">5.</span> Miss Chan is 
+          <select class="art-select" id="pa8" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          kind teacher. She teaches us 
+          <select class="art-select" id="pa9" data-ans="x">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          English.
+        </div>
+
+        <div class="q-item">
+          <span class="q-num">6.</span> They like to play with their 
+          <select class="art-select" id="pa10" data-ans="x">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          classmates at recess.
+        </div>
+
+        <div class="q-item">
+          <span class="q-num">7.</span> There is 
+          <select class="art-select" id="pa11" data-ans="an">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          owl sitting on 
+          <select class="art-select" id="pa12" data-ans="the">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          oak tree outside the window.
+        </div>
+
+        <div class="q-item">
+          <span class="q-num">8.</span> My father goes to work by 
+          <select class="art-select" id="pa13" data-ans="x">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          bus. He has 
+          <select class="art-select" id="pa14" data-ans="an">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">✕</option>
+          </select>
+          egg tart for his snack.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Part B (Story Comprehension) -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Part B: Story Passage Completion</span>
+        <span style="font-size: 13px; font-weight: normal; color: #4a5568;">共 10 分</span>
+      </div>
+      <div class="section-body">
+        <div class="instruction">
+          閱讀短文，選擇合適的冠詞（<b>a</b> / <b>an</b> / <b>the</b>）完成故事。
+        </div>
+
+        <div class="story-container">
+          One Sunday morning, Mary went to (1) 
+          <select class="art-select" id="pb1" data-ans="the|a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option>
+          </select>
+          park with her parents. While walking along the path, they saw (2) 
+          <select class="art-select" id="pb2" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option>
+          </select>
+          cute yellow bird and (3) 
+          <select class="art-select" id="pb3" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option>
+          </select>
+          little squirrel near (4) 
+          <select class="art-select" id="pb4" data-ans="a|the">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option>
+          </select>
+          tall oak tree.<br><br>
+
+          (5) 
+          <select class="art-select" id="pb5" data-ans="the">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option>
+          </select>
+          yellow bird was building (6) 
+          <select class="art-select" id="pb6" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option>
+          </select>
+          nest high up in the branches. Two days later, they went back to (7) 
+          <select class="art-select" id="pb7" data-ans="the">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option>
+          </select>
+          oak tree to see the nest. It was not (8) 
+          <select class="art-select" id="pb8" data-ans="an">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option>
+          </select>
+          empty nest! There was (9) 
+          <select class="art-select" id="pb9" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option>
+          </select>
+          tiny egg inside. Mary felt very happy because the yellow bird would have (10) 
+          <select class="art-select" id="pb10" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option>
+          </select>
+          baby bird soon.
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <button class="btn btn-submit" onclick="submitQuiz()">核對答案 Check Answers</button>
+      <button class="btn btn-reset" onclick="resetQuiz()">重新測驗 Reset</button>
+    </div>
+
+    <!-- Score Report -->
+    <div id="score-report">
+      <h3>測驗成績報告</h3>
+      <p style="margin: 8px 0;">總分：<span class="score-badge" id="total-score">0</span> / 24 分</p>
+      <div id="score-comment" style="font-weight: 600; color: #2c5282; margin-bottom: 12px;"></div>
+
+      <div class="explanation-box">
+        <h4>Articles 核心規則解析：</h4>
+        <ul>
+          <li><b>a / an (泛指單數可數名詞)：</b> 母音音素開頭（a, e, i, o, u）用 <b>an</b>（如 <i>an orange, an owl, an egg tart, an empty nest</i>）；子音音素開頭用 <b>a</b>（如 <i>a student, a glass</i>）。</li>
+          <li><b>the (特定或獨一無二事物)：</b> 全球獨一無二自然天體（如 <i>the sun</i>）；文章中再次提及同一特定事物時改用 <b>the</b>（如 <i>the schoolbag, the yellow bird, the oak tree</i>）。</li>
+          <li><b>✕ (不加冠詞)：</b> 語言學科名稱前（如 <i>teaches us ✕ English</i>）；交通方式片語（如 <i>by ✕ bus</i>）；名詞前已有形容詞性物主代名詞（如 <i>their ✕ classmates</i>）。</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const today = new Date();
+  document.getElementById('stu-date').value = today.toISOString().split('T')[0];
+
+  function submitQuiz() {
+    let score = 0;
+    const totalQuestions = 24;
+
+    // Part A (14 blanks)
+    for (let i = 1; i <= 14; i++) {
+      const el = document.getElementById('pa' + i);
+      const userVal = el.value.trim().toLowerCase();
+      const expected = el.getAttribute('data-ans').toLowerCase();
+      
+      if (userVal === expected) {
+        el.className = 'art-select correct-field';
+        score++;
+      } else {
+        el.className = 'art-select wrong-field';
+      }
+    }
+
+    // Part B (10 blanks)
+    for (let i = 1; i <= 10; i++) {
+      const el = document.getElementById('pb' + i);
+      const userVal = el.value.trim().toLowerCase();
+      const expectedList = el.getAttribute('data-ans').toLowerCase().split('|');
+
+      if (expectedList.includes(userVal)) {
+        el.className = 'art-select correct-field';
+        score++;
+      } else {
+        el.className = 'art-select wrong-field';
+      }
+    }
+
+    // Report
+    const reportBox = document.getElementById('score-report');
+    const scoreVal = document.getElementById('total-score');
+    const commentVal = document.getElementById('score-comment');
+
+    reportBox.style.display = 'block';
+    scoreVal.textContent = score;
+
+    const percent = Math.round((score / totalQuestions) * 100);
+    if (percent === 100) {
+      commentVal.textContent = '🌟 太棒了！全部冠詞判斷正確，滿分！';
+      commentVal.style.color = '#276749';
+    } else if (percent >= 80) {
+      commentVal.textContent = '👍 表現良好！留意檢查紅色的易錯題。';
+      commentVal.style.color = '#2b6cb0';
+    } else {
+      commentVal.textContent = '💪 請再看一次下方的 Articles 核心規則並重試。';
+      commentVal.style.color = '#c53030';
+    }
+
+    reportBox.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function resetQuiz() {
+    const selects = document.querySelectorAll('select.art-select');
+    selects.forEach(sel => {
+      sel.value = '';
+      sel.className = 'art-select';
+    });
+
+    document.getElementById('score-report').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primary 1 English Quiz (Articles: a / an / the / X)</title>
+<style>
+  :root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --bg-page: #f8fafc;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --correct-bg: #dcfce7;
+    --correct-border: #16a34a;
+    --wrong-bg: #fee2e2;
+    --wrong-border: #dc2626;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    line-height: 1.6;
+    padding: 20px 14px;
+  }
+
+  .quiz-container {
+    max-width: 840px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .quiz-header {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: white;
+    padding: 22px 24px;
+    text-align: center;
+  }
+
+  .quiz-header h1 {
+    font-size: 22px;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .quiz-header p {
+    font-size: 13.5px;
+    opacity: 0.92;
+  }
+
+  .student-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    background-color: #eff6ff;
+    padding: 12px 22px;
+    border-bottom: 1px solid #bfdbfe;
+    font-size: 14px;
+  }
+
+  .student-bar label {
+    font-weight: 600;
+    color: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .student-bar input {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 14px;
+    background: white;
+  }
+
+  .quiz-content {
+    padding: 22px 26px;
+  }
+
+  .section-box {
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #ffffff;
+    overflow: hidden;
+  }
+
+  .section-title {
+    background-color: #f1f5f9;
+    border-left: 4px solid var(--primary);
+    padding: 9px 16px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section-body {
+    padding: 16px 18px;
+  }
+
+  .instruction {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    background: #f8fafc;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px dashed #cbd5e1;
+  }
+
+  .grid-two-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px 20px;
+  }
+
+  .q-item {
+    font-size: 15px;
+    line-height: 1.9;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .q-num {
+    font-weight: 700;
+    color: var(--primary);
+    min-width: 24px;
+  }
+
+  select.form-select {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1.5px solid #94a3b8;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  select.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+
+  .story-block {
+    background-color: #fafbfc;
+    border: 1px solid #e2e8f0;
+    padding: 16px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    line-height: 2.4;
+  }
+
+  .story-title {
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #0f172a;
+    text-decoration: underline;
+  }
+
+  .correct {
+    border-color: var(--correct-border) !important;
+    background-color: var(--correct-bg) !important;
+    color: #166534 !important;
+  }
+
+  .wrong {
+    border-color: var(--wrong-border) !important;
+    background-color: var(--wrong-bg) !important;
+    color: #991b1b !important;
+  }
+
+  .hint-badge {
+    display: none;
+    font-size: 12px;
+    font-weight: 700;
+    color: #dc2626;
+    margin-left: 4px;
+  }
+
+  .action-bar {
+    text-align: center;
+    padding: 18px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .btn {
+    padding: 9px 22px;
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-submit {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  .btn-submit:hover {
+    background-color: var(--primary-dark);
+  }
+
+  .btn-reset {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+  }
+
+  .btn-reset:hover {
+    background-color: #e2e8f0;
+  }
+
+  #result-panel {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    background-color: #eff6ff;
+    border-radius: 8px;
+    border: 1.5px solid #60a5fa;
+    text-align: center;
+  }
+
+  .score-display {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary-dark);
+  }
+
+  .review-notes {
+    margin-top: 14px;
+    text-align: left;
+    background: #ffffff;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #334155;
+    border: 1px solid #bfdbfe;
+    line-height: 1.6;
+  }
+
+  .review-notes h4 {
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <div class="quiz-header">
+    <h1>Primary 1 English Quiz</h1>
+    <p>Articles (a / an / the / X) | Total: 25 marks | Suggested Time: 15 mins</p>
+  </div>
+
+  <div class="student-bar">
+    <label>Name: <input type="text" id="stu-name" placeholder="Name" style="width: 130px;"></label>
+    <label>Class: P.1 <input type="text" id="stu-class" placeholder="C" style="width: 50px;"></label>
+    <label>Date: <input type="text" id="stu-date" style="width: 110px;"></label>
+  </div>
+
+  <div class="quiz-content">
+
+    <!-- Section A -->
+    <div class="section-box">
+      <div class="section-title">
+        <span>Section A: Write "a" or "an"</span>
+        <span style="font-size: 13px; font-weight: 500;">(10 marks)</span>
+      </div>
+      <div class="section-body">
+        <div class="instruction">Example: <b>an</b> elephant</div>
+        <div class="grid-two-cols">
+          <div class="q-item">
+            <span class="q-num">1.</span>
+            <select class="form-select q-field" id="sa1" data-ans="a">
+              <option value="">--</option><option value="a">a</option><option value="an">an</option>
+            </select>
+            <span>horse</span>
+            <span class="hint-badge" id="sa-h1"></span>
+          </div>
+          <div class="q-item">
+            <span class="q-num">2.</span>
+            <select class="form-select q-field" id="sa2" data-ans="an">
+              <option value="">--</option><option value="a">a</option><option value="an">an</option>
+            </select>
+            <span>umbrella</span>
+            <span class="hint-badge" id="sa-h2"></span>
+          </div>
+          <div class="q-item">
+            <span class="q-num">3.</span>
+            <select class="form-select q-field" id="sa3" data-ans="a">
+              <option value="">--</option><option value="a">a</option><option value="an">an</option>
+            </select>
+            <span>jacket</span>
+            <span class="hint-badge" id="sa-h3"></span>
+          </div>
+          <div class="q-item">
+            <span class="q-num">4.</span>
+            <select class="form-select q-field" id="sa4" data-ans="an">
+              <option value="">--</option><option value="a">a</option><option value="an">an</option>
+            </select>
+            <span>onion</span>
+            <span class="hint-badge" id="sa-h4"></span>
+          </div>
+          <div class="q-item">
+            <span class="q-num">5.</span>
+            <select class="form-select q-field" id="sa5" data-ans="a">
+              <option value="">--</option><option value="a">a</option><option value="an">an</option>
+            </select>
+            <span>tomato</span>
+            <span class="hint-badge" id="sa-h5"></span>
+          </div>
+          <div class="q-item">
+            <span class="q-num">6.</span>
+            <select class="form-select q-field" id="sa6" data-ans="an">
+              <option value="">--</option><option value="a">a</option><option value="an">an</option>
+            </select>
+            <span>ant</span>
+            <span class="hint-badge" id="sa-h6"></span>
+          </div>
+          <div class="q-item">
+            <span class="q-num">7.</span>
+            <select class="form-select q-field" id="sa7" data-ans="a">
+              <option value="">--</option><option value="a">a</option><option value="an">an</option>
+            </select>
+            <span>bee</span>
+            <span class="hint-badge" id="sa-h7"></span>
+          </div>
+          <div class="q-item">
+            <span class="q-num">8.</span>
+            <select class="form-select q-field" id="sa8" data-ans="a">
+              <option value="">--</option><option value="a">a</option><option value="an">an</option>
+            </select>
+            <span>pencil</span>
+            <span class="hint-badge" id="sa-h8"></span>
+          </div>
+          <div class="q-item">
+            <span class="q-num">9.</span>
+            <select class="form-select q-field" id="sa9" data-ans="an">
+              <option value="">--</option><option value="a">a</option><option value="an">an</option>
+            </select>
+            <span>apple</span>
+            <span class="hint-badge" id="sa-h9"></span>
+          </div>
+          <div class="q-item">
+            <span class="q-num">10.</span>
+            <select class="form-select q-field" id="sa10" data-ans="an">
+              <option value="">--</option><option value="a">a</option><option value="an">an</option>
+            </select>
+            <span>egg</span>
+            <span class="hint-badge" id="sa-h10"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section B -->
+    <div class="section-box">
+      <div class="section-title">
+        <span>Section B: Fill in each blank with: a / an / the / X</span>
+        <span style="font-size: 13px; font-weight: 500;">(15 marks)</span>
+      </div>
+      <div class="section-body">
+        <div class="instruction">Example: I am <b>a</b> student. (Choose <b>X</b> if no article is needed)</div>
+        <div class="story-block">
+          <div class="story-title">My Pet Cat</div>
+          I have (1) 
+          <select class="form-select q-field" id="sb1" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          pet cat. Her name is Mimi. She is (2) 
+          <select class="form-select q-field" id="sb2" data-ans="an">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          orange and white cat.<br>
+          Mimi has (3) 
+          <select class="form-select q-field" id="sb3" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          small nose and (4) 
+          <select class="form-select q-field" id="sb4" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          long tail. She has (5) 
+          <select class="form-select q-field" id="sb5" data-ans="x">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          soft fur.<br>
+          Every morning, Mimi drinks (6) 
+          <select class="form-select q-field" id="sb6" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          glass of milk. She eats (7) 
+          <select class="form-select q-field" id="sb7" data-ans="x">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          fish for lunch.<br>
+          In the afternoon, I play with (8) 
+          <select class="form-select q-field" id="sb8" data-ans="the">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          cat in (9) 
+          <select class="form-select q-field" id="sb9" data-ans="the">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          garden. (10) 
+          <select class="form-select q-field" id="sb10" data-ans="the">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          cat likes to chase butterflies.<br>
+          Mimi sleeps on (11) 
+          <select class="form-select q-field" id="sb11" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          big cushion. She is (12) 
+          <select class="form-select q-field" id="sb12" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          good pet. I love (13) 
+          <select class="form-select q-field" id="sb13" data-ans="the">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          cat very much.<br>
+          At night, Mimi eats (14) 
+          <select class="form-select q-field" id="sb14" data-ans="an">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          egg as a treat. She has (15) 
+          <select class="form-select q-field" id="sb15" data-ans="a">
+            <option value="">--</option><option value="a">a</option><option value="an">an</option><option value="the">the</option><option value="x">X</option>
+          </select>
+          happy life with our family.
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <button class="btn btn-submit" onclick="submitExam()">核對答案 Check Answers</button>
+      <button class="btn btn-reset" onclick="resetExam()">重新作答 Reset</button>
+    </div>
+
+    <!-- Score Panel -->
+    <div id="result-panel">
+      <h3>測驗成績結算</h3>
+      <p style="margin: 8px 0; font-size: 15px;">得分：<span class="score-display" id="total-score">0</span> / 25 分</p>
+      <div id="feedback-msg" style="font-weight: 700; margin-bottom: 12px;"></div>
+
+      <div class="review-notes">
+        <h4>Articles 核心規則解析：</h4>
+        <ul>
+          <li><b>Section A (a vs an):</b> 母音音素開頭（a, e, i, o, u）用 <b>an</b>（如 <i>an umbrella, an onion, an ant, an apple, an egg</i>）；子音音素開頭用 <b>a</b>（如 <i>a horse, a jacket, a tomato, a bee, a pencil</i>）。</li>
+          <li><b>Section B (Articles in Context):</b> 
+            <ul>
+              <li><b>X (不加冠詞)：</b> 不可數名詞（<i>soft fur</i>）與食物肉類名詞（<i>eats fish for lunch</i>）前不加冠詞。</li>
+              <li><b>the (特定人事物)：</b> 文章中再次提及已出現過的同一隻貓時，特指該事物須用 <b>the cat</b>（第 8、10、13 題）以及特定地點 <b>the garden</b>（第 9 題）。</li>
+              <li><b>a / an (泛指初次提及)：</b> 初次提及單數寵物、特徵（<i>a small nose, a long tail</i>）及單位量詞（<i>a glass of milk</i>）。</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const today = new Date();
+  document.getElementById('stu-date').value = today.toISOString().split('T')[0];
+
+  function submitExam() {
+    let score = 0;
+    const totalMarks = 25;
+
+    // Helper evaluation
+    function checkItem(id, hintId) {
+      const el = document.getElementById(id);
+      const hint = document.getElementById(hintId);
+      const userVal = el.value.trim().toLowerCase();
+      const expected = el.getAttribute('data-ans').toLowerCase();
+
+      if (userVal === expected) {
+        el.className = 'form-select q-field correct';
+        if (hint) hint.style.display = 'none';
+        score++;
+      } else {
+        el.className = 'form-select q-field wrong';
+        if (hint) {
+          hint.textContent = '➔ ' + (expected === 'x' ? 'X' : expected);
+          hint.style.display = 'inline';
+        }
+      }
+    }
+
+    // Section A (10 marks)
+    for (let i = 1; i <= 10; i++) checkItem('sa' + i, 'sa-h' + i);
+
+    // Section B (15 marks)
+    for (let i = 1; i <= 15; i++) checkItem('sb' + i, null);
+
+    // Display report
+    const resultBox = document.getElementById('result-panel');
+    const scoreText = document.getElementById('total-score');
+    const feedback = document.getElementById('feedback-msg');
+
+    resultBox.style.display = 'block';
+    scoreText.textContent = score;
+
+    const rate = (score / totalMarks) * 100;
+    if (rate === 100) {
+      feedback.textContent = '🌟 太棒了！25 分滿分！冠詞用法完全正確！';
+      feedback.style.color = '#15803d';
+    } else if (rate >= 80) {
+      feedback.textContent = '👍 表現優秀！請查看紅色標記的個別失分題目。';
+      feedback.style.color = '#1d4ed8';
+    } else {
+      feedback.textContent = '💪 繼續加油！請查看紅色錯誤題目並複習下方規則。';
+      feedback.style.color = '#b91c1c';
+    }
+
+    resultBox.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function resetExam() {
+    const selects = document.querySelectorAll('select.form-select');
+    selects.forEach(sel => {
+      sel.value = '';
+      sel.className = 'form-select q-field';
+    });
+
+    const hints = document.querySelectorAll('.hint-badge');
+    hints.forEach(h => {
+      h.style.display = 'none';
+      h.textContent = '';
+    });
+
+    document.getElementById('result-panel').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
