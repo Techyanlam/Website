@@ -9,12 +9,13 @@ import re
 import sys
 import urllib.request
 import urllib.error
+import time
 
 APP_TOKEN = "SWSQbZibjaHSTqsWlbqlB4sHg9e"
-TABLE_ID = "tbl2NPtT6FOlV9LH"
+TABLE_ID = "tblmmHsnTTzufnUq"  # Outbound Record
 API_ENDPOINT = "https://open.larksuite.com/open-apis"
 APP_ID = os.environ.get("LARK_APP_ID", "")
-APP_SECRET = os.environ.get("LARK_APP_SECRET", "")
+APP_SECRET = ***"LARK_APP_SECRET", "")
 
 
 def get_access_token():
@@ -27,7 +28,7 @@ def get_access_token():
         method="POST",
     )
     try:
-        with urllib.request.urlopen(req) as resp:
+        with urllib.request.urlopen(req, timeout=15) as resp:
             data = json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         print(f"Token request failed: {e.code} {e.read().decode()}")
@@ -46,7 +47,7 @@ def fetch_base_records(token):
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
     while True:
-        params = "page_size=100"
+        params = "page_size=50"
         if page_token:
             params += f"&page_token={page_token}"
 
@@ -54,7 +55,7 @@ def fetch_base_records(token):
         req = urllib.request.Request(url, headers=headers)
 
         try:
-            with urllib.request.urlopen(req) as resp:
+            with urllib.request.urlopen(req, timeout=30) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
             print(f"Records request failed: {e.code} {e.read().decode()}")
@@ -70,6 +71,7 @@ def fetch_base_records(token):
         if not data.get("data", {}).get("has_more"):
             break
         page_token = data["data"].get("page_token")
+        time.sleep(0.5)
 
     return all_records
 
@@ -82,10 +84,14 @@ def convert_record(record):
             return field[0].get("text", "")
         return str(field) if field else ""
 
+    addr = get_text(fields.get("送貨地址", ""))
+    if not addr:
+        addr = get_text(fields.get("Location", ""))
+
     return {
-        "docNumber": get_text(fields.get("Doc Number", "")),
+        "docNumber": get_text(fields.get("HKSLI no", "")),
         "customerName": get_text(fields.get("Customer Name", "")),
-        "shipToAddress": get_text(fields.get("Ship-to Address", "")),
+        "shipToAddress": addr,
         "contactName": get_text(fields.get("Contact Name", "")),
         "status": get_text(fields.get("Status", "")),
     }
@@ -95,10 +101,10 @@ def main():
     print("Starting sync from Lark Base...")
 
     if not APP_ID or not APP_SECRET:
-        print("Error: LARK_APP_ID and LARK_APP_SECRET must be set")
+        ***"Error: LARK_APP_ID and LARK_APP_SECRET must be set")
         sys.exit(1)
 
-    token = get_access_token()
+    token=***
     print("Access token obtained")
 
     records = fetch_base_records(token)
@@ -111,7 +117,7 @@ def main():
         json.dump(records_data, f, ensure_ascii=False, indent=2)
     print("Saved lark_shipment_data.json")
 
-    # Update HTML - inject data into localStorage initialization
+    # Update HTML
     html_file = "UPGLShipmentlabel.html"
     if not os.path.exists(html_file):
         print(f"Error: {html_file} not found")
@@ -123,7 +129,6 @@ def main():
     # Replace or add embedded data
     embedded_data = f"const LARK_EMBEDDED_DATA = {json.dumps(records_data, ensure_ascii=False)};"
     
-    # Check if LARK_EMBEDDED_DATA already exists
     if "const LARK_EMBEDDED_DATA" in html_content:
         html_content = re.sub(
             r"const LARK_EMBEDDED_DATA = \[[\s\S]*?\];",
@@ -132,23 +137,21 @@ def main():
             count=1,
         )
     else:
-        # Add before the first script tag
         html_content = html_content.replace(
             "<script>",
             f"<script>\n        {embedded_data}\n",
             1,
         )
 
-    # Update localStorage initialization to use embedded data
+    # Update localStorage initialization
     init_code = """
         // Auto-load embedded data on page load
         if (typeof LARK_EMBEDDED_DATA !== 'undefined' && LARK_EMBEDDED_DATA.length > 0) {
             localStorage.setItem('lark_shipment_data', JSON.stringify(LARK_EMBEDDED_DATA));
-            console.log(`已載入 ${LARK_EMBEDDED_DATA.length} 筆 Lark 記錄`);
+            console.log(\`已載入 \${LARK_EMBEDDED_DATA.length} 筆 Lark 記錄\`);
         }
     """
     
-    # Replace existing load code or add new
     if "// Auto-load embedded data on page load" in html_content:
         html_content = re.sub(
             r"// Auto-load embedded data on page load[\s\S]*?console\.log\([^)]+\);\s*\}",
@@ -156,7 +159,6 @@ def main():
             html_content,
         )
     else:
-        # Add before closing </script>
         html_content = html_content.replace(
             "</script>",
             f"{init_code}\n    </script>",
