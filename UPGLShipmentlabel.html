@@ -12,9 +12,10 @@
         input { width: 250px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size:14px; }
         button { padding:10px 24px; font-size:15px; background:#0055aa; color:#fff; border:none; border-radius:6px; cursor:pointer; margin-top:10px; }
         
-        /* 同步按鈕樣式 */
+        /* 同步查詢按鈕樣式 */
         .sync-btn { background: #00b96b; margin-left: 10px; padding: 8.5px 15px; font-size: 14px; margin-top: 0; }
         .sync-btn:hover { background: #009959; }
+        .sync-btn:disabled { background: #cccccc; cursor: not-allowed; }
 
         /* 螢幕預覽樣式 */
         .label-card { 
@@ -58,7 +59,7 @@
         <div class="field-row">
             <label>Doc Number：</label>
             <input id="in-doc" value="HKLSI26050656" oninput="updateLabel()">
-            <button class="sync-btn" onclick="fetchFromLark()">從 Bitable 帶入</button>
+            <button class="sync-btn" onclick="fetchFromLark()" id="syncBtn">同步查詢</button>
         </div>
         <div class="field-row">
             <label>Customer Name：</label>
@@ -111,7 +112,7 @@
             appId: 'cli_a96b10951bf89ed0',
             appSecret: '34NBHvmXmqVXZWlSlyCeCo0AATiSp7lh', 
             appToken: 'SWSQbZibjaHSTqsWlbqlB4sHg9e', 
-            tableId: 'tblYourTableIdHere', // ⚠️ 唯一需要您手動補上的欄位：Bitable 的 Table ID
+            tableId: 'tblYourTableIdHere', // ⚠️ 必須填入 Bitable 的 Table ID
             apiBaseUrl: 'https://open.larksuite.com/open-apis' 
         };
 
@@ -140,8 +141,9 @@
             const docNo = document.getElementById('in-doc').value.trim();
             if (!docNo) return alert("請先輸入 Doc Number");
 
-            const btn = document.querySelector('.sync-btn');
-            btn.innerText = "讀取中...";
+            const btn = document.getElementById('syncBtn');
+            btn.innerText = "查詢中...";
+            btn.disabled = true;
             
             try {
                 const token = await getTenantAccessToken();
@@ -166,15 +168,16 @@
                     if (fields["Ship-to Address"]) document.getElementById('in-addr').value = fields["Ship-to Address"];
                     if (fields["Contact Name"]) document.getElementById('in-contact').value = fields["Contact Name"];
                     updateLabel();
-                    alert("已成功從 Bitable 帶入資料！");
+                    alert("已成功同步 Bitable 資料！");
                 } else {
                     alert("找不到對應的 Doc Number 資料，請確認紀錄是否存在。");
                 }
             } catch (err) {
-                alert("同步失敗，請檢查開發者後台權限設定、Table ID 或跨域 (CORS) 設定。");
+                alert("同步失敗，請檢查 API 權限、Table ID 或是 CORS 設定。");
                 console.error(err);
             } finally {
-                btn.innerText = "從 Bitable 帶入";
+                btn.innerText = "同步查詢";
+                btn.disabled = false;
             }
         }
 
