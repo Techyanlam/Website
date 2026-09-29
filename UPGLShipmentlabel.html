@@ -6,10 +6,15 @@
     <script src="https://unpkg.com/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
     <style>
         body { font-family: Arial, "Microsoft JhengHei", sans-serif; padding: 20px; margin:0; }
-        .input-section { margin-bottom: 30px; padding: 20px; border: 1px dashed #ccc; background: #f9f9f9; max-width: 550px; }
-        .field-row { margin: 12px 0; }
-        input { width: 320px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size:14px; }
-        button { padding:12px 28px; font-size:16px; background:#0055aa; color:#fff; border:none; border-radius:6px; cursor:pointer; margin-top:10px; }
+        .input-section { margin-bottom: 30px; padding: 20px; border: 1px dashed #ccc; background: #f9f9f9; max-width: 600px; }
+        .field-row { margin: 12px 0; display: flex; align-items: center; }
+        .field-row label { width: 140px; font-weight: bold; }
+        input { width: 250px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size:14px; }
+        button { padding:10px 24px; font-size:15px; background:#0055aa; color:#fff; border:none; border-radius:6px; cursor:pointer; margin-top:10px; }
+        
+        /* 同步按鈕樣式 */
+        .sync-btn { background: #00b96b; margin-left: 10px; padding: 8.5px 15px; font-size: 14px; margin-top: 0; }
+        .sync-btn:hover { background: #009959; }
 
         /* 螢幕預覽樣式 */
         .label-card { 
@@ -19,131 +24,29 @@
             background:#fff;
             box-sizing:border-box;
         }
-        .labware-logo { 
-            width: 20%;
-            height:auto; 
-            display:block; 
-            margin-bottom:12px; 
-        }
-        .label-line { 
-            margin:10px 0; 
-            display:flex; 
-            align-items:flex-start; 
-            gap:12px;
-        }
-        .label-title { 
-            font-size:18px; 
-            min-width:160px; 
-            font-weight:bold;
-            flex-shrink:0;
-            padding-top: 2px;
-        }
-        #out-name {
-            font-size: 13px;
-            flex: 1;
-            word-break: break-word;
-            overflow: hidden;
-            line-height: 1.2;
-            max-height: 2.4em;
-        }
-        .doc-box {
-            border:2px solid #000;
-            padding:8px 14px;
-            font-size:32px;
-            font-weight:bold;
-            flex:1;
-            text-align:center;
-        }
-        #barcode { 
-            width:75%; 
-            height:60px; 
-            margin:8px auto;
-            display:block;
-        }
-        .addr-box {
-            border:2px solid #000;
-            padding:8px 14px;
-            font-size:28px;
-            flex:1;
-            word-break: break-word;
-        }
-        .contact-box { 
-            border:none; 
-            font-size:30px; 
-            font-weight:bold; 
-            flex:1;
-        }
+        .labware-logo { width: 20%; height:auto; display:block; margin-bottom:12px; }
+        .label-line { margin:10px 0; display:flex; align-items:flex-start; gap:12px; }
+        .label-title { font-size:18px; min-width:160px; font-weight:bold; flex-shrink:0; padding-top: 2px; }
+        #out-name { font-size: 13px; flex: 1; word-break: break-word; overflow: hidden; line-height: 1.2; max-height: 2.4em; }
+        .doc-box { border:2px solid #000; padding:8px 14px; font-size:32px; font-weight:bold; flex:1; text-align:center; }
+        #barcode { width:75%; height:60px; margin:8px auto; display:block; }
+        .addr-box { border:2px solid #000; padding:8px 14px; font-size:28px; flex:1; word-break: break-word; }
+        .contact-box { border:none; font-size:30px; font-weight:bold; flex:1; }
 
         /* 85×60mm 列印樣式 */
         @media print {
             .input-section { display:none !important; }
-            @page {
-                size: 85mm 60mm;
-                margin: 0;
-                scale: 1;
-            }
+            @page { size: 85mm 60mm; margin: 0; scale: 1; }
             html, body { margin:0; padding:0; height:100%; }
-            .label-card {
-                width: 85mm;
-                height: 60mm;
-                border: 1px solid #000 !important;
-                padding: 4mm !important;
-                box-sizing: border-box;
-                overflow: hidden !important;
-            }
-            .labware-logo { 
-                width: 19% !important;
-                height:auto !important;
-                margin-bottom: 2mm !important;
-                display:block;
-            }
-            .label-line { 
-                margin: 1.2mm 0 !important; 
-                gap: 2.5mm;
-                display:flex;
-                align-items:flex-start;
-            }
-            .label-title { 
-                font-size: 10pt !important; 
-                min-width: 26mm; 
-                flex-shrink:0;
-                font-weight:bold;
-                padding-top: 1pt;
-            }
-            #out-name {
-                font-size: 6pt !important;
-                flex: 1 !important;
-                word-break: break-word !important;
-                overflow: hidden !important;
-                line-height: 1.2 !important;
-                max-height: 2.4em !important;
-            }
-            .doc-box {
-                border: 1.5px solid #000;
-                padding: 0.8mm 2mm !important;
-                font-size: 13pt !important;
-                font-weight:bold;
-                flex:1;
-                text-align:center;
-            }
-            #barcode { 
-                height: 11mm !important; 
-                width: 78% !important;
-                margin: 1mm auto !important; 
-                display:block;
-            }
-            .addr-box {
-                border: 1px solid #000;
-                padding: 0.8mm 2mm !important;
-                font-size: 11pt !important;
-                flex:1;
-                word-break: break-word !important;
-            }
-            .contact-box { 
-                font-size: 12pt !important; 
-                font-weight:bold; 
-                flex:1;
-            }
+            .label-card { width: 85mm; height: 60mm; border: 1px solid #000 !important; padding: 4mm !important; box-sizing: border-box; overflow: hidden !important; }
+            .labware-logo { width: 19% !important; height:auto !important; margin-bottom: 2mm !important; display:block; }
+            .label-line { margin: 1.2mm 0 !important; gap: 2.5mm; display:flex; align-items:flex-start; }
+            .label-title { font-size: 10pt !important; min-width: 26mm; flex-shrink:0; font-weight:bold; padding-top: 1pt; }
+            #out-name { font-size: 6pt !important; flex: 1 !important; word-break: break-word !important; overflow: hidden !important; line-height: 1.2 !important; max-height: 2.4em !important; }
+            .doc-box { border: 1.5px solid #000; padding: 0.8mm 2mm !important; font-size: 13pt !important; font-weight:bold; flex:1; text-align:center; }
+            #barcode { height: 11mm !important; width: 78% !important; margin: 1mm auto !important; display:block; }
+            .addr-box { border: 1px solid #000; padding: 0.8mm 2mm !important; font-size: 11pt !important; flex:1; word-break: break-word !important; }
+            .contact-box { font-size: 12pt !important; font-weight:bold; flex:1; }
         }
     </style>
 </head>
@@ -151,13 +54,29 @@
     <!-- 輸入面板 -->
     <div class="input-section">
         <h3>物流標籤資料填寫</h3>
-        <div class="field-row">Customer Name：<input id="in-name" oninput="updateLabel()" placeholder="客戶名稱"></div>
-        <div class="field-row">Doc Number：<input id="in-doc" value="HKLSI26050656" oninput="updateLabel()"></div>
-        <div class="field-row">Ship-to Address：<input id="in-addr" value="九龍-理大" oninput="updateLabel()"></div>
-        <div class="field-row">Contact Name：<input id="in-contact" value="Ken Chan" oninput="updateLabel()"></div>
-        <button onclick="generateAndPrint()">生成並列印標籤</button>
+        
+        <div class="field-row">
+            <label>Doc Number：</label>
+            <input id="in-doc" value="HKLSI26050656" oninput="updateLabel()">
+            <button class="sync-btn" onclick="fetchFromLark()">從 Bitable 帶入</button>
+        </div>
+        <div class="field-row">
+            <label>Customer Name：</label>
+            <input id="in-name" oninput="updateLabel()" placeholder="客戶名稱">
+        </div>
+        <div class="field-row">
+            <label>Ship-to Address：</label>
+            <input id="in-addr" value="九龍-理大" oninput="updateLabel()">
+        </div>
+        <div class="field-row">
+            <label>Contact Name：</label>
+            <input id="in-contact" value="Ken Chan" oninput="updateLabel()">
+        </div>
+        
+        <button onclick="generateAndPrint()">生成並列印標籤 (同時回寫紀錄)</button>
     </div>
 
+    <!-- 標籤預覽 -->
     <div class="label-card" id="label">
         <img src="Image.png" class="labware-logo" alt="LABWARE GROUP To be your partner in laboratory">
 
@@ -185,6 +104,109 @@
     </div>
 
     <script>
+        // ==========================================
+        // Lark Bitable 整合設定區
+        // ==========================================
+        const LARK_CONFIG = {
+            appId: 'cli_a96b10951bf89ed0',
+            appSecret: '34NBHvmXmqVXZWlSlyCeCo0AATiSp7lh', 
+            appToken: 'SWSQbZibjaHSTqsWlbqlB4sHg9e', 
+            tableId: 'tblYourTableIdHere', // ⚠️ 唯一需要您手動補上的欄位：Bitable 的 Table ID
+            apiBaseUrl: 'https://open.larksuite.com/open-apis' 
+        };
+
+        // 取得 Tenant Access Token
+        async function getTenantAccessToken() {
+            try {
+                const response = await fetch(`${LARK_CONFIG.apiBaseUrl}/auth/v3/tenant_access_token/internal`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        app_id: LARK_CONFIG.appId,
+                        app_secret: LARK_CONFIG.appSecret
+                    })
+                });
+                const data = await response.json();
+                if (data.code !== 0) throw new Error(data.msg);
+                return data.tenant_access_token;
+            } catch (error) {
+                console.error("Token 獲取失敗:", error);
+                throw error;
+            }
+        }
+
+        // 從 Bitable 讀取資料
+        async function fetchFromLark() {
+            const docNo = document.getElementById('in-doc').value.trim();
+            if (!docNo) return alert("請先輸入 Doc Number");
+
+            const btn = document.querySelector('.sync-btn');
+            btn.innerText = "讀取中...";
+            
+            try {
+                const token = await getTenantAccessToken();
+                const response = await fetch(`${LARK_CONFIG.apiBaseUrl}/bitable/v1/apps/${LARK_CONFIG.appToken}/tables/${LARK_CONFIG.tableId}/records/search`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        filter: {
+                            conjunction: "and",
+                            conditions: [{ field_name: "Doc Number", operator: "is", value: [docNo] }]
+                        }
+                    })
+                });
+                
+                const result = await response.json();
+                if (result.code === 0 && result.data.items && result.data.items.length > 0) {
+                    const fields = result.data.items[0].fields;
+                    if (fields["Customer Name"]) document.getElementById('in-name').value = fields["Customer Name"];
+                    if (fields["Ship-to Address"]) document.getElementById('in-addr').value = fields["Ship-to Address"];
+                    if (fields["Contact Name"]) document.getElementById('in-contact').value = fields["Contact Name"];
+                    updateLabel();
+                    alert("已成功從 Bitable 帶入資料！");
+                } else {
+                    alert("找不到對應的 Doc Number 資料，請確認紀錄是否存在。");
+                }
+            } catch (err) {
+                alert("同步失敗，請檢查開發者後台權限設定、Table ID 或跨域 (CORS) 設定。");
+                console.error(err);
+            } finally {
+                btn.innerText = "從 Bitable 帶入";
+            }
+        }
+
+        // 將列印紀錄寫入 Bitable
+        async function pushToLark() {
+            try {
+                const token = await getTenantAccessToken();
+                await fetch(`${LARK_CONFIG.apiBaseUrl}/bitable/v1/apps/${LARK_CONFIG.appToken}/tables/${LARK_CONFIG.tableId}/records`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fields: {
+                            "Customer Name": document.getElementById('in-name').value,
+                            "Doc Number": document.getElementById('in-doc').value,
+                            "Ship-to Address": document.getElementById('in-addr').value,
+                            "Contact Name": document.getElementById('in-contact').value,
+                            "Status": "Printed" 
+                        }
+                    })
+                });
+                console.log("成功寫入列印紀錄至 Bitable");
+            } catch (err) {
+                console.error("寫入 Bitable 失敗:", err);
+            }
+        }
+
+        // ==========================================
+        // 原有標籤渲染與列印邏輯
+        // ==========================================
         function updateLabel() {
             let name = document.getElementById('in-name').value || "-";
             let docNo = document.getElementById('in-doc').value || "HKLSI26050656";
@@ -207,8 +229,10 @@
 
         function generateAndPrint() {
             updateLabel();
+            pushToLark(); 
             setTimeout(()=> window.print(), 400);
         }
+        
         updateLabel();
     </script>
 </body>
