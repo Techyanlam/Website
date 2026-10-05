@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whale's Capital Company Limited</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Noto Sans HK, sans-serif;
+        }
+        body {
+            color: #222;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* 語言切換列 */
+        .lang-bar {
+            background: #0f2137;
+            padding:10px 0;
+            text-align:right;
+        }
+        .lang-btn {
+            background:transparent;
+            border:1px solid #fff;
+            color:#fff;
+            padding:6px 14px;
+            margin:0 4px;
+            border-radius:6px;
+            cursor:pointer;
+            font-size:14px;
+        }
+        .lang-btn.active {
+            background:#4cc9f0;
+            border-color:#4cc9f0;
+            color:#000;
+        }
+        header {
+            background: linear-gradient(rgba(15,33,55,0.85), rgba(15,33,55,0.85)),
+                        url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+        header p {
+            opacity: 0.9;
+            font-size: 18px;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+        nav {
+            background: #1a304b;
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        nav ul {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        nav a:hover {
+            color: #4cc9f0;
+        }
+        section {
+            padding: 60px 0;
+        }
+        .bg-white {
+            background: #ffffff;
+        }
+        h2 {
+            font-size: 28px;
+            color: #0f2137;
+            margin-bottom: 20px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+        .img-box {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(15,33,55,0.12);
+        }
+        .img-box img {
+            width: 100%;
+            height: 340px;
+            object-fit: cover;
+            display: block;
+        }
+        .card-wrap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+        .card {
+            background: #fff;
+            padding: 28px;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .card h3 {
+            margin-bottom: 12px;
+            color: #1a304b;
+        }
+        .asset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .asset-card {
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+        .asset-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .asset-card .asset-body {
+            padding: 18px;
+        }
+        .asset-card h4 {
+            margin-bottom: 8px;
+            color: #0f2137;
+        }
+        .partner-section {
+            background: linear-gradient(rgba(15,33,55,0.85), rgba(15,33,55,0.85)),
+                        url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            color: white;
+        }
+        .partner-section h2 {
+            color: white;
+        }
+        .contact-box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .btn-book {
+            display:inline-block;
+            margin-top:20px;
+            background:#4cc9f0;
+            color:#0f2137;
+            padding:12px 24px;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:bold;
+        }
+        .btn-book:hover {
+            background:#38b0d8;
+        }
+        footer {
+            background: #0a1624;
+            color: #aaa;
+            text-align: center;
+            padding: 30px 0;
+            font-size: 14px;
+        }
+        /* 英文內容預設隱藏 */
+        .en { display:none; }
+        .zh { display:block; }
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            header {
+                padding: 60px 0;
+            }
+            header h1 {
+                font-size: 28px;
+            }
+            nav ul {
+                gap:16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 語言切換 -->
+    <div class="lang-bar">
+        <div class="container">
+            <button class="lang-btn active" onclick="switchLang('zh')">繁體中文</button>
+            <button class="lang-btn" onclick="switchLang('en')">English</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="zh">
+                <h1>Whale's Capital Company Limited</h1>
+                <p>商務轉介服務平台，為合作夥伴提供經核實的高價值商機，協助業務增長</p>
+            </div>
+            <div class="en">
+                <h1>Whale's Capital Company Limited</h1>
+                <p>Referral Service Provider for Business Partners. We deliver verified high-value deal opportunities to help scale your business.</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li class="zh"><a href="#about">關於我們</a></li>
+                <li class="en"><a href="#about">About Us</a></li>
+                <li class="zh"><a href="#service">我們的服務</a></li>
+                <li class="en"><a href="#service">Our Service</a></li>
+                <li class="zh"><a href="#assets">商機覆蓋範圍</a></li>
+                <li class="en"><a href="#assets">Business Opportunities</a></li>
+                <li class="zh"><a href="#benefits">合作優勢</a></li>
+                <li class="en"><a href="#benefits">Your Benefits</a></li>
+                <li class="zh"><a href="#partner">轉介夥伴網絡</a></li>
+                <li class="en"><a href="#partner">Referral Partner Network</a></li>
+                <li class="zh"><a href="#contact">聯絡我們</a></li>
+                <li class="en"><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="about" class="bg-white">
+        <div class="container">
+            <div class="grid-2">
+                <div>
+                    <div class="zh">
+                        <h2>關於我們</h2>
+                        <p>Whale's Capital Company Limited 是專業商務轉介服務供應商，為合作夥伴配對優質商業機會。</p>
+                        <br>
+                        <p>我們搜集並篩選各行各業的合適商機，涵蓋飛機買賣、藝術品與收藏品、保險業務、AI項目、物業、供應鏈貿易、酒店旅遊、可再生能源、醫療健康及特許經營。</p>
+                        <p>透過多個渠道收集潛在項目，完成初步資料核實，過濾低質素線索。我們的核心目標，是將經驗證、可行的商機交到夥伴手上，讓你毋須耗費大量前期功夫尋找項目。</p>
+                    </div>
+                    <div class="en">
+                        <h2>About Us</h2>
+                        <p>Whale's Capital Company Limited is a specialist referral service provider, connecting quality deal opportunities to our business partners.</p>
+                        <br>
+                        <p>We source and screen qualified business opportunities across multiple sectors, including aircraft trading, fine art & collectibles, insurance, AI projects, real estate, supply chain, hospitality, renewable energy, healthcare and franchise business.</p>
+                        <p>We gather potential deals through multiple channels, complete initial verification and filter out low-quality leads. Our core mission is to hand over verified, viable opportunities for our partners to grow and expand their business without heavy upfront legwork.</p>
+                    </div>
+                </div>
+                <div class="img-box">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80" alt="商務合作">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="service">
+        <div class="container">
+            <div class="zh">
+                <h2>我們的服務</h2>
+                <p>我們負責尋找、篩選及核實商業線索，再轉介給貴公司。我們的角色是提供可信商機，讓貴團隊專注洽談、磋商同促成交易，而唔使花大量時間搜尋同初審客戶。</p>
+                <div class="card-wrap">
+                    <div class="card">
+                        <h3>穩定商機管道</h3>
+                        <p>透過主動開發同轉介夥伴網絡，持續提供經核實的商業線索。</p>
+                    </div>
+                    <div class="card">
+                        <h3>跨行業多元商機</h3>
+                        <p>商機涵蓋航空、藝術、保險、AI、物業、供應鏈、酒店旅遊、可再生能源、醫療健康、特許經營等項目。</p>
+                    </div>
+                    <div class="card">
+                        <h3>簡易合作模式</h3>
+                        <p>直接獲得可跟進商機，無需自行處理繁複的客戶開發與篩選工作。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="en">
+                <h2>Our Service For Your Business</h2>
+                <p>We source and screen qualified deal leads and deliver them to your organisation. Our role is to bring credible opportunities, so your team can focus on negotiation, deal closing and profit generation instead of spending time searching and qualifying leads.</p>
+                <div class="card-wrap">
+                    <div class="card">
+                        <h3>Stable Deal Pipeline</h3>
+                        <p>We combine direct outreach and our referral partner network to maintain a continuous flow of verified leads for your business.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Diversified Business Sectors</h3>
+                        <p>Opportunities cover aviation, art, insurance, AI, real estate, supply chain, hospitality, renewable energy, healthcare and franchise projects.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Hassle-Free Cooperation</h3>
+                        <p>You receive ready-to-use business opportunities without managing complex lead sourcing work.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="assets" class="bg-white">
+        <div class="container">
+            <div class="grid-2">
+                <div class="img-box">
+                    <img src="https://images.unsplash.com/photo-1540962351504-03099e0a754b?auto=format&fit=crop&w=1200&q=80" alt="各行業商機">
+                </div>
+                <div>
+                    <div class="zh">
+                        <h2>商機覆蓋範圍</h2>
+                        <p>拓展業務，獲得原有渠道以外的商業機會。</p>
+                        <br>
+                        <p>我們為貴公司配對不同市場的合適對象，由大型資產交易，到一般日常商業項目都有。</p>
+                    </div>
+                    <div class="en">
+                        <h2>Business Opportunity Coverage</h2>
+                        <p>Expand your portfolio with business opportunities beyond your existing channels.</p>
+                        <br>
+                        <p>We match your organisation with qualified prospects across many different markets, from large asset transactions to everyday commercial projects.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="asset-grid">
+                <div class="asset-card">
+                    <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80" alt="飛機買賣">
+                    <div class="asset-body">
+                        <div class="zh"><h4>飛機買賣</h4><p>為合作夥伴提供高價值航空資產交易機會。</p></div>
+                        <div class="en"><h4>Aircraft Trading</h4><p>High-value aviation asset opportunities for our business partners.</p></div>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <img src="https://images.unsplash.com/photo-1578321272176-b7bbc0679853?auto=format&fit=crop&w=800&q=80" alt="藝術品及收藏品">
+                    <div class="asset-body">
+                        <div class="zh"><h4>藝術品及收藏品</h4><p>畫作與高端收藏品相關轉介商機。</p></div>
+                        <div class="en"><h4>Fine Art & Collectibles</h4><p>Referral opportunities for paintings and premium collectible assets.</p></div>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80" alt="保險業務">
+                    <div class="asset-body">
+                        <div class="zh"><h4>保險業務</h4><p>向合作夥伴提供商業保險相關商機。</p></div>
+                        <div class="en"><h4>Insurance Business</h4><p>Commercial insurance related business opportunities for partners.</p></div>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80" alt="AI項目">
+                    <div class="asset-body">
+                        <div class="zh"><h4>AI項目</h4><p>人工智能技術及數碼項目合作機會。</p></div>
+                        <div class="en"><h4>AI Projects</h4><p>AI technology and digital project cooperation opportunities.</p></div>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80" alt="物業">
+                    <div class="asset-body">
+                        <div class="zh"><h4>物業</h4><p>商廈、住宅及土地交易機會。</p></div>
+                        <div class="en"><h4>Real Estate</h4><p>Commercial, residential and land transaction opportunities.</p></div>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80" alt="供應鏈貿易">
+                    <div class="asset-body">
+                        <div class="zh"><h4>供應鏈及貿易</h4><p>環球貨品貿易與供應鏈合作機會。</p></div>
+                        <div class="en"><h4>Supply Chain & Trading</h4><p>Global goods trading and supply chain partnership opportunities.</p></div>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <img src="https://images.unsplash.com/photo-1596443686262-302239f0aef4?auto=format&fit=crop&w=800&q=80" alt="酒店旅遊">
+                    <div class="asset-body">
+                        <div class="zh"><h4>酒店及旅遊</h4><p>酒店、度假村及旅遊相關商業項目。</p></div>
+                        <div class="en"><h4>Hospitality & Tourism</h4><p>Hotel, resort and tourism related business projects.</p></div>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=800&q=80" alt="可再生能源">
+                    <div class="asset-body">
+                        <div class="zh"><h4>可再生能源</h4><p>太陽能、風能等清潔能源投資及合作項目。</p></div>
+                        <div class="en"><h4>Renewable Energy</h4><p>Solar, wind and clean energy investment & cooperation projects.</p></div>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80" alt="醫療健康">
+                    <div class="asset-body">
+                        <div class="zh"><h4>醫療健康</h4><p>醫療設施、健康服務及生物科技商機。</p></div>
+                        <div class="en"><h4>Healthcare & Medical</h4><p>Medical facilities, health service and biotech business opportunities.</p></div>
+                    </div>
+                </div>
+                <div class="asset-card">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=800&q=80" alt="特許經營">
+                    <div class="asset-body">
+                        <div class="zh"><h4>特許經營</h4><p>零售及服務行業加盟合作機會。</p></div>
+                        <div class="en"><h4>Franchise Business</h4><p>Retail and service franchise partnership opportunities.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="benefits">
+        <div class="container">
+            <div class="grid-2">
+                <div>
+                    <div class="zh">
+                        <h2>合作優勢</h2>
+                        <ul style="padding-left:20px; font-size:17px;">
+                            <li>持續獲得多個行業、經過初步核實的商業機會</li>
+                            <li>節省業務開發時間，減少市場推廣成本</li>
+                            <li>打開全新市場，涵蓋航空、藝術、保險、AI、物業、供應鏈、酒店旅遊、可再生能源、醫療健康、特許經營</li>
+                            <li>商機預先篩選，降低風險，過濾虛假同低質查詢</li>
+                            <li>突破原有行業圈子，獲得跨領域合作機會</li>
+                            <li>無需投入龐大前置推廣預算去尋找新項目</li>
+                            <li>合作條款彈性，不會被長期合約綁死</li>
+                            <li>團隊資源集中放喺洽談同促成交易，不用浪費時間搜尋線索</li>
+                        </ul>
+                    </div>
+                    <div class="en">
+                        <h2>Your Benefits as Our Business Partner</h2>
+                        <ul style="padding-left:20px; font-size:17px;">
+                            <li>Continuous, pre-verified business opportunities across multiple sectors</li>
+                            <li>Cut down your business development time and marketing cost</li>
+                            <li>Access new markets including aviation, art, insurance, AI, real estate, supply chain, hospitality, renewable energy, healthcare and franchise</li>
+                            <li>Reduce risk by receiving pre-screened leads; filter out fake or low-quality enquiries</li>
+                            <li>Break your existing industry boundary and gain cross-sector cooperation chances</li>
+                            <li>No heavy upfront marketing spend required to source new deals</li>
+                            <li>Flexible partnership terms, no long-term binding contracts</li>
+                            <li>Focus your team resources on negotiation and deal closing, not lead hunting</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="img-box">
+                    <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1200&q=80" alt="業務增長">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="partner" class="partner-section">
+        <div class="container">
+            <div class="grid-2">
+                <div class="img-box">
+                    <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80" alt="轉介夥伴會面">
+                </div>
+                <div>
+                    <div class="zh">
+                        <h2>轉介夥伴網絡</h2>
+                        <p>我們建立高質素轉介網絡，聯繫各行業具信譽及影響力的專業人士。</p>
+                        <br>
+                        <p>轉介夥伴會向 Whale's Capital 提供真實客戶線索，擴大可供合作夥伴選擇嘅商機庫。</p>
+                        <p>我們持續豐富商機管道，為經紀、業務開發人員及貿易機構帶來更多優質項目。</p>
+                    </div>
+                    <div class="en">
+                        <h2>Referral Partner Network</h2>
+                        <p>We build a high-calibre referral network with reputable, influential industry professionals.</p>
+                        <br>
+                        <p>Referral partners introduce valid client leads to Whale's Capital. This expands our pool of deal opportunities for our business partners.</p>
+                        <p>We continuously enrich our deal pipeline to bring more quality opportunities to branders, brokers and trading institutions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2 class="zh">聯絡我們</h2>
+            <h2 class="en">Contact Us</h2>
+            <div class="contact-box">
+                <div class="zh">
+                    <p><strong>公司名稱：</strong>Whale's Capital Company Limited</p>
+                    <p><strong>聯絡人：</strong>[待填寫]</p>
+                    <p><strong>電郵：</strong>[待填寫]</p>
+                    <p><strong>電話：</strong>[待填寫]</p>
+                    <p><strong>地址：</strong>[待填寫]</p>
+                    <br>
+                    <p>如你是業務開發、經紀或貿易機構，歡迎聯絡我們，商討合作方案。</p>
+                    <a href="#" class="btn-book">預約諮詢</a>
+                </div>
+                <div class="en">
+                    <p><strong>Company:</strong>Whale's Capital Company Limited</p>
+                    <p><strong>Contact Person:</strong>[To be filled]</p>
+                    <p><strong>Email:</strong>[To be filled]</p>
+                    <p><strong>Phone:</strong>[To be filled]</p>
+                    <p><strong>Address:</strong>[To be filled]</p>
+                    <br>
+                    <p>If you are a business developer, broker or trading institution, please contact us to discuss partnership options.</p>
+                    <a href="#" class="btn-book">Book a Consultation</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="zh"><p>© Whale's Capital Company Limited 保留所有權利</p></div>
+            <div class="en"><p>© Whale's Capital Company Limited. All rights reserved.</p></div>
+        </div>
+    </footer>
+
+    <script>
+        function switchLang(lang) {
+            const zhList = document.querySelectorAll('.zh');
+            const enList = document.querySelectorAll('.en');
+            const btnZh = document.querySelector('.lang-btn:nth-child(1)');
+            const btnEn = document.querySelector('.lang-btn:nth-child(2)');
+            if(lang === 'zh'){
+                zhList.forEach(el=>el.style.display='block');
+                enList.forEach(el=>el.style.display='none');
+                btnZh.classList.add('active');
+                btnEn.classList.remove('active');
+            }else{
+                zhList.forEach(el=>el.style.display='none');
+                enList.forEach(el=>el.style.display='block');
+                btnZh.classList.remove('active');
+                btnEn.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
+<!-- (註：內容由 AI 生成) -->
