@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -183,10 +183,17 @@
             padding: 30px 0;
             font-size: 14px;
         }
-        /* 創辦人介紹 */
-        .founder-photo img {
-            height: 300px;
-            object-position: top;
+        /* 創辦人介紹：半身相 */
+        .img-box.founder-photo {
+            max-width: 380px;
+            aspect-ratio: 4 / 5;
+            margin: 0 auto;
+        }
+        .img-box.founder-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
         }
         .cred-list {
             padding-left: 20px;
@@ -203,9 +210,9 @@
             color: #1a304b;
             margin-bottom: 12px;
         }
-        /* 英文內容預設隱藏 */
-        .en { display:none; }
-        .zh { display:block; }
+        /* 預設顯示英文 */
+        .en { display:block; }
+        .zh { display:none; }
         @media (max-width: 768px) {
             .grid-2 {
                 grid-template-columns: 1fr;
@@ -226,8 +233,8 @@
     <!-- 語言切換 -->
     <div class="lang-bar">
         <div class="container">
-            <button class="lang-btn active" onclick="switchLang('zh')">繁體中文</button>
-            <button class="lang-btn" onclick="switchLang('en')">English</button>
+            <button id="btn-en" class="lang-btn active" onclick="switchLang('en')">English</button>
+            <button id="btn-zh" class="lang-btn" onclick="switchLang('zh')">繁體中文</button>
         </div>
     </div>
 
@@ -600,8 +607,8 @@
         function switchLang(lang) {
             const zhList = document.querySelectorAll('.zh');
             const enList = document.querySelectorAll('.en');
-            const btnZh = document.querySelector('.lang-btn:nth-child(1)');
-            const btnEn = document.querySelector('.lang-btn:nth-child(2)');
+            const btnZh = document.getElementById('btn-zh');
+            const btnEn = document.getElementById('btn-en');
             if(lang === 'zh'){
                 zhList.forEach(el=>el.style.display='block');
                 enList.forEach(el=>el.style.display='none');
