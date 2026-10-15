@@ -142,112 +142,23 @@ def find_modified_time_field(token):
     return None
 
 
-def clean_datetime_str(v):
-    """去掉尾部嘅 (GMT+8) 之類時區標記。"""
-    if not isinstance(v, str):
-        return v
-    return re.sub(r"\s*\(GMT[+-]\d+\)\s*$", "", v).strip()
-
-
-def probe_field_spec(token, field_id):
-    """探測修改時間欄嘅數值格式。
-    回傳 ("ms", None) / ("s", None) / ("str", format_string) / ("unknown", None)。
+def fetch_recently_modified(token, field_id, limit=100):
+    """用 search API 攞最近有修改嘅記錄（按修改時間倒序）。
+    唔依賴數值格式（唔使 probe），唔做 > 比較 —— 淨係要「有值」+ 排序。
+    回傳最多 limit 筆 raw records；失敗就 raise，由上層跌返全量。
     """
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-    checked = 0
-    with_value = 0
-    page_token = ""
-    for _ in range(3):  # 最多掃 300 筆
-        params = "page_size=100"
-        if page_token:
-            params += f"&page_token={page_token}"
-        url = (f"{API_ENDPOINT}/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records"
-               f"?{params}")
-        try:
-            data = request_json(url, headers=headers, timeout=30, retries=3,
-                                label="probe")
-        except SystemExit:
-            raise
-        except Exception:
-            break
-        if data.get("code") != 0:
-            break
-        items = data.get("data", {}).get("items") or []
-        for item in items:
-            checked += 1
-            v = (item.get("fields") or {}).get(field_id)
-            if v is None or v == "":
-                continue
-            with_value += 1
-            sample_info = {"raw": str(v)[:80], "pytype": type(v).__name__,
-                           "checked": checked, "with_value": with_value}
-            print(f"Probe sample raw value: {v!r} (python type: {type(v).__name__})")
-            # 1) 數字：毫秒 / 秒
-            try:
-                num = float(v)
-                if num > 0:
-                    kind = "s" if num < 1e12 else "ms"
-                    print(f"Modified-time format: numeric -> {kind}")
-                    return (kind, None, sample_info)
-            except (TypeError, ValueError):
-                pass
-            # 2) 日期字串
-            s = clean_datetime_str(v)
-            if isinstance(s, str):
-                for fmt in STR_DATETIME_FORMATS:
-                    try:
-                        datetime.strptime(s, fmt)
-                        print(f"Modified-time format: string -> {fmt!r}")
-                        return ("str", fmt, sample_info)
-                    except ValueError:
-                        continue
-            print(f"WARNING: unrecognized modified-time format: {v!r}")
-            return ("unknown", None, sample_info)
-        if not data.get("data", {}).get("has_more"):
-            break
-        page_token = data.get("data", {}).get("page_token", "")
-    print(f"Probe: {with_value}/{checked} sampled records have modified-time values; "
-          f"assuming milliseconds")
-    return ("ms", None, {"raw": None, "pytype": None,
-                         "checked": checked, "with_value": with_value})
-
-
-def build_filter(field_id, kind, detail, last_sync_ms):
-    """按探測到嘅格式起 filter；唔識就回 None。"""
-    if kind == "ms":
-        return f"CurrentValue.[{field_id}]>{last_sync_ms}"
-    if kind == "s":
-        return f"CurrentValue.[{field_id}]>{last_sync_ms // 1000}"
-    if kind == "str":
-        # 字串格式（假設係 GMT+8）；時區唔確定，overlap 放大到 12 粒鐘保險
-        overlap_ms = 12 * 3600 * 1000
-        since_dt = datetime.fromtimestamp((last_sync_ms - overlap_ms) / 1000, HKT)
-        return f"CurrentValue.[{field_id}]>\"{since_dt.strftime(detail)}\""
-    return None
-
-
-def fetch_changed_records(token, filt):
-    """用預先起好嘅 filter 拉有修改嘅記錄（分頁）。"""
-    headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-    all_records = []
-    page_token = ""
-    while True:
-        params = {"page_size": "100", "filter": filt}
-        if page_token:
-            params["page_token"] = page_token
-        url = (f"{API_ENDPOINT}/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records"
-               f"?{urllib.parse.urlencode(params)}")
-        data = request_json(url, headers=headers, timeout=30, retries=3,
-                            label=f"changed(page={bool(page_token)})")
-        if data.get("code") != 0:
-            raise RuntimeError(f"Filter API error: {data.get('msg')}")
-        items = data.get("data", {}).get("items") or []
-        all_records.extend(items)
-        if not data.get("data", {}).get("has_more"):
-            break
-        page_token = data.get("data", {}).get("page_token", "")
-        time.sleep(0.3)
-    return all_records
+    url = (f"{API_ENDPOINT}/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records/search")
+    body = {
+        "filter": f"CurrentValue.[{field_id}]!=\"\"",
+        "sort": [{"field_id": field_id, "desc": True}],
+        "page_size": limit,
+    }
+    data = request_json(url, method="POST", body=body, headers=headers,
+                        timeout=30, retries=3, label="search-recent")
+    if data.get("code") != 0:
+        raise RuntimeError(f"Search API error {data.get('code')}: {data.get('msg')}")
+    return data.get("data", {}).get("items") or []
 
 
 def get_text(field):
@@ -339,22 +250,15 @@ def main():
         state["last_sync_ms"] = now_ms
     else:
         fetch_start_ms = now_ms
-        kind, detail, sample_info = probe_field_spec(token, mod_field_id)
-        state["probe"] = {"kind": kind, "format": detail, "sample": sample_info}
-        filt = build_filter(mod_field_id, kind, detail, state["last_sync_ms"])
         incremental_ok = False
         changed = []
-        if filt is None:
-            print("Unknown modified-time format; falling back to full sync")
-        else:
-            print(f"Incremental sync: filter {filt}")
-            state["last_filter"] = filt
-            try:
-                changed = fetch_changed_records(token, filt)
-                incremental_ok = True
-                state["last_fetched"] = len(changed)
-            except Exception as e:
-                print(f"Incremental fetch failed ({e}); falling back to full sync")
+        try:
+            changed = fetch_recently_modified(token, mod_field_id, limit=100)
+            incremental_ok = True
+            print(f"Incremental sync: fetched {len(changed)} recently-modified records")
+            state["last_fetched"] = len(changed)
+        except Exception as e:
+            print(f"Incremental fetch failed ({e}); falling back to full sync")
         if not incremental_ok:
             records = fetch_all_records(token)
             print(f"Fetched {len(records)} records")
