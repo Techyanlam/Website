@@ -60,7 +60,7 @@
             <div>已自動列印：<b id="stat-done">0</b></div>
         </div>
         <div>
-            <button class="btn btn-check" onclick="checkForNew(true)">立即檢查</button>
+            <button class="btn btn-check" onclick="tick(true)">立即檢查</button>
             <button class="btn btn-test" onclick="testPrint()">列印測試頁</button>
             <button class="btn btn-reset" onclick="resetBaseline()">重設 baseline</button>
         </div>
@@ -195,6 +195,7 @@
     }
 
     async function checkForNew(manual) {
+        if (!baselineReady) return; // 未建立 baseline 前唔做任何比較，防一次印晒
         try {
             const valid = await fetchLatestData();
             const state = getState();
