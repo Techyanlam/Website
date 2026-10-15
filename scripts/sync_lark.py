@@ -93,7 +93,7 @@ def fetch_all_records(token):
             print(f"Records API error: {data.get('msg')}")
             sys.exit(1)
 
-        records = data.get("data", {}).get("items", [])
+        records = data.get("data", {}).get("items") or []
         all_records.extend(records)
 
         if not data.get("data", {}).get("has_more"):
@@ -122,7 +122,10 @@ def find_modified_time_field(token):
         return None
     for f in data.get("data", {}).get("items", []):
         if f.get("field_name") in MOD_FIELD_NAMES:
-            print(f"Found modified-time field: {f.get('field_name')} ({f.get('field_id')})")
+            print(f"Found modified-time field: {f.get('field_name')} ({f.get('field_id')}, type={f.get('type')})")
+            if f.get("type") != 1002:
+                print(f"WARNING: field type is {f.get('type')}, expected 1002 (native modified-time). "
+                      f"If this is a manual date field it will stay empty!")
             return f.get("field_id")
     print("Modified-time field not found (table needs a field named 最後修改時間)")
     return None
@@ -131,28 +134,44 @@ def find_modified_time_field(token):
 def probe_field_unit(token, field_id):
     """探測修改時間欄嘅數值係毫秒定秒，回傳 'ms' 或 's'（預設 'ms'）。"""
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
-    url = (f"{API_ENDPOINT}/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records"
-           f"?page_size=5")
-    try:
-        data = request_json(url, headers=headers, timeout=30, retries=3,
-                            label="probe")
-    except SystemExit:
-        raise
-    except Exception:
-        return "ms"
-    if data.get("code") != 0:
-        return "ms"
-    for item in data.get("data", {}).get("items", []):
-        v = (item.get("fields") or {}).get(field_id)
+    checked = 0
+    with_value = 0
+    page_token = ""
+    for _ in range(3):  # 最多掃 300 筆
+        params = "page_size=100"
+        if page_token:
+            params += f"&page_token={page_token}"
+        url = (f"{API_ENDPOINT}/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records"
+               f"?{params}")
         try:
-            num = float(v)
-        except (TypeError, ValueError):
-            continue
-        if num > 0:
-            unit = "s" if num < 1e12 else "ms"
-            print(f"Modified-time unit probe: value={v} -> {unit}")
-            return unit
-    print("Probe found no usable value, assuming milliseconds")
+            data = request_json(url, headers=headers, timeout=30, retries=3,
+                                label="probe")
+        except SystemExit:
+            raise
+        except Exception:
+            break
+        if data.get("code") != 0:
+            break
+        items = data.get("data", {}).get("items") or []
+        for item in items:
+            checked += 1
+            v = (item.get("fields") or {}).get(field_id)
+            try:
+                num = float(v)
+            except (TypeError, ValueError):
+                continue
+            if num > 0:
+                with_value += 1
+                if with_value == 1:
+                    unit = "s" if num < 1e12 else "ms"
+                    print(f"Modified-time unit probe: value={v} -> {unit} "
+                          f"({with_value} of {checked} sampled have values so far)")
+                    return unit
+        if not data.get("data", {}).get("has_more"):
+            break
+        page_token = data.get("data", {}).get("page_token", "")
+    print(f"Probe: {with_value}/{checked} sampled records have modified-time values; "
+          f"assuming milliseconds")
     return "ms"
 
 
@@ -172,7 +191,7 @@ def fetch_changed_records(token, field_id, since_val):
                             label=f"changed(page={bool(page_token)})")
         if data.get("code") != 0:
             raise RuntimeError(f"Filter API error: {data.get('msg')}")
-        items = data.get("data", {}).get("items", [])
+        items = data.get("data", {}).get("items") or []
         all_records.extend(items)
         if not data.get("data", {}).get("has_more"):
             break
