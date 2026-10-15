@@ -68,7 +68,7 @@
         <h4 style="margin:16px 0 4px;">列印記錄</h4>
         <div id="log"><div class="log-row" style="color:#999;">暫無記錄</div></div>
         <div class="hint">
-            每 30 秒自動檢查一次 Lark 同步數據；首次啟動會將現有單據設為 baseline（唔會一次過印晒），之後出現嘅<strong>新 Doc Number</strong>先會自動列印。<br>
+            每 30 秒自動檢查一次 Lark 同步數據；當某張單嘅 <strong>Transport Qty 有更新</strong>（由無變有、或數量改變）先會自動列印，其他欄位修改唔會觸發。<br>
             呢頁要用 Chrome 嘅 <code>--kiosk-printing</code> 模式開啟，先可以唔經對話框直接列印去預設打印機（標籤打印機要設為系統預設）。
         </div>
     </div>
@@ -101,12 +101,15 @@
         'https://raw.githubusercontent.com/Techyanlam/Website/main/lark_shipment_data.json',
         'lark_shipment_data.json'
     ];
-    const LS_KEY = 'upgl_printed_docs';
+    const LS_KEY = 'upgl_print_state';   // {DOCNO: transportQty}
+    const LS_KEY_OLD = 'upgl_printed_docs'; // 舊版遷移用
     const CHECK_MS = 30 * 1000;
+    const MAX_QUEUE_PER_CHECK = 200;        // 單次上限，防洗版
 
     const printQueue = [];
     let isPrinting = false;
     let autoCount = 0;
+    let baselineReady = false;
 
     function setStatus(msg, cls) {
         const el = document.getElementById('status');
@@ -114,12 +117,14 @@
         el.className = 'status-line ' + (cls || '');
     }
 
-    function getKnown() {
-        try { return new Set(JSON.parse(localStorage.getItem(LS_KEY) || '[]')); }
-        catch (e) { return new Set(); }
+    function normQty(v) { return (v === null || v === undefined) ? '' : String(v).trim(); }
+
+    function getState() {
+        try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); }
+        catch (e) { return {}; }
     }
-    function saveKnown(set) {
-        localStorage.setItem(LS_KEY, JSON.stringify([...set]));
+    function saveState(s) {
+        localStorage.setItem(LS_KEY, JSON.stringify(s));
     }
 
     async function fetchLatestData() {
@@ -146,10 +151,14 @@
     }
 
     function markPrinted(rec) {
-        const known = getKnown();
-        known.add((rec.docNumber || '').toUpperCase());
-        saveKnown(known);
-        document.getElementById('stat-known').innerText = known.size;
+        // state 已喺 checkForNew 入面更新，呢度淨係保底
+        const state = getState();
+        const key = (rec.docNumber || '').toUpperCase();
+        if (key && !(key in state)) {
+            state[key] = normQty(rec.transportQty);
+            saveState(state);
+            document.getElementById('stat-known').innerText = Object.keys(state).length;
+        }
     }
 
     function addLog(rec, auto) {
@@ -188,23 +197,32 @@
     async function checkForNew(manual) {
         try {
             const valid = await fetchLatestData();
-            const known = getKnown();
-            let added = 0;
+            const state = getState();
+            let added = 0, skipped = 0;
             for (const r of valid) {
+                if (!('transportQty' in r)) { skipped++; continue; } // 舊數據未有呢欄
                 const key = (r.docNumber || '').toUpperCase();
-                if (key && !known.has(key)) {
-                    printQueue.push(r);
-                    added++;
+                if (!key) continue;
+                const qty = normQty(r.transportQty);
+                const prev = state[key];
+                state[key] = qty;
+                // 新單有 qty、或 qty 有變（且新值唔係空）先印
+                if (qty !== '' && prev !== qty) {
+                    if (added < MAX_QUEUE_PER_CHECK) { printQueue.push(r); added++; }
+                    else skipped++;
                 }
             }
+            saveState(state);
+            document.getElementById('stat-known').innerText = Object.keys(state).length;
             document.getElementById('stat-queue').innerText = printQueue.length;
             const time = new Date().toLocaleTimeString('zh-HK', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             if (added) {
-                setStatus(`✓ ${time} 發現 ${added} 張新單，開始自動列印…`, 'ok');
+                setStatus(`✓ ${time} 發現 ${added} 張單 Transport Qty 有更新，開始自動列印…`, 'ok');
                 processQueue();
             } else if (manual) {
-                setStatus(`✓ ${time} 檢查完成：${valid.length} 筆，無新單`, 'ok');
+                setStatus(`✓ ${time} 檢查完成：${valid.length} 筆，無 Transport Qty 更新`, 'ok');
             }
+            if (skipped > MAX_QUEUE_PER_CHECK) console.warn('略過過多單據:', skipped);
         } catch (e) {
             setStatus('檢查失敗：' + e.message + '，30 秒後再試', 'warn');
         }
@@ -216,35 +234,53 @@
     }
 
     function resetBaseline() {
-        if (!confirm('確定重設？會將而家所有單據重新設為「已知」，之後先出現嘅新單先會印。')) return;
+        if (!confirm('確定重設？會將而家所有單據嘅 Transport Qty 重新設為 baseline，之後有更新先會再印。')) return;
         localStorage.removeItem(LS_KEY);
-        initBaseline();
+        localStorage.removeItem(LS_KEY_OLD);
+        baselineReady = false;
+        tick(false);
     }
 
+    // 回傳 true = baseline 已就緒；false = 數據未有 transportQty 欄，等下次
     async function initBaseline() {
         setStatus('初始化緊…', '');
         try {
             const valid = await fetchLatestData();
-            const known = getKnown();
-            if (known.size === 0) {
-                // 首次啟動：現有全部設為已知，唔會一次印晒
-                valid.forEach(r => known.add((r.docNumber || '').toUpperCase()));
-                saveKnown(known);
-                setStatus(`✓ Baseline 已建立（${known.size} 筆），之後嘅新單先會自動列印`, 'ok');
-            } else {
-                setStatus(`✓ 已載入 baseline（${known.size} 筆），開始監察新單`, 'ok');
+            const withField = valid.filter(r => 'transportQty' in r);
+            if (!withField.length) {
+                setStatus('⚠ 數據未有 Transport Qty 欄（等緊同步更新），暫唔會列印', 'warn');
+                return false;
             }
-            document.getElementById('stat-known').innerText = known.size;
+            let state = getState();
+            if (!Object.keys(state).length) {
+                // 首次啟動（或舊版遷移）：現有全部設為已知，唔會一次印晒
+                withField.forEach(r => {
+                    const k = (r.docNumber || '').toUpperCase();
+                    if (k) state[k] = normQty(r.transportQty);
+                });
+                saveState(state);
+                try { localStorage.removeItem(LS_KEY_OLD); } catch (e) {}
+                setStatus(`✓ Baseline 已建立（${Object.keys(state).length} 筆），之後 Transport Qty 有更新先會自動列印`, 'ok');
+            } else {
+                setStatus(`✓ 已載入 baseline（${Object.keys(state).length} 筆），監察緊 Transport Qty 更新`, 'ok');
+            }
+            document.getElementById('stat-known').innerText = Object.keys(state).length;
+            return true;
         } catch (e) {
             setStatus('初始化失敗：' + e.message, 'warn');
+            return false;
         }
+    }
+
+    async function tick(manual) {
+        if (!baselineReady) baselineReady = await initBaseline();
+        if (baselineReady) await checkForNew(manual);
     }
 
     // 啟動
     (async () => {
-        await initBaseline();
-        setInterval(() => checkForNew(false), CHECK_MS);
-        setTimeout(() => checkForNew(false), 5000);
+        setInterval(() => tick(false), CHECK_MS);
+        setTimeout(() => tick(false), 5000);
     })();
 </script>
 </body>
