@@ -199,20 +199,26 @@
         try {
             const valid = await fetchLatestData();
             const state = getState();
-            let added = 0, skipped = 0;
+            let added = 0, skipped = 0, dups = 0;
+            const seenThisCheck = new Set();
+            const queuedKeys = new Set(printQueue.map(r => (r.docNumber || '').toUpperCase()));
             for (const r of valid) {
                 if (!('transportQty' in r)) { skipped++; continue; } // 舊數據未有呢欄
                 const key = (r.docNumber || '').toUpperCase();
                 if (!key) continue;
+                if (seenThisCheck.has(key)) { dups++; continue; } // 同一單號只睇第一行
+                seenThisCheck.add(key);
+                if (queuedKeys.has(key)) continue; // 已經排緊，唔重複排
                 const qty = normQty(r.transportQty);
                 const prev = state[key];
                 state[key] = qty;
                 // 新單有 qty、或 qty 有變（且新值唔係空）先印
                 if (qty !== '' && prev !== qty) {
-                    if (added < MAX_QUEUE_PER_CHECK) { printQueue.push(r); added++; }
+                    if (added < MAX_QUEUE_PER_CHECK) { printQueue.push(r); queuedKeys.add(key); added++; }
                     else skipped++;
                 }
             }
+            if (dups) console.warn('重複單號（已去重）:', dups);
             saveState(state);
             document.getElementById('stat-known').innerText = Object.keys(state).length;
             document.getElementById('stat-queue').innerText = printQueue.length;
@@ -255,9 +261,11 @@
             let state = getState();
             if (!Object.keys(state).length) {
                 // 首次啟動（或舊版遷移）：現有全部設為已知，唔會一次印晒
+                // 去重：同一單號只取第一行（同 checkForNew 一致，防重複單號無限重印）
+                const seenSeed = new Set();
                 withField.forEach(r => {
                     const k = (r.docNumber || '').toUpperCase();
-                    if (k) state[k] = normQty(r.transportQty);
+                    if (k && !seenSeed.has(k)) { seenSeed.add(k); state[k] = normQty(r.transportQty); }
                 });
                 saveState(state);
                 try { localStorage.removeItem(LS_KEY_OLD); } catch (e) {}
