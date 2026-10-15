@@ -9,6 +9,7 @@ Table: Outbound Record (tblmmHsnTTzufnUq)
 
 Field mapping (per owner):
     docNumber     <- "HKSLI no"
+    transportQty    <- "Transport Qty"
     customerName  <- "Customer Name"
     shipToAddress <- "Location" (fallback "送貨地址")
     contactName   <- "Contact Name"
@@ -112,6 +113,7 @@ def convert_record(record):
         "shipToAddress": addr,
         "contactName": get_text(fields.get("Contact Name", "")),
         "status": get_text(fields.get("Status", "")),
+        "transportQty": get_text(fields.get("Transport Qty", "")),
     }
 
 
