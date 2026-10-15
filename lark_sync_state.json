@@ -1,6 +1,6 @@
 {
   "last_full_sync_ms": 1792057117629,
-  "last_sync_ms": 1792059164388,
+  "last_sync_ms": 1792059212294,
   "probe": {
     "kind": "ms",
     "format": null,
@@ -11,6 +11,6 @@
       "with_value": 0
     }
   },
-  "last_filter": "CurrentValue.[fldNxPxxwx]>1792059029555",
+  "last_filter": "CurrentValue.[fldNxPxxwx]>1792059164388",
   "last_fetched": 0
 }
