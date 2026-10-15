@@ -183,13 +183,26 @@
             updateLabel();
         }
 
-        // ---------- 從 GitHub Pages 拉取 Actions 同步嘅最新資料 ----------
+        // ---------- 拉取 Actions 同步嘅最新資料 ----------
+        // 直接由 raw.githubusercontent.com 拎：Actions 自動 commit 唔會觸發
+        // Pages 重新部署，經 Pages 拎會食舊數據；raw URL 喺 sync push 後幾秒就有。
+        const DATA_URLS = [
+            'https://raw.githubusercontent.com/Techyanlam/Website/main/lark_shipment_data.json',
+            'lark_shipment_data.json'  // 後備：經 Pages
+        ];
+
         async function fetchLatestData() {
-            const resp = await fetch(DATA_URL + '?t=' + Date.now());
-            if (!resp.ok) throw new Error('讀取失敗');
-            const data = await resp.json();
-            localStorage.setItem('lark_shipment_data', JSON.stringify(data));
-            return data.filter(r => r && r.docNumber);
+            let lastErr = null;
+            for (const base of DATA_URLS) {
+                try {
+                    const resp = await fetch(base + '?t=' + Date.now());
+                    if (!resp.ok) throw new Error('讀取失敗');
+                    const data = await resp.json();
+                    localStorage.setItem('lark_shipment_data', JSON.stringify(data));
+                    return data.filter(r => r && r.docNumber);
+                } catch (e) { lastErr = e; }
+            }
+            throw lastErr || new Error('讀取失敗');
         }
 
         async function refreshFromServer(manual) {
