@@ -1,6 +1,6 @@
 [
   {
-    "docNumber": "HKLSI25120014",
+    "docNumber": "HKLSI25120014a",
     "customerName": "Oscar Bioenergy Joint Venture",
     "shipToAddress": "新界-小蠔灣",
     "contactName": "Hagan Ho",
@@ -63442,9 +63442,9 @@
   },
   {
     "docNumber": "HKLSI26100662",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Japan Recreation and Miscellaneous Goods Safety Laboratory",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Hei Chang",
     "status": ""
   }
 ]
