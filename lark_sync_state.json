@@ -1,4 +1,16 @@
 {
   "last_full_sync_ms": 1792057117629,
-  "last_sync_ms": 1792059029555
+  "last_sync_ms": 1792059164388,
+  "probe": {
+    "kind": "ms",
+    "format": null,
+    "sample": {
+      "raw": null,
+      "pytype": null,
+      "checked": 300,
+      "with_value": 0
+    }
+  },
+  "last_filter": "CurrentValue.[fldNxPxxwx]>1792059029555",
+  "last_fetched": 0
 }
