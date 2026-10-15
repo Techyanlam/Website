@@ -61,7 +61,7 @@
 
         <div class="field-row">
             <label>Doc Number：</label>
-            <input id="in-doc" value="HKSLI26050656" oninput="onDocInput()" onkeydown="if(event.key==='Enter'){lookupNow();}">
+            <input id="in-doc" value="HKLSI26050656" oninput="onDocInput()" onkeydown="if(event.key==='Enter'){lookupNow();}">
             <button class="sync-btn" onclick="refreshFromServer()" id="syncBtn">同步查詢</button>
         </div>
         <div class="status-line" id="sync-status"></div>
@@ -92,7 +92,7 @@
 
         <div class="label-line">
             <div class="label-title">Doc Number :</div>
-            <div class="doc-box" id="out-doc">HKSLI26050656</div>
+            <div class="doc-box" id="out-doc">HKLSI26050656</div>
         </div>
 
         <svg id="barcode"></svg>
@@ -121,7 +121,7 @@
         const DATA_URL = 'lark_shipment_data.json';
 
         // 內嵌快照（後備：直接開檔案或離線時用）
-        const LARK_EMBEDDED_DATA = [{"docNumber": "HKSLI25120014", "customerName": "Oscar Bioenergy Joint Venture", "shipToAddress": "新界-小蠔灣", "contactName": "Hagan Ho", "status": ""}, {"docNumber": "HKSLI25120015", "customerName": "Hong Kong Community College", "shipToAddress": "九龍-油塘", "contactName": "游先生 Mr Kelvin Yau", "status": ""}, {"docNumber": "HKSLI25120016", "customerName": "Nin Jiom Medicine Mfy. (Hong Kong) Limited", "shipToAddress": "新界-元朗", "contactName": "Grace Lam", "status": ""}];
+        const LARK_EMBEDDED_DATA = [{"docNumber": "HKLSI25120014", "customerName": "Oscar Bioenergy Joint Venture", "shipToAddress": "新界-小蠔灣", "contactName": "Hagan Ho", "status": ""}, {"docNumber": "HKLSI25120015", "customerName": "Hong Kong Community College", "shipToAddress": "九龍-油塘", "contactName": "游先生 Mr Kelvin Yau", "status": ""}, {"docNumber": "HKLSI25120016", "customerName": "Nin Jiom Medicine Mfy. (Hong Kong) Limited", "shipToAddress": "新界-元朗", "contactName": "Grace Lam", "status": ""}];
 
         let lookupTimer = null;
 
@@ -158,15 +158,25 @@
             lookupTimer = setTimeout(lookupNow, 450);
         }
 
+        // HKSLI/HKLSI 拼寫容錯：Base 實際用 HKLSI，照顧打 HKSLI 嘅人
+        function normDoc(s) { return (s || '').toUpperCase().replace(/HKSLI/g, 'HKLSI'); }
+
         function lookupNow() {
             const docNo = document.getElementById('in-doc').value.trim();
             if (!docNo) { setStatus(''); return; }
             const key = docNo.toUpperCase();
             const data = getDataset();
-            const hit = data.find(r => (r.docNumber || '').toUpperCase() === key);
+            let hit = data.find(r => (r.docNumber || '').toUpperCase() === key);
+            let autoFixed = false;
+            if (!hit) {
+                const nkey = normDoc(key);
+                hit = data.find(r => normDoc(r.docNumber) === nkey);
+                autoFixed = !!hit;
+            }
             if (hit) {
                 fillFromRecord(hit);
-                setStatus(`✓ 已找到 ${hit.docNumber}（共 ${data.length} 筆）`, 'ok');
+                const note = autoFixed ? `（已自動對應 ${hit.docNumber}）` : '';
+                setStatus(`✓ 已找到 ${hit.docNumber}${note}（共 ${data.length} 筆）`, 'ok');
             } else {
                 setStatus(`找不到 ${docNo}，可按「同步查詢」重新拉取最新資料`, 'warn');
             }
@@ -202,7 +212,7 @@
         // ==========================================
         function updateLabel() {
             const name = document.getElementById('in-name').value || "-";
-            const docNo = document.getElementById('in-doc').value || "HKSLI26050656";
+            const docNo = document.getElementById('in-doc').value || "HKLSI26050656";
             const addr = document.getElementById('in-addr').value || "九龍-理大";
             const contact = document.getElementById('in-contact').value || "Ken Chan";
 
