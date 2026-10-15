@@ -124,6 +124,7 @@
         const LARK_EMBEDDED_DATA = [{"docNumber": "HKLSI25120014", "customerName": "Oscar Bioenergy Joint Venture", "shipToAddress": "新界-小蠔灣", "contactName": "Hagan Ho", "status": ""}, {"docNumber": "HKLSI25120015", "customerName": "Hong Kong Community College", "shipToAddress": "九龍-油塘", "contactName": "游先生 Mr Kelvin Yau", "status": ""}, {"docNumber": "HKLSI25120016", "customerName": "Nin Jiom Medicine Mfy. (Hong Kong) Limited", "shipToAddress": "新界-元朗", "contactName": "Grace Lam", "status": ""}];
 
         let lookupTimer = null;
+        let fieldsDirty = false; // 使用者手動改過欄位就唔自動覆寫
 
         // ---------- 本地資料集（伺服器 JSON → localStorage 快取 → 內嵌快照） ----------
         function getDataset() {
@@ -149,6 +150,7 @@
             if (rec.customerName) document.getElementById('in-name').value = rec.customerName;
             if (rec.shipToAddress) document.getElementById('in-addr').value = rec.shipToAddress;
             if (rec.contactName) document.getElementById('in-contact').value = rec.contactName;
+            fieldsDirty = false;
             updateLabel();
         }
 
@@ -224,13 +226,20 @@
             }
         }
 
-        // 開住個頁每 5 分鐘靜默更新快照（唔干擾輸入緊嘅嘢）
+        // 開住個頁每 5 分鐘靜默更新快照；顯示緊嗰張單有更新就自動刷新
+        // （手動改過欄位就唔郁，等你自己決定）
+        ['in-name', 'in-addr', 'in-contact'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => { fieldsDirty = true; });
+        });
+
         setInterval(async () => {
             try {
                 const valid = await fetchLatestData();
                 if (valid.length) {
                     const time = new Date().toLocaleTimeString('zh-HK', { hour: '2-digit', minute: '2-digit' });
                     setStatus(`資料已自動更新：${valid.length} 筆（${time}）`, 'ok');
+                    const docNo = document.getElementById('in-doc').value.trim();
+                    if (docNo && !fieldsDirty) lookupNow();
                 }
             } catch (e) { /* 靜默失敗，下次再試 */ }
         }, 5 * 60 * 1000);
