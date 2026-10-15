@@ -28,26 +28,36 @@ APP_ID = os.environ.get("LARK_APP_ID", "")
 APP_SECRET = os.environ.get("LARK_APP_SECRET", "")
 
 
+def request_json(url, method="GET", body=None, headers=None, timeout=30, retries=3, label="request"):
+    """POST/GET JSON with retries for transient failures."""
+    data = json.dumps(body).encode("utf-8") if body is not None else None
+    last_err = None
+    for attempt in range(1, retries + 1):
+        try:
+            req = urllib.request.Request(url, data=data, headers=headers or {},
+                                         method=method)
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except Exception as e:  # HTTPError, URLError, TimeoutError...
+            last_err = e
+            print(f"{label}: attempt {attempt}/{retries} failed: {e}")
+            if attempt < retries:
+                time.sleep(2 * attempt)
+    print(f"{label}: all {retries} attempts failed: {last_err}")
+    sys.exit(1)
+
+
 def get_access_token():
     url = f"{API_ENDPOINT}/auth/v3/tenant_access_token/internal"
-    payload = json.dumps({"app_id": APP_ID, "app_secret": APP_SECRET}).encode("utf-8")
-    req = urllib.request.Request(
-        url,
-        data=payload,
+    data = request_json(
+        url, method="POST",
+        body={"app_id": APP_ID, "app_secret": APP_SECRET},
         headers={"Content-Type": "application/json"},
-        method="POST",
+        timeout=15, retries=3, label="token",
     )
-    try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
-    except urllib.error.HTTPError as e:
-        print(f"Token request failed: {e.code} {e.read().decode()}")
-        sys.exit(1)
-
     if data.get("code") != 0:
         print(f"Token request failed: {data.get('msg')}")
         sys.exit(1)
-
     return data["tenant_access_token"]
 
 
@@ -62,15 +72,8 @@ def fetch_base_records(token):
             params += f"&page_token={page_token}"
 
         url = f"{API_ENDPOINT}/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records?{params}"
-        req = urllib.request.Request(url, headers=headers)
-
-        try:
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
-        except urllib.error.HTTPError as e:
-            print(f"Records request failed: {e.code} {e.read().decode()}")
-            sys.exit(1)
-
+        data = request_json(url, headers=headers, timeout=30,
+                            retries=3, label=f"records(page_token={bool(page_token)})")
         if data.get("code") != 0:
             print(f"Records API error: {data.get('msg')}")
             sys.exit(1)
