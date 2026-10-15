@@ -68,7 +68,7 @@
         <h4 style="margin:16px 0 4px;">列印記錄</h4>
         <div id="log"><div class="log-row" style="color:#999;">暫無記錄</div></div>
         <div class="hint">
-            每 30 秒自動檢查一次 Lark 同步數據；當某張單嘅 <strong>Transport Qty 有更新</strong>（由無變有、或數量改變）先會自動列印，其他欄位修改唔會觸發。<br>
+            每 30 秒自動檢查一次 Lark 同步數據；當某張單嘅 <strong>Transport Qty 有更新</strong>（由無變有、或數量改變）先會自動列印，其他欄位修改唔會觸發。列印張數 = Transport Qty（上限 100 張）。<br>
             呢頁要用 Chrome 嘅 <code>--kiosk-printing</code> 模式開啟，先可以唔經對話框直接列印去預設打印機（標籤打印機要設為系統預設）。
         </div>
     </div>
@@ -161,18 +161,33 @@
         }
     }
 
-    function addLog(rec, auto) {
+    const MAX_COPIES = 100; // 單張單上限，防洗版
+    function addLog(rec, auto, copies) {
         const log = document.getElementById('log');
         const empty = log.querySelector('.log-row[style]');
         if (empty) empty.remove();
         const row = document.createElement('div');
         row.className = 'log-row';
         const time = new Date().toLocaleTimeString('zh-HK', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        row.innerHTML = `<span>${time}　<b>${rec.docNumber}</b>　${rec.customerName || ''}${auto ? '' : '（手動重印）'}</span>`;
+        const cp = (copies && copies > 1) ? `　×${copies}` : '';
+        row.innerHTML = `<span>${time}　<b>${rec.docNumber}</b>${cp}　${rec.customerName || ''}${auto ? '' : '（手動重印）'}</span>`;
         const btn = document.createElement('button');
         btn.className = 'reprint';
         btn.innerText = '重印';
-        btn.onclick = () => { fillLabel(rec); setTimeout(() => window.print(), 400); addLog(rec, false); };
+        btn.onclick = () => {
+            fillLabel(rec);
+            let n = parseInt(normQty(rec.transportQty), 10);
+            if (!(n >= 1)) n = 1;
+            n = Math.min(n, MAX_COPIES);
+            (async () => {
+                await new Promise(r => setTimeout(r, 400));
+                for (let i = 0; i < n; i++) {
+                    window.print();
+                    if (i < n - 1) await new Promise(r => setTimeout(r, 2500));
+                }
+            })();
+            addLog(rec, false, n);
+        };
         row.appendChild(btn);
         log.prepend(row);
         while (log.children.length > 100) log.lastChild.remove();
@@ -185,11 +200,17 @@
         document.getElementById('stat-queue').innerText = printQueue.length;
         fillLabel(rec);
         await new Promise(r => setTimeout(r, 500)); // 等 barcode 畫完
-        window.print();
+        let copies = parseInt(normQty(rec.transportQty), 10);
+        if (!(copies >= 1)) copies = 1;
+        copies = Math.min(copies, MAX_COPIES);
+        for (let i = 0; i < copies; i++) {
+            window.print();
+            if (i < copies - 1) await new Promise(r => setTimeout(r, 2500));
+        }
         markPrinted(rec);
         autoCount++;
         document.getElementById('stat-done').innerText = autoCount;
-        addLog(rec, true);
+        addLog(rec, true, copies);
         isPrinting = false;
         if (printQueue.length) setTimeout(processQueue, 2500);
     }
