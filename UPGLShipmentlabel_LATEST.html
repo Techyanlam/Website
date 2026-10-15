@@ -11,16 +11,19 @@
         .field-row label { width: 140px; font-weight: bold; }
         input { width: 250px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size:14px; }
         button { padding:10px 24px; font-size:15px; background:#0055aa; color:#fff; border:none; border-radius:6px; cursor:pointer; margin-top:10px; }
-        
+
         /* 同步查詢按鈕樣式 */
         .sync-btn { background: #00b96b; margin-left: 10px; padding: 8.5px 15px; font-size: 14px; margin-top: 0; }
         .sync-btn:hover { background: #009959; }
         .sync-btn:disabled { background: #cccccc; cursor: not-allowed; }
+        .status-line { font-size: 13px; color: #555; margin: 4px 0 0 140px; min-height: 18px; }
+        .status-line.ok { color: #0a7d3b; }
+        .status-line.warn { color: #b26a00; }
 
         /* 螢幕預覽樣式 */
-        .label-card { 
+        .label-card {
             width: 100%; max-width:850px;
-            border: 2px solid #000; 
+            border: 2px solid #000;
             padding:15px;
             background:#fff;
             box-sizing:border-box;
@@ -55,12 +58,13 @@
     <!-- 輸入面板 -->
     <div class="input-section">
         <h3>物流標籤資料填寫</h3>
-        
+
         <div class="field-row">
             <label>Doc Number：</label>
-            <input id="in-doc" value="HKLSI26050656" oninput="updateLabel()">
-            <button class="sync-btn" onclick="fetchFromLark()" id="syncBtn">同步查詢</button>
+            <input id="in-doc" value="HKSLI26050656" oninput="onDocInput()" onkeydown="if(event.key==='Enter'){lookupNow();}">
+            <button class="sync-btn" onclick="refreshFromServer()" id="syncBtn">同步查詢</button>
         </div>
+        <div class="status-line" id="sync-status"></div>
         <div class="field-row">
             <label>Customer Name：</label>
             <input id="in-name" oninput="updateLabel()" placeholder="客戶名稱">
@@ -73,9 +77,8 @@
             <label>Contact Name：</label>
             <input id="in-contact" value="Ken Chan" oninput="updateLabel()">
         </div>
-        
-        <button onclick="generateAndPrint()">生成並列印標籤 (同時回寫紀錄)</button>
-        <button onclick="autoSyncFromLark()" style="background:#28a745; margin-left:10px;">⚡ 自動同步</button>
+
+        <button onclick="generateAndPrint()">生成並列印標籤</button>
     </div>
 
     <!-- 標籤預覽 -->
@@ -89,7 +92,7 @@
 
         <div class="label-line">
             <div class="label-title">Doc Number :</div>
-            <div class="doc-box" id="out-doc">HKLSI26050656</div>
+            <div class="doc-box" id="out-doc">HKSLI26050656</div>
         </div>
 
         <svg id="barcode"></svg>
@@ -106,215 +109,109 @@
     </div>
 
     <script>
-        // ==========================================
-        // Lark Bitable 整合設定區
-        // ==========================================
-        const LARK_CONFIG = {
-            appId: 'cli_a96b10951bf89ed0',
-            appSecret: '34NBHvmXmqVXZWlSlyCeCo0AATiSp7lh', 
-            appToken: 'SWSQbZibjaHSTqsWlbqlB4sHg9e', 
-            tableId: 'tbl2NPtT6FOlV9LH',
-            apiBaseUrl: 'https://open.larksuite.com/open-apis' 
-        };
+        // ============================================================
+        // 資料同步架構：
+        // GitHub Actions（sync_lark.yml，每日 08:00/20:00 HKT + 可手動）
+        // 用 Lark API 全量拉取 Outbound Record → lark_shipment_data.json；
+        // 本頁經 GitHub Pages 同源讀取，無 CORS 問題。
+        // App Secret 收喺 GitHub Secrets，唔會出現喺網頁。
+        // 欄位對應：Doc Number=HKSLI no、Customer Name=Customer Name、
+        //           Ship-to Address=Location、Contact Name=Contact Name
+        // ============================================================
+        const DATA_URL = 'lark_shipment_data.json';
 
-        // 取得 Tenant Access Token
-        async function getTenantAccessToken() {
+        // 內嵌快照（後備：直接開檔案或離線時用）
+        const LARK_EMBEDDED_DATA = [{"docNumber": "HKSLI25120014", "customerName": "Oscar Bioenergy Joint Venture", "shipToAddress": "新界-小蠔灣", "contactName": "Hagan Ho", "status": ""}, {"docNumber": "HKSLI25120015", "customerName": "Hong Kong Community College", "shipToAddress": "九龍-油塘", "contactName": "游先生 Mr Kelvin Yau", "status": ""}, {"docNumber": "HKSLI25120016", "customerName": "Nin Jiom Medicine Mfy. (Hong Kong) Limited", "shipToAddress": "新界-元朗", "contactName": "Grace Lam", "status": ""}];
+
+        let lookupTimer = null;
+
+        // ---------- 本地資料集（伺服器 JSON → localStorage 快取 → 內嵌快照） ----------
+        function getDataset() {
+            let data = [];
             try {
-                const response = await fetch(`${LARK_CONFIG.apiBaseUrl}/auth/v3/tenant_access_token/internal`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        app_id: LARK_CONFIG.appId,
-                        app_secret: LARK_CONFIG.appSecret
-                    })
-                });
-                const data = await response.json();
-                if (data.code !== 0) throw new Error(data.msg);
-                return data.tenant_access_token;
-            } catch (error) {
-                console.error("Token 獲取失敗:", error);
-                throw error;
+                const saved = localStorage.getItem('lark_shipment_data');
+                if (saved) data = JSON.parse(saved) || [];
+            } catch (e) { console.error('讀取快取失敗:', e); }
+            if (!data.length && typeof LARK_EMBEDDED_DATA !== 'undefined' && LARK_EMBEDDED_DATA.length) {
+                data = LARK_EMBEDDED_DATA;
             }
+            // 過濾無效記錄
+            return data.filter(r => r && r.docNumber);
         }
 
-        // 從 Bitable 讀取資料
-        async function fetchFromLark() {
+        function setStatus(msg, cls) {
+            const el = document.getElementById('sync-status');
+            el.textContent = msg || '';
+            el.className = 'status-line' + (cls ? ' ' + cls : '');
+        }
+
+        function fillFromRecord(rec) {
+            if (rec.customerName) document.getElementById('in-name').value = rec.customerName;
+            if (rec.shipToAddress) document.getElementById('in-addr').value = rec.shipToAddress;
+            if (rec.contactName) document.getElementById('in-contact').value = rec.contactName;
+            updateLabel();
+        }
+
+        // ---------- 打 Doc Number 即時查詢（本地資料集，不分大小寫） ----------
+        function onDocInput() {
+            clearTimeout(lookupTimer);
+            lookupTimer = setTimeout(lookupNow, 450);
+        }
+
+        function lookupNow() {
             const docNo = document.getElementById('in-doc').value.trim();
-            if (!docNo) return alert("請先輸入 Doc Number");
+            if (!docNo) { setStatus(''); return; }
+            const key = docNo.toUpperCase();
+            const data = getDataset();
+            const hit = data.find(r => (r.docNumber || '').toUpperCase() === key);
+            if (hit) {
+                fillFromRecord(hit);
+                setStatus(`✓ 已找到 ${hit.docNumber}（共 ${data.length} 筆）`, 'ok');
+            } else {
+                setStatus(`找不到 ${docNo}，可按「同步查詢」重新拉取最新資料`, 'warn');
+            }
+            updateLabel();
+        }
 
+        // ---------- 從 GitHub Pages 拉取 Actions 同步嘅最新資料 ----------
+        async function refreshFromServer(manual) {
             const btn = document.getElementById('syncBtn');
-            btn.innerText = "查詢中...";
-            btn.disabled = true;
-            
+            if (manual) { btn.innerText = '同步中...'; btn.disabled = true; }
             try {
-                const token = await getTenantAccessToken();
-                const response = await fetch(`${LARK_CONFIG.apiBaseUrl}/bitable/v1/apps/${LARK_CONFIG.appToken}/tables/${LARK_CONFIG.tableId}/records/search`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        filter: {
-                            conjunction: "and",
-                            conditions: [{ field_name: "Doc Number", operator: "is", value: [docNo] }]
-                        }
-                    })
-                });
-                
-                const result = await response.json();
-                if (result.code === 0 && result.data.items && result.data.items.length > 0) {
-                    const fields = result.data.items[0].fields;
-                    if (fields["Customer Name"]) document.getElementById('in-name').value = fields["Customer Name"];
-                    if (fields["Ship-to Address"]) document.getElementById('in-addr').value = fields["Ship-to Address"];
-                    if (fields["Contact Name"]) document.getElementById('in-contact').value = fields["Contact Name"];
-                    updateLabel();
-                    alert("已成功同步 Bitable 資料！");
-                } else {
-                    alert("找不到對應的 Doc Number 資料，請確認紀錄是否存在。");
-                }
-            } catch (err) {
-                alert("同步失敗，請檢查 API 權限、Table ID 或是 CORS 設定。");
-                console.error(err);
-            } finally {
-                btn.innerText = "同步查詢";
-                btn.disabled = false;
-            }
-        }
-
-        // 將列印紀錄寫入 Bitable
-        async function pushToLark() {
-            try {
-                const token = await getTenantAccessToken();
-                await fetch(`${LARK_CONFIG.apiBaseUrl}/bitable/v1/apps/${LARK_CONFIG.appToken}/tables/${LARK_CONFIG.tableId}/records`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        fields: {
-                            "Customer Name": document.getElementById('in-name').value,
-                            "Doc Number": document.getElementById('in-doc').value,
-                            "Ship-to Address": document.getElementById('in-addr').value,
-                            "Contact Name": document.getElementById('in-contact').value,
-                            "Status": "Printed" 
-                        }
-                    })
-                });
-                console.log("成功寫入列印紀錄至 Bitable");
-            } catch (err) {
-                console.error("寫入 Bitable 失敗:", err);
-            }
-        }
-
-        // ==========================================
-        // 自動同步功能
-        // ==========================================
-        function autoSyncFromLark() {
-            const container = document.createElement('div');
-            container.style.cssText = 'margin:20px 0; padding:16px; background:#e3f2fd; border-radius:6px; border-left:4px solid #2196F3;';
-            container.innerHTML = `
-                <h4 style="margin:0 0 8px 0; color:#1976D2;">⚡ 自動同步 Lark 數據</h4>
-                <p style="font-size:13px; margin-bottom:12px;">
-                    由於瀏覽器安全限制，無法直接調用 Lark API。請透過 AI 助手完成同步：
-                </p>
-                <ol style="font-size:13px; margin-left:20px; margin-bottom:12px;">
-                    <li>點擊「📋 複製同步請求」</li>
-                    <li>在對話中貼上並發送給 AI 助手</li>
-                    <li>AI 返回 JSON 後，點擊「📄 貼上同步數據」</li>
-                    <li>貼上後點「✅ 確認導入」</li>
-                </ol>
-                <div style="display:flex; gap:8px; margin-top:12px;">
-                    <button onclick="copySyncRequest()" style="background:#2196F3; color:white; padding:8px 16px; border:none; border-radius:4px; cursor:pointer;">📋 複製同步請求</button>
-                    <button onclick="showPasteDialog()" style="background:#757575; color:white; padding:8px 16px; border:none; border-radius:4px; cursor:pointer;">📄 貼上同步數據</button>
-                </div>
-            `;
-            document.body.insertBefore(container, document.querySelector('.label-card'));
-            alert('同步面板已顯示！請複製請求並發送給 AI 助手');
-        }
-
-        function copySyncRequest() {
-            const request = `請幫我從 Lark Base 同步最新數據到物流標籤工具：
-App Token: ${LARK_CONFIG.appToken}
-Table ID: ${LARK_CONFIG.tableId}
-
-請調用 Lark Bitable API 拉取全部記錄，並返回完整的 JSON 數組（欄位：Doc Number, Customer Name, Ship-to Address, Contact Name, Status）。`;
-            
-            navigator.clipboard.writeText(request).then(() => {
-                alert('同步請求已複製！請發送給 AI 助手');
-            }).catch(() => {
-                const ta = document.createElement('textarea');
-                ta.value = request;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
-                alert('同步請求已複製！');
-            });
-        }
-
-        function showPasteDialog() {
-            const dialog = document.createElement('div');
-            dialog.style.cssText = 'position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border-radius:8px; box-shadow:0 4px 20px rgba(0,0,0,0.3); z-index:10000; max-width:600px;';
-            dialog.innerHTML = `
-                <h3 style="margin-top:0;">貼上 AI 返回的 JSON 數據</h3>
-                <textarea id="pasteArea" style="width:100%; height:200px; padding:10px; border:1px solid #ccc; border-radius:4px; font-family:monospace; font-size:12px;"></textarea>
-                <div style="display:flex; gap:8px; margin-top:12px;">
-                    <button onclick="processPastedData()" style="background:#28a745; color:white; padding:8px 16px; border:none; border-radius:4px; cursor:pointer;">✅ 確認導入</button>
-                    <button onclick="this.parentElement.parentElement.remove()" style="background:#6c757d; color:white; padding:8px 16px; border:none; border-radius:4px; cursor:pointer;">✕ 取消</button>
-                </div>
-            `;
-            document.body.appendChild(dialog);
-        }
-
-        function processPastedData() {
-            const textarea = document.getElementById('pasteArea');
-            const text = textarea.value.trim();
-            
-            try {
-                const data = JSON.parse(text);
-                if (!Array.isArray(data)) throw new Error('數據必須是數組格式');
-                
-                // 儲存到 localStorage
+                const resp = await fetch(DATA_URL + '?t=' + Date.now());
+                if (!resp.ok) throw new Error('讀取失敗');
+                const data = await resp.json();
+                const valid = data.filter(r => r && r.docNumber);
                 localStorage.setItem('lark_shipment_data', JSON.stringify(data));
-                alert(`✅ 成功導入 ${data.length} 筆記錄！`);
-                
-                // 關閉對話框
-                document.querySelector('div[style*="position:fixed"]').remove();
+                const note = '（GitHub Actions 每日 08:00／20:00 HKT 自動同步，可手動 Run workflow 即時更新）';
+                if (manual) setStatus(`✓ 已同步最新資料：${valid.length} 筆有效記錄${note}`, 'ok');
+                else if (valid.length) setStatus(`資料就緒：${valid.length} 筆${note}`, 'ok');
+                lookupNow();
             } catch (e) {
-                alert('JSON 解析失敗：' + e.message);
+                const data = getDataset();
+                if (manual) setStatus('同步失敗，已用本機快照', 'warn');
+                else if (data.length) setStatus(`本機快照：${data.length} 筆（經網站開啟可自動同步最新）`, 'warn');
+                lookupNow();
+            } finally {
+                if (manual) { btn.innerText = '同步查詢'; btn.disabled = false; }
             }
         }
 
-        // 頁面載入時檢查是否有已同步的數據
-        window.addEventListener('load', () => {
-            const saved = localStorage.getItem('lark_shipment_data');
-            if (saved) {
-                try {
-                    const data = JSON.parse(saved);
-                    console.log(`已載入 ${data.length} 筆 Lark 記錄`);
-                } catch (e) {
-                    console.error('載入 Lark 數據失敗:', e);
-                }
-            }
-        });
-
         // ==========================================
-        // 原有標籤渲染與列印邏輯
+        // 標籤渲染與列印
         // ==========================================
         function updateLabel() {
-            let name = document.getElementById('in-name').value || "-";
-            let docNo = document.getElementById('in-doc').value || "HKLSI26050656";
-            let addr = document.getElementById('in-addr').value || "九龍-理大";
-            let contact = document.getElementById('in-contact').value || "Ken Chan";
+            const name = document.getElementById('in-name').value || "-";
+            const docNo = document.getElementById('in-doc').value || "HKSLI26050656";
+            const addr = document.getElementById('in-addr').value || "九龍-理大";
+            const contact = document.getElementById('in-contact').value || "Ken Chan";
 
             document.getElementById('out-name').innerText = name;
             document.getElementById('out-doc').innerText = docNo;
             document.getElementById('out-addr').innerText = addr;
             document.getElementById('out-contact').innerText = contact;
 
-            JsBarcode("#barcode", `*${docNo}*`, {
+            JsBarcode("#barcode", docNo, {
                 format: "CODE128",
                 width: 2,
                 height: 60,
@@ -325,11 +222,14 @@ Table ID: ${LARK_CONFIG.tableId}
 
         function generateAndPrint() {
             updateLabel();
-            pushToLark(); 
-            setTimeout(()=> window.print(), 400);
+            setTimeout(() => window.print(), 200);
         }
-        
-        updateLabel();
+
+        // 頁面載入：靜默拉取最新資料
+        window.addEventListener('load', () => {
+            refreshFromServer(false);
+            updateLabel();
+        });
     </script>
 </body>
 </html>
