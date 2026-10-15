@@ -1,9 +1,22 @@
 name: Sync Lark Base Data
 
+# Lark Base → lark_shipment_data.json 全量同步
+# 觸發方式：
+#   ① Lark Base 自動化 webhook（repository_dispatch，真・事件驅動）
+#   ② 每 5 分鐘定時（後備）
+#   ③ 手動 Run workflow
+
 on:
   schedule:
     - cron: '*/5 * * * *'
+  repository_dispatch:
+    types: [lark-base-update]
   workflow_dispatch:
+
+# 撞車時只保留最新一次（全量同步，舊 run 冇必要跑埋）
+concurrency:
+  group: sync-lark
+  cancel-in-progress: true
 
 jobs:
   sync:
