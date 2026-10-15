@@ -1,6 +1,6 @@
 [
   {
-    "docNumber": "HKLSI25120014c",
+    "docNumber": "HKLSI25120014d",
     "customerName": "Oscar Bioenergy Joint Venture",
     "shipToAddress": "新界-小蠔灣",
     "contactName": "Hagan Ho",
@@ -63459,6 +63459,13 @@
     "customerName": "Hong Kong Light-Emitting Molecular Materials Limited",
     "shipToAddress": "新界-科學園",
     "contactName": "Bobby",
+    "status": ""
+  },
+  {
+    "docNumber": "HKLSI26100666",
+    "customerName": "City University of Hong Kong - Finance Office (Procurement)",
+    "shipToAddress": "九龍-城大",
+    "contactName": "CHEN Chufa",
     "status": ""
   }
 ]
