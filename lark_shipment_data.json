@@ -1,6 +1,6 @@
 [
   {
-    "docNumber": "HKLSI25120014a",
+    "docNumber": "HKLSI25120014c",
     "customerName": "Oscar Bioenergy Joint Venture",
     "shipToAddress": "新界-小蠔灣",
     "contactName": "Hagan Ho",
@@ -63445,6 +63445,20 @@
     "customerName": "Japan Recreation and Miscellaneous Goods Safety Laboratory",
     "shipToAddress": "新界-大埔",
     "contactName": "Hei Chang",
+    "status": ""
+  },
+  {
+    "docNumber": "HKLSI26100664",
+    "customerName": "Hong Kong Baptist University - Institute for Innovation and Translation (IIT)",
+    "shipToAddress": "九龍-浸大",
+    "contactName": "Tin Poon",
+    "status": ""
+  },
+  {
+    "docNumber": "HKLSI26100665",
+    "customerName": "Hong Kong Light-Emitting Molecular Materials Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Bobby",
     "status": ""
   }
 ]
