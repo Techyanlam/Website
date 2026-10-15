@@ -179,6 +179,8 @@ def probe_field_spec(token, field_id):
             if v is None or v == "":
                 continue
             with_value += 1
+            sample_info = {"raw": str(v)[:80], "pytype": type(v).__name__,
+                           "checked": checked, "with_value": with_value}
             print(f"Probe sample raw value: {v!r} (python type: {type(v).__name__})")
             # 1) 數字：毫秒 / 秒
             try:
@@ -186,7 +188,7 @@ def probe_field_spec(token, field_id):
                 if num > 0:
                     kind = "s" if num < 1e12 else "ms"
                     print(f"Modified-time format: numeric -> {kind}")
-                    return (kind, None)
+                    return (kind, None, sample_info)
             except (TypeError, ValueError):
                 pass
             # 2) 日期字串
@@ -196,17 +198,18 @@ def probe_field_spec(token, field_id):
                     try:
                         datetime.strptime(s, fmt)
                         print(f"Modified-time format: string -> {fmt!r}")
-                        return ("str", fmt)
+                        return ("str", fmt, sample_info)
                     except ValueError:
                         continue
             print(f"WARNING: unrecognized modified-time format: {v!r}")
-            return ("unknown", None)
+            return ("unknown", None, sample_info)
         if not data.get("data", {}).get("has_more"):
             break
         page_token = data.get("data", {}).get("page_token", "")
     print(f"Probe: {with_value}/{checked} sampled records have modified-time values; "
           f"assuming milliseconds")
-    return ("ms", None)
+    return ("ms", None, {"raw": None, "pytype": None,
+                         "checked": checked, "with_value": with_value})
 
 
 def build_filter(field_id, kind, detail, last_sync_ms):
@@ -336,7 +339,8 @@ def main():
         state["last_sync_ms"] = now_ms
     else:
         fetch_start_ms = now_ms
-        kind, detail = probe_field_spec(token, mod_field_id)
+        kind, detail, sample_info = probe_field_spec(token, mod_field_id)
+        state["probe"] = {"kind": kind, "format": detail, "sample": sample_info}
         filt = build_filter(mod_field_id, kind, detail, state["last_sync_ms"])
         incremental_ok = False
         changed = []
@@ -344,9 +348,11 @@ def main():
             print("Unknown modified-time format; falling back to full sync")
         else:
             print(f"Incremental sync: filter {filt}")
+            state["last_filter"] = filt
             try:
                 changed = fetch_changed_records(token, filt)
                 incremental_ok = True
+                state["last_fetched"] = len(changed)
             except Exception as e:
                 print(f"Incremental fetch failed ({e}); falling back to full sync")
         if not incremental_ok:
