@@ -150,9 +150,14 @@ def fetch_recently_modified(token, field_id, limit=100):
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
     url = (f"{API_ENDPOINT}/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records/search")
     body = {
-        # >"" 即係「有值」；唔用 > 比較日期，淨係靠 sort 攞最新
-        "filter": f"CurrentValue.[{field_id}]>\"\"",
-        "sort": [{"field_id": field_id, "desc": True}],
+        # search API 嘅 filter 係結構化物件（唔係字串表達式）
+        "filter": {
+            "conjunction": "and",
+            "conditions": [
+                {"field_name": field_id, "operator": "isNotEmpty", "value": []}
+            ],
+        },
+        "sort": [{"field_name": field_id, "desc": True}],
         "page_size": limit,
     }
     data = request_json(url, method="POST", body=body, headers=headers,
