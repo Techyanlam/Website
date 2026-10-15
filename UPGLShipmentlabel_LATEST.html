@@ -111,7 +111,7 @@
     <script>
         // ============================================================
         // 資料同步架構：
-        // GitHub Actions（sync_lark.yml，每日 08:00/20:00 HKT + 可手動）
+        // GitHub Actions（sync_lark.yml，每 5 分鐘 + 可手動）
         // 用 Lark API 全量拉取 Outbound Record → lark_shipment_data.json；
         // 本頁經 GitHub Pages 同源讀取，無 CORS 問題。
         // App Secret 收喺 GitHub Secrets，唔會出現喺網頁。
@@ -184,16 +184,20 @@
         }
 
         // ---------- 從 GitHub Pages 拉取 Actions 同步嘅最新資料 ----------
+        async function fetchLatestData() {
+            const resp = await fetch(DATA_URL + '?t=' + Date.now());
+            if (!resp.ok) throw new Error('讀取失敗');
+            const data = await resp.json();
+            localStorage.setItem('lark_shipment_data', JSON.stringify(data));
+            return data.filter(r => r && r.docNumber);
+        }
+
         async function refreshFromServer(manual) {
             const btn = document.getElementById('syncBtn');
             if (manual) { btn.innerText = '同步中...'; btn.disabled = true; }
             try {
-                const resp = await fetch(DATA_URL + '?t=' + Date.now());
-                if (!resp.ok) throw new Error('讀取失敗');
-                const data = await resp.json();
-                const valid = data.filter(r => r && r.docNumber);
-                localStorage.setItem('lark_shipment_data', JSON.stringify(data));
-                const note = '（GitHub Actions 每日 08:00／20:00 HKT 自動同步，可手動 Run workflow 即時更新）';
+                const valid = await fetchLatestData();
+                const note = '（每 5 分鐘自動同步；亦可手動 Run workflow 即時更新）';
                 if (manual) setStatus(`✓ 已同步最新資料：${valid.length} 筆有效記錄${note}`, 'ok');
                 else if (valid.length) setStatus(`資料就緒：${valid.length} 筆${note}`, 'ok');
                 lookupNow();
@@ -206,6 +210,17 @@
                 if (manual) { btn.innerText = '同步查詢'; btn.disabled = false; }
             }
         }
+
+        // 開住個頁每 5 分鐘靜默更新快照（唔干擾輸入緊嘅嘢）
+        setInterval(async () => {
+            try {
+                const valid = await fetchLatestData();
+                if (valid.length) {
+                    const time = new Date().toLocaleTimeString('zh-HK', { hour: '2-digit', minute: '2-digit' });
+                    setStatus(`資料已自動更新：${valid.length} 筆（${time}）`, 'ok');
+                }
+            } catch (e) { /* 靜默失敗，下次再試 */ }
+        }, 5 * 60 * 1000);
 
         // ==========================================
         // 標籤渲染與列印
