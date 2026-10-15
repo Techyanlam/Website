@@ -27,7 +27,9 @@ import sys
 import urllib.request
 import urllib.error
 import urllib.parse
+import re
 import time
+from datetime import datetime, timezone, timedelta
 
 APP_TOKEN = "SWSQbZibjaHSTqsWlbqlB4sHg9e"
 TABLE_ID = "tblmmHsnTTzufnUq"  # Outbound Record
@@ -40,6 +42,15 @@ STATE_FILE = "lark_sync_state.json"
 FULL_SYNC_INTERVAL_MS = 24 * 3600 * 1000  # 每 24 小時做一次全量兜底
 MOD_FIELD_NAMES = ("最後修改時間", "修改時間", "最后修改时间",
                    "Last modified time", "Modified time")
+STR_DATETIME_FORMATS = (
+    "%Y/%m/%d %H:%M",
+    "%Y-%m-%d %H:%M",
+    "%Y/%m/%d %H:%M:%S",
+    "%Y-%m-%d %H:%M:%S",
+    "%Y/%m/%d",
+    "%Y-%m-%d",
+)
+HKT = timezone(timedelta(hours=8))
 
 
 def request_json(url, method="GET", body=None, headers=None, timeout=30, retries=3, label="request"):
@@ -131,8 +142,17 @@ def find_modified_time_field(token):
     return None
 
 
-def probe_field_unit(token, field_id):
-    """探測修改時間欄嘅數值係毫秒定秒，回傳 'ms' 或 's'（預設 'ms'）。"""
+def clean_datetime_str(v):
+    """去掉尾部嘅 (GMT+8) 之類時區標記。"""
+    if not isinstance(v, str):
+        return v
+    return re.sub(r"\s*\(GMT[+-]\d+\)\s*$", "", v).strip()
+
+
+def probe_field_spec(token, field_id):
+    """探測修改時間欄嘅數值格式。
+    回傳 ("ms", None) / ("s", None) / ("str", format_string) / ("unknown", None)。
+    """
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
     checked = 0
     with_value = 0
@@ -156,31 +176,58 @@ def probe_field_unit(token, field_id):
         for item in items:
             checked += 1
             v = (item.get("fields") or {}).get(field_id)
+            if v is None or v == "":
+                continue
+            with_value += 1
+            print(f"Probe sample raw value: {v!r} (python type: {type(v).__name__})")
+            # 1) 數字：毫秒 / 秒
             try:
                 num = float(v)
+                if num > 0:
+                    kind = "s" if num < 1e12 else "ms"
+                    print(f"Modified-time format: numeric -> {kind}")
+                    return (kind, None)
             except (TypeError, ValueError):
-                continue
-            if num > 0:
-                with_value += 1
-                if with_value == 1:
-                    unit = "s" if num < 1e12 else "ms"
-                    print(f"Modified-time unit probe: value={v} -> {unit} "
-                          f"({with_value} of {checked} sampled have values so far)")
-                    return unit
+                pass
+            # 2) 日期字串
+            s = clean_datetime_str(v)
+            if isinstance(s, str):
+                for fmt in STR_DATETIME_FORMATS:
+                    try:
+                        datetime.strptime(s, fmt)
+                        print(f"Modified-time format: string -> {fmt!r}")
+                        return ("str", fmt)
+                    except ValueError:
+                        continue
+            print(f"WARNING: unrecognized modified-time format: {v!r}")
+            return ("unknown", None)
         if not data.get("data", {}).get("has_more"):
             break
         page_token = data.get("data", {}).get("page_token", "")
     print(f"Probe: {with_value}/{checked} sampled records have modified-time values; "
           f"assuming milliseconds")
-    return "ms"
+    return ("ms", None)
 
 
-def fetch_changed_records(token, field_id, since_val):
-    """拉自 since_val 之後有修改嘅記錄（分頁）。"""
+def build_filter(field_id, kind, detail, last_sync_ms):
+    """按探測到嘅格式起 filter；唔識就回 None。"""
+    if kind == "ms":
+        return f"CurrentValue.[{field_id}]>{last_sync_ms}"
+    if kind == "s":
+        return f"CurrentValue.[{field_id}]>{last_sync_ms // 1000}"
+    if kind == "str":
+        # 字串格式（假設係 GMT+8）；時區唔確定，overlap 放大到 12 粒鐘保險
+        overlap_ms = 12 * 3600 * 1000
+        since_dt = datetime.fromtimestamp((last_sync_ms - overlap_ms) / 1000, HKT)
+        return f"CurrentValue.[{field_id}]>\"{since_dt.strftime(detail)}\""
+    return None
+
+
+def fetch_changed_records(token, filt):
+    """用預先起好嘅 filter 拉有修改嘅記錄（分頁）。"""
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
     all_records = []
     page_token = ""
-    filt = f"CurrentValue.[{field_id}]>{since_val}"
     while True:
         params = {"page_size": "100", "filter": filt}
         if page_token:
@@ -289,13 +336,20 @@ def main():
         state["last_sync_ms"] = now_ms
     else:
         fetch_start_ms = now_ms
-        unit = probe_field_unit(token, mod_field_id)
-        since_val = state["last_sync_ms"] if unit == "ms" else state["last_sync_ms"] // 1000
-        print(f"Incremental sync: changes since {state['last_sync_ms']} (field unit: {unit})")
-        try:
-            changed = fetch_changed_records(token, mod_field_id, since_val)
-        except Exception as e:
-            print(f"Incremental fetch failed ({e}); falling back to full sync")
+        kind, detail = probe_field_spec(token, mod_field_id)
+        filt = build_filter(mod_field_id, kind, detail, state["last_sync_ms"])
+        incremental_ok = False
+        changed = []
+        if filt is None:
+            print("Unknown modified-time format; falling back to full sync")
+        else:
+            print(f"Incremental sync: filter {filt}")
+            try:
+                changed = fetch_changed_records(token, filt)
+                incremental_ok = True
+            except Exception as e:
+                print(f"Incremental fetch failed ({e}); falling back to full sync")
+        if not incremental_ok:
             records = fetch_all_records(token)
             print(f"Fetched {len(records)} records")
             data = [convert_record(r) for r in records]
