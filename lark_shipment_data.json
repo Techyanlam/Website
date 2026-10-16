@@ -82028,15 +82028,24 @@
   {
     "recordId": "reczz28NzdgpyAr6",
     "docNumber": "HKLSI26100724",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Polytechnic University - School of Fashion and Textiles",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28Nzw5zlhC4",
     "docNumber": "HKLSI26100725",
+    "customerName": "The Hong Kong Polytechnic University - School of Fashion and Textiles",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28O0mSEfGPv",
+    "docNumber": "HKLSI26100726",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
