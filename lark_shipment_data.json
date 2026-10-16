@@ -35028,15 +35028,6 @@
     "transportQty": "3"
   },
   {
-    "recordId": "recvhiwN677edf",
-    "docNumber": "HKLSI26040629",
-    "customerName": "Hohenstein Laboratories (HK) Limited",
-    "shipToAddress": "新界-葵涌",
-    "contactName": "Patrick Wu",
-    "status": "",
-    "transportQty": "1"
-  },
-  {
     "recordId": "recvhiyZCHtAxT",
     "docNumber": "HKLSI26040630",
     "customerName": "The Hong Kong Polytechnic University - Department of ABCT",
@@ -35047,7 +35038,7 @@
   },
   {
     "recordId": "recvhizW0Jo9WY",
-    "docNumber": "HKLSI26040631a",
+    "docNumber": "HKLSI26040631",
     "customerName": "Centre for Immunology & Infection Limited",
     "shipToAddress": "新界-科學園",
     "contactName": "Ryan Tsang",
@@ -81720,92 +81711,83 @@
     "transportQty": ""
   },
   {
-    "recordId": "reczz28NxzrWDIIv",
-    "docNumber": "HKLSI26040629a",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "Patrick Wu",
-    "status": "",
-    "transportQty": ""
-  },
-  {
     "recordId": "reczz28NyASB5CT8",
     "docNumber": "HKLSI26100675",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hong Kong Applied Science and Technology Research Institute Company Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Christopher Yec",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NyATXg7kO",
     "docNumber": "HKLSI26100677",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "City University of Hong Kong - School of Energy and Environment",
+    "shipToAddress": "九龍-城大",
+    "contactName": "LIU Xingchen",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NyATXg5y9",
     "docNumber": "HKLSI26100678",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Po Leung Kuk Lo Kit Sing (1983) College",
+    "shipToAddress": "新界-青衣",
+    "contactName": "Shiu Yik Ting",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NyATXgXDI",
     "docNumber": "HKLSI26100679",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "City University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "九龍-城大",
+    "contactName": "YU Dongxue",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NyATXfk7T",
     "docNumber": "HKLSI26100680",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NyATXhz8b",
     "docNumber": "HKLSI26100683",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Bi Kong",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NyATXfxPr",
     "docNumber": "HKLSI26100684",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Chinese University of Hong Kong - School of Biomedical Sciences",
+    "shipToAddress": "新界-中大",
+    "contactName": "Dr XUE, Kwan Yuen Katherine",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NyAamVt28",
     "docNumber": "HKLSI26100685",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Chinese Christian Churches Union Logos Academy (secondary Section)",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Rico Lee",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NyAgQ3ORK",
     "docNumber": "HKLSI26100686",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "City University of Hong Kong - State Key Laboratory of Marine Environmental Health (SKLMEH)",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Mr. Aaron NG",
     "status": "",
     "transportQty": ""
   },
@@ -82030,6 +82012,15 @@
     "docNumber": "HKLSI26100719",
     "customerName": "",
     "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28NyJ9Ghn10",
+    "docNumber": "HKLSI26040637TEST",
+    "customerName": "Wai Yuen Tong Medicine Co., Limited 3",
+    "shipToAddress": "新界-元朗",
     "contactName": "",
     "status": "",
     "transportQty": ""
