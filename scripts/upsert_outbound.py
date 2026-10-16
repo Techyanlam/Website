@@ -10,6 +10,8 @@
     DELIVERY_DEADLINE—— Invoice Date（如 22-04-2026） → 「Delivery Deadline」
     DN_NO            —— DN No.（如 HKLDN26040473）     → 「DN#」
     TOTAL_DN_QTY     —— Total Qty（如 1200）           → 「Total DN Qty」
+    LOCATION         —— 地區簡稱（如 新界-粉嶺）        → 「Location」
+                       （單選欄：只寫入真實存在嘅選項，否則跳過並報告）
 
 行為：
     - 先讀取表格欄位清單，只寫入真實存在嘅欄（唔存在嘅會跳過並報告）
@@ -46,6 +48,7 @@ FIELD_SPECS = [
     ("Delivery Deadline", "DELIVERY_DEADLINE", "date"),
     ("DN#", "DN_NO", "text"),
     ("Total DN Qty", "TOTAL_DN_QTY", "number"),
+    ("Location", "LOCATION", "select"),
 ]
 
 if not DOC_NO:
@@ -103,8 +106,8 @@ def main():
         {"app_id": APP_ID, "app_secret": APP_SECRET},
     )["tenant_access_token"]
 
-    # 讀取欄位清單：{欄名: type}
-    field_types = {}
+    # 讀取欄位清單：{欄名: {"type": int, "options": [單選選項名]}}
+    field_meta = {}
     page_token = None
     while True:
         path = f"/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/fields?page_size=100"
@@ -112,7 +115,12 @@ def main():
             path += f"&page_token={page_token}"
         data = api("GET", path, token=token)["data"]
         for f in data.get("items", []):
-            field_types[f["field_name"]] = f.get("type")
+            meta = {"type": f.get("type"), "options": []}
+            prop = f.get("property") or {}
+            for opt in prop.get("options") or []:
+                if isinstance(opt, dict) and opt.get("name"):
+                    meta["options"].append(opt["name"])
+            field_meta[f["field_name"]] = meta
         if not data.get("has_more"):
             break
         page_token = data.get("page_token")
@@ -122,18 +130,30 @@ def main():
         raw = os.environ.get(env_key, "").strip()
         if not raw:
             continue
-        ftype = field_types.get(lark_name)
-        if ftype is None:
+        meta = field_meta.get(lark_name)
+        if meta is None:
             skipped.append(lark_name)
             continue
+        ftype = meta["type"]
         try:
-            if kind == "date" and ftype == TYPE_DATE:
+            if kind == "select" and ftype in (3, 4):
+                # 單選／多選：只寫入真實存在嘅選項，否則成個寫入會失敗
+                if raw in meta["options"]:
+                    fields[lark_name] = [raw] if ftype == 4 else raw
+                    written.append(lark_name)
+                else:
+                    print(f"WARNING: {raw!r} is not an option of {lark_name!r} — skipped",
+                          file=sys.stderr)
+                    skipped.append(lark_name + f"（{raw} 唔係有效選項）")
+            elif kind == "date" and ftype == TYPE_DATE:
                 fields[lark_name] = to_timestamp_ms(raw)
+                written.append(lark_name)
             elif kind == "number" and ftype == TYPE_NUMBER:
                 fields[lark_name] = to_number(raw)
+                written.append(lark_name)
             else:
                 fields[lark_name] = raw
-            written.append(lark_name)
+                written.append(lark_name)
         except ValueError as e:
             print(f"WARNING: field {lark_name!r}: {e} — skipped", file=sys.stderr)
             skipped.append(lark_name)
