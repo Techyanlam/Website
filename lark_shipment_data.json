@@ -81713,18 +81713,9 @@
   {
     "recordId": "reczz28NwcyQZKzH",
     "docNumber": "HKLSI26100720",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
-    "status": "",
-    "transportQty": ""
-  },
-  {
-    "recordId": "reczz28NwxxZI6FA",
-    "docNumber": "HKLSI26040624a",
-    "customerName": "Hohenstein Laboratories (HK) Limited",
-    "shipToAddress": "新界-葵涌",
-    "contactName": "Rosana Poon",
+    "customerName": "The Hong Kong Polytechnic University - Department of Health Technology & Informatics",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Yuan Xinyi",
     "status": "",
     "transportQty": ""
   }
