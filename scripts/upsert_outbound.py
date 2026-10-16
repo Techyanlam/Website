@@ -108,11 +108,11 @@ def to_number(value):
 
 
 def upload_to_drive(token, file_path, file_name):
-    """上傳檔案到 Lark Drive（綁定到 Outbound Record 所屬 Base 嘅附件池），回傳 file_token。
+    """上傳檔案到 Lark Drive（Base 附件專用 material endpoint），回傳 file_token。
 
-    upload_all 要求 file_name、parent_type、parent_node、size 四個 form 欄位齊晒，
-    缺任何一個會回 1061002 params error（2026-10-16 實測：「PDF 上傳失敗」嘅真兇）。
-    附件用途用 parent_type=bitable_file，parent_node=Base 嘅 app_token。
+    POST /open-apis/drive/v1/upload（唔係 medias/upload_all，後者會 1061002）。
+    六個 form 欄位：file、file_name、size、parent_type=bitable_file、
+    parent_node=Base app_token、extra={"drive_route_token": app_token}。
     """
     with open(file_path, "rb") as f:
         file_data = f.read()
@@ -127,6 +127,9 @@ def upload_to_drive(token, file_path, file_name):
 
     add_field("file_name", file_name)
     add_field("size", str(len(file_data)))
+    add_field("parent_type", "bitable_file")
+    add_field("parent_node", APP_TOKEN)
+    add_field("extra", json.dumps({"drive_route_token": APP_TOKEN}))
     body += f"--{boundary}\r\n".encode()
     body += (f'Content-Disposition: form-data; name="file"; filename="{file_name}"\r\n').encode()
     body += b"Content-Type: application/pdf\r\n\r\n"
@@ -134,7 +137,7 @@ def upload_to_drive(token, file_path, file_name):
     body += f"--{boundary}--\r\n".encode()
 
     req = urllib.request.Request(
-        API + "/drive/v1/medias/upload_all",
+        API + "/drive/v1/upload",
         method="POST",
         data=body,
         headers={
@@ -147,10 +150,14 @@ def upload_to_drive(token, file_path, file_name):
             result = json.load(resp)
     except urllib.error.HTTPError as e:
         detail = e.read().decode("utf-8", "replace")[:500]
-        raise RuntimeError(f"drive upload_all HTTP {e.code}: {detail}")
+        raise RuntimeError(f"drive upload HTTP {e.code}: {detail}")
     if result.get("code") != 0:
-        raise RuntimeError(f"drive upload_all -> {result}")
-    return result["data"]["file_token"]
+        raise RuntimeError(f"drive upload -> {result}")
+    data = result.get("data") or {}
+    file_token = data.get("file_token") or data.get("fileToken")
+    if not file_token:
+        raise RuntimeError(f"drive upload: no file_token in {result}")
+    return file_token
 
 
 def ensure_attachment_field(token, field_meta):
