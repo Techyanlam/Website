@@ -41,7 +41,7 @@
 </style>
 </head>
 <body>
-<h1>🧾 Invoice → Lark Base 批量同步 <span id="ver" style="font-size:12px;color:#888;font-weight:normal">v10</span></h1>
+<h1>🧾 Invoice → Lark Base 批量同步 <span id="ver" style="font-size:12px;color:#888;font-weight:normal">v11</span></h1>
 <p class="sub">一次過拖入多張 Sales Invoice PDF → 自動抽資料 → 逐張核對 → 一次過同步去 Outbound Record</p>
 
 <div id="drop">
@@ -647,12 +647,23 @@ contact_name: p.contactName, delivery_deadline: p.deliveryDeadline,
 dn_no: p.dnNo, total_dn_qty: p.totalQty, location: p.location,
 pdf_path: pdfPath, pdf_base64: pdfBase64, pdf_name: pdfName
 };
-const res = await fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/dispatches', {
-method: 'POST',
-headers: { 'Accept': 'application/vnd.github+json', 'Authorization': 'Bearer ' + pat},
-body: JSON.stringify({ event_type: 'upsert-outbound', client_payload: payload})
-});
-return res.ok;
+for (let attempt = 1; attempt <= 2; attempt++) {
+  try {
+    const res = await fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/dispatches', {
+      method: 'POST',
+      headers: { 'Accept': 'application/vnd.github+json', 'Authorization': 'Bearer ' + pat},
+      body: JSON.stringify({ event_type: 'upsert-outbound', client_payload: payload})
+    });
+    if (res.ok) return true;
+    let detail = res.status;
+    try { detail += ' ' + (await res.json()).message; } catch (e) {}
+    log('⚠️ dispatch 第' + attempt + '次失敗：' + detail, 'warn');
+  } catch (e) {
+    log('⚠️ dispatch 第' + attempt + '次網絡錯誤：' + e.message, 'warn');
+  }
+  if (attempt < 2) await sleep(3000);
+}
+return false;
 }
 
 async function syncItems(items) {
