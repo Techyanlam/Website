@@ -82,6 +82,8 @@
   <input type="text" id="f_dnno">
   <label class="f"><b>Total Qty</b> <span class="map">→ Total DN Qty</span></label>
   <input type="text" id="f_qty">
+  <label class="f"><b>Location</b> <span class="map">→ Location（按地址自動判斷，可修改）</span></label>
+  <input type="text" id="f_location">
   <div class="rowbtns">
     <button id="saveEdit">💾 儲存修改</button>
     <button id="syncOne" class="ghost">🚀 只同步呢張</button>
@@ -154,9 +156,161 @@ function grabQty(lines) {
   return m ? m[1].replace(/,/g, '') : '';
 }
 
+/* ---------- Location 自動判斷 ---------- */
+/* 按送貨地址＋公司名嘅關鍵字，對應 Lark「Location」欄嘅實際選項值。
+   兩層優先：① 身份類（大學／國家／醫院／科學園／機場／自取）— 地址＋公司名都 check；
+   ② 地區類 — 只 check 地址（避免公司名入面嘅字誤判，例如 Central Chemical）。
+   每層內用最長關鍵字優先（愈具體愈優先）。 */
+const LOCATION_IDENTITY = [
+  ["OS-Thailand", ["泰國", "thailand"]],
+  ["OS-USA", ["美國", "united states", "usa"]],
+  ["OS-Italy", ["意大利", "italy"]],
+  ["OS-India", ["印度", "india"]],
+  ["OS-Macau", ["澳門", "macau", "macao"]],
+  ["OS-Vietnam", ["越南", "vietnam"]],
+  ["OS-TURKEY", ["土耳其", "turkey"]],
+  ["OS-The Netherlands", ["荷蘭", "netherlands", "holland"]],
+  ["OS-Taiwan", ["台灣", "taiwan"]],
+  ["台灣-高雄", ["高雄", "kaohsiung"]],
+  ["OS-Korea", ["韓國", "korea"]],
+  ["OS-Japan", ["日本", "japan"]],
+  ["OS-Indonesia", ["印尼", "indonesia"]],
+  ["OS-France", ["法國", "france"]],
+  ["OS-深圳", ["深圳", "shenzhen"]],
+  ["Cambodia", ["柬埔寨", "cambodia"]],
+  ["Bangladesh", ["孟加拉", "bangladesh"]],
+  ["新界-嶺南大學", ["嶺南大學", "lingnan university", "lingnan"]],
+  ["新界-中大", ["香港中文大學", "中文大學", "cuhk", "chinese university"]],
+  ["九龍-理大", ["理工大學", "理大", "polyu", "polytechnic"]],
+  ["香港-港大", ["香港大學", "hku"]],
+  ["九龍-科大", ["科技大學", "科大", "hkust"]],
+  ["九龍-浸大", ["浸會大學", "浸大", "hkbu", "baptist"]],
+  ["九龍-城大", ["城市大學", "城大", "cityu", "city university"]],
+  ["新界-科學園", ["科學園", "science park"]],
+  ["九龍-聖德肋撒醫院", ["聖德肋撒", "st teresa"]],
+  ["九龍-伊利沙伯醫院", ["伊利沙伯", "queen elizabeth"]],
+  ["香港-機場", ["機場", "airport", "赤鱲角", "chek lap kok"]],
+  ["客人自取", ["客人自取"]],
+  ["Anson 自取", ["anson"]],
+  ["Customer self pick up", ["customer self pick up"]],
+  ["Self Pick Up", ["self pick up", "self-pickup", "selfpickup"]],
+  ["自取", ["自取"]],
+  ["Duplicate orders", ["duplicate order"]],
+  ["Cancelled", ["cancelled", "canceled"]]
+];
+
+const LOCATION_DISTRICT = [
+  ["新界-沙頭角", ["沙頭角", "sha tau kok"]],
+  ["新界-葵涌", ["葵涌", "kwai chung"]],
+  ["新界-葵青", ["葵青", "kwai ching"]],
+  ["新界-馬灣", ["馬灣", "ma wan"]],
+  ["新界-馬鞍山", ["馬鞍山", "ma on shan"]],
+  ["新界-荃灣", ["荃灣", "tsuen wan"]],
+  ["新界-粉嶺", ["粉嶺", "fanling", "fan ling"]],
+  ["新界-青衣", ["青衣", "tsing yi"]],
+  ["新界-林錦公路", ["林錦公路", "lam kam road"]],
+  ["新界-東涌", ["東涌", "tung chung"]],
+  ["新界-沙田", ["沙田", "sha tin"]],
+  ["九龍-西貢", ["西貢", "sai kung"]],
+  ["新界-白石角", ["白石角", "pak shek kok"]],
+  ["新界-打鼓嶺", ["打鼓嶺", "ta kwu ling"]],
+  ["新界-火炭", ["火炭", "fo tan"]],
+  ["新界-文錦渡", ["文錦渡", "man kam to"]],
+  ["新界-屯門", ["屯門", "tuen mun"]],
+  ["新界-天水圍", ["天水圍", "tin shui wai"]],
+  ["新界-元朗", ["元朗", "yuen long"]],
+  ["新界-小蠔灣", ["小蠔灣", "siu ho wan"]],
+  ["新界-大嶼山", ["大嶼山", "大屿山", "lantau"]],
+  ["新界-大圍", ["大圍", "tai wai"]],
+  ["新界-大埔", ["大埔", "tai po"]],
+  ["新界-上水", ["上水", "sheung shui"]],
+  ["香港-灣仔", ["灣仔", "wan chai", "wanchai"]],
+  ["香港-寶馬山", ["寶馬山", "braemar hill"]],
+  ["香港-筲箕湾", ["筲箕灣", "筲箕湾", "shau kei wan"]],
+  ["香港-炮臺山", ["炮臺山", "炮台山", "fortress hill"]],
+  ["香港-金鐘", ["金鐘", "admiralty"]],
+  ["香港-西環", ["西環", "sai wan"]],
+  ["香港-西河灣", ["西河灣"]],
+  ["香港-半山", ["半山", "mid-levels", "midlevels"]],
+  ["香港-北角", ["北角", "north point"]],
+  ["香港-中環", ["中環", "central"]],
+  ["香港-大潭水", ["大潭", "tai tam"]],
+  ["香港-鰂魚涌", ["鰂魚涌", "quarry bay"]],
+  ["香港-薄扶林", ["薄扶林", "pok fu lam", "pokfulam"]],
+  ["香港-鴨脷洲", ["鴨脷洲", "ap lei chau"]],
+  ["香港-摩星嶺", ["摩星嶺", "mount davis"]],
+  ["香港-銅鑼灣", ["銅鑼灣", "causeway bay"]],
+  ["香港-黃竹坑", ["黃竹坑", "wong chuk hang"]],
+  ["香港-跑馬地", ["跑馬地", "happy valley"]],
+  ["香港-港島", ["港島", "hong kong island"]],
+  ["香港-淺水灣", ["淺水灣", "repulse bay"]],
+  ["香港-堅尼地城", ["堅尼地城", "kennedy town"]],
+  ["香港-柴灣", ["柴灣", "chai wan"]],
+  ["香港-香港仔", ["香港仔", "aberdeen"]],
+  ["香港-皇后大道中", ["皇后大道中", "queen's road central"]],
+  ["香港-赤柱", ["赤柱", "stanley"]],
+  ["香港-西灣河", ["西灣河", "sai wan ho"]],
+  ["香港-西營盤", ["西營盤", "sai ying pun"]],
+  ["香港-石澳", ["石澳", "shek o"]],
+  ["香港-山頂", ["山頂", "victoria peak", "the peak"]],
+  ["香港-小西灣", ["小西灣", "siu sai wan"]],
+  ["香港-上環", ["上環", "sheung wan"]],
+  ["九龍-藍田", ["藍田", "lam tin"]],
+  ["九龍-窩打老道", ["窩打老道", "waterloo road"]],
+  ["九龍-美孚", ["美孚", "mei foo"]],
+  ["九龍-紅磡", ["紅磡", "紅堪", "hung hom"]],
+  ["九龍-油塘", ["油塘", "yau tong"]],
+  ["九龍-油麻地", ["油麻地", "yau ma tei"]],
+  ["九龍-石硤尾", ["石硤尾", "shek kip mei"]],
+  ["九龍-太子道東", ["太子道東"]],
+  ["九龍-太子道", ["太子道", "prince edward road"]],
+  ["九龍-觀塘", ["觀塘", "kwun tong"]],
+  ["九龍-龍翔道", ["龍翔道", "lung cheung road"]],
+  ["九龍-調景嶺", ["調景嶺", "tiu keng leng"]],
+  ["九龍-新蒲崗", ["新蒲崗", "san po kong"]],
+  ["九龍-黃大仙", ["黃大仙", "wong tai sin"]],
+  ["九龍-清水灣", ["清水灣", "clear water bay"]],
+  ["九龍-深水埗", ["深水埗", "sham shui po"]],
+  ["九龍-將軍澳", ["將軍澳", "tseung kwan o"]],
+  ["九龍-啟德", ["啟德", "kai tak"]],
+  ["九龍-荔枝角", ["荔枝角", "lai chi kok"]],
+  ["九龍-柯士甸道", ["柯士甸道", "austin road"]],
+  ["九龍-南昌", ["南昌", "nam cheong"]],
+  ["九龍-長沙灣", ["長沙灣", "cheung sha wan"]],
+  ["九龍-旺角", ["旺角", "mong kok", "mongkok"]],
+  ["九龍-㕵角", ["㕵角"]],
+  ["九龍-何文田", ["何文田", "ho man tin"]],
+  ["九龍-佐敦", ["佐敦", "jordan"]],
+  ["九龍-西九文化區", ["西九文化區", "wkcd", "west kowloon cultural"]],
+  ["九龍-尖沙咀", ["尖沙咀", "tsim sha tsui"]],
+  ["九龍-牛頭角", ["牛頭角", "ngau tau kok"]],
+  ["九龍-土瓜灣", ["土瓜灣", "to kwa wan"]],
+  ["九龍-九龍灣", ["九龍灣", "kowloon bay"]],
+  ["九龍-九龍塘", ["九龍塘", "kowloon tong"]],
+  ["九龍-九龍城", ["九龍城", "kowloon city"]]
+];
+
+function longestMatch(table, text) {
+  const t = (text || '').toLowerCase();
+  let best = '', bestLen = 0;
+  for (const [loc, kws] of table) {
+    for (const kw of kws) {
+      if (kw && t.includes(kw.toLowerCase()) && kw.length > bestLen) {
+        best = loc; bestLen = kw.length;
+      }
+    }
+  }
+  return best;
+}
+
+function detectLocation(address, customerName) {
+  const both = (address || '') + ' ' + (customerName || '');
+  return longestMatch(LOCATION_IDENTITY, both) || longestMatch(LOCATION_DISTRICT, address || '');
+}
+
 function parseInvoice(text) {
   const out = { invoiceNo: '', customerName: '', shipAddress: '', contactName: '',
-                deliveryDeadline: '', dnNo: '', totalQty: '' };
+                deliveryDeadline: '', dnNo: '', totalQty: '', location: '' };
   const lines = preprocessLines(text);
   let m = text.match(/Invoice\s*No\.?\s*[:：]?\s*([A-Z0-9][A-Z0-9\-]{3,})/i);
   if (m) out.invoiceNo = m[1].trim();
@@ -170,6 +324,7 @@ function parseInvoice(text) {
   out.deliveryDeadline = grabDate(lines);
   out.dnNo = last(grabAll(lines, 'dn\\s*no'));
   out.totalQty = grabQty(lines);
+  out.location = detectLocation(out.shipAddress, out.customerName);
   return out;
 }
 
@@ -258,6 +413,7 @@ $('editName').textContent = '— ' + it.filename;
 $('f_no').value = p.invoiceNo; $('f_customer').value = p.customerName;
 $('f_addr').value = p.shipAddress; $('f_contact').value = p.contactName;
 $('f_deadline').value = p.deliveryDeadline; $('f_dnno').value = p.dnNo; $('f_qty').value = p.totalQty;
+  $('f_location').value = p.location || '';
 $('editor').hidden = false;
 $('dbg').textContent = '抽取方式：' + it.method + '（' + it.pages + ' 頁）\n\n' + (it.rawText || '').slice(0, 1500);
 renderQueue();
@@ -271,7 +427,7 @@ it.parsed = {
 invoiceNo: $('f_no').value.trim(), customerName: $('f_customer').value.trim(),
 shipAddress: $('f_addr').value.trim(), contactName: $('f_contact').value.trim(),
 deliveryDeadline: $('f_deadline').value.trim(), dnNo: $('f_dnno').value.trim(),
-totalQty: $('f_qty').value.trim()
+totalQty: $('f_qty').value.trim(), location: $('f_location').value.trim()
 };
 it.status = it.parsed.invoiceNo? 'ready': 'warn';
 it.error = '';
@@ -317,7 +473,7 @@ const p = item.parsed;
 const payload = {
 hksli_no: p.invoiceNo, customer_name: p.customerName, ship_address: p.shipAddress,
 contact_name: p.contactName, delivery_deadline: p.deliveryDeadline,
-dn_no: p.dnNo, total_dn_qty: p.totalQty
+dn_no: p.dnNo, total_dn_qty: p.totalQty, location: p.location
 };
 const res = await fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/dispatches', {
 method: 'POST',
