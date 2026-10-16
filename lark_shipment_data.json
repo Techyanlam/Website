@@ -6,7 +6,7 @@
     "shipToAddress": "新界-小蠔灣",
     "contactName": "Hagan Ho",
     "status": "",
-    "transportQty": "3"
+    "transportQty": "1"
   },
   {
     "recordId": "recvdo0yz46YR7",
@@ -81642,14 +81642,32 @@
     "recordId": "reczz28Ntdr8hjSj",
     "docNumber": "HKLSI26100671",
     "customerName": "Clover Seed Co., Ltd.",
-    "shipToAddress": "",
-    "contactName": "",
+    "shipToAddress": "香港-黃竹坑",
+    "contactName": "Leung Wai Yuk Karina",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28Ntdr8hevx",
     "docNumber": "HKLSI26100672",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr Eric Sze",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Ntdr8hRGc",
+    "docNumber": "HKLSI26100674",
+    "customerName": "TE Health Consultant Co., Ltd. ",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Doris Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28NtmAX84zm",
+    "docNumber": "",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
@@ -81657,8 +81675,8 @@
     "transportQty": ""
   },
   {
-    "recordId": "reczz28Ntdr8hRGc",
-    "docNumber": "HKLSI26100674",
+    "recordId": "reczz28NtmAX5Cz4",
+    "docNumber": "",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
