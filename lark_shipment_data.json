@@ -81201,10 +81201,10 @@
     "recordId": "reczz28NDjhGRuXV",
     "docNumber": "HKLSI26100620",
     "customerName": "City University of Hong Kong - Finance Office (Procurement)",
-    "shipToAddress": "新界-中大",
+    "shipToAddress": "九龍-城大",
     "contactName": "Mr. NG Yeuk Sze Aaron",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28NDlNF7lk2",
@@ -81519,7 +81519,7 @@
     "shipToAddress": "九龍-理大",
     "contactName": "Ken Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28NXxPaHgZ0",
@@ -81582,7 +81582,7 @@
     "shipToAddress": "九龍-浸大",
     "contactName": "Tin Poon",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28NbGNsuZyT",
