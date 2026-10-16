@@ -41,7 +41,7 @@
 </style>
 </head>
 <body>
-<h1>🧾 Invoice → Lark Base 批量同步 <span id="ver" style="font-size:12px;color:#888;font-weight:normal">v9</span></h1>
+<h1>🧾 Invoice → Lark Base 批量同步 <span id="ver" style="font-size:12px;color:#888;font-weight:normal">v10</span></h1>
 <p class="sub">一次過拖入多張 Sales Invoice PDF → 自動抽資料 → 逐張核對 → 一次過同步去 Outbound Record</p>
 
 <div id="drop">
@@ -593,17 +593,20 @@ if (first) selectRow(first.id);
 function getPat() { return ($('pat').value || localStorage.getItem('gh_pat_' + OWNER + '_' + REPO) || '').trim();}
 
 /* ---------- PDF 上傳到 repo（之後 workflow 會轉上傳到 Lark 附件欄） ---------- */
-async function uploadPdfToRepo(item, pat) {
-  const f = item.file;
-  if (!f || f.size > 15 * 1024 * 1024) return null;  // 太大就跳過
-  const base = (item.parsed && item.parsed.invoiceNo) || f.name.replace(/\.pdf$/i, '');
-  const path = 'invoices/' + base.replace(/[^\w\-.]+/g, '_') + '.pdf';
-  const b64 = await new Promise((res, rej) => {
+function fileToBase64(f) {
+  return new Promise((res, rej) => {
     const r = new FileReader();
     r.onload = () => res(String(r.result).split(',')[1]);
     r.onerror = rej;
     r.readAsDataURL(f);
   });
+}
+
+async function uploadPdfToRepo(item, pat) {
+  const f = item.file;
+  const base = (item.parsed && item.parsed.invoiceNo) || f.name.replace(/\.pdf$/i, '');
+  const path = 'invoices/' + base.replace(/[^\w\-.]+/g, '_') + '.pdf';
+  const b64 = await fileToBase64(f);
   const headers = { 'Accept': 'application/vnd.github+json', 'Authorization': 'Bearer ' + pat };
   let sha = null;
   try {
@@ -614,24 +617,35 @@ async function uploadPdfToRepo(item, pat) {
   if (sha) body.sha = sha;
   const putRes = await fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/contents/' + path,
     { method: 'PUT', headers, body: JSON.stringify(body) });
-  if (!putRes.ok) throw new Error('repo upload failed: ' + putRes.status);
+  if (!putRes.ok) {
+    let detail = putRes.status;
+    try { detail += ' ' + (await putRes.json()).message; } catch (e) {}
+    throw new Error(detail);
+  }
   return path;
 }
 
 async function dispatchOne(item, pat) {
 const p = item.parsed;
-let pdfPath = null;
-try {
-  pdfPath = await uploadPdfToRepo(item, pat);
-  if (pdfPath) log('📎 PDF 已上傳：' + pdfPath, 'ok');
-} catch (e) {
-  log('⚠️ PDF 上傳失敗（淨同步資料）：' + item.filename, 'warn');
+let pdfPath = '', pdfBase64 = '', pdfName = '';
+const f = item.file;
+if (f && f.size <= 8 * 1024 * 1024) {
+  try {
+    pdfPath = await uploadPdfToRepo(item, pat);
+    log('📎 PDF 已上傳：' + pdfPath, 'ok');
+  } catch (e) {
+    log('⚠️ PDF 上傳 repo 失敗（' + e.message + '），改經 dispatch 直接傳送', 'warn');
+    try {
+      pdfBase64 = await fileToBase64(f);
+      pdfName = ((p.invoiceNo) || f.name.replace(/\.pdf$/i, '')) + '.pdf';
+    } catch (e2) { log('⚠️ PDF 讀取失敗，今次唔帶附件', 'warn'); }
+  }
 }
 const payload = {
 hksli_no: p.invoiceNo, customer_name: p.customerName, ship_address: p.shipAddress,
 contact_name: p.contactName, delivery_deadline: p.deliveryDeadline,
 dn_no: p.dnNo, total_dn_qty: p.totalQty, location: p.location,
-pdf_path: pdfPath || ''
+pdf_path: pdfPath, pdf_base64: pdfBase64, pdf_name: pdfName
 };
 const res = await fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/dispatches', {
 method: 'POST',
