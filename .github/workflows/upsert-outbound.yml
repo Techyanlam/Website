@@ -1,1 +1,55 @@
+name: Upsert Outbound Record from invoice
 
+# 由 invoice-sync.html 上傳介面觸發：將 Sales Invoice PDF 抽出嘅資料
+# 寫入 Lark Base Outbound Record（按「HKSLI no」搜尋：有就更新，冇就新增）。
+#
+# 觸發方式：
+#   1. 上傳介面 → repository_dispatch (event_type: upsert-outbound)
+#   2. 手動：Actions 分頁 → Upsert Outbound Record from invoice → Run workflow
+#
+# 寫入成功後，Outbound Record 嘅 Lark Automation 會自動觸發
+# repository_dispatch (lark-base-update)，Sync Lark Base Data 會將新資料
+# 拉入 lark_shipment_data.json（約 4 分鐘），標籤頁自動生效。
+
+on:
+  repository_dispatch:
+    types: [upsert-outbound]
+  workflow_dispatch:
+    inputs:
+      hksli_no:
+        description: 'Invoice No.（寫入「HKSLI no」欄）'
+        required: true
+      customer_name:
+        description: 'Ship To 公司名（寫入「Customer Name」欄）'
+        required: false
+        default: ''
+      ship_address:
+        description: '送貨地址（寫入「送貨地址」欄）'
+        required: false
+        default: ''
+      contact_name:
+        description: 'Ship To Attn（寫入「Contact Name」欄）'
+        required: false
+        default: ''
+
+jobs:
+  upsert:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Upsert record in Lark Bitable
+        run: python scripts/upsert_outbound.py
+        env:
+          LARK_APP_ID: ${{ secrets.LARK_APP_ID }}
+          LARK_APP_SECRET: ${{ secrets.LARK_APP_SECRET }}
+          HKSLI_NO: ${{ github.event.client_payload.hksli_no || github.event.inputs.hksli_no }}
+          CUSTOMER_NAME: ${{ github.event.client_payload.customer_name || github.event.inputs.customer_name }}
+          SHIP_ADDRESS: ${{ github.event.client_payload.ship_address || github.event.inputs.ship_address }}
+          CONTACT_NAME: ${{ github.event.client_payload.contact_name || github.event.inputs.contact_name }}
