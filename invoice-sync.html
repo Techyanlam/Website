@@ -156,6 +156,40 @@ function grabQty(lines) {
   return m ? m[1].replace(/,/g, '') : '';
 }
 
+/* ---------- Ship To 區域鎖定 ---------- */
+/* OCR 兩欄並排時，Bill To / Ship To 嘅讀出次序唔穩定（有時左右欄合併、有時成欄搬位），
+   「取最後出現」會誤中 Bill To。呢度改為：搵到「Ship To」標題行，就只喺佢之後、
+   下一個段落標題之前嘅區域抽 Company Name / Address / Attn。 */
+function extractShipToLines(lines) {
+  // 標題行必須「成行就係 Ship To」（唔係包喺值入面，例如公司名叫 Ship To Trading）
+  const isShipToHead = l =>
+    /^\s*ship\s*-?\s*to\s*[:：]?\s*$/i.test(l) ||
+    /\bbill\s*-?\s*to\b.*\bship\s*-?\s*to\b/i.test(l) ||
+    /\bship\s*-?\s*to\b.*\bbill\s*-?\s*to\b/i.test(l);
+  let start = -1;
+  for (let i = 0; i < lines.length; i++) {
+    if (isShipToHead(lines[i])) start = i;   // 取最後一個 Ship To 標題
+  }
+  if (start < 0) return null;
+  const sectionHead = /^\s*(bill\s*-?\s*to|payment|shipment|remarks|terms|delivery|dn\s*no\.?|total\s*qty|sales\s*invoice|page\s*\d)/i;
+  let end = lines.length;
+  for (let i = start + 1; i < lines.length; i++) {
+    if (isShipToHead(lines[i])) continue;  // 「Bill To Ship To」分隔行唔當結束
+    if (sectionHead.test(lines[i])) { end = i; break; }
+  }
+  const region = lines.slice(start + 1, end).filter(l => l.trim().length > 0);
+  return region.length >= 1 ? region : null;
+}
+
+/* 優先喺 Ship To 區域取最後一個命中（右欄）；區域無命中就後備取全文最後一個 */
+function pickLabel(lines, shipLines, labelRe) {
+  if (shipLines) {
+    const hits = grabAll(shipLines, labelRe);
+    if (hits.length) return hits[hits.length - 1];
+  }
+  return last(grabAll(lines, labelRe));
+}
+
 /* ---------- Location 自動判斷 ---------- */
 /* 按送貨地址＋公司名嘅關鍵字，對應 Lark「Location」欄嘅實際選項值。
    兩層優先：① 身份類（大學／國家／醫院／科學園／機場／自取）— 地址＋公司名都 check；
@@ -312,15 +346,17 @@ function parseInvoice(text) {
   const out = { invoiceNo: '', customerName: '', shipAddress: '', contactName: '',
                 deliveryDeadline: '', dnNo: '', totalQty: '', location: '' };
   const lines = preprocessLines(text);
+  const shipLines = extractShipToLines(lines);
+  out._shipToLocked = !!shipLines;
   let m = text.match(/Invoice\s*No\.?\s*[:：]?\s*([A-Z0-9][A-Z0-9\-]{3,})/i);
   if (m) out.invoiceNo = m[1].trim();
   else {
     m = text.match(/\b(HK[A-Z]{0,4}\d{5,})\b/);
     if (m) out.invoiceNo = m[1];
   }
-  out.customerName = last(grabAll(lines, 'compa\\s*ny\\s*name'));
-  out.shipAddress = last(grabAll(lines, 'addr\\s*ess'));
-  out.contactName = last(grabAll(lines, 'attn'));
+  out.customerName = pickLabel(lines, shipLines, 'compa\\s*ny\\s*name');
+  out.shipAddress = pickLabel(lines, shipLines, 'addr\\s*ess');
+  out.contactName = pickLabel(lines, shipLines, 'attn');
   out.deliveryDeadline = grabDate(lines);
   out.dnNo = last(grabAll(lines, 'dn\\s*no'));
   out.totalQty = grabQty(lines);
@@ -415,7 +451,9 @@ $('f_addr').value = p.shipAddress; $('f_contact').value = p.contactName;
 $('f_deadline').value = p.deliveryDeadline; $('f_dnno').value = p.dnNo; $('f_qty').value = p.totalQty;
   $('f_location').value = p.location || '';
 $('editor').hidden = false;
-$('dbg').textContent = '抽取方式：' + it.method + '（' + it.pages + ' 頁）\n\n' + (it.rawText || '').slice(0, 1500);
+$('dbg').textContent = '抽取方式：' + it.method + '（' + it.pages + ' 頁）\n' +
+'Ship To 區域：' + (p._shipToLocked ? '已鎖定（只讀 Ship To 標題之後）' : '未搵到標題，用後備模式') + '\n\n' +
+(it.rawText || '').slice(0, 1500);
 renderQueue();
 $('editor').scrollIntoView({ behavior: 'smooth', block: 'nearest'});
 }
