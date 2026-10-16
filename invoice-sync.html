@@ -1,233 +1,135 @@
 <!DOCTYPE html>
-<html lang="zh-Hant-HK">
+<html lang="zh-HK">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Invoice → Lark Base 同步</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoice → Lark Base 批量同步</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
-  * { box-sizing: border-box; }
-  body { font-family: -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-         margin: 0; background: #f4f6f9; color: #222; }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
-  h1 { font-size: 22px; margin: 8px 0 4px; }
-  .sub { color: #666; font-size: 14px; margin-bottom: 18px; }
-  .card { background: #fff; border-radius: 12px; padding: 18px; margin-bottom: 14px;
-          box-shadow: 0 1px 4px rgba(0,0,0,.08); }
-  .step { font-size: 13px; font-weight: 700; color: #fff; background: #1677ff;
-          display: inline-block; border-radius: 20px; padding: 2px 12px; margin-bottom: 10px; }
-  #drop { border: 2px dashed #b9c6dd; border-radius: 10px; padding: 36px 16px;
-          text-align: center; color: #5a6b85; cursor: pointer; transition: .15s; }
-  #drop.over { border-color: #1677ff; background: #eef4ff; }
-  #drop input { display: none; }
-  .fileinfo { margin-top: 10px; font-size: 14px; color: #333; }
-  label.f { display: block; font-size: 13px; color: #555; margin: 12px 0 4px; }
+  body { font-family: -apple-system, "PingFang HK", "Microsoft JhengHei", sans-serif; max-width: 960px; margin: 0 auto; padding: 20px; background: #f6f7f9; color: #222; }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  h2 { font-size: 17px; margin: 22px 0 10px; }
+  .sub { color: #666; font-size: 13px; margin-top: 0; }
+  #drop { border: 2px dashed #4a90d9; border-radius: 12px; padding: 36px 20px; text-align: center; background: #fff; cursor: pointer; margin-top: 12px; }
+  #drop.over { background: #e8f1fd; }
+  #drop b { font-size: 16px; }
+  #drop p { color: #888; font-size: 13px; margin: 6px 0 0; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; font-size: 13px; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid #eee; text-align: left; vertical-align: top; }
+  th { background: #eef2f7; font-size: 12px; color: #555; white-space: nowrap; }
+  tr.sel { background: #e8f1fd; }
+  tr { cursor: pointer; }
+  .st { white-space: nowrap; }
+  .rowbtns { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
+  button { background: #4a90d9; color: #fff; border: 0; border-radius: 8px; padding: 10px 18px; font-size: 15px; cursor: pointer; }
+  button.ghost { background: #fff; color: #4a90d9; border: 1px solid #4a90d9; }
+  button.danger { background: #fff; color: #c0392b; border: 1px solid #c0392b; padding: 4px 10px; font-size: 12px; }
+  button:disabled { background: #ccc; cursor: not-allowed; }
+  .card { background: #fff; border-radius: 12px; padding: 16px; margin-top: 12px; }
+  label.f { display: block; font-size: 13px; color: #555; margin: 10px 0 4px; }
   label.f b { color: #222; }
-  label.f .map { color: #1677ff; font-size: 12px; }
-  input[type=text], textarea { width: 100%; padding: 10px 12px; font-size: 15px;
-          border: 1px solid #d4dbe6; border-radius: 8px; }
-  textarea { resize: vertical; min-height: 64px; }
-  .btn { display: inline-block; border: none; border-radius: 8px; padding: 12px 26px;
-         font-size: 16px; cursor: pointer; }
-  .btn-primary { background: #1677ff; color: #fff; }
-  .btn-primary:disabled { background: #a9c4ee; cursor: not-allowed; }
-  .btn-ghost { background: #eef1f6; color: #333; margin-left: 8px; }
-  #status { margin-top: 12px; font-size: 14px; min-height: 22px; }
-  .ok { color: #0a7d2c; } .err { color: #c92a2a; } .busy { color: #8a6d00; }
-  details.pat { font-size: 13px; color: #555; }
-  details.pat summary { cursor: pointer; color: #1677ff; }
-  .pat-row { display: flex; gap: 8px; margin-top: 8px; }
-  .pat-row input { flex: 1; }
-  .hint { font-size: 12px; color: #888; margin-top: 6px; line-height: 1.6; }
-  .hidden { display: none; }
-  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #cdd9ec;
-             border-top-color: #1677ff; border-radius: 50%; animation: spin 0.8s linear infinite;
-             vertical-align: -2px; margin-right: 6px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .map { color: #888; font-size: 12px; }
+  input[type=text], input[type=password] { width: 100%; box-sizing: border-box; padding: 9px 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; }
+  #log { margin-top: 12px; font-size: 13px; }
+  #log div { padding: 6px 0; border-bottom: 1px solid #eee; }
+  .ok { color: #1e7e34; } .err { color: #c0392b; } .warn { color: #b7791f; }
+  #dbg { white-space: pre-wrap; font-size: 12px; max-height: 300px; overflow: auto; background: #fff; padding: 10px; border-radius: 8px; }
+  details { margin-top: 16px; }
+  summary { cursor: pointer; font-size: 14px; }
+  .note { font-size: 12px; color: #888; margin-top: 8px; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>📄 Invoice → Lark Base 同步</h1>
-  <div class="sub">上傳 Sales Invoice PDF，自動抽出資料並寫入 Outbound Record（按 <b>HKSLI no</b> 搜尋：有就更新，冇就新增）。寫入後約 4 分鐘，標籤頁資料會自動更新。</div>
+<h1>🧾 Invoice → Lark Base 批量同步</h1>
+<p class="sub">一次過拖入多張 Sales Invoice PDF → 自動抽資料 → 逐張核對 → 一次過同步去 Outbound Record</p>
 
-  <div class="card">
-    <span class="step">1</span>
-    <div id="drop">
-      <div style="font-size:16px">拖放 PDF 到呢度，或點擊選擇檔案</div>
-      <div class="hint">支援掃描版 PDF（會自動做 OCR）</div>
-      <input type="file" id="file" accept=".pdf,application/pdf">
-    </div>
-    <div class="fileinfo" id="fileinfo"></div>
+<div id="drop">
+  <b>拖入 PDF 檔案（可多選）或撳呢度揀檔</b>
+  <p>每張 PDF 會逐頁讀取（文字層＋掃描 OCR），自動解析 7 個欄位</p>
+  <input type="file" id="file" accept="application/pdf" multiple hidden>
+</div>
+
+<div id="queueWrap" hidden>
+  <h2>待處理發票（<span id="qcount">0</span>）</h2>
+  <table>
+    <thead><tr>
+      <th>檔名</th><th>Invoice No.</th><th>Date</th><th>DN No.</th><th>Total Qty</th><th>狀態</th><th></th>
+    </tr></thead>
+    <tbody id="qbody"></tbody>
+  </table>
+  <div class="rowbtns">
+    <button id="syncAll">🚀 全部同步到 Lark</button>
+    <button id="clearDone" class="ghost">清除已完成</button>
   </div>
+  <div id="log"></div>
+  <p class="note">撳某一列可以修改佢嘅資料；同步會逐張打去 GitHub，每張約十幾秒。</p>
+</div>
 
-  <div class="card hidden" id="reviewCard">
-    <span class="step">2</span>
-    <div style="font-size:14px;margin-bottom:4px">核對資料（可手動修改）</div>
-    <label class="f"><b>Invoice No.</b> <span class="map">→ HKSLI no *</span></label>
-    <input type="text" id="f_no">
-    <label class="f"><b>Ship To 公司名</b> <span class="map">→ Customer Name</span></label>
-    <input type="text" id="f_customer">
-    <label class="f"><b>Ship To 地址</b> <span class="map">→ 送貨地址</span></label>
-    <textarea id="f_addr"></textarea>
-    <label class="f"><b>Ship To Attn</b> <span class="map">→ Contact Name</span></label>
-    <input type="text" id="f_contact">
-    <label class="f"><b>Date</b> <span class="map">→ Delivery Deadline</span></label>
-    <input type="text" id="f_deadline" placeholder="如 22-04-2026">
-    <label class="f"><b>DN No.</b> <span class="map">→ DN#</span></label>
-    <input type="text" id="f_dnno">
-    <label class="f"><b>Total Qty</b> <span class="map">→ Total DN Qty</span></label>
-    <input type="text" id="f_qty">
-    <div style="margin-top:16px">
-      <button class="btn btn-primary" id="syncBtn">⬆ 同步到 Lark Base</button>
-      <button class="btn btn-ghost" id="resetBtn">重新上傳</button>
-    </div>
-    <div id="status"></div>
-    <details class="pat" style="margin-top:10px">
-      <summary>🔍 除錯：睇下實際抽到咩文字</summary>
-      <div class="hint" id="debugPath"></div>
-      <pre id="debugText" style="white-space:pre-wrap;font-size:12px;background:#f6f8fb;padding:10px;border-radius:8px;max-height:220px;overflow:auto;margin:6px 0 0"></pre>
-    </details>
-  </div>
-
-  <div class="card">
-    <details class="pat" id="patBox">
-      <summary>⚙️ GitHub PAT 設定（第一次用要設定）</summary>
-      <div class="pat-row">
-        <input type="password" id="pat" placeholder="貼上 GitHub Personal Access Token（要有 repo 權限）">
-        <button class="btn btn-ghost" id="patSave" style="margin:0">儲存</button>
-      </div>
-      <div class="hint" id="patState"></div>
-      <div class="hint">可以用返你喺 Lark Automation 入面用嗰個 PAT（note: lark-webhook-dispatch）。<br>
-      PAT 只會儲存喺你呢部機嘅瀏覽器（localStorage），唔會上傳去任何地方，亦唔會寫入網頁原始碼。</div>
-    </details>
+<div id="editor" class="card" hidden>
+  <h2 style="margin-top:0">核對 / 修改 <span id="editName" style="font-size:13px;color:#666"></span></h2>
+  <label class="f"><b>Invoice No.</b> <span class="map">→ HKSLI no</span></label>
+  <input type="text" id="f_no">
+  <label class="f"><b>Ship To 公司名</b> <span class="map">→ Customer Name</span></label>
+  <input type="text" id="f_customer">
+  <label class="f"><b>Ship To 地址</b> <span class="map">→ 送貨地址</span></label>
+  <input type="text" id="f_addr">
+  <label class="f"><b>Ship To Attn</b> <span class="map">→ Contact Name</span></label>
+  <input type="text" id="f_contact">
+  <label class="f"><b>Date</b> <span class="map">→ Delivery Deadline</span></label>
+  <input type="text" id="f_deadline" placeholder="如 22-04-2026">
+  <label class="f"><b>DN No.</b> <span class="map">→ DN#</span></label>
+  <input type="text" id="f_dnno">
+  <label class="f"><b>Total Qty</b> <span class="map">→ Total DN Qty</span></label>
+  <input type="text" id="f_qty">
+  <div class="rowbtns">
+    <button id="saveEdit">💾 儲存修改</button>
+    <button id="syncOne" class="ghost">🚀 只同步呢張</button>
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<div class="card">
+  <h2 style="margin-top:0">GitHub 設定（一次性）</h2>
+  <label class="f">Personal Access Token（repo 權限，只存喺呢部機嘅瀏覽器）</label>
+  <input type="password" id="pat" placeholder="貼上後㩒儲存">
+  <div class="rowbtns">
+    <button id="savePat" class="ghost">儲存 Token</button>
+    <button id="clearPat" class="ghost">清除 Token</button>
+  </div>
+  <p class="note">workflow 檔：.github/workflows/upsert-outbound.yml（7 個欄位版）｜目標 Base：Labware Outbound Record V3.0</p>
+</div>
+
+<details><summary>🔍 除錯（顯示所選發票抽到嘅原文）</summary><div id="dbg">未有資料</div></details>
+
 <script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 const $ = id => document.getElementById(id);
-const REPO = 'Techyanlam/Website';
-const WORKFLOW_FILE = 'upsert-outbound.yml';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+let queue = [];       // {id, filename, parsed, rawText, method, status, error}
+let editingId = null;
+let seq = 0;
 
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+/* ---------- 發票解析 ---------- */
+function last(arr) { return arr.length ? arr[arr.length - 1] : ''; }
 
-function setStatus(html, cls) {
-  const el = $('status');
-  el.className = cls || '';
-  el.innerHTML = html;
-}
-const busy = msg => setStatus('<span class="spinner"></span>' + msg, 'busy');
-
-/* ---------- 上傳 ---------- */
-const drop = $('drop'), fileInput = $('file');
-drop.addEventListener('click', () => fileInput.click());
-['dragover', 'dragenter'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add('over'); }));
-['dragleave', 'drop'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.remove('over'); }));
-drop.addEventListener('drop', ev => { if (ev.dataTransfer.files.length) handleFile(ev.dataTransfer.files[0]); });
-fileInput.addEventListener('change', () => { if (fileInput.files.length) handleFile(fileInput.files[0]); });
-$('resetBtn').addEventListener('click', () => {
-  $('reviewCard').classList.add('hidden');
-  $('fileinfo').textContent = '';
-  fileInput.value = '';
-  setStatus('');
-});
-
-async function handleFile(file) {
-  if (!/\.pdf$/i.test(file.name)) { alert('請選擇 PDF 檔案'); return; }
-  $('fileinfo').textContent = '📎 ' + file.name + '（' + Math.round(file.size / 1024) + ' KB）';
-  $('reviewCard').classList.remove('hidden');
-  busy('讀取 PDF 中…');
-  try {
-    const { text, via } = await extractText(file);
-    $('debugPath').textContent = '抽取方式：' + (via === 'ocr' ? 'OCR（掃描版）' : 'PDF 文字層');
-    $('debugText').textContent = (text || '').slice(0, 1200) || '（冇抽到任何文字）';
-    busy('分析發票資料中…');
-    await new Promise(r => setTimeout(r, 50));
-    const p = parseInvoice(text);
-    $('f_no').value = p.invoiceNo;
-    $('f_customer').value = p.customerName;
-    $('f_addr').value = p.shipAddress;
-    $('f_contact').value = p.contactName;
-    $('f_deadline').value = p.deliveryDeadline;
-    $('f_dnno').value = p.dnNo;
-    $('f_qty').value = p.totalQty;
-    const missing = [];
-    if (!p.invoiceNo) missing.push('Invoice No.');
-    if (!p.shipAddress) missing.push('Ship To 地址');
-    if (!p.contactName) missing.push('Ship To Attn');
-    if (!p.deliveryDeadline) missing.push('Date');
-    if (!p.dnNo) missing.push('DN No.');
-    if (!p.totalQty) missing.push('Total Qty');
-    setStatus(missing.length
-      ? '⚠️ 以下欄位未能自動識別，請手動填寫：' + missing.join('、')
-      : '✅ 資料已抽出，請核對後按「同步到 Lark Base」。', missing.length ? 'busy' : 'ok');
-  } catch (e) {
-    console.error(e);
-    setStatus('❌ 讀取失敗：' + (e.message || e), 'err');
-  }
-}
-
-/* ---------- PDF 文字抽取（文字層 → 唔夠就 OCR） ----------
-   回傳 { text, via }，via = 'text' | 'ocr' */
-async function extractText(file) {
-  const buf = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
-  let text = '';
-  const canvases = [];
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const tc = await page.getTextContent();
-    text += tc.items.map(it => it.str).join(' ') + '\n';
-    const viewport = page.getViewport({ scale: 3.0 });
-    const canvas = document.createElement('canvas');
-    canvas.width = viewport.width; canvas.height = viewport.height;
-    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-    canvases.push(canvas);
-  }
-  const compact = text.replace(/\s/g, '');
-  // 文字層太少、或者完全搵唔到 "invoice" 字眼 → 當掃描版做 OCR
-  if (compact.length < 200 || !/invoice/i.test(text)) {
-    busy('掃描版 PDF，OCR 識別中（第 1/' + canvases.length + ' 頁）…');
-    let ocr = '';
-    for (let i = 0; i < canvases.length; i++) {
-      if (i > 0) busy('掃描版 PDF，OCR 識別中（第 ' + (i + 1) + '/' + canvases.length + ' 頁）…');
-      const { data } = await Tesseract.recognize(canvases[i], 'eng+chi_tra');
-      ocr += data.text + '\n';
-    }
-    text = ocr;
-    return { text, via: 'ocr' };
-  }
-  return { text, via: 'text' };
-}
-
-/* ---------- 發票解析 ----------
-   發票有 Bill To 同 Ship To 兩欄，我哋要 Ship To 嗰欄。
-   兩欄標籤字眼一樣，但 Ship To 永遠喺 Bill To 之後出現，
-   所以每個欄位取「最後一次出現」嘅值。 */
 function grabAll(lines, labelRe) {
   const terminator = /^(company\s*name|addr\s*ess|attn|tel|fax|email|date|dn\s*no|total\s*qty|ship\s*-?\s*to|bill\s*-?\s*to|payment|shipment|remarks)\b/i;
   const re = new RegExp('^' + labelRe + '\\.?\\s*[:：]?\\s*(.*)$', 'i');
-  const results = [];
+  const hits = [];
   for (let i = 0; i < lines.length; i++) {
     const m = lines[i].match(re);
-    if (m) {
-      let val = (m[1] || '').trim();
-      let j = i + 1;
-      while (j < lines.length && lines[j].trim() && !terminator.test(lines[j])) {
-        val += ' ' + lines[j].trim();
-        j++;
-      }
-      results.push(val.replace(/\s+/g, ' ').trim());
+    if (!m) continue;
+    let val = (m[1] || '').trim();
+    for (let j = i + 1; j < lines.length; j++) {
+      if (terminator.test(lines[j])) break;
+      if (/^(page\s*\d|sales\s*invoice)/i.test(lines[j])) break;
+      val += ' ' + lines[j];
     }
+    hits.push(val.replace(/\s+/g, ' ').trim());
   }
-  return results;
+  return hits;
 }
-const last = arr => arr.length ? arr[arr.length - 1] : '';
 
-/* 將「標籤:」前面加換行：OCR 有時將左右兩欄併成一行，
-   咁樣可以拆返開，之後逐行搵最後出現嘅值（即 Ship To 欄） */
 function preprocessLines(text) {
   const t = text.replace(/(company\s*name|addr\s*ess|attn|tel|fax|email|date|dn\s*no|total\s*qty)\.?\s*[:：]/gi, '\n$1:');
   return t.split('\n').map(l => l.trim()).filter(l => l.length > 0);
@@ -255,13 +157,13 @@ function grabQty(lines) {
 function parseInvoice(text) {
   const out = { invoiceNo: '', customerName: '', shipAddress: '', contactName: '',
                 deliveryDeadline: '', dnNo: '', totalQty: '' };
-  const norm = text.replace(/\r/g, '');
-  let m = norm.match(/Invoice\s*No\.?\s*[:：]?\s*([A-Z0-9][A-Z0-9\-]{3,})/i);
-  if (!m) m = norm.match(/Inv(?:oice)?[\s.]*No[\s.]*[:：]?\s*([A-Z0-9][A-Z0-9\-]{3,})/i);
-  if (!m) m = norm.match(/\b(HK[A-Z]{0,4}\d{5,})\b/);
+  const lines = preprocessLines(text);
+  let m = text.match(/Invoice\s*No\.?\s*[:：]?\s*([A-Z0-9][A-Z0-9\-]{3,})/i);
   if (m) out.invoiceNo = m[1].trim();
-
-  const lines = preprocessLines(norm);
+  else {
+    m = text.match(/\b(HK[A-Z]{0,4}\d{5,})\b/);
+    if (m) out.invoiceNo = m[1];
+  }
   out.customerName = last(grabAll(lines, 'compa\\s*ny\\s*name'));
   out.shipAddress = last(grabAll(lines, 'addr\\s*ess'));
   out.contactName = last(grabAll(lines, 'attn'));
@@ -271,91 +173,217 @@ function parseInvoice(text) {
   return out;
 }
 
-/* ---------- PAT ---------- */
-function getPat() { return localStorage.getItem('invoice_sync_pat') || ''; }
-function refreshPatState() {
-  $('patState').textContent = getPat() ? '✅ 已設定 PAT（儲存在本機瀏覽器）' : '⚠️ 未設定 PAT，同步前需要設定。';
+/* ---------- PDF 文字抽取（逐頁：文字層優先，唔夠字就 OCR） ---------- */
+async function extractPdfText(file) {
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  let combined = '', ocrPages = 0;
+  for (let p = 1; p <= pdf.numPages; p++) {
+    const page = await pdf.getPage(p);
+    const tc = await page.getTextContent();
+    let t = tc.items.map(it => it.str).join(' ');
+    if (t.replace(/\s/g, '').length < 50) {
+      const vp = page.getViewport({ scale: 3.0 });
+      const cv = document.createElement('canvas');
+      cv.width = vp.width; cv.height = vp.height;
+      await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+      const r = await Tesseract.recognize(cv, 'eng+chi_tra');
+      t = r.data.text; ocrPages++;
+    }
+    combined += '\n' + t;
+  }
+  let method = ocrPages === 0 ? 'pdf 文字層' : (ocrPages === pdf.numPages ? 'OCR' : '文字層+OCR');
+  if (!/invoice/i.test(combined)) {
+    // 文字層係垃圾：成份 OCR
+    combined = ''; ocrPages = 0;
+    for (let p = 1; p <= pdf.numPages; p++) {
+      const page = await pdf.getPage(p);
+      const vp = page.getViewport({ scale: 3.0 });
+      const cv = document.createElement('canvas');
+      cv.width = vp.width; cv.height = vp.height;
+      await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+      const r = await Tesseract.recognize(cv, 'eng+chi_tra');
+      combined += '\n' + r.data.text; ocrPages++;
+    }
+    method = 'OCR（全文）';
+  }
+  return { text: combined, method, pages: pdf.numPages };
 }
-$('patSave').addEventListener('click', () => {
-  const v = $('pat').value.trim();
-  if (!v) { alert('請貼上 PAT'); return; }
-  localStorage.setItem('invoice_sync_pat', v);
-  $('pat').value = '';
-  refreshPatState();
+
+/* ---------- 佇列 ---------- */
+function statusIcon(s) {
+return { processing: '⏳ 處理中', ready: '📝 待同步', warn: '⚠️ 資料不全',
+syncing: '⏳ 同步中', done: '✅ 已同步', error: '❌ 失敗'}[s] || s;
+}
+
+function renderQueue() {
+$('queueWrap').hidden = queue.length === 0;
+$('qcount').textContent = queue.length;
+const tb = $('qbody');
+tb.innerHTML = '';
+queue.forEach(it => {
+const tr = document.createElement('tr');
+if (it.id === editingId) tr.className = 'sel';
+const p = it.parsed || {};
+tr.innerHTML =
+'<td>' + esc(it.filename) + '</td>' +
+'<td>' + esc(p.invoiceNo || '—') + '</td>' +
+'<td>' + esc(p.deliveryDeadline || '—') + '</td>' +
+'<td>' + esc(p.dnNo || '—') + '</td>' +
+'<td>' + esc(p.totalQty || '—') + '</td>' +
+'<td class="st">' + statusIcon(it.status) + (it.error? '<br><span class="err" style="font-size:11px">' + esc(it.error) + '</span>': '') + '</td>' +
+'<td><button class="danger" data-del="' + it.id + '">刪除</button></td>';
+tr.addEventListener('click', e => {
+if (e.target.dataset.del) return;
+selectRow(it.id);
 });
-refreshPatState();
+tr.querySelector('[data-del]').addEventListener('click', e => {
+e.stopPropagation();
+queue = queue.filter(x => x.id!== it.id);
+if (editingId === it.id) { editingId = null; $('editor').hidden = true;}
+renderQueue();
+});
+tb.appendChild(tr);
+});
+}
+
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function selectRow(id) {
+const it = queue.find(x => x.id === id);
+if (!it ||!it.parsed) return;
+editingId = id;
+const p = it.parsed;
+$('editName').textContent = '— ' + it.filename;
+$('f_no').value = p.invoiceNo; $('f_customer').value = p.customerName;
+$('f_addr').value = p.shipAddress; $('f_contact').value = p.contactName;
+$('f_deadline').value = p.deliveryDeadline; $('f_dnno').value = p.dnNo; $('f_qty').value = p.totalQty;
+$('editor').hidden = false;
+$('dbg').textContent = '抽取方式：' + it.method + '（' + it.pages + ' 頁）\n\n' + (it.rawText || '').slice(0, 1500);
+renderQueue();
+$('editor').scrollIntoView({ behavior: 'smooth', block: 'nearest'});
+}
+
+$('saveEdit').addEventListener('click', () => {
+const it = queue.find(x => x.id === editingId);
+if (!it) return;
+it.parsed = {
+invoiceNo: $('f_no').value.trim(), customerName: $('f_customer').value.trim(),
+shipAddress: $('f_addr').value.trim(), contactName: $('f_contact').value.trim(),
+deliveryDeadline: $('f_deadline').value.trim(), dnNo: $('f_dnno').value.trim(),
+totalQty: $('f_qty').value.trim()
+};
+it.status = it.parsed.invoiceNo? 'ready': 'warn';
+it.error = '';
+log('💾 已儲存「' + it.filename + '」嘅修改');
+renderQueue();
+});
+
+async function processFile(file) {
+const it = { id: ++seq, filename: file.name, parsed: null, rawText: '', method: '', pages: 0, status: 'processing', error: ''};
+queue.push(it); renderQueue();
+try {
+const { text, method, pages} = await extractPdfText(file);
+it.rawText = text; it.method = method; it.pages = pages;
+it.parsed = parseInvoice(text);
+const p = it.parsed;
+const missing = [];
+if (!p.invoiceNo) missing.push('Invoice No.');
+if (!p.shipAddress) missing.push('地址');
+if (!p.contactName) missing.push('Attn');
+if (missing.length) { it.status = 'warn'; it.error = '欠：' + missing.join('、');}
+else it.status = 'ready';
+} catch (e) {
+it.status = 'error'; it.error = '讀取失敗：' + (e.message || e);
+}
+renderQueue();
+return it;
+}
+
+async function handleFiles(files) {
+for (const f of files) {
+if (!/\.pdf$/i.test(f.name)) { log('⏭️ 跳過非 PDF：' + f.name, 'warn'); continue;}
+await processFile(f);
+}
+const first = queue.find(x => x.status === 'ready' || x.status === 'warn');
+if (first) selectRow(first.id);
+}
 
 /* ---------- 同步 ---------- */
-$('syncBtn').addEventListener('click', async () => {
-  const no = $('f_no').value.trim();
-  if (!no) { alert('請填寫 Invoice No.'); return; }
-  let pat = getPat();
-  if (!pat) {
-    $('patBox').open = true;
-    alert('請先設定 GitHub PAT（下面「GitHub PAT 設定」）');
-    return;
-  }
-  const payload = {
-    hksli_no: no,
-    customer_name: $('f_customer').value.trim(),
-    ship_address: $('f_addr').value.trim(),
-    contact_name: $('f_contact').value.trim(),
-    delivery_deadline: $('f_deadline').value.trim(),
-    dn_no: $('f_dnno').value.trim(),
-    total_dn_qty: $('f_qty').value.trim()
-  };
-  const btn = $('syncBtn');
-  btn.disabled = true;
-  try {
-    busy('傳送同步指令到 GitHub…');
-    const res = await fetch('https://api.github.com/repos/' + REPO + '/dispatches', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + pat,
-        'Accept': 'application/vnd.github+json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ event_type: 'upsert-outbound', client_payload: payload })
-    });
-    if (res.status === 401) throw new Error('PAT 無效或已過期（401），請重新設定');
-    if (res.status === 404) throw new Error('Repo 或權限有問題（404），請檢查 PAT 是否有 repo 權限');
-    if (res.status !== 204) throw new Error('GitHub 回應 ' + res.status);
-    const since = new Date(Date.now() - 5000);
-    busy('指令已送出，等待 Lark 寫入完成…（約 1–2 分鐘）');
-    const run = await waitForRun(pat, since, 8);
-    if (!run) throw new Error('等唔到 workflow 執行，請去 Actions 頁檢查');
-    if (run.conclusion === 'success') {
-      setStatus('✅ <b>已同步到 Lark Base</b>（' + no + '）<br>' +
-        '<span class="hint">標籤頁資料約 4 分鐘後自動更新。<br>' +
-        '<a href="' + run.html_url + '" target="_blank">查看執行記錄</a></span>', 'ok');
-    } else {
-      throw new Error('寫入失敗（' + run.conclusion + '），<a href="' + run.html_url + '" target="_blank">查看記錄</a>');
-    }
-  } catch (e) {
-    console.error(e);
-    setStatus('❌ ' + (e.message || e), 'err');
-  } finally {
-    btn.disabled = false;
-  }
+function getPat() { return ($('pat').value || localStorage.getItem('gh_pat_' + OWNER + '_' + REPO) || '').trim();}
+
+async function dispatchOne(item, pat) {
+const p = item.parsed;
+const payload = {
+hksli_no: p.invoiceNo, customer_name: p.customerName, ship_address: p.shipAddress,
+contact_name: p.contactName, delivery_deadline: p.deliveryDeadline,
+dn_no: p.dnNo, total_dn_qty: p.totalQty
+};
+const res = await fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/dispatches', {
+method: 'POST',
+headers: { 'Accept': 'application/vnd.github+json', 'Authorization': 'Bearer ' + pat},
+body: JSON.stringify({ event_type: 'upsert-outbound', client_payload: payload})
+});
+return res.ok;
+}
+
+async function syncItems(items) {
+const pat = getPat();
+if (!pat) { alert('請先貼上 GitHub Personal Access Token 並儲存'); return;}
+for (const it of items) {
+if (!it.parsed ||!it.parsed.invoiceNo) { it.status = 'error'; it.error = '欠 Invoice No.'; renderQueue(); continue;}
+it.status = 'syncing'; it.error = ''; renderQueue();
+try {
+const ok = await dispatchOne(it, pat);
+if (ok) { it.status = 'done'; log('✅ 已觸發：' + it.parsed.invoiceNo + '（' + it.filename + '）', 'ok');}
+else { it.status = 'error'; it.error = 'GitHub 拒絕（check PAT 權限）'; log('❌ 失敗：' + it.filename, 'err');}
+} catch (e) { it.status = 'error'; it.error = '網絡錯誤'; log('❌ 失敗：' + it.filename, 'err');}
+renderQueue();
+await sleep(2000);
+}
+log('🏁 呢輪同步完成。寫入後約幾分鐘，Lark automation 會觸發 JSON 更新。');
+}
+
+$('syncAll').addEventListener('click', () => {
+syncItems(queue.filter(x => x.status === 'ready' || x.status === 'warn' || x.status === 'error'));
+});
+$('syncOne').addEventListener('click', () => {
+const it = queue.find(x => x.id === editingId);
+if (it) syncItems([it]);
+});
+$('clearDone').addEventListener('click', () => {
+queue = queue.filter(x => x.status!== 'done');
+renderQueue();
 });
 
-async function waitForRun(pat, since, tries) {
-  const headers = { 'Authorization': 'Bearer ' + pat, 'Accept': 'application/vnd.github+json' };
-  for (let i = 0; i < tries; i++) {
-    await new Promise(r => setTimeout(r, 15000));
-    busy('等待 Lark 寫入完成…（約 ' + (i + 1) * 15 + ' 秒）');
-    try {
-      const res = await fetch(
-        'https://api.github.com/repos/' + REPO + '/actions/workflows/' + WORKFLOW_FILE + '/runs?per_page=3',
-        { headers });
-      if (!res.ok) continue;
-      const runs = (await res.json()).workflow_runs || [];
-      const run = runs.find(r => new Date(r.created_at) >= since);
-      if (run && run.status === 'completed') return run;
-    } catch (e) { /* retry */ }
-  }
-  return null;
+function log(msg, cls) {
+const d = document.createElement('div');
+if (cls) d.className = cls;
+d.textContent = new Date().toLocaleTimeString('zh-HK', { hour12: false}) + ' ' + msg;
+$('log').prepend(d);
 }
+
+/* ---------- 事件 ---------- */
+const drop = $('drop');
+drop.addEventListener('click', () => $('file').click());
+$('file').addEventListener('change', e => { handleFiles([...e.target.files]); e.target.value = '';});
+['dragover', 'dragenter'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over');}));
+['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over');}));
+drop.addEventListener('drop', e => handleFiles([...e.dataTransfer.files]));
+
+/* ---------- PAT ---------- */
+const OWNER = 'Techyanlam', REPO = 'Website';
+$('pat').value = localStorage.getItem('gh_pat_' + OWNER + '_' + REPO) || '';
+$('savePat').addEventListener('click', () => {
+const v = $('pat').value.trim();
+if (!v) { alert('請貼上 Token'); return;}
+localStorage.setItem('gh_pat_' + OWNER + '_' + REPO, v);
+alert('Token 已儲存喺呢部機嘅瀏覽器');
+});
+$('clearPat').addEventListener('click', () => {
+localStorage.removeItem('gh_pat_' + OWNER + '_' + REPO);
+$('pat').value = '';
+});
 </script>
 </body>
 </html>
