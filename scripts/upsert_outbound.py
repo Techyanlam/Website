@@ -108,11 +108,12 @@ def to_number(value):
 
 
 def upload_to_drive(token, file_path, file_name):
-    """上傳檔案到 Lark Drive（Base 附件專用 material endpoint），回傳 file_token。
+    """上傳檔案到 Lark Drive（Base 附件用），回傳 file_token。
 
-    POST /open-apis/drive/v1/upload（唔係 medias/upload_all，後者會 1061002）。
-    六個 form 欄位：file、file_name、size、parent_type=bitable_file、
-    parent_node=Base app_token、extra={"drive_route_token": app_token}。
+    POST /open-apis/drive/v1/medias/upload_all。
+    實測：file_name、size、parent_type、parent_node、extra 全部要齊，
+    parent_type=bitable_file、parent_node=Base app_token、
+    extra={"drive_route_token": app_token}，缺任何一個都 1061002。
     """
     with open(file_path, "rb") as f:
         file_data = f.read()
@@ -137,7 +138,7 @@ def upload_to_drive(token, file_path, file_name):
     body += f"--{boundary}--\r\n".encode()
 
     req = urllib.request.Request(
-        API + "/drive/v1/upload",
+        API + "/drive/v1/medias/upload_all",
         method="POST",
         data=body,
         headers={
@@ -150,13 +151,13 @@ def upload_to_drive(token, file_path, file_name):
             result = json.load(resp)
     except urllib.error.HTTPError as e:
         detail = e.read().decode("utf-8", "replace")[:500]
-        raise RuntimeError(f"drive upload HTTP {e.code}: {detail}")
+        raise RuntimeError(f"drive upload_all HTTP {e.code}: {detail}")
     if result.get("code") != 0:
-        raise RuntimeError(f"drive upload -> {result}")
+        raise RuntimeError(f"drive upload_all -> {result}")
     data = result.get("data") or {}
     file_token = data.get("file_token") or data.get("fileToken")
     if not file_token:
-        raise RuntimeError(f"drive upload: no file_token in {result}")
+        raise RuntimeError(f"drive upload_all: no file_token in {result}")
     return file_token
 
 
