@@ -116,7 +116,8 @@ function last(arr) { return arr.length ? arr[arr.length - 1] : ''; }
 
 function grabAll(lines, labelRe) {
   const terminator = /^(company\s*name|addr\s*ess|attn|tel|fax|email|date|dn\s*no|total\s*qty|ship\s*-?\s*to|bill\s*-?\s*to|payment|shipment|remarks)\b/i;
-  const re = new RegExp('^' + labelRe + '\\.?\\s*[:：]?\\s*(.*)$', 'i');
+  // 標籤同冒號之間容許多達 10 個非文字元（OCR 雜訊如 "~~"）
+  const re = new RegExp('^' + labelRe + '[^a-z0-9\\u4e00-\\u9fff]{0,10}[:：]?\\s*(.*)$', 'i');
   const hits = [];
   for (let i = 0; i < lines.length; i++) {
     const m = lines[i].match(re);
@@ -133,7 +134,8 @@ function grabAll(lines, labelRe) {
 }
 
 function preprocessLines(text) {
-  const t = text.replace(/(company\s*name|addr\s*ess|attn|tel|fax|email|date|dn\s*no|total\s*qty)\.?\s*[:：]/gi, '\n$1:');
+  // 標籤同冒號之間容許 OCR 雜訊（如 "Company Name ~~ :"）
+  const t = text.replace(/(company\s*name|addr\s*ess|attn|tel|fax|email|date|dn\s*no|total\s*qty)[^a-z0-9\u4e00-\u9fff]{0,10}[:：]/gi, '\n$1:');
   return t.split('\n').map(l => l.trim()).filter(l => l.length > 0);
 }
 
@@ -342,7 +344,7 @@ function detectLocation(address, customerName) {
   return longestMatch(LOCATION_IDENTITY, both) || longestMatch(LOCATION_DISTRICT, address || '');
 }
 
-function parseInvoice(text) {
+function parseInvoice(text, rightText) {
   const out = { invoiceNo: '', customerName: '', shipAddress: '', contactName: '',
                 deliveryDeadline: '', dnNo: '', totalQty: '', location: '' };
   const lines = preprocessLines(text);
@@ -354,51 +356,114 @@ function parseInvoice(text) {
     m = text.match(/\b(HK[A-Z]{0,4}\d{5,})\b/);
     if (m) out.invoiceNo = m[1];
   }
-  out.customerName = pickLabel(lines, shipLines, 'compa\\s*ny\\s*name');
-  out.shipAddress = pickLabel(lines, shipLines, 'addr\\s*ess');
-  out.contactName = pickLabel(lines, shipLines, 'attn');
+  if (rightText && rightText.trim()) {
+    // 分欄成功：右欄淨係得 Ship To 內容，直接抽
+    const rLines = preprocessLines(rightText);
+    const rc = last(grabAll(rLines, 'compa\\s*ny\\s*name'));
+    const ra = last(grabAll(rLines, 'addr\\s*ess'));
+    const rn = last(grabAll(rLines, 'attn'));
+    if (rc || ra || rn) {
+      out.customerName = rc; out.shipAddress = ra; out.contactName = rn;
+      out._shipToMode = '分欄（右欄直取）';
+    }
+  }
+  if (!out._shipToMode) {
+    out.customerName = pickLabel(lines, shipLines, 'compa\\s*ny\\s*name');
+    out.shipAddress = pickLabel(lines, shipLines, 'addr\\s*ess');
+    out.contactName = pickLabel(lines, shipLines, 'attn');
+    out._shipToMode = shipLines ? '區域鎖定' : '後備（全文最後）';
+  }
   out.deliveryDeadline = grabDate(lines);
   out.dnNo = last(grabAll(lines, 'dn\\s*no'));
+  const dnTok = out.dnNo.match(/[A-Z0-9][A-Z0-9\-]{2,}/i);
+  if (dnTok) out.dnNo = dnTok[0];
   out.totalQty = grabQty(lines);
   out.location = detectLocation(out.shipAddress, out.customerName);
   return out;
 }
 
-/* ---------- PDF 文字抽取（逐頁：文字層優先，唔夠字就 OCR） ---------- */
+/* ---------- PDF 文字抽取（逐頁：文字層優先，唔夠字就 OCR＋分欄） ---------- */
+function median(a) {
+  if (!a.length) return 0;
+  const s = [...a].sort((x, y) => x - y);
+  return s[Math.floor(s.length / 2)];
+}
+
+/* 用 Tesseract 字框座標將左右兩欄分開：搵「Bill To」/「Ship To」標題定出中線，
+   中線右邊嘅字就係 Ship To 欄。搵唔到兩欄就回傳 ''（用舊邏輯）。 */
+function splitColumns(words) {
+  if (!words.length) return '';
+  const mh = median(words.map(w => w.y1 - w.y0)) || 30;
+  function findHead(wd) {
+    const lw = wd.toLowerCase();
+    for (let i = 0; i < words.length - 1; i++) {
+      if (words[i].t.toLowerCase() === lw && words[i + 1].t.toLowerCase() === 'to' &&
+          Math.abs(words[i].y0 - words[i + 1].y0) < mh) return i;
+    }
+    return -1;
+  }
+  const bi = findHead('bill'), si = findHead('ship');
+  if (bi < 0 || si < 0) return '';
+  if (Math.abs(words[bi].y0 - words[si].y0) > mh * 1.5) return '';
+  const midX = (words[bi + 1].x1 + words[si].x0) / 2;
+  const right = words.filter(w => (w.x0 + w.x1) / 2 > midX);
+  if (!right.length) return '';
+  right.sort((a, b) => (a.y0 - b.y0) || (a.x0 - b.x0));
+  const lines = [];
+  for (const w of right) {
+    const yc = (w.y0 + w.y1) / 2;
+    const prev = lines[lines.length - 1];
+    if (prev && Math.abs(prev.yc - yc) < mh * 0.8) {
+      prev.words.push(w);
+      prev.yc = (prev.yc * (prev.words.length - 1) + yc) / prev.words.length;
+    } else lines.push({ yc, words: [w] });
+  }
+  return lines.map(l => l.words.sort((a, b) => a.x0 - b.x0).map(w => w.t).join(' ')).join('\n');
+}
+
+async function ocrColumns(page) {
+  const vp = page.getViewport({ scale: 3.0 });
+  const cv = document.createElement('canvas');
+  cv.width = vp.width; cv.height = vp.height;
+  await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
+  const { data } = await Tesseract.recognize(cv, 'eng+chi_tra');
+  const fullText = data.text || '';
+  const words = (data.words || [])
+    .filter(w => w.text && w.text.trim() && w.bbox)
+    .map(w => ({ t: w.text.trim(), x0: w.bbox.x0, x1: w.bbox.x1, y0: w.bbox.y0, y1: w.bbox.y1 }));
+  return { fullText, rightText: splitColumns(words) };
+}
+
 async function extractPdfText(file) {
   const buf = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
-  let combined = '', ocrPages = 0;
-  for (let p = 1; p <= pdf.numPages; p++) {
-    const page = await pdf.getPage(p);
-    const tc = await page.getTextContent();
+  const pages = [];
+  for (let p = 1; p <= pdf.numPages; p++) pages.push(await pdf.getPage(p));
+  let combined = '', rightCombined = '', ocrPages = 0;
+  const ocrid = new Set();
+  async function ocrPage(page, idx) {
+    const { fullText, rightText } = await ocrColumns(page);
+    if (!ocrid.has(idx)) { ocrid.add(idx); ocrPages++; }
+    if (rightText) rightCombined += '\n' + rightText;
+    return fullText;
+  }
+  for (let i = 0; i < pages.length; i++) {
+    const tc = await pages[i].getTextContent();
     let t = tc.items.map(it => it.str).join(' ');
-    if (t.replace(/\s/g, '').length < 50) {
-      const vp = page.getViewport({ scale: 3.0 });
-      const cv = document.createElement('canvas');
-      cv.width = vp.width; cv.height = vp.height;
-      await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
-      const r = await Tesseract.recognize(cv, 'eng+chi_tra');
-      t = r.data.text; ocrPages++;
-    }
+    if (t.replace(/\s/g, '').length < 50) t = await ocrPage(pages[i], i);
     combined += '\n' + t;
   }
-  let method = ocrPages === 0 ? 'pdf 文字層' : (ocrPages === pdf.numPages ? 'OCR' : '文字層+OCR');
+  let method;
   if (!/invoice/i.test(combined)) {
     // 文字層係垃圾：成份 OCR
-    combined = ''; ocrPages = 0;
-    for (let p = 1; p <= pdf.numPages; p++) {
-      const page = await pdf.getPage(p);
-      const vp = page.getViewport({ scale: 3.0 });
-      const cv = document.createElement('canvas');
-      cv.width = vp.width; cv.height = vp.height;
-      await page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise;
-      const r = await Tesseract.recognize(cv, 'eng+chi_tra');
-      combined += '\n' + r.data.text; ocrPages++;
-    }
+    combined = ''; rightCombined = '';
+    for (let i = 0; i < pages.length; i++) combined += '\n' + await ocrPage(pages[i], i);
     method = 'OCR（全文）';
+  } else {
+    method = ocrPages === 0 ? 'pdf 文字層' : (ocrPages === pages.length ? 'OCR' : '文字層+OCR');
+    if (rightCombined.trim()) method += '＋分欄';
   }
-  return { text: combined, method, pages: pdf.numPages };
+  return { text: combined, rightText: rightCombined, method, pages: pages.length };
 }
 
 /* ---------- 佇列 ---------- */
@@ -452,7 +517,7 @@ $('f_deadline').value = p.deliveryDeadline; $('f_dnno').value = p.dnNo; $('f_qty
   $('f_location').value = p.location || '';
 $('editor').hidden = false;
 $('dbg').textContent = '抽取方式：' + it.method + '（' + it.pages + ' 頁）\n' +
-'Ship To 區域：' + (p._shipToLocked ? '已鎖定（只讀 Ship To 標題之後）' : '未搵到標題，用後備模式') + '\n\n' +
+'Ship To 抽取：' + (p._shipToMode || (p._shipToLocked ? '已鎖定' : '後備模式')) + '\n\n' +
 (it.rawText || '').slice(0, 1500);
 renderQueue();
 $('editor').scrollIntoView({ behavior: 'smooth', block: 'nearest'});
@@ -477,9 +542,9 @@ async function processFile(file) {
 const it = { id: ++seq, filename: file.name, parsed: null, rawText: '', method: '', pages: 0, status: 'processing', error: ''};
 queue.push(it); renderQueue();
 try {
-const { text, method, pages} = await extractPdfText(file);
+const { text, rightText, method, pages } = await extractPdfText(file);
 it.rawText = text; it.method = method; it.pages = pages;
-it.parsed = parseInvoice(text);
+it.parsed = parseInvoice(text, rightText);
 const p = it.parsed;
 const missing = [];
 if (!p.invoiceNo) missing.push('Invoice No.');
