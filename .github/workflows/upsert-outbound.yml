@@ -58,6 +58,14 @@ on:
         description: 'PDF 喺 repo 嘅路徑（如 invoices/HKLSI26040608.pdf），會上傳到 Lark 附件欄'
         required: false
         default: ''
+      pdf_base64:
+        description: 'PDF base64（repo 上傳失敗時嘅後備，唔使手填）'
+        required: false
+        default: ''
+      pdf_name:
+        description: 'PDF 檔名（配合 pdf_base64）'
+        required: false
+        default: ''
 
 jobs:
   upsert:
@@ -85,3 +93,5 @@ jobs:
           TOTAL_DN_QTY: ${{ github.event.client_payload.total_dn_qty || github.event.inputs.total_dn_qty }}
           LOCATION: ${{ github.event.client_payload.location || github.event.inputs.location }}
           PDF_PATH: ${{ github.event.client_payload.pdf_path || github.event.inputs.pdf_path }}
+          PDF_BASE64: ${{ github.event.client_payload.pdf_base64 || github.event.inputs.pdf_base64 }}
+          PDF_NAME: ${{ github.event.client_payload.pdf_name || github.event.inputs.pdf_name }}
