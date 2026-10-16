@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UPGL 出貨工具中心</title>
+<style>
+  :root { --blue: #1a56db; --blue-dark: #1443ad; --bg: #f4f6fa; --card: #ffffff; --text: #1f2937; --muted: #6b7280; }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "PingFang HK", "Microsoft JhengHei", "Noto Sans HK", sans-serif; margin: 0; background: var(--bg); color: var(--text); }
+  header { background: linear-gradient(135deg, var(--blue-dark), var(--blue)); color: #fff; padding: 44px 20px 36px; text-align: center; }
+  header h1 { margin: 0 0 8px; font-size: 28px; letter-spacing: 1px; }
+  header p { margin: 0; opacity: .9; font-size: 15px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 60px; }
+  .flow { display: flex; gap: 0; justify-content: center; align-items: stretch; margin: 6px 0 34px; flex-wrap: wrap; }
+  .step { background: var(--card); border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 20px; text-align: center; flex: 1 1 200px; max-width: 280px; }
+  .step .n { display: inline-block; width: 28px; height: 28px; line-height: 28px; border-radius: 50%; background: var(--blue); color: #fff; font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+  .step b { display: block; font-size: 15px; margin-bottom: 4px; }
+  .step span { font-size: 13px; color: var(--muted); }
+  .arrow { align-self: center; font-size: 24px; color: #9ca3af; padding: 0 10px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+  .card { background: var(--card); border: 1px solid #e5e7eb; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; transition: box-shadow .2s, transform .2s; }
+  .card:hover { box-shadow: 0 8px 24px rgba(26,86,219,.12); transform: translateY(-2px); }
+  .card .icon { font-size: 34px; margin-bottom: 10px; }
+  .card h2 { margin: 0 0 6px; font-size: 18px; }
+  .card .tag { display: inline-block; font-size: 11px; color: var(--blue); background: #e8effe; border-radius: 20px; padding: 2px 10px; margin-bottom: 10px; font-weight: 600; }
+  .card p { font-size: 14px; color: var(--muted); line-height: 1.7; margin: 0 0 16px; flex: 1; }
+  .card a.btn { display: block; text-align: center; background: var(--blue); color: #fff; text-decoration: none; border-radius: 10px; padding: 12px; font-size: 15px; font-weight: 600; }
+  .card a.btn:hover { background: var(--blue-dark); }
+  .card a.btn.ghost { background: #fff; color: var(--blue); border: 1.5px solid var(--blue); margin-top: 8px; }
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 24px 20px 40px; }
+  @media (max-width: 640px) { .arrow { display: none; } header h1 { font-size: 22px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>UPGL 出貨工具中心</h1>
+  <p>發票同步・標籤列印・棧板標籤 — 一站式入口</p>
+</header>
+
+<div class="wrap">
+  <div class="flow">
+    <div class="step"><span class="n">1</span><b>上傳發票</b><span>批量上傳 Sales Invoice PDF，自動解析資料</span></div>
+    <div class="arrow">→</div>
+    <div class="step"><span class="n">2</span><b>Lark Base 同步</b><span>資料寫入 Outbound Record，自動更新</span></div>
+    <div class="arrow">→</div>
+    <div class="step"><span class="n">3</span><b>標籤列印</b><span>出貨標籤自動／手動列印</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="icon">🧾</div>
+      <h2>Invoice → Lark Base 批量同步</h2>
+      <span class="tag">資料輸入</span>
+      <p>一次過上傳多張 Sales Invoice PDF，自動抽取單號、客戶名稱、送貨地址、聯絡人、日期、DN 號碼及數量，核對後一鍵同步至 Lark Base「Outbound Record」。</p>
+      <a class="btn" href="https://oneder.dpdns.org/invoice-sync.html" target="_blank" rel="noopener">開啟工具</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">🖨️</div>
+      <h2>UPGL 自動列印站</h2>
+      <span class="tag">自動列印</span>
+      <p>每 30 秒自動檢查 Lark 同步數據，當單據的 Transport Qty 新增或變更時自動列印出貨標籤。需以 Chrome kiosk-printing 模式開啟，標籤打印機設為系統預設。</p>
+      <a class="btn" href="https://oneder.dpdns.org/UPGLShipmentlabel_AUTOPRINT.html" target="_blank" rel="noopener">開啟工具</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">🏷️</div>
+      <h2>出貨標籤列印 V2（最新）</h2>
+      <span class="tag">推薦使用</span>
+      <p>連接 Lark 即時數據的出貨標籤頁，支援單號容錯搜尋（HKSLI／HKLSI），資料每 5 分鐘自動更新，手動修改過的客戶資料不會被覆蓋。</p>
+      <a class="btn" href="https://oneder.dpdns.org/UPGLShipmentlabel_LATEST.html" target="_blank" rel="noopener">開啟工具</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📦</div>
+      <h2>Pallet 標籤列印系統</h2>
+      <span class="tag">棧板標籤</span>
+      <p>United Power 棧板標籤產生器：輸入 Pallet 編號、尺寸及出貨日期，即時產生並列印棧板標籤。</p>
+      <a class="btn" href="https://oneder.dpdns.org/UPGpalletlabel.html" target="_blank" rel="noopener">開啟工具</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📝</div>
+      <h2>Shipment Label（舊版）</h2>
+      <span class="tag">手動填寫</span>
+      <p>舊版出貨標籤產生器，手動填寫客戶名稱、單號、送貨地址及聯絡人資料後產生標籤。建議轉用 V2。</p>
+      <a class="btn ghost" href="https://oneder.dpdns.org/Shipmentlabel.html" target="_blank" rel="noopener">開啟舊版</a>
+    </div>
+  </div>
+</div>
+
+<footer>UPGL 出貨工具中心・如有問題請聯絡系統管理員</footer>
+</body>
+</html>
