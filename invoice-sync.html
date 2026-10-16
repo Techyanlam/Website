@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice → Lark Base 同步</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+         margin: 0; background: #f4f6f9; color: #222; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 20px 16px 60px; }
+  h1 { font-size: 22px; margin: 8px 0 4px; }
+  .sub { color: #666; font-size: 14px; margin-bottom: 18px; }
+  .card { background: #fff; border-radius: 12px; padding: 18px; margin-bottom: 14px;
+          box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .step { font-size: 13px; font-weight: 700; color: #fff; background: #1677ff;
+          display: inline-block; border-radius: 20px; padding: 2px 12px; margin-bottom: 10px; }
+  #drop { border: 2px dashed #b9c6dd; border-radius: 10px; padding: 36px 16px;
+          text-align: center; color: #5a6b85; cursor: pointer; transition: .15s; }
+  #drop.over { border-color: #1677ff; background: #eef4ff; }
+  #drop input { display: none; }
+  .fileinfo { margin-top: 10px; font-size: 14px; color: #333; }
+  label.f { display: block; font-size: 13px; color: #555; margin: 12px 0 4px; }
+  label.f b { color: #222; }
+  label.f .map { color: #1677ff; font-size: 12px; }
+  input[type=text], textarea { width: 100%; padding: 10px 12px; font-size: 15px;
+          border: 1px solid #d4dbe6; border-radius: 8px; }
+  textarea { resize: vertical; min-height: 64px; }
+  .btn { display: inline-block; border: none; border-radius: 8px; padding: 12px 26px;
+         font-size: 16px; cursor: pointer; }
+  .btn-primary { background: #1677ff; color: #fff; }
+  .btn-primary:disabled { background: #a9c4ee; cursor: not-allowed; }
+  .btn-ghost { background: #eef1f6; color: #333; margin-left: 8px; }
+  #status { margin-top: 12px; font-size: 14px; min-height: 22px; }
+  .ok { color: #0a7d2c; } .err { color: #c92a2a; } .busy { color: #8a6d00; }
+  details.pat { font-size: 13px; color: #555; }
+  details.pat summary { cursor: pointer; color: #1677ff; }
+  .pat-row { display: flex; gap: 8px; margin-top: 8px; }
+  .pat-row input { flex: 1; }
+  .hint { font-size: 12px; color: #888; margin-top: 6px; line-height: 1.6; }
+  .hidden { display: none; }
+  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #cdd9ec;
+             border-top-color: #1677ff; border-radius: 50%; animation: spin 0.8s linear infinite;
+             vertical-align: -2px; margin-right: 6px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📄 Invoice → Lark Base 同步</h1>
+  <div class="sub">上傳 Sales Invoice PDF，自動抽出資料並寫入 Outbound Record（按 <b>HKSLI no</b> 搜尋：有就更新，冇就新增）。寫入後約 4 分鐘，標籤頁資料會自動更新。</div>
+
+  <div class="card">
+    <span class="step">1</span>
+    <div id="drop">
+      <div style="font-size:16px">拖放 PDF 到呢度，或點擊選擇檔案</div>
+      <div class="hint">支援掃描版 PDF（會自動做 OCR）</div>
+      <input type="file" id="file" accept=".pdf,application/pdf">
+    </div>
+    <div class="fileinfo" id="fileinfo"></div>
+  </div>
+
+  <div class="card hidden" id="reviewCard">
+    <span class="step">2</span>
+    <div style="font-size:14px;margin-bottom:4px">核對資料（可手動修改）</div>
+    <label class="f"><b>Invoice No.</b> <span class="map">→ HKSLI no *</span></label>
+    <input type="text" id="f_no">
+    <label class="f"><b>Ship To 公司名</b> <span class="map">→ Customer Name</span></label>
+    <input type="text" id="f_customer">
+    <label class="f"><b>Ship To 地址</b> <span class="map">→ 送貨地址</span></label>
+    <textarea id="f_addr"></textarea>
+    <label class="f"><b>Ship To Attn</b> <span class="map">→ Contact Name</span></label>
+    <input type="text" id="f_contact">
+    <div style="margin-top:16px">
+      <button class="btn btn-primary" id="syncBtn">⬆ 同步到 Lark Base</button>
+      <button class="btn btn-ghost" id="resetBtn">重新上傳</button>
+    </div>
+    <div id="status"></div>
+  </div>
+
+  <div class="card">
+    <details class="pat" id="patBox">
+      <summary>⚙️ GitHub PAT 設定（第一次用要設定）</summary>
+      <div class="pat-row">
+        <input type="password" id="pat" placeholder="貼上 GitHub Personal Access Token（要有 repo 權限）">
+        <button class="btn btn-ghost" id="patSave" style="margin:0">儲存</button>
+      </div>
+      <div class="hint" id="patState"></div>
+      <div class="hint">可以用返你喺 Lark Automation 入面用嗰個 PAT（note: lark-webhook-dispatch）。<br>
+      PAT 只會儲存喺你呢部機嘅瀏覽器（localStorage），唔會上傳去任何地方，亦唔會寫入網頁原始碼。</div>
+    </details>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const REPO = 'Techyanlam/Website';
+const WORKFLOW_FILE = 'upsert-outbound.yml';
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+function setStatus(html, cls) {
+  const el = $('status');
+  el.className = cls || '';
+  el.innerHTML = html;
+}
+const busy = msg => setStatus('<span class="spinner"></span>' + msg, 'busy');
+
+/* ---------- 上傳 ---------- */
+const drop = $('drop'), fileInput = $('file');
+drop.addEventListener('click', () => fileInput.click());
+['dragover', 'dragenter'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add('over'); }));
+['dragleave', 'drop'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.remove('over'); }));
+drop.addEventListener('drop', ev => { if (ev.dataTransfer.files.length) handleFile(ev.dataTransfer.files[0]); });
+fileInput.addEventListener('change', () => { if (fileInput.files.length) handleFile(fileInput.files[0]); });
+$('resetBtn').addEventListener('click', () => {
+  $('reviewCard').classList.add('hidden');
+  $('fileinfo').textContent = '';
+  fileInput.value = '';
+  setStatus('');
+});
+
+async function handleFile(file) {
+  if (!/\.pdf$/i.test(file.name)) { alert('請選擇 PDF 檔案'); return; }
+  $('fileinfo').textContent = '📎 ' + file.name + '（' + Math.round(file.size / 1024) + ' KB）';
+  $('reviewCard').classList.remove('hidden');
+  busy('讀取 PDF 中…');
+  try {
+    const text = await extractText(file);
+    busy('分析發票資料中…');
+    await new Promise(r => setTimeout(r, 50));
+    const p = parseInvoice(text);
+    $('f_no').value = p.invoiceNo;
+    $('f_customer').value = p.customerName;
+    $('f_addr').value = p.shipAddress;
+    $('f_contact').value = p.contactName;
+    const missing = [];
+    if (!p.invoiceNo) missing.push('Invoice No.');
+    if (!p.shipAddress) missing.push('Ship To 地址');
+    if (!p.contactName) missing.push('Ship To Attn');
+    setStatus(missing.length
+      ? '⚠️ 以下欄位未能自動識別，請手動填寫：' + missing.join('、')
+      : '✅ 資料已抽出，請核對後按「同步到 Lark Base」。', missing.length ? 'busy' : 'ok');
+  } catch (e) {
+    console.error(e);
+    setStatus('❌ 讀取失敗：' + (e.message || e), 'err');
+  }
+}
+
+/* ---------- PDF 文字抽取（文字層 → 唔夠就 OCR） ---------- */
+async function extractText(file) {
+  const buf = await file.arrayBuffer();
+  const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+  let text = '';
+  const canvases = [];
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const tc = await page.getTextContent();
+    text += tc.items.map(it => it.str).join(' ') + '\n';
+    const viewport = page.getViewport({ scale: 2.0 });
+    const canvas = document.createElement('canvas');
+    canvas.width = viewport.width; canvas.height = viewport.height;
+    await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+    canvases.push(canvas);
+  }
+  if (text.replace(/\s/g, '').length < 200) {
+    busy('掃描版 PDF，OCR 識別中（第 1/' + canvases.length + ' 頁）…');
+    let ocr = '';
+    for (let i = 0; i < canvases.length; i++) {
+      if (i > 0) busy('掃描版 PDF，OCR 識別中（第 ' + (i + 1) + '/' + canvases.length + ' 頁）…');
+      const { data } = await Tesseract.recognize(canvases[i], 'eng+chi_tra');
+      ocr += data.text + '\n';
+    }
+    text = ocr;
+  }
+  return text;
+}
+
+/* ---------- 發票解析 ----------
+   發票有 Bill To 同 Ship To 兩欄，我哋要 Ship To 嗰欄。
+   兩欄標籤字眼一樣，但 Ship To 永遠喺 Bill To 之後出現，
+   所以每個欄位取「最後一次出現」嘅值。 */
+function grabAll(lines, labelRe) {
+  const terminator = /^(company\s*name|address|attn|tel|fax|email|ship\s*-?\s*to|bill\s*-?\s*to|payment|shipment|remarks)\b/i;
+  const re = new RegExp('^' + labelRe + '\\s*[:：]?\\s*(.*)$', 'i');
+  const results = [];
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(re);
+    if (m) {
+      let val = (m[1] || '').trim();
+      let j = i + 1;
+      while (j < lines.length && lines[j].trim() && !terminator.test(lines[j])) {
+        val += ' ' + lines[j].trim();
+        j++;
+      }
+      results.push(val.replace(/\s+/g, ' ').trim());
+    }
+  }
+  return results;
+}
+const last = arr => arr.length ? arr[arr.length - 1] : '';
+
+function parseInvoice(text) {
+  const out = { invoiceNo: '', customerName: '', shipAddress: '', contactName: '' };
+  const norm = text.replace(/\r/g, '');
+  let m = norm.match(/Invoice\s*No\.?\s*[:：]?\s*([A-Z0-9][A-Z0-9\-]{3,})/i);
+  if (!m) m = norm.match(/\b(HK[A-Z]{0,4}\d{6,})\b/);
+  if (m) out.invoiceNo = m[1].trim();
+
+  const lines = norm.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  out.customerName = last(grabAll(lines, 'company\\s*name'));
+  out.shipAddress = last(grabAll(lines, 'address'));
+  out.contactName = last(grabAll(lines, 'attn'));
+  return out;
+}
+
+/* ---------- PAT ---------- */
+function getPat() { return localStorage.getItem('invoice_sync_pat') || ''; }
+function refreshPatState() {
+  $('patState').textContent = getPat() ? '✅ 已設定 PAT（儲存在本機瀏覽器）' : '⚠️ 未設定 PAT，同步前需要設定。';
+}
+$('patSave').addEventListener('click', () => {
+  const v = $('pat').value.trim();
+  if (!v) { alert('請貼上 PAT'); return; }
+  localStorage.setItem('invoice_sync_pat', v);
+  $('pat').value = '';
+  refreshPatState();
+});
+refreshPatState();
+
+/* ---------- 同步 ---------- */
+$('syncBtn').addEventListener('click', async () => {
+  const no = $('f_no').value.trim();
+  if (!no) { alert('請填寫 Invoice No.'); return; }
+  let pat = getPat();
+  if (!pat) {
+    $('patBox').open = true;
+    alert('請先設定 GitHub PAT（下面「GitHub PAT 設定」）');
+    return;
+  }
+  const payload = {
+    hksli_no: no,
+    customer_name: $('f_customer').value.trim(),
+    ship_address: $('f_addr').value.trim(),
+    contact_name: $('f_contact').value.trim()
+  };
+  const btn = $('syncBtn');
+  btn.disabled = true;
+  try {
+    busy('傳送同步指令到 GitHub…');
+    const res = await fetch('https://api.github.com/repos/' + REPO + '/dispatches', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + pat,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ event_type: 'upsert-outbound', client_payload: payload })
+    });
+    if (res.status === 401) throw new Error('PAT 無效或已過期（401），請重新設定');
+    if (res.status === 404) throw new Error('Repo 或權限有問題（404），請檢查 PAT 是否有 repo 權限');
+    if (res.status !== 204) throw new Error('GitHub 回應 ' + res.status);
+    const since = new Date(Date.now() - 5000);
+    busy('指令已送出，等待 Lark 寫入完成…（約 1–2 分鐘）');
+    const run = await waitForRun(pat, since, 8);
+    if (!run) throw new Error('等唔到 workflow 執行，請去 Actions 頁檢查');
+    if (run.conclusion === 'success') {
+      setStatus('✅ <b>已同步到 Lark Base</b>（' + no + '）<br>' +
+        '<span class="hint">標籤頁資料約 4 分鐘後自動更新。<br>' +
+        '<a href="' + run.html_url + '" target="_blank">查看執行記錄</a></span>', 'ok');
+    } else {
+      throw new Error('寫入失敗（' + run.conclusion + '），<a href="' + run.html_url + '" target="_blank">查看記錄</a>');
+    }
+  } catch (e) {
+    console.error(e);
+    setStatus('❌ ' + (e.message || e), 'err');
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+async function waitForRun(pat, since, tries) {
+  const headers = { 'Authorization': 'Bearer ' + pat, 'Accept': 'application/vnd.github+json' };
+  for (let i = 0; i < tries; i++) {
+    await new Promise(r => setTimeout(r, 15000));
+    busy('等待 Lark 寫入完成…（約 ' + (i + 1) * 15 + ' 秒）');
+    try {
+      const res = await fetch(
+        'https://api.github.com/repos/' + REPO + '/actions/workflows/' + WORKFLOW_FILE + '/runs?per_page=3',
+        { headers });
+      if (!res.ok) continue;
+      const runs = (await res.json()).workflow_runs || [];
+      const run = runs.find(r => new Date(r.created_at) >= since);
+      if (run && run.status === 'completed') return run;
+    } catch (e) { /* retry */ }
+  }
+  return null;
+}
+</script>
+</body>
+</html>
