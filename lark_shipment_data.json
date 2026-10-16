@@ -80790,7 +80790,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Mr. YIP, Pak San",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28MqGprSNOs",
@@ -81579,7 +81579,7 @@
     "recordId": "reczz28NbGNPz2au",
     "docNumber": "HKLSI26100664",
     "customerName": "Hong Kong Baptist University - Institute for Innovation and Translation (IIT)",
-    "shipToAddress": "九龍-浸大",
+    "shipToAddress": "新界-科學園",
     "contactName": "Tin Poon",
     "status": "",
     "transportQty": "2"
@@ -81591,7 +81591,7 @@
     "shipToAddress": "新界-科學園",
     "contactName": "Bobby",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28NbNQFXyV6",
