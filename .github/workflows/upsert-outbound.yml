@@ -3,6 +3,12 @@ name: Upsert Outbound Record from invoice
 # 由 invoice-sync.html 上傳介面觸發：將 Sales Invoice PDF 抽出嘅資料
 # 寫入 Lark Base Outbound Record（按「HKSLI no」搜尋：有就更新，冇就新增）。
 #
+# 欄位對應：
+#   Invoice No. → HKSLI no ｜ Ship To 公司名 → Customer Name
+#   Ship To 地址 → 送貨地址 ｜ Ship To Attn → Contact Name
+#   Date → Delivery Deadline ｜ DN No. → DN#
+#   Total Qty → Total DN Qty
+#
 # 觸發方式：
 #   1. 上傳介面 → repository_dispatch (event_type: upsert-outbound)
 #   2. 手動：Actions 分頁 → Upsert Outbound Record from invoice → Run workflow
@@ -31,6 +37,18 @@ on:
         description: 'Ship To Attn（寫入「Contact Name」欄）'
         required: false
         default: ''
+      delivery_deadline:
+        description: 'Date（寫入「Delivery Deadline」欄，如 22-04-2026）'
+        required: false
+        default: ''
+      dn_no:
+        description: 'DN No.（寫入「DN#」欄，如 HKLDN26040473）'
+        required: false
+        default: ''
+      total_dn_qty:
+        description: 'Total Qty（寫入「Total DN Qty」欄，如 1200）'
+        required: false
+        default: ''
 
 jobs:
   upsert:
@@ -53,3 +71,6 @@ jobs:
           CUSTOMER_NAME: ${{ github.event.client_payload.customer_name || github.event.inputs.customer_name }}
           SHIP_ADDRESS: ${{ github.event.client_payload.ship_address || github.event.inputs.ship_address }}
           CONTACT_NAME: ${{ github.event.client_payload.contact_name || github.event.inputs.contact_name }}
+          DELIVERY_DEADLINE: ${{ github.event.client_payload.delivery_deadline || github.event.inputs.delivery_deadline }}
+          DN_NO: ${{ github.event.client_payload.dn_no || github.event.inputs.dn_no }}
+          TOTAL_DN_QTY: ${{ github.event.client_payload.total_dn_qty || github.event.inputs.total_dn_qty }}
