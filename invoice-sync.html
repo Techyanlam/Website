@@ -71,6 +71,12 @@
     <textarea id="f_addr"></textarea>
     <label class="f"><b>Ship To Attn</b> <span class="map">→ Contact Name</span></label>
     <input type="text" id="f_contact">
+    <label class="f"><b>Date</b> <span class="map">→ Delivery Deadline</span></label>
+    <input type="text" id="f_deadline" placeholder="如 22-04-2026">
+    <label class="f"><b>DN No.</b> <span class="map">→ DN#</span></label>
+    <input type="text" id="f_dnno">
+    <label class="f"><b>Total Qty</b> <span class="map">→ Total DN Qty</span></label>
+    <input type="text" id="f_qty">
     <div style="margin-top:16px">
       <button class="btn btn-primary" id="syncBtn">⬆ 同步到 Lark Base</button>
       <button class="btn btn-ghost" id="resetBtn">重新上傳</button>
@@ -144,10 +150,16 @@ async function handleFile(file) {
     $('f_customer').value = p.customerName;
     $('f_addr').value = p.shipAddress;
     $('f_contact').value = p.contactName;
+    $('f_deadline').value = p.deliveryDeadline;
+    $('f_dnno').value = p.dnNo;
+    $('f_qty').value = p.totalQty;
     const missing = [];
     if (!p.invoiceNo) missing.push('Invoice No.');
     if (!p.shipAddress) missing.push('Ship To 地址');
     if (!p.contactName) missing.push('Ship To Attn');
+    if (!p.deliveryDeadline) missing.push('Date');
+    if (!p.dnNo) missing.push('DN No.');
+    if (!p.totalQty) missing.push('Total Qty');
     setStatus(missing.length
       ? '⚠️ 以下欄位未能自動識別，請手動填寫：' + missing.join('、')
       : '✅ 資料已抽出，請核對後按「同步到 Lark Base」。', missing.length ? 'busy' : 'ok');
@@ -195,8 +207,8 @@ async function extractText(file) {
    兩欄標籤字眼一樣，但 Ship To 永遠喺 Bill To 之後出現，
    所以每個欄位取「最後一次出現」嘅值。 */
 function grabAll(lines, labelRe) {
-  const terminator = /^(company\s*name|address|attn|tel|fax|email|ship\s*-?\s*to|bill\s*-?\s*to|payment|shipment|remarks)\b/i;
-  const re = new RegExp('^' + labelRe + '\\s*[:：]?\\s*(.*)$', 'i');
+  const terminator = /^(company\s*name|addr\s*ess|attn|tel|fax|email|date|dn\s*no|total\s*qty|ship\s*-?\s*to|bill\s*-?\s*to|payment|shipment|remarks)\b/i;
+  const re = new RegExp('^' + labelRe + '\\.?\\s*[:：]?\\s*(.*)$', 'i');
   const results = [];
   for (let i = 0; i < lines.length; i++) {
     const m = lines[i].match(re);
@@ -217,12 +229,32 @@ const last = arr => arr.length ? arr[arr.length - 1] : '';
 /* 將「標籤:」前面加換行：OCR 有時將左右兩欄併成一行，
    咁樣可以拆返開，之後逐行搵最後出現嘅值（即 Ship To 欄） */
 function preprocessLines(text) {
-  const t = text.replace(/(company\s*name|addr\s*ess|attn|tel|fax|email)\s*[:：]/gi, '\n$1:');
+  const t = text.replace(/(company\s*name|addr\s*ess|attn|tel|fax|email|date|dn\s*no|total\s*qty)\.?\s*[:：]/gi, '\n$1:');
   return t.split('\n').map(l => l.trim()).filter(l => l.length > 0);
 }
 
+/* 日期：搵以 Date 開頭嘅行（唔會誤中 Delivery Date），抽出日期部份 */
+function grabDate(lines) {
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const m = lines[i].match(/^date\s*[:：]?\s*(.*)$/i);
+    if (m) {
+      const d = (m[1] || '').match(/\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4}/);
+      if (d) return d[0];
+    }
+  }
+  return '';
+}
+
+/* Total Qty：抽出數字部份（如 "1200 CTN" → "1200"） */
+function grabQty(lines) {
+  const v = last(grabAll(lines, 'total\\s*qty'));
+  const m = v.match(/([\d,]+(?:\.\d+)?)/);
+  return m ? m[1].replace(/,/g, '') : '';
+}
+
 function parseInvoice(text) {
-  const out = { invoiceNo: '', customerName: '', shipAddress: '', contactName: '' };
+  const out = { invoiceNo: '', customerName: '', shipAddress: '', contactName: '',
+                deliveryDeadline: '', dnNo: '', totalQty: '' };
   const norm = text.replace(/\r/g, '');
   let m = norm.match(/Invoice\s*No\.?\s*[:：]?\s*([A-Z0-9][A-Z0-9\-]{3,})/i);
   if (!m) m = norm.match(/Inv(?:oice)?[\s.]*No[\s.]*[:：]?\s*([A-Z0-9][A-Z0-9\-]{3,})/i);
@@ -233,6 +265,9 @@ function parseInvoice(text) {
   out.customerName = last(grabAll(lines, 'compa\\s*ny\\s*name'));
   out.shipAddress = last(grabAll(lines, 'addr\\s*ess'));
   out.contactName = last(grabAll(lines, 'attn'));
+  out.deliveryDeadline = grabDate(lines);
+  out.dnNo = last(grabAll(lines, 'dn\\s*no'));
+  out.totalQty = grabQty(lines);
   return out;
 }
 
@@ -264,7 +299,10 @@ $('syncBtn').addEventListener('click', async () => {
     hksli_no: no,
     customer_name: $('f_customer').value.trim(),
     ship_address: $('f_addr').value.trim(),
-    contact_name: $('f_contact').value.trim()
+    contact_name: $('f_contact').value.trim(),
+    delivery_deadline: $('f_deadline').value.trim(),
+    dn_no: $('f_dnno').value.trim(),
+    total_dn_qty: $('f_qty').value.trim()
   };
   const btn = $('syncBtn');
   btn.disabled = true;
