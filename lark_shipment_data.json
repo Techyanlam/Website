@@ -34751,9 +34751,9 @@
   {
     "recordId": "recvh2oZ6aMcrE",
     "docNumber": "HKLSI26040599",
-    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Company Name :SGS Hong Kong Limited - Central Chemical — Laboratory ~ Laboratory",
     "shipToAddress": "新界-粉嶺",
-    "contactName": "Mr Eric Sze",
+    "contactName": "+ Annie Lai Attn Mr Eric Sze",
     "status": "",
     "transportQty": "3"
   },
@@ -80673,7 +80673,7 @@
     "shipToAddress": "九龍-城大",
     "contactName": "Mr. Aaron NG",
     "status": "",
-    "transportQty": "3"
+    "transportQty": ""
   },
   {
     "recordId": "reczz28MoQ5dfFeQ",
@@ -81258,7 +81258,7 @@
     "shipToAddress": "九龍-城大",
     "contactName": "Chemical Receipt Point",
     "status": "",
-    "transportQty": ""
+    "transportQty": "3"
   },
   {
     "recordId": "reczz28NDyJAUGV0",
@@ -81303,7 +81303,7 @@
     "shipToAddress": "九龍-浸大",
     "contactName": "Mr. Jim, Eric W H",
     "status": "",
-    "transportQty": ""
+    "transportQty": "3"
   },
   {
     "recordId": "reczz28NE6s9IjJ8",
@@ -81339,7 +81339,7 @@
     "shipToAddress": "九龍-長沙灣",
     "contactName": "Kenneth Lau",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28NEDNjEdSj",
@@ -81348,7 +81348,7 @@
     "shipToAddress": "九龍-荔枝角",
     "contactName": "Tsang Chi Wai",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28NEGjBAGm7",
@@ -81662,24 +81662,6 @@
     "customerName": "TE Health Consultant Co., Ltd. ",
     "shipToAddress": "新界-元朗",
     "contactName": "Doris Chan",
-    "status": "",
-    "transportQty": ""
-  },
-  {
-    "recordId": "reczz28NtmAX84zm",
-    "docNumber": "",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
-    "status": "",
-    "transportQty": ""
-  },
-  {
-    "recordId": "reczz28NtmAX5Cz4",
-    "docNumber": "",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
     "status": "",
     "transportQty": ""
   }
