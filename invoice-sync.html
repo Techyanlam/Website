@@ -41,7 +41,7 @@
 </style>
 </head>
 <body>
-<h1>🧾 Invoice → Lark Base 批量同步 <span id="ver" style="font-size:12px;color:#888;font-weight:normal">v11</span></h1>
+<h1>🧾 Invoice → Lark Base 批量同步 <span id="ver" style="font-size:12px;color:#888;font-weight:normal">v12</span></h1>
 <p class="sub">一次過拖入多張 Sales Invoice PDF → 自動抽資料 → 逐張核對 → 一次過同步去 Outbound Record</p>
 
 <div id="drop">
@@ -644,9 +644,11 @@ if (f && f.size <= 8 * 1024 * 1024) {
 const payload = {
 hksli_no: p.invoiceNo, customer_name: p.customerName, ship_address: p.shipAddress,
 contact_name: p.contactName, delivery_deadline: p.deliveryDeadline,
-dn_no: p.dnNo, total_dn_qty: p.totalQty, location: p.location,
-pdf_path: pdfPath, pdf_base64: pdfBase64, pdf_name: pdfName
+dn_no: p.dnNo, total_dn_qty: p.totalQty, location: p.location
 };
+// GitHub client_payload 上限 10 個欄：有 pdf_path 就唔傳 base64
+if (pdfPath) payload.pdf_path = pdfPath;
+else if (pdfBase64) { payload.pdf_base64 = pdfBase64; payload.pdf_name = pdfName; }
 for (let attempt = 1; attempt <= 2; attempt++) {
   try {
     const res = await fetch('https://api.github.com/repos/' + OWNER + '/' + REPO + '/dispatches', {
