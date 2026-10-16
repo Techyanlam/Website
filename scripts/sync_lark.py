@@ -53,7 +53,7 @@ STR_DATETIME_FORMATS = (
 HKT = timezone(timedelta(hours=8))
 
 
-def request_json(url, method="GET", body=None, headers=None, timeout=30, retries=3, label="request"):
+def request_json(url, method="GET", body=None, headers=None, timeout=60, retries=3, label="request"):
     """POST/GET JSON with retries for transient failures."""
     data = json.dumps(body).encode("utf-8") if body is not None else None
     last_err = None
@@ -93,12 +93,12 @@ def fetch_all_records(token):
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
     while True:
-        params = "page_size=100"
+        params = "page_size=500"
         if page_token:
             params += f"&page_token={page_token}"
 
         url = f"{API_ENDPOINT}/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records?{params}"
-        data = request_json(url, headers=headers, timeout=30,
+        data = request_json(url, headers=headers, timeout=60,
                             retries=3, label=f"records(page_token={bool(page_token)})")
         if data.get("code") != 0:
             print(f"Records API error: {data.get('msg')}")
@@ -110,7 +110,7 @@ def fetch_all_records(token):
         if not data.get("data", {}).get("has_more"):
             break
         page_token = data.get("data", {}).get("page_token", "")
-        time.sleep(0.5)
+        time.sleep(0.2)
 
     return all_records
 
@@ -119,9 +119,9 @@ def find_modified_time_field(token):
     """自動搵「最後修改時間」欄，回傳 field_id；搵唔到回 None。"""
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
     url = (f"{API_ENDPOINT}/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/fields"
-           f"?page_size=100")
+           f"?page_size=500")
     try:
-        data = request_json(url, headers=headers, timeout=30, retries=3,
+        data = request_json(url, headers=headers, timeout=60, retries=3,
                             label="fields")
     except SystemExit:
         raise
@@ -161,7 +161,7 @@ def fetch_recently_modified(token, field_id, limit=100):
         "page_size": limit,
     }
     data = request_json(url, method="POST", body=body, headers=headers,
-                        timeout=30, retries=3, label="search-recent")
+                        timeout=60, retries=3, label="search-recent")
     if data.get("code") != 0:
         raise RuntimeError(f"Search API error {data.get('code')}: {data.get('msg')}")
     return data.get("data", {}).get("items") or []
@@ -234,18 +234,9 @@ def main():
 
     mod_field_id = find_modified_time_field(token)
 
-    do_full = False
-    reason = ""
-    if not existing:
-        do_full, reason = True, "no existing data file"
-    elif not has_record_ids:
-        do_full, reason = True, "existing data lacks recordId (one-time backfill)"
-    elif not mod_field_id:
-        do_full, reason = True, "modified-time field not found"
-    elif not state.get("last_sync_ms"):
-        do_full, reason = True, "no sync state"
-    elif now_ms - state.get("last_full_sync_ms", 0) > FULL_SYNC_INTERVAL_MS:
-        do_full, reason = True, "24h full-sync safety net"
+    # Always full sync: page_size=500 makes it ~30-40s; incremental proved unreliable
+    do_full = True
+    reason = "full sync only (fast with page_size=500)"
 
     if do_full:
         print(f"Full sync ({reason})")
