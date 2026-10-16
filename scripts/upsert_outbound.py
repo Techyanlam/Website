@@ -43,6 +43,8 @@ TYPE_TEXT, TYPE_NUMBER, TYPE_DATE = 1, 2, 5
 
 DOC_NO = os.environ.get("HKSLI_NO", "").strip()
 PDF_PATH = os.environ.get("PDF_PATH", "").strip()
+PDF_BASE64 = os.environ.get("PDF_BASE64", "").strip()
+PDF_NAME = os.environ.get("PDF_NAME", "").strip() or "invoice.pdf"
 ATTACH_FIELD_NAME = "Invoice PDF"
 
 # (Lark 欄名, 環境變數, 處理方式)
@@ -269,26 +271,33 @@ def main():
         result.update(action="created", record_id=created)
 
     # 附件：PDF → Lark Drive → 附件欄（失敗唔影響資料寫入）
-    if PDF_PATH:
-        if not os.path.isfile(PDF_PATH):
-            result["attachment"] = f"skipped: file not found: {PDF_PATH}"
-        else:
-            try:
-                att_field = ensure_attachment_field(token, field_meta)
-                file_token = upload_to_drive(
-                    token, PDF_PATH, os.path.basename(PDF_PATH)
+    # PDF 來源：PDF_BASE64（dispatch 直傳）優先，否則 PDF_PATH（repo 檔案）
+    pdf_file, pdf_name = None, None
+    if PDF_BASE64:
+        import base64 as _b64
+        pdf_file = "/tmp/invoice.pdf"
+        with open(pdf_file, "wb") as fh:
+            fh.write(_b64.b64decode(PDF_BASE64))
+        pdf_name = PDF_NAME
+    elif PDF_PATH and os.path.isfile(PDF_PATH):
+        pdf_file, pdf_name = PDF_PATH, os.path.basename(PDF_PATH)
+    if pdf_file:
+        try:
+            att_field = ensure_attachment_field(token, field_meta)
+            file_token = upload_to_drive(token, pdf_file, pdf_name)
+            for rid in record_ids:
+                api(
+                    "PUT",
+                    f"/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records/{rid}",
+                    {"fields": {att_field: [{"file_token": file_token}]}},
+                    token=token,
                 )
-                for rid in record_ids:
-                    api(
-                        "PUT",
-                        f"/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records/{rid}",
-                        {"fields": {att_field: [{"file_token": file_token}]}},
-                        token=token,
-                    )
-                result["attachment"] = f"uploaded to {att_field!r}"
-            except Exception as e:  # noqa: BLE001 - report but don't fail the upsert
-                print(f"WARNING: PDF attachment failed: {e}", file=sys.stderr)
-                result["attachment"] = f"skipped: {e}"
+            result["attachment"] = f"uploaded to {att_field!r}"
+        except Exception as e:  # noqa: BLE001 - report but don't fail the upsert
+            print(f"WARNING: PDF attachment failed: {e}", file=sys.stderr)
+            result["attachment"] = f"skipped: {e}"
+    elif PDF_PATH or PDF_BASE64:
+        result["attachment"] = "skipped: no PDF data received"
     print(json.dumps(result, ensure_ascii=False))
 
 
