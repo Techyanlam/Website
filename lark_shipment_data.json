@@ -34724,7 +34724,7 @@
   {
     "recordId": "recvh2fFgYjqcI",
     "docNumber": "HKLSI26040596",
-    "customerName": "City University of Hong Kong - Finance Office (Procurement)",
+    "customerName": "City University of Hong Kong - Finance Office 一 一 (Procurement) 一 一 (Procurement) 一 一",
     "shipToAddress": "九龍-城大",
     "contactName": "Julia LEUNG",
     "status": "",
@@ -34733,7 +34733,7 @@
   {
     "recordId": "recvh2fFzZdGbb",
     "docNumber": "HKLSI26040597",
-    "customerName": "The Chinese University of Hong Kong - Department of Chemistry",
+    "customerName": "The Chinese University of Hong Kong - Department of Chemistry 一 一 of Chemistry 一 一",
     "shipToAddress": "新界-中大",
     "contactName": "Mr. KY Kwong",
     "status": "",
@@ -34814,7 +34814,7 @@
   {
     "recordId": "recvh2ybLQ6CVW",
     "docNumber": "HKLSI26040606",
-    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory 一 一 Laboratory 一 一",
     "shipToAddress": "新界-粉嶺",
     "contactName": "Mr Terry Fon",
     "status": "",
@@ -34823,7 +34823,7 @@
   {
     "recordId": "recvh2yhptCL0O",
     "docNumber": "HKLSI26040607",
-    "customerName": "Vickmans Laboratories Limited",
+    "customerName": "~~ : Vickmans Laboratories Limited Company Name ~~: Vickmans Laboratories Limited",
     "shipToAddress": "九龍-觀塘",
     "contactName": "Hannie Ng",
     "status": "",
@@ -80682,7 +80682,7 @@
     "shipToAddress": "新界-荃灣",
     "contactName": "Ms Joanne Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28MoQ9quvfF",
@@ -80691,7 +80691,7 @@
     "shipToAddress": "新界-荃灣",
     "contactName": "Ms Joanne Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28MoQCJgKnJ",
@@ -80700,7 +80700,7 @@
     "shipToAddress": "新界-粉嶺",
     "contactName": "Tiffany Tin",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28MoQFWwBhQ",
@@ -80718,7 +80718,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Ruby",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28MoQKZi1HV",
@@ -80853,7 +80853,7 @@
     "shipToAddress": "新界-科學園",
     "contactName": "Wee Lin WONG",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N7fZ0ziX5",
@@ -80889,7 +80889,7 @@
     "shipToAddress": "新界-中大",
     "contactName": "Christina Cheung",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N7fZ10jeV",
@@ -80907,7 +80907,7 @@
     "shipToAddress": "新界-火炭",
     "contactName": "Lau wing Kwong , Samson",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28N7fZ0y6zE",
@@ -80916,7 +80916,7 @@
     "shipToAddress": "新界-火炭",
     "contactName": "Mr Wallace Tsui",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N7fZ0xdXe",
@@ -80952,7 +80952,7 @@
     "shipToAddress": "新界-粉嶺",
     "contactName": "Tiffany Tin",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N7fpOKpYw",
@@ -80961,7 +80961,7 @@
     "shipToAddress": "新界-荃灣",
     "contactName": "Cyrus Lau",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N7fpOInYD",
@@ -80979,7 +80979,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Chris Lee",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N7fpOIkMv",
@@ -80988,7 +80988,7 @@
     "shipToAddress": "新界-中大",
     "contactName": "Lit Kwok Keung",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N7fpOK6yB",
@@ -81006,7 +81006,7 @@
     "shipToAddress": "新界-荃灣",
     "contactName": "Leung Kwai Yuk",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N7fxZSdcy",
@@ -81015,7 +81015,7 @@
     "shipToAddress": "新界-大埔",
     "contactName": "Ricky Mok",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N7fxZRQjl",
@@ -81024,7 +81024,7 @@
     "shipToAddress": "新界-大埔",
     "contactName": "Alice Chow",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N7x5ZWOhl",
@@ -81060,7 +81060,7 @@
     "shipToAddress": "新界-元朗",
     "contactName": "Sandra Chu",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N9TMlTy4f",
@@ -81069,7 +81069,7 @@
     "shipToAddress": "新界-沙田",
     "contactName": "Mr. Chang Yau Man",
     "status": "",
-    "transportQty": ""
+    "transportQty": "7"
   },
   {
     "recordId": "reczz28N9TMlXh0Z",
@@ -81087,7 +81087,7 @@
     "shipToAddress": "新界-元朗",
     "contactName": "Sandra Chu",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28NBnevYplg",
@@ -81096,7 +81096,7 @@
     "shipToAddress": "新界-粉嶺",
     "contactName": "Mr Eric Sze",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28NBnfRWN1K",
@@ -81510,7 +81510,7 @@
     "shipToAddress": "新界-沙田",
     "contactName": "Cheuk Sum Hong",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28NW4SAiNZB",
@@ -81537,7 +81537,7 @@
     "shipToAddress": "新界-大圍",
     "contactName": "Wai Kit WK. Lee",
     "status": "",
-    "transportQty": ""
+    "transportQty": "4"
   },
   {
     "recordId": "reczz28NXxQb2yrJ",
@@ -81546,7 +81546,7 @@
     "shipToAddress": "新界-粉嶺",
     "contactName": "Ka Kin Fung",
     "status": "",
-    "transportQty": ""
+    "transportQty": "4"
   },
   {
     "recordId": "reczz28NXxQb4wIt",
@@ -81555,7 +81555,7 @@
     "shipToAddress": "新界-粉嶺",
     "contactName": "Alex Yip",
     "status": "",
-    "transportQty": ""
+    "transportQty": "15"
   },
   {
     "recordId": "reczz28NY8dcWt4l",
@@ -81573,7 +81573,7 @@
     "shipToAddress": "新界-大埔",
     "contactName": "Hei Chang",
     "status": "",
-    "transportQty": ""
+    "transportQty": "5"
   },
   {
     "recordId": "reczz28NbGNPz2au",
