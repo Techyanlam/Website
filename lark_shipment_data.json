@@ -81668,45 +81668,45 @@
   {
     "recordId": "reczz28Nwcw0oJZV",
     "docNumber": "HKLSI26100676",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Eurofins MTS Consumer Product Testing Hong Kong Limited",
+    "shipToAddress": "九龍-長沙灣",
+    "contactName": "Kenneth Lau",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NwcyQW0hM",
     "docNumber": "HKLSI26100687",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NwcyQXnso",
     "docNumber": "HKLSI26100698",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Polytechnic University - Department of Life Science (LS)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NwcyQViuF",
     "docNumber": "HKLSI26100708",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hong Kong Baptist University - School of Chinese Medicine",
+    "shipToAddress": "九龍-浸大",
+    "contactName": "Hilda Cheung",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28NwcyQXFHr",
     "docNumber": "HKLSI26100714",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Cynthia Lee ",
     "status": "",
     "transportQty": ""
   },
@@ -81716,6 +81716,15 @@
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28NwxxZI6FA",
+    "docNumber": "HKLSI26040624a",
+    "customerName": "Hohenstein Laboratories (HK) Limited",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Rosana Poon",
     "status": "",
     "transportQty": ""
   }
