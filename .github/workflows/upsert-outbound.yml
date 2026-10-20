@@ -8,7 +8,7 @@ name: Upsert Outbound Record from invoice
 #   Ship To 地址 → 送貨地址 ｜ Ship To Attn → Contact Name
 #   Date → Delivery Deadline ｜ DN No. → DN#
 #   Total Qty → Total DN Qty ｜ 自動判斷 → Location
-#   PDF 路徑 → 上傳 Lark Drive → 附件欄「Invoice PDF」（唔存在會自動新增）
+#   （v13 起：唔再上傳 PDF 附件，淨同步資料）
 #
 # 觸發方式：
 #   1. 上傳介面 → repository_dispatch (event_type: upsert-outbound)
@@ -54,18 +54,6 @@ on:
         description: 'Location（地區簡稱，如 新界-粉嶺）'
         required: false
         default: ''
-      pdf_path:
-        description: 'PDF 喺 repo 嘅路徑（如 invoices/HKLSI26040608.pdf），會上傳到 Lark 附件欄'
-        required: false
-        default: ''
-      pdf_base64:
-        description: 'PDF base64（repo 上傳失敗時嘅後備，唔使手填）'
-        required: false
-        default: ''
-      pdf_name:
-        description: 'PDF 檔名（配合 pdf_base64）'
-        required: false
-        default: ''
 
 jobs:
   upsert:
@@ -92,6 +80,3 @@ jobs:
           DN_NO: ${{ github.event.client_payload.dn_no || github.event.inputs.dn_no }}
           TOTAL_DN_QTY: ${{ github.event.client_payload.total_dn_qty || github.event.inputs.total_dn_qty }}
           LOCATION: ${{ github.event.client_payload.location || github.event.inputs.location }}
-          PDF_PATH: ${{ github.event.client_payload.pdf_path || github.event.inputs.pdf_path }}
-          PDF_BASE64: ${{ github.event.client_payload.pdf_base64 || github.event.inputs.pdf_base64 }}
-          PDF_NAME: ${{ github.event.client_payload.pdf_name || github.event.inputs.pdf_name }}
