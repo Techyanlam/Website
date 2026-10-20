@@ -68,7 +68,8 @@
         <h4 style="margin:16px 0 4px;">列印記錄</h4>
         <div id="log"><div class="log-row" style="color:#999;">暫無記錄</div></div>
         <div class="hint">
-            每 30 秒自動檢查一次 Lark 同步數據；當某張單嘅 <strong>Transport Qty 有更新</strong>（由無變有、或數量改變）先會自動列印，其他欄位修改唔會觸發。列印張數 = Transport Qty（上限 100 張）。<br>
+            每 30 秒自動檢查一次 Lark 同步數據；當有<strong>新單加入</strong>（新單號出現），或某張單嘅 <strong>Transport Qty 有更新</strong>（由無變有、或數量改變），就會自動列印；其他欄位修改唔會觸發。列印張數 = Transport Qty（未填寫就印 1 張；上限 100 張）。<br>
+            <small style="color:#999;">頁面版本：2026-10-20（新單＋Qty 更新觸發）</small><br>
             呢頁要用 Chrome 嘅 <code>--kiosk-printing</code> 模式開啟，先可以唔經對話框直接列印去預設打印機（標籤打印機要設為系統預設）。
         </div>
     </div>
@@ -231,10 +232,11 @@
                 seenThisCheck.add(key);
                 if (queuedKeys.has(key)) continue; // 已經排緊，唔重複排
                 const qty = normQty(r.transportQty);
+                const isNew = !(key in state);
                 const prev = state[key];
                 state[key] = qty;
-                // 新單有 qty、或 qty 有變（且新值唔係空）先印
-                if (qty !== '' && prev !== qty) {
+                // 新單（未見過嘅單號）一律印；舊單只係 qty 有變（且新值唔係空）先印
+                if (isNew || (qty !== '' && prev !== qty)) {
                     if (added < MAX_QUEUE_PER_CHECK) { printQueue.push(r); queuedKeys.add(key); added++; }
                     else skipped++;
                 }
@@ -245,10 +247,10 @@
             document.getElementById('stat-queue').innerText = printQueue.length;
             const time = new Date().toLocaleTimeString('zh-HK', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             if (added) {
-                setStatus(`✓ ${time} 發現 ${added} 張單 Transport Qty 有更新，開始自動列印…`, 'ok');
+                setStatus(`✓ ${time} 發現 ${added} 張要列印（新單或 Qty 更新），開始自動列印…`, 'ok');
                 processQueue();
             } else if (manual) {
-                setStatus(`✓ ${time} 檢查完成：${valid.length} 筆，無 Transport Qty 更新`, 'ok');
+                setStatus(`✓ ${time} 檢查完成：${valid.length} 筆，無新單或 Qty 更新`, 'ok');
             }
             if (skipped > MAX_QUEUE_PER_CHECK) console.warn('略過過多單據:', skipped);
         } catch (e) {
@@ -262,7 +264,7 @@
     }
 
     function resetBaseline() {
-        if (!confirm('確定重設？會將而家所有單據嘅 Transport Qty 重新設為 baseline，之後有更新先會再印。')) return;
+        if (!confirm('確定重設？會將而家所有單據重新設為 baseline，之後有新單或更新先會再印。')) return;
         localStorage.removeItem(LS_KEY);
         localStorage.removeItem(LS_KEY_OLD);
         baselineReady = false;
@@ -290,9 +292,9 @@
                 });
                 saveState(state);
                 try { localStorage.removeItem(LS_KEY_OLD); } catch (e) {}
-                setStatus(`✓ Baseline 已建立（${Object.keys(state).length} 筆），之後 Transport Qty 有更新先會自動列印`, 'ok');
+                setStatus(`✓ Baseline 已建立（${Object.keys(state).length} 筆），之後有新單加入或 Transport Qty 有更新會自動列印`, 'ok');
             } else {
-                setStatus(`✓ 已載入 baseline（${Object.keys(state).length} 筆），監察緊 Transport Qty 更新`, 'ok');
+                setStatus(`✓ 已載入 baseline（${Object.keys(state).length} 筆），監察緊新單同 Transport Qty 更新`, 'ok');
             }
             document.getElementById('stat-known').innerText = Object.keys(state).length;
             return true;
