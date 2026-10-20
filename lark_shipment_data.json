@@ -82073,17 +82073,17 @@
   {
     "recordId": "reczz28PTh5p1VPh",
     "docNumber": "HKLSI26100729",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Polytechnic University - Department of Mechanical Engineering",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan ",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28PTh5p15Ec",
-    "docNumber": "HKLDN26100410 ",
-    "customerName": "",
-    "shipToAddress": "",
+    "docNumber": "HKLDN26100410",
+    "customerName": "Labware Analytical Co., Ltd.",
+    "shipToAddress": "Room 502, 5/F, Academic Blk, 30 Shing Tai Road, Chai Wan",
     "contactName": "",
     "status": "",
     "transportQty": ""
