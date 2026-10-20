@@ -6,7 +6,7 @@
     "shipToAddress": "新界-小蠔灣",
     "contactName": "Hagan Ho",
     "status": "",
-    "transportQty": "1"
+    "transportQty": "2"
   },
   {
     "recordId": "recvdo0yz46YR7",
@@ -82082,9 +82082,9 @@
   {
     "recordId": "reczz28PTh5p15Ec",
     "docNumber": "HKLDN26100410",
-    "customerName": "Labware Analytical Co., Ltd.",
-    "shipToAddress": "Room 502, 5/F, Academic Blk, 30 Shing Tai Road, Chai Wan",
-    "contactName": "",
+    "customerName": "HK Institute of Vocational Education (Chai Wan)",
+    "shipToAddress": "香港-柴灣",
+    "contactName": "Fiona Lam",
     "status": "",
     "transportQty": ""
   }
