@@ -12,16 +12,12 @@
     TOTAL_DN_QTY     —— Total Qty（如 1200）           → 「Total DN Qty」
     LOCATION         —— 地區簡稱（如 新界-粉嶺）        → 「Location」
                        （單選欄：只寫入真實存在嘅選項，否則跳過並報告）
-    PDF_PATH         —— repo 入面嘅 PDF 路徑（如 invoices/HKLSI26040608.pdf）
-                       → 上傳到 Lark Drive，再寫入附件欄「Invoice PDF」
-                       （附件欄唔存在會自動新增；上傳失敗唔會影響資料寫入）
-
 行為：
     - 先讀取表格欄位清單，只寫入真實存在嘅欄（唔存在嘅會跳過並報告）
     - 日期型欄位（type 5）：將 DD-MM-YYYY / DD/MM/YYYY / YYYY-MM-DD 轉做毫秒 timestamp
     - 數字型欄位（type 2）：抽出數字寫入
     - 用 records/search 以 HKSLI no 精確搜尋：有命中 → PUT 更新；無 → POST 新增
-    - 如有 PDF_PATH：上傳到 Lark Drive → 寫入附件欄（type 17）
+    - （v13 起唔再上傳 PDF 附件，淨寫資料欄）
 """
 import json
 import os
@@ -42,10 +38,6 @@ HKT = timezone(timedelta(hours=8))
 TYPE_TEXT, TYPE_NUMBER, TYPE_DATE = 1, 2, 5
 
 DOC_NO = os.environ.get("HKSLI_NO", "").strip()
-PDF_PATH = os.environ.get("PDF_PATH", "").strip()
-PDF_BASE64 = os.environ.get("PDF_BASE64", "").strip()
-PDF_NAME = os.environ.get("PDF_NAME", "").strip() or "invoice.pdf"
-ATTACH_FIELD_NAME = "Invoice PDF"
 
 # (Lark 欄名, 環境變數, 處理方式)
 FIELD_SPECS = [
@@ -105,77 +97,6 @@ def to_number(value):
         raise ValueError(f"no number in: {value!r}")
     f = float(num)
     return int(f) if f.is_integer() else f
-
-
-def upload_to_drive(token, file_path, file_name):
-    """上傳檔案到 Lark Drive（Base 附件用），回傳 file_token。
-
-    POST /open-apis/drive/v1/medias/upload_all。
-    實測：file_name、size、parent_type、parent_node、extra 全部要齊，
-    parent_type=bitable_file、parent_node=Base app_token、
-    extra={"drive_route_token": app_token}，缺任何一個都 1061002。
-    """
-    with open(file_path, "rb") as f:
-        file_data = f.read()
-    boundary = "----MuseFormBoundary" + os.urandom(8).hex()
-    body = b""
-
-    def add_field(name, value):
-        nonlocal body
-        body += f"--{boundary}\r\n".encode()
-        body += f'Content-Disposition: form-data; name="{name}"\r\n\r\n'.encode()
-        body += f"{value}\r\n".encode()
-
-    add_field("file_name", file_name)
-    add_field("size", str(len(file_data)))
-    add_field("parent_type", "bitable_file")
-    add_field("parent_node", APP_TOKEN)
-    add_field("extra", json.dumps({"drive_route_token": APP_TOKEN}))
-    body += f"--{boundary}\r\n".encode()
-    body += (f'Content-Disposition: form-data; name="file"; filename="{file_name}"\r\n').encode()
-    body += b"Content-Type: application/pdf\r\n\r\n"
-    body += file_data + b"\r\n"
-    body += f"--{boundary}--\r\n".encode()
-
-    req = urllib.request.Request(
-        API + "/drive/v1/medias/upload_all",
-        method="POST",
-        data=body,
-        headers={
-            "Authorization": f"Bearer {token}",
-            "Content-Type": f"multipart/form-data; boundary={boundary}",
-        },
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            result = json.load(resp)
-    except urllib.error.HTTPError as e:
-        detail = e.read().decode("utf-8", "replace")[:500]
-        raise RuntimeError(f"drive upload_all HTTP {e.code}: {detail}")
-    if result.get("code") != 0:
-        raise RuntimeError(f"drive upload_all -> {result}")
-    data = result.get("data") or {}
-    file_token = data.get("file_token") or data.get("fileToken")
-    if not file_token:
-        raise RuntimeError(f"drive upload_all: no file_token in {result}")
-    return file_token
-
-
-def ensure_attachment_field(token, field_meta):
-    """搵附件欄（type 17）：優先叫「Invoice PDF」嘅，冇就用任何附件欄，再冇就自動新增。"""
-    if ATTACH_FIELD_NAME in field_meta and field_meta[ATTACH_FIELD_NAME]["type"] == 17:
-        return ATTACH_FIELD_NAME
-    for name, meta in field_meta.items():
-        if meta["type"] == 17:
-            return name
-    api(
-        "POST",
-        f"/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/fields",
-        {"field_name": ATTACH_FIELD_NAME, "type": 17},
-        token=token,
-    )
-    print(f"created attachment field {ATTACH_FIELD_NAME!r}", file=sys.stderr)
-    return ATTACH_FIELD_NAME
 
 
 def main():
@@ -287,34 +208,6 @@ def main():
         record_ids.append(created)
         result.update(action="created", record_id=created)
 
-    # 附件：PDF → Lark Drive → 附件欄（失敗唔影響資料寫入）
-    # PDF 來源：PDF_BASE64（dispatch 直傳）優先，否則 PDF_PATH（repo 檔案）
-    pdf_file, pdf_name = None, None
-    if PDF_BASE64:
-        import base64 as _b64
-        pdf_file = "/tmp/invoice.pdf"
-        with open(pdf_file, "wb") as fh:
-            fh.write(_b64.b64decode(PDF_BASE64))
-        pdf_name = PDF_NAME
-    elif PDF_PATH and os.path.isfile(PDF_PATH):
-        pdf_file, pdf_name = PDF_PATH, os.path.basename(PDF_PATH)
-    if pdf_file:
-        try:
-            att_field = ensure_attachment_field(token, field_meta)
-            file_token = upload_to_drive(token, pdf_file, pdf_name)
-            for rid in record_ids:
-                api(
-                    "PUT",
-                    f"/bitable/v1/apps/{APP_TOKEN}/tables/{TABLE_ID}/records/{rid}",
-                    {"fields": {att_field: [{"file_token": file_token}]}},
-                    token=token,
-                )
-            result["attachment"] = f"uploaded to {att_field!r}"
-        except Exception as e:  # noqa: BLE001 - report but don't fail the upsert
-            print(f"WARNING: PDF attachment failed: {e}", file=sys.stderr)
-            result["attachment"] = f"skipped: {e}"
-    elif PDF_PATH or PDF_BASE64:
-        result["attachment"] = "skipped: no PDF data received"
     print(json.dumps(result, ensure_ascii=False))
 
 
