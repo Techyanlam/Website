@@ -82091,35 +82091,44 @@
   {
     "recordId": "reczz28PVxacaKZU",
     "docNumber": "HKLSI26100766",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The University Of Hong Kong - Department of Electrical & Electronic Engineering",
+    "shipToAddress": "香港-港大",
+    "contactName": "Qiyu Cao",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28PVxcCsCeO",
     "docNumber": "HKLSI26100767",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Tiffany Tin",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28PVxcCqzqO",
     "docNumber": "HKLSI26100768",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Laboratory for Synthetic Chemistry and Chemical Biology Limited ",
+    "shipToAddress": "香港-港大",
+    "contactName": "Wu Di",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28PVxcCqpK4",
     "docNumber": "HKLSI26100769",
-    "customerName": "",
-    "shipToAddress": "",
+    "customerName": "City University of Hong Kong - Finance Office (Procurement)",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Chemical Receipt Point",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PWDSBn0iD",
+    "docNumber": "HKLSI26100770",
+    "customerName": "Tai Wo Tung Medicine Company Limited",
+    "shipToAddress": "Kong Nam Industrial Building, 603-609 Castle Peak Road, Tsuen Wan Hong Kong",
     "contactName": "",
     "status": "",
     "transportQty": ""
