@@ -81636,7 +81636,7 @@
     "shipToAddress": "香港-黃竹坑",
     "contactName": "Leung Wai Yuk Karina",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28Ntdr8hevx",
@@ -82081,12 +82081,12 @@
   },
   {
     "recordId": "reczz28PTh5p15Ec",
-    "docNumber": "HKLDN26100410",
+    "docNumber": "LALSI26100018",
     "customerName": "HK Institute of Vocational Education (Chai Wan)",
     "shipToAddress": "香港-柴灣",
     "contactName": "Fiona Lam",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28PVxacaKZU",
@@ -82293,7 +82293,7 @@
     "shipToAddress": "九龍-城大",
     "contactName": "WANG Yijun ",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28Pb1RykjM5",
