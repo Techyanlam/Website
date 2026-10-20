@@ -82244,25 +82244,34 @@
   {
     "recordId": "reczz28Pa1nbrCl5",
     "docNumber": "HKLSI26100784",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "UL VS Hong Kong Limited - Chemical Department",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Ms Joanne Wong",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28Pa1nbqtgS",
     "docNumber": "HKLSI26100785",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Tommy Sze",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28Pa1nbpyVp",
     "docNumber": "HKLSI26100787",
-    "customerName": "",
+    "customerName": "Lee Kum Kee Co Ltd.",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Tiffany Lee",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pa6MhAdCz",
+    "docNumber": "HKLSI26100788",
+    "customerName": "Fortune Pharmacal Co. Limited",
     "shipToAddress": "",
     "contactName": "",
     "status": "",
