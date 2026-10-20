@@ -68,8 +68,8 @@
         <h4 style="margin:16px 0 4px;">列印記錄</h4>
         <div id="log"><div class="log-row" style="color:#999;">暫無記錄</div></div>
         <div class="hint">
-            每 30 秒自動檢查一次 Lark 同步數據；當有<strong>新單加入</strong>（新單號出現）就會自動列印；舊單要 <strong>Transport Qty 有更新而且大過 1</strong> 先會補印；其他欄位修改唔會觸發。列印張數 = Transport Qty（未填寫就印 1 張；上限 100 張）。<br>
-            <small style="color:#999;">頁面版本：2026-10-20 v2（新單即印；舊單 Qty 大過 1 先印）</small><br>
+            每 30 秒自動檢查一次 Lark 同步數據；<strong>新單唔會自動列印</strong>。舊單當 <strong>Transport Qty 改到大過 1</strong>，或 <strong>Contact Name 有更新</strong>，會自動列印；其他欄位修改唔會觸發。列印張數 = Transport Qty（Contact Name 更新就印 1 張；上限 100 張）。<br>
+            <small style="color:#999;">頁面版本：2026-10-20 v3（新單唔印；Qty 大過 1 或 Contact Name 更新先印）</small><br>
             呢頁要用 Chrome 嘅 <code>--kiosk-printing</code> 模式開啟，先可以唔經對話框直接列印去預設打印機（標籤打印機要設為系統預設）。
         </div>
     </div>
@@ -102,7 +102,7 @@
         'https://raw.githubusercontent.com/Techyanlam/Website/main/lark_shipment_data.json',
         'lark_shipment_data.json'
     ];
-    const LS_KEY = 'upgl_print_state';   // {DOCNO: transportQty}
+    const LS_KEY = 'upgl_print_state';   // {DOCNO: {q: transportQty, c: contactName}}
     const LS_KEY_OLD = 'upgl_printed_docs'; // 舊版遷移用
     const CHECK_MS = 30 * 1000;
     const MAX_QUEUE_PER_CHECK = 200;        // 單次上限，防洗版
@@ -156,7 +156,7 @@
         const state = getState();
         const key = (rec.docNumber || '').toUpperCase();
         if (key && !(key in state)) {
-            state[key] = normQty(rec.transportQty);
+            state[key] = { q: normQty(rec.transportQty), c: normQty(rec.contactName) };
             saveState(state);
             document.getElementById('stat-known').innerText = Object.keys(state).length;
         }
@@ -201,7 +201,7 @@
         document.getElementById('stat-queue').innerText = printQueue.length;
         fillLabel(rec);
         await new Promise(r => setTimeout(r, 500)); // 等 barcode 畫完
-        let copies = parseInt(normQty(rec.transportQty), 10);
+        let copies = rec._forceCopies ? rec._forceCopies : parseInt(normQty(rec.transportQty), 10);
         if (!(copies >= 1)) copies = 1;
         copies = Math.min(copies, MAX_COPIES);
         for (let i = 0; i < copies; i++) {
@@ -232,13 +232,23 @@
                 seenThisCheck.add(key);
                 if (queuedKeys.has(key)) continue; // 已經排緊，唔重複排
                 const qty = normQty(r.transportQty);
+                const contact = normQty(r.contactName);
                 const isNew = !(key in state);
-                const prev = state[key];
-                state[key] = qty;
-                // 新單（未見過嘅單號）一律印；舊單要 qty 有變、新值唔係空、而且大過 1 先印
+                let prev = state[key];
+                if (prev !== undefined && typeof prev !== 'object') prev = { q: prev, c: null }; // 舊版 state 格式遷移
+                const prevQty = prev ? prev.q : undefined;
+                const prevContact = prev ? prev.c : null;
+                state[key] = { q: qty, c: contact };
+                // 新單唔印；舊單：qty 改到大過 1、或 Contact Name 有更新，先印
                 const qtyNum = parseInt(qty, 10);
-                if (isNew || (qty !== '' && prev !== qty && qtyNum > 1)) {
-                    if (added < MAX_QUEUE_PER_CHECK) { printQueue.push(r); queuedKeys.add(key); added++; }
+                const qtyTrigger = qty !== '' && prevQty !== qty && qtyNum > 1;
+                const contactTrigger = prevContact !== null && prevContact !== contact;
+                if (!isNew && (qtyTrigger || contactTrigger)) {
+                    if (added < MAX_QUEUE_PER_CHECK) {
+                        const item = Object.assign({}, r);
+                        if (!qtyTrigger) item._forceCopies = 1; // 純 Contact Name 更新：補印 1 張
+                        printQueue.push(item); queuedKeys.add(key); added++;
+                    }
                     else skipped++;
                 }
             }
@@ -248,10 +258,10 @@
             document.getElementById('stat-queue').innerText = printQueue.length;
             const time = new Date().toLocaleTimeString('zh-HK', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             if (added) {
-                setStatus(`✓ ${time} 發現 ${added} 張要列印（新單或 Qty 更新），開始自動列印…`, 'ok');
+                setStatus(`✓ ${time} 發現 ${added} 張要列印（Qty 大過 1 或 Contact Name 更新），開始自動列印…`, 'ok');
                 processQueue();
             } else if (manual) {
-                setStatus(`✓ ${time} 檢查完成：${valid.length} 筆，無新單或 Qty 更新`, 'ok');
+                setStatus(`✓ ${time} 檢查完成：${valid.length} 筆，無 Qty（大過 1）或 Contact Name 更新`, 'ok');
             }
             if (skipped > MAX_QUEUE_PER_CHECK) console.warn('略過過多單據:', skipped);
         } catch (e) {
@@ -265,7 +275,7 @@
     }
 
     function resetBaseline() {
-        if (!confirm('確定重設？會將而家所有單據重新設為 baseline，之後有新單或更新先會再印。')) return;
+        if (!confirm('確定重設？會將而家所有單據重新設為 baseline，之後舊單有 Qty（大過 1）或 Contact Name 更新先會再印。')) return;
         localStorage.removeItem(LS_KEY);
         localStorage.removeItem(LS_KEY_OLD);
         baselineReady = false;
@@ -289,13 +299,13 @@
                 const seenSeed = new Set();
                 withField.forEach(r => {
                     const k = (r.docNumber || '').toUpperCase();
-                    if (k && !seenSeed.has(k)) { seenSeed.add(k); state[k] = normQty(r.transportQty); }
+                    if (k && !seenSeed.has(k)) { seenSeed.add(k); state[k] = { q: normQty(r.transportQty), c: normQty(r.contactName) }; }
                 });
                 saveState(state);
                 try { localStorage.removeItem(LS_KEY_OLD); } catch (e) {}
-                setStatus(`✓ Baseline 已建立（${Object.keys(state).length} 筆），之後有新單加入、或舊單 Transport Qty 改到大過 1，會自動列印`, 'ok');
+                setStatus(`✓ Baseline 已建立（${Object.keys(state).length} 筆），之後舊單 Transport Qty 改到大過 1、或 Contact Name 有更新，會自動列印（新單唔會自動印）`, 'ok');
             } else {
-                setStatus(`✓ 已載入 baseline（${Object.keys(state).length} 筆），監察緊新單同 Transport Qty 更新（舊單要大過 1）`, 'ok');
+                setStatus(`✓ 已載入 baseline（${Object.keys(state).length} 筆），監察緊 Transport Qty（大過 1）同 Contact Name 更新（新單唔印）`, 'ok');
             }
             document.getElementById('stat-known').innerText = Object.keys(state).length;
             return true;
