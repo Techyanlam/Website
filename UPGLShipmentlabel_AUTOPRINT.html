@@ -68,8 +68,8 @@
         <h4 style="margin:16px 0 4px;">列印記錄</h4>
         <div id="log"><div class="log-row" style="color:#999;">暫無記錄</div></div>
         <div class="hint">
-            每 30 秒自動檢查一次 Lark 同步數據；<strong>新單唔會自動列印</strong>。舊單當 <strong>Transport Qty 改到大過 1</strong>，或 <strong>Contact Name 有更新</strong>，會自動列印；其他欄位修改唔會觸發。列印張數 = Transport Qty（Contact Name 更新就印 1 張；上限 100 張）。<br>
-            <small style="color:#999;">頁面版本：2026-10-20 v4（提速：10 秒檢查一次、逐張間隔 0.8 秒；規則同 v3）</small><br>
+            每 10 秒自動檢查一次 Lark 同步數據；<strong>新單有 Contact Name 就會自動列印</strong>（冇 Contact Name 就唔印）。舊單當 <strong>Transport Qty 改到大過 1</strong>，或 <strong>Contact Name 有更新</strong>，會自動列印；其他欄位修改唔會觸發。列印張數 = Transport Qty（冇 Qty 就 1 張；舊單 Contact Name 更新就印 1 張；上限 100 張）。<br>
+            <small style="color:#999;">頁面版本：2026-10-20 v5（新單有 Contact Name 就印；舊單 Qty 大過 1 或 Contact Name 更新先印；10 秒檢查一次）</small><br>
             呢頁要用 Chrome 嘅 <code>--kiosk-printing</code> 模式開啟，先可以唔經對話框直接列印去預設打印機（標籤打印機要設為系統預設）。
         </div>
     </div>
@@ -239,14 +239,15 @@
                 const prevQty = prev ? prev.q : undefined;
                 const prevContact = prev ? prev.c : null;
                 state[key] = { q: qty, c: contact };
-                // 新單唔印；舊單：qty 改到大過 1、或 Contact Name 有更新，先印
+                // v5：新單有 Contact Name 就印（張數跟 Transport Qty，空就 1 張）；舊單：qty 改到大過 1、或 Contact Name 有更新，先印
                 const qtyNum = parseInt(qty, 10);
                 const qtyTrigger = qty !== '' && prevQty !== qty && qtyNum > 1;
                 const contactTrigger = prevContact !== null && prevContact !== contact;
-                if (!isNew && (qtyTrigger || contactTrigger)) {
+                const newTrigger = isNew && contact !== '';
+                if (newTrigger || (!isNew && (qtyTrigger || contactTrigger))) {
                     if (added < MAX_QUEUE_PER_CHECK) {
                         const item = Object.assign({}, r);
-                        if (!qtyTrigger) item._forceCopies = 1; // 純 Contact Name 更新：補印 1 張
+                        if (!isNew && !qtyTrigger) item._forceCopies = 1; // 舊單純 Contact Name 更新：補印 1 張
                         printQueue.push(item); queuedKeys.add(key); added++;
                     }
                     else skipped++;
@@ -258,14 +259,14 @@
             document.getElementById('stat-queue').innerText = printQueue.length;
             const time = new Date().toLocaleTimeString('zh-HK', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
             if (added) {
-                setStatus(`✓ ${time} 發現 ${added} 張要列印（Qty 大過 1 或 Contact Name 更新），開始自動列印…`, 'ok');
+                setStatus(`✓ ${time} 發現 ${added} 張要列印（新單有 Contact／Qty 大過 1／Contact Name 更新），開始自動列印…`, 'ok');
                 processQueue();
             } else if (manual) {
-                setStatus(`✓ ${time} 檢查完成：${valid.length} 筆，無 Qty（大過 1）或 Contact Name 更新`, 'ok');
+                setStatus(`✓ ${time} 檢查完成：${valid.length} 筆，無新單（有 Contact）／Qty（大過 1）／Contact Name 更新`, 'ok');
             }
             if (skipped > MAX_QUEUE_PER_CHECK) console.warn('略過過多單據:', skipped);
         } catch (e) {
-            setStatus('檢查失敗：' + e.message + '，30 秒後再試', 'warn');
+            setStatus('檢查失敗：' + e.message + '，10 秒後再試', 'warn');
         }
     }
 
@@ -303,9 +304,9 @@
                 });
                 saveState(state);
                 try { localStorage.removeItem(LS_KEY_OLD); } catch (e) {}
-                setStatus(`✓ Baseline 已建立（${Object.keys(state).length} 筆），之後舊單 Transport Qty 改到大過 1、或 Contact Name 有更新，會自動列印（新單唔會自動印）`, 'ok');
+                setStatus(`✓ Baseline 已建立（${Object.keys(state).length} 筆），之後新單有 Contact Name、或舊單 Transport Qty 改到大過 1／Contact Name 有更新，會自動列印`, 'ok');
             } else {
-                setStatus(`✓ 已載入 baseline（${Object.keys(state).length} 筆），監察緊 Transport Qty（大過 1）同 Contact Name 更新（新單唔印）`, 'ok');
+                setStatus(`✓ 已載入 baseline（${Object.keys(state).length} 筆），監察緊新單（有 Contact Name）、Transport Qty（大過 1）同 Contact Name 更新`, 'ok');
             }
             document.getElementById('stat-known').innerText = Object.keys(state).length;
             return true;
