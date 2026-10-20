@@ -29010,7 +29010,7 @@
     "recordId": "recveKIbg4PV1N",
     "docNumber": "HKLSI26030979",
     "customerName": "China Aircraft Services Limited",
-    "shipToAddress": "Self Pick Up",
+    "shipToAddress": "新界-落馬洲",
     "contactName": "Anna Tang",
     "status": "",
     "transportQty": "1"
@@ -32970,7 +32970,7 @@
     "recordId": "recvghtGD4qM0l",
     "docNumber": "HKLSI26040311",
     "customerName": "Process & Plant Sales Limited",
-    "shipToAddress": "Self Pick Up",
+    "shipToAddress": "新界-落馬洲",
     "contactName": " Luke Jones",
     "status": "",
     "transportQty": "1"
@@ -37641,7 +37641,7 @@
     "recordId": "recvi98fIJAd5c",
     "docNumber": "HKLDN26040689",
     "customerName": "Technological and Higher Education Institute of Hong Kong",
-    "shipToAddress": "Self Pick Up",
+    "shipToAddress": "新界-落馬洲",
     "contactName": "NG Chi Yung",
     "status": "",
     "transportQty": "1"
@@ -37803,7 +37803,7 @@
     "recordId": "recviaoelsrf47",
     "docNumber": "HKLSI26050088",
     "customerName": "Lingnan University - School of Interdisciplinary Studies",
-    "shipToAddress": "Self Pick Up",
+    "shipToAddress": "新界-落馬洲",
     "contactName": "SO CHEUK LAM",
     "status": "",
     "transportQty": ""
@@ -38613,7 +38613,7 @@
     "recordId": "recviDEjDWcezm",
     "docNumber": "HKLDN26040682",
     "customerName": "SP",
-    "shipToAddress": "Self Pick Up",
+    "shipToAddress": "新界-落馬洲",
     "contactName": "",
     "status": "",
     "transportQty": "1"
@@ -82305,15 +82305,6 @@
     "transportQty": ""
   },
   {
-    "recordId": "reczz28PbXjCRtUh",
-    "docNumber": "HKTEST",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "Yan",
-    "status": "",
-    "transportQty": ""
-  },
-  {
     "recordId": "reczz28Pbc6KqLqg",
     "docNumber": "HKLDN26091075",
     "customerName": "GD warehouse",
@@ -82325,9 +82316,18 @@
   {
     "recordId": "reczz28Pbc7UEvlC",
     "docNumber": "HKLSI26100799",
-    "customerName": "Pinnacle Food Agtech HK Limited UNIT 503, 5/F., 9 CHONG YIP STREET, KWUN TONG, HK",
-    "shipToAddress": "OS-深圳",
+    "customerName": "Pinnacle Food Agtech HK Limited",
+    "shipToAddress": "新界-落馬洲",
     "contactName": "Jenny Lao Jenny Lao",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PbqRDoPY8",
+    "docNumber": "HKLSI26100800",
+    "customerName": "Hong Kong Productivity Council - Green Living and Innovation Division (GID)",
+    "shipToAddress": "九龍-九龍塘",
+    "contactName": "Jimmy Wong",
     "status": "",
     "transportQty": ""
   }
