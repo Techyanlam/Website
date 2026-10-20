@@ -82272,7 +82272,34 @@
     "recordId": "reczz28Pa6MhAdCz",
     "docNumber": "HKLSI26100788",
     "customerName": "Fortune Pharmacal Co. Limited",
-    "shipToAddress": "BLOCK A and BLOCK B, 50-68 WANG LOK STREET\nYUEN LONG INDUSTRIAL ESTATE, YUEN LONG, NT",
+    "shipToAddress": "新界-科學園",
+    "contactName": "QING ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pb1QhebFQ",
+    "docNumber": "HKLSI26100786",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pb1RyjXiG",
+    "docNumber": "HKLSI26100789",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pb1RykjM5",
+    "docNumber": "HKLSI26100791",
+    "customerName": "",
+    "shipToAddress": "",
     "contactName": "",
     "status": "",
     "transportQty": ""
