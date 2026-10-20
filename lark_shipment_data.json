@@ -81654,7 +81654,7 @@
     "shipToAddress": "新界-元朗",
     "contactName": "Doris Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28Nwcw0oJZV",
@@ -82128,8 +82128,8 @@
     "recordId": "reczz28PWDSBn0iD",
     "docNumber": "HKLSI26100770",
     "customerName": "Tai Wo Tung Medicine Company Limited",
-    "shipToAddress": "Kong Nam Industrial Building, 603-609 Castle Peak Road, Tsuen Wan Hong Kong",
-    "contactName": "",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Connie Ng",
     "status": "",
     "transportQty": ""
   }
