@@ -34751,7 +34751,7 @@
   {
     "recordId": "recvh2oZ6aMcrE",
     "docNumber": "HKLSI26040599",
-    "customerName": "SGS Hong Kong Limited - Central Chemical Company Name :SGS Hong Kong Limited - Central Chemical — Laboratory ~ Laboratory",
+    "customerName": "SGS Hong Kong Limited - Central Chemical — Laboratory 25 Lok Yip Road, Fanling,",
     "shipToAddress": "新界-粉嶺",
     "contactName": "+ Annie Lai Attn Mr Eric Sze",
     "status": "",
@@ -44822,9 +44822,9 @@
   {
     "recordId": "recvkS9hlG0Sud",
     "docNumber": "HKLSI26060067",
-    "customerName": "Hong Kong Baptist University - Department of Chemistry",
-    "shipToAddress": "九龍-浸大",
-    "contactName": "Mr. Jim, Eric W H",
+    "customerName": "TUV SUD Hong Kong Limited 19/F, Yuen Long Trading Centre, 33 Wang Yip Street West, Yuen Long, New Territories",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Sandra Chu Sandra Chu",
     "status": "",
     "transportQty": "1"
   },
@@ -76169,9 +76169,9 @@
   {
     "recordId": "recvwbOLkcSugA",
     "docNumber": "HKLSI26090990",
-    "customerName": "Yan Oi Tong Tin Ka Ping Secondary School",
-    "shipToAddress": "新界-屯門",
-    "contactName": "Paul Lau",
+    "customerName": "The University of Hong Kong - CPOS Bioreagent Core L6-01, 6/F, Laboratory Block, 21 Sassoon Road, Pokfulam Hong Kong",
+    "shipToAddress": "香港-港大",
+    "contactName": "William Wong William Wong",
     "status": "",
     "transportQty": "2"
   },
@@ -76403,9 +76403,9 @@
   {
     "recordId": "recvwcj0hgj818",
     "docNumber": "HKLSI26091015",
-    "customerName": "Henrietta Secondary School ",
-    "shipToAddress": "香港-北角",
-    "contactName": "Wai Hang Kwong",
+    "customerName": "The Education University of Hong Kong 10 Lo Ping Road, Tai Po NT HK",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Raymond Chui Raymond Chui",
     "status": "",
     "transportQty": "1"
   },
@@ -82161,11 +82161,11 @@
     "transportQty": ""
   },
   {
-    "recordId": "reczz28PXJHBOwYx",
-    "docNumber": "HKLDN26100635",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "Miko Kan",
+    "recordId": "reczz28PXoTOGjMV",
+    "docNumber": "HKLSI26040599日aa",
+    "customerName": "SGS Hong Kong Limited - Central Chemical — Laboratory 25 Lok Yip Road, Fanling,",
+    "shipToAddress": "香港新界粉崔樂業路 25 號 FEL S/F Atin :Mr Eric Sze 1677)",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
