@@ -82161,11 +82161,29 @@
     "transportQty": ""
   },
   {
-    "recordId": "reczz28PXoTOGjMV",
-    "docNumber": "HKLSI26040599日aa",
-    "customerName": "SGS Hong Kong Limited - Central Chemical — Laboratory 25 Lok Yip Road, Fanling,",
-    "shipToAddress": "香港新界粉崔樂業路 25 號 FEL S/F Atin :Mr Eric Sze 1677)",
-    "contactName": "TEST ",
+    "recordId": "reczz28PZ7kPtPoo",
+    "docNumber": "HKLSI26100776",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PZ7lXajds",
+    "docNumber": "HKLSI26100777",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PZ7lXYk0R",
+    "docNumber": "HKLSI26100778",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
