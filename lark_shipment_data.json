@@ -82272,8 +82272,8 @@
     "recordId": "reczz28Pa6MhAdCz",
     "docNumber": "HKLSI26100788",
     "customerName": "Fortune Pharmacal Co. Limited",
-    "shipToAddress": "新界-科學園",
-    "contactName": "QING ",
+    "shipToAddress": "新界-元朗",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   },
@@ -82300,7 +82300,7 @@
     "docNumber": "HKLSI26100791",
     "customerName": "Center for Neuromusculoskeletal Restorative Medicine Limited Unit 511, Building of 12W, , 12 Science Park West Avenue, Hong Kong Science Park, Shatin NT.",
     "shipToAddress": "新界-中大",
-    "contactName": "Cody Fu ",
+    "contactName": "Cody Fu",
     "status": "",
     "transportQty": ""
   }
