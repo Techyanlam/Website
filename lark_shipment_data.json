@@ -82136,27 +82136,36 @@
   {
     "recordId": "reczz28PWyHwTPgi",
     "docNumber": "HKLSI26100771",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Pure Innovation Biotech Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Fai Leung",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28PWyJOa6Oe",
     "docNumber": "HKLSI26100772",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28PWyJOYSqA",
     "docNumber": "HKLSI26100773",
+    "customerName": "Marching Pharmaceutical Limited",
+    "shipToAddress": "新界-青衣",
+    "contactName": "Miko Kan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PXJHBOwYx",
+    "docNumber": "HKLDN26100635",
     "customerName": "",
     "shipToAddress": "",
-    "contactName": "",
+    "contactName": "Miko Kan",
     "status": "",
     "transportQty": ""
   }
