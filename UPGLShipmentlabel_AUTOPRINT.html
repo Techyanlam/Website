@@ -69,7 +69,7 @@
         <div id="log"><div class="log-row" style="color:#999;">暫無記錄</div></div>
         <div class="hint">
             每 30 秒自動檢查一次 Lark 同步數據；<strong>新單唔會自動列印</strong>。舊單當 <strong>Transport Qty 改到大過 1</strong>，或 <strong>Contact Name 有更新</strong>，會自動列印；其他欄位修改唔會觸發。列印張數 = Transport Qty（Contact Name 更新就印 1 張；上限 100 張）。<br>
-            <small style="color:#999;">頁面版本：2026-10-20 v3（新單唔印；Qty 大過 1 或 Contact Name 更新先印）</small><br>
+            <small style="color:#999;">頁面版本：2026-10-20 v4（提速：10 秒檢查一次、逐張間隔 0.8 秒；規則同 v3）</small><br>
             呢頁要用 Chrome 嘅 <code>--kiosk-printing</code> 模式開啟，先可以唔經對話框直接列印去預設打印機（標籤打印機要設為系統預設）。
         </div>
     </div>
@@ -104,7 +104,7 @@
     ];
     const LS_KEY = 'upgl_print_state';   // {DOCNO: {q: transportQty, c: contactName}}
     const LS_KEY_OLD = 'upgl_printed_docs'; // 舊版遷移用
-    const CHECK_MS = 30 * 1000;
+    const CHECK_MS = 10 * 1000; // v4：30s→10s，加快反應
     const MAX_QUEUE_PER_CHECK = 200;        // 單次上限，防洗版
 
     const printQueue = [];
@@ -184,7 +184,7 @@
                 await new Promise(r => setTimeout(r, 400));
                 for (let i = 0; i < n; i++) {
                     window.print();
-                    if (i < n - 1) await new Promise(r => setTimeout(r, 2500));
+                    if (i < n - 1) await new Promise(r => setTimeout(r, 800)); // v4：2500→800ms
                 }
             })();
             addLog(rec, false, n);
@@ -206,14 +206,14 @@
         copies = Math.min(copies, MAX_COPIES);
         for (let i = 0; i < copies; i++) {
             window.print();
-            if (i < copies - 1) await new Promise(r => setTimeout(r, 2500));
+            if (i < copies - 1) await new Promise(r => setTimeout(r, 800)); // v4：2500→800ms
         }
         markPrinted(rec);
         autoCount++;
         document.getElementById('stat-done').innerText = autoCount;
         addLog(rec, true, copies);
         isPrinting = false;
-        if (printQueue.length) setTimeout(processQueue, 2500);
+        if (printQueue.length) setTimeout(processQueue, 800); // v4：2500→800ms
     }
 
     async function checkForNew(manual) {
