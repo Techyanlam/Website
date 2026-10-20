@@ -68,8 +68,8 @@
         <h4 style="margin:16px 0 4px;">列印記錄</h4>
         <div id="log"><div class="log-row" style="color:#999;">暫無記錄</div></div>
         <div class="hint">
-            每 30 秒自動檢查一次 Lark 同步數據；當有<strong>新單加入</strong>（新單號出現），或某張單嘅 <strong>Transport Qty 有更新</strong>（由無變有、或數量改變），就會自動列印；其他欄位修改唔會觸發。列印張數 = Transport Qty（未填寫就印 1 張；上限 100 張）。<br>
-            <small style="color:#999;">頁面版本：2026-10-20（新單＋Qty 更新觸發）</small><br>
+            每 30 秒自動檢查一次 Lark 同步數據；當有<strong>新單加入</strong>（新單號出現）就會自動列印；舊單要 <strong>Transport Qty 有更新而且大過 1</strong> 先會補印；其他欄位修改唔會觸發。列印張數 = Transport Qty（未填寫就印 1 張；上限 100 張）。<br>
+            <small style="color:#999;">頁面版本：2026-10-20 v2（新單即印；舊單 Qty 大過 1 先印）</small><br>
             呢頁要用 Chrome 嘅 <code>--kiosk-printing</code> 模式開啟，先可以唔經對話框直接列印去預設打印機（標籤打印機要設為系統預設）。
         </div>
     </div>
@@ -235,8 +235,9 @@
                 const isNew = !(key in state);
                 const prev = state[key];
                 state[key] = qty;
-                // 新單（未見過嘅單號）一律印；舊單只係 qty 有變（且新值唔係空）先印
-                if (isNew || (qty !== '' && prev !== qty)) {
+                // 新單（未見過嘅單號）一律印；舊單要 qty 有變、新值唔係空、而且大過 1 先印
+                const qtyNum = parseInt(qty, 10);
+                if (isNew || (qty !== '' && prev !== qty && qtyNum > 1)) {
                     if (added < MAX_QUEUE_PER_CHECK) { printQueue.push(r); queuedKeys.add(key); added++; }
                     else skipped++;
                 }
@@ -292,9 +293,9 @@
                 });
                 saveState(state);
                 try { localStorage.removeItem(LS_KEY_OLD); } catch (e) {}
-                setStatus(`✓ Baseline 已建立（${Object.keys(state).length} 筆），之後有新單加入或 Transport Qty 有更新會自動列印`, 'ok');
+                setStatus(`✓ Baseline 已建立（${Object.keys(state).length} 筆），之後有新單加入、或舊單 Transport Qty 改到大過 1，會自動列印`, 'ok');
             } else {
-                setStatus(`✓ 已載入 baseline（${Object.keys(state).length} 筆），監察緊新單同 Transport Qty 更新`, 'ok');
+                setStatus(`✓ 已載入 baseline（${Object.keys(state).length} 筆），監察緊新單同 Transport Qty 更新（舊單要大過 1）`, 'ok');
             }
             document.getElementById('stat-known').innerText = Object.keys(state).length;
             return true;
