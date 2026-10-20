@@ -81042,7 +81042,7 @@
     "shipToAddress": "新界-大埔",
     "contactName": "Hei Chang",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28N8i6kZwCh",
@@ -81609,7 +81609,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Winnie",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28NcSD1gJV4",
@@ -81618,7 +81618,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Winnie",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28NtdpKD2Tw",
@@ -81645,7 +81645,7 @@
     "shipToAddress": "新界-粉嶺",
     "contactName": "Mr Eric Sze",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28Ntdr8hRGc",
@@ -81663,7 +81663,7 @@
     "shipToAddress": "九龍-長沙灣",
     "contactName": "Kenneth Lau",
     "status": "",
-    "transportQty": ""
+    "transportQty": "10"
   },
   {
     "recordId": "reczz28NwcyQW0hM",
@@ -81690,7 +81690,7 @@
     "shipToAddress": "九龍-浸大",
     "contactName": "Hilda Cheung",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28NwcyQXFHr",
@@ -81699,7 +81699,7 @@
     "shipToAddress": "九龍-荔枝角",
     "contactName": "Cynthia Lee ",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28NwcyQZKzH",
@@ -82165,7 +82165,7 @@
     "docNumber": "HKLSI26040599日aa",
     "customerName": "SGS Hong Kong Limited - Central Chemical — Laboratory 25 Lok Yip Road, Fanling,",
     "shipToAddress": "香港新界粉崔樂業路 25 號 FEL S/F Atin :Mr Eric Sze 1677)",
-    "contactName": "",
+    "contactName": "TEST ",
     "status": "",
     "transportQty": ""
   }
