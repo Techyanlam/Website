@@ -82330,5 +82330,50 @@
     "contactName": "Jimmy Wong",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PsF8pTfsa",
+    "docNumber": "HKLSI26100793",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Jianzhi Zheng",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PsFAqSZuP",
+    "docNumber": "HKLSI26100794",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Mr Jimmy",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PsFAqVbxI",
+    "docNumber": "HKLSI26100795",
+    "customerName": "Pioneer Management Limited",
+    "shipToAddress": "九龍-黃大仙",
+    "contactName": "Anita Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PsFAqVqGu",
+    "docNumber": "HKLSI26100796",
+    "customerName": "ALS Technichem (HK) Pty Limited - Environmental Department",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PsFKH2Td2",
+    "docNumber": "HKLSI26100798",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
