@@ -82789,5 +82789,14 @@
     "contactName": "May Pang",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PyInxR1cT",
+    "docNumber": "HKLSI26100849",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
   }
 ]
