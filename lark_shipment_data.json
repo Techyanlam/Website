@@ -82573,5 +82573,68 @@
     "contactName": "Chemical Receipt Point",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pv4t2igVk",
+    "docNumber": "HKLSI26100824",
+    "customerName": "The Chinese University of Hong Kong - School of Life Sciences",
+    "shipToAddress": "新界-中大",
+    "contactName": "Ms. Helen Poon (PI: Prof. TK Tsui)",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pv4uEHn6K",
+    "docNumber": "HKLSI26100825",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pv4uEFzcj",
+    "docNumber": "HKLSI26100826",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pv4uEHUnX",
+    "docNumber": "HKLDN26100696",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pv4uEI7iz",
+    "docNumber": "HKLDN26100699",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pv4uEHkZ5",
+    "docNumber": "HKLDN26100700",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pv4uEIVDE",
+    "docNumber": "HKLDN26100701",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
