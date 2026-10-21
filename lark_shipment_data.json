@@ -82546,5 +82546,32 @@
     "contactName": "Dr. Huan Luo",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pt7Ki4R5T",
+    "docNumber": "HKLSI26100822",
+    "customerName": "CMA Industrial Development Foundation Limited",
+    "shipToAddress": "新界-火炭",
+    "contactName": "Caroline Ng",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pt7LbMoEj",
+    "docNumber": "HKLSI26100823",
+    "customerName": "CMA Industrial Development Foundation Limited",
+    "shipToAddress": "新界-火炭",
+    "contactName": "Caroline Ng",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Pt9Wbt7u1",
+    "docNumber": "HKLSI26100820",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
