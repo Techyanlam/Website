@@ -82767,7 +82767,7 @@
     "recordId": "reczz28PyAzMQTIB",
     "docNumber": "HKLSI26100850",
     "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
-    "shipToAddress": "九龍青山道576號製衣工業中心8字樓A室",
+    "shipToAddress": "九龍-荔枝角",
     "contactName": "Mr Jimmy",
     "status": "",
     "transportQty": ""
@@ -82775,18 +82775,18 @@
   {
     "recordId": "reczz28PyAzMRxrD",
     "docNumber": "HKLSI26100851",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Pioneer Management Limited",
+    "shipToAddress": "九龍-黃大仙",
+    "contactName": "Anita Chan",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28PyAzMOmQH",
     "docNumber": "HKLSI26100852",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "ALS Technichem (HK) Pty Limited - Environmental Department",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "May Pang",
     "status": "",
     "transportQty": ""
   }
