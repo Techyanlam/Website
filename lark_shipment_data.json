@@ -82604,18 +82604,18 @@
   {
     "recordId": "reczz28Pv4uEHUnX",
     "docNumber": "HKLDN26100696",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Laboratory for Synthetic Chemistry and Chemical Biology Limited ",
+    "shipToAddress": "香港-港大",
+    "contactName": "Zhu Lihui",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28Pv4uEI7iz",
     "docNumber": "HKLDN26100699",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hong Kong Quantum AI Lab Limited",
+    "shipToAddress": "香港-港大",
+    "contactName": "Sarah Chow",
     "status": "",
     "transportQty": ""
   },
