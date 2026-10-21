@@ -82636,5 +82636,59 @@
     "contactName": "Zhifeng Zhang",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PwuBZlw3c",
+    "docNumber": "HKLSI26100833",
+    "customerName": "City University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Prof. LI Xing",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PwuCk07yM",
+    "docNumber": "HKLSI26100834",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PwuCk08E4",
+    "docNumber": "HKLSI26100835",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PwuCk1o8T",
+    "docNumber": "HKLSI26100836",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PwuCk0vpd",
+    "docNumber": "HKLDN26100665",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28PwuCk1xKq",
+    "docNumber": "HKLSI26100839",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
