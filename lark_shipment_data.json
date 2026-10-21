@@ -82524,26 +82524,26 @@
     "recordId": "reczz28PskTZ248J",
     "docNumber": "HKLSI26100818",
     "customerName": "The Hong Kong Polytechnic University - Department of Civil and Environmental Engineering",
-    "shipToAddress": "香港理工大學土木及結構工程學系ZS1102室",
-    "contactName": "",
+    "shipToAddress": "九龍-理大",
+    "contactName": "CHAN Yuen Him Jonathan",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28PskTZ0EN4",
     "docNumber": "HKLSI26100819",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Environmental Protection Department",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Leung Kwai Yuk",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28Psky2XhII",
     "docNumber": "HKLSI26100821",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "香港-港大",
+    "contactName": "Dr. Huan Luo",
     "status": "",
     "transportQty": ""
   }
