@@ -82622,18 +82622,18 @@
   {
     "recordId": "reczz28Pv4uEHkZ5",
     "docNumber": "HKLDN26100700",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hong Kong Quantum AI Lab Limited",
+    "shipToAddress": "香港-港大",
+    "contactName": "Sarah Chow",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28Pv4uEIVDE",
     "docNumber": "HKLDN26100701",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "ChemTechChem Biotechnology (HK) Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Zhifeng Zhang",
     "status": "",
     "transportQty": ""
   }
