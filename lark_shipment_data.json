@@ -82906,5 +82906,59 @@
     "contactName": "Roy",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QJPT4hQn3",
+    "docNumber": "HKLSI26100867",
+    "customerName": "UL VS Hong Kong Limited - Chemical Department",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Ms Joanne Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QJPUJrxMJ",
+    "docNumber": "HKLSI26100868",
+    "customerName": "TUV SUD Hong Kong Limited",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Sandra Chu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QJPUJqyZC",
+    "docNumber": "HKLSI26100870",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QJPUJprVw",
+    "docNumber": "HKLSI26100871",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QJPeiSaYs",
+    "docNumber": "HKLSI26100872",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QJPfW8uTP",
+    "docNumber": "HKLSI26100873",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
