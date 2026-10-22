@@ -82960,5 +82960,23 @@
     "contactName": "Douglas Yu",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QJbWsPol5",
+    "docNumber": "HKLSI26100865",
+    "customerName": "City University of Hong Kong - Finance Office (Procurement) Tat Chee Avenue, Kowloon, Hong Kong",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Chemical Receipt Point ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QJbXeuFlC",
+    "docNumber": "HKLSI26100869",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department 2/F, Garment Centre, 576 Castle Peak Rd., Hong Kong",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Cynthia Lee Chan Wai Sum",
+    "status": "",
+    "transportQty": ""
   }
 ]
