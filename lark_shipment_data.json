@@ -83185,5 +83185,23 @@
     "contactName": "Connie Ng",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QOTBN15IL",
+    "docNumber": "LALDN26100034",
+    "customerName": "Government Laboratory - Supplies Section",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Dr. Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QOTCTBEpP",
+    "docNumber": "LALDN26100035",
+    "customerName": "Government Laboratory - Food Complaints Section",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "TUNG Ka Ki",
+    "status": "",
+    "transportQty": ""
   }
 ]
