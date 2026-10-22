@@ -83131,5 +83131,32 @@
     "contactName": "Ka Kin Fung ",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QMGqiFhw8",
+    "docNumber": "HKLSI26100892",
+    "customerName": "TIN HANG TECHNOLOGY LIMITED",
+    "shipToAddress": "香港-皇后大道中",
+    "contactName": "Terence Lee",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QMHLFhpZI",
+    "docNumber": "HKLSI26100894",
+    "customerName": "The Hong Kong University of Science and Technology - Division of Life Science",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Mr Daniel Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QMHgQWejp",
+    "docNumber": "HKLSI26100891",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
