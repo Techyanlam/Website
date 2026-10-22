@@ -83158,5 +83158,23 @@
     "contactName": "Edmond Mok",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QMU44RCOk",
+    "docNumber": "HKLSI26100895",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Zhuodong Lyu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QMUCaQK8B",
+    "docNumber": "HKLSI26100896",
+    "customerName": "The Chinese University of Hong Kong - Department of Medicine & Therapeutics",
+    "shipToAddress": "新界-中大",
+    "contactName": "Simson Luk",
+    "status": "",
+    "transportQty": ""
   }
 ]
