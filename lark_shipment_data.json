@@ -82888,5 +82888,23 @@
     "contactName": "Dexuan Cui",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QJLGMEYpl",
+    "docNumber": "HKLSI26100866",
+    "customerName": "The Hong Kong Polytechnic University - Department of ABCT",
+    "shipToAddress": "香港理工大學應用生物及化學科技學系Y718室",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QJMDZnqPN",
+    "docNumber": "AU051472",
+    "customerName": "金龍",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Roy",
+    "status": "",
+    "transportQty": ""
   }
 ]
