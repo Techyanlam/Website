@@ -82825,5 +82825,68 @@
     "contactName": "CHAN Sze Man (Catherine)",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QGqiPZeeD",
+    "docNumber": "HKLSI26100858",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Billy Siu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QGqjhHi8V",
+    "docNumber": "HKLSI26100859",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QGqjhJCPF",
+    "docNumber": "HKLSI26100860",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QGqjhJ0Oj",
+    "docNumber": "HKLSI26100861",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QGqjhIQWE",
+    "docNumber": "HKLSI26100862",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QGqjhHxs5",
+    "docNumber": "HKLSI26100863",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QGqjhIfDV",
+    "docNumber": "HKLSI26100864",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
