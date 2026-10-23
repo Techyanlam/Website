@@ -83338,5 +83338,149 @@
     "contactName": "Endor Fan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2pCFcCQ",
+    "docNumber": "HKLSI26100915",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory 5/F, On Wui Centre, 25 Lok Yip Road, Fanling, N.T.",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Annie Lai Alex Yip",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRhxMV",
+    "docNumber": "HKLSI26100922",
+    "customerName": "Japan Recreation and Miscellaneous Goods Safety Laboratory 18A, Block 1, Tai Ping Industrial Centre, 57 Ting Kok Road, Tai Po , N.T",
+    "shipToAddress": "OS-Japan",
+    "contactName": "Hei Chang Hei Chang",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRiKEX",
+    "docNumber": "HKLSI26100923",
+    "customerName": "One Stop Medical Limited Flat A, 16/F, Gold King Ind. Bldg, 35-41 Tai Lin Pai Road, Kwai Chung",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Yuki Yu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRiEXX",
+    "docNumber": "HKLDN26100797",
+    "customerName": "N-Techem International Co., Ltd.",
+    "shipToAddress": "九龍-觀塘",
+    "contactName": "Tak Keung Tong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRhoia",
+    "docNumber": "HKLDN26100763",
+    "customerName": "The University of Hong Kong - AIDS Institute y of Medicine Hong Kong Address * 15-40, Laboratory Block,21 Sassoon Road, Pokfulam Road,Hong Kong",
+    "shipToAddress": "",
+    "contactName": "Hallie Kwan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRhQAu",
+    "docNumber": "HKLSI26100926",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory 5/F, On Wui Centre, 25 Lok Yip Road, Fanling, N.T.",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Jianzhi Zheng Jianzhi Zheng",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRgVPj",
+    "docNumber": "HKLSI26100927",
+    "customerName": "Consumer Testing Laboratories (Far East) Ltd. Unit 1905-1907, 19th Floor, Riley House,88 Lei Muk Road, Kwai Chung, N.T., Hong Kong",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Joanne Wong Joanne Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRhrUt",
+    "docNumber": "HKLSI26100928",
+    "customerName": "The University of Hong Kong - School of Biomedical Sciences L1-39, Laboratory Block, 21 Sassoon Rd, Pok Fu Lam Hong Kong",
+    "shipToAddress": "香港-薄扶林",
+    "contactName": "Lap Hang Tse, Carrie Lap Hang Tse, Carrie",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRftd5",
+    "docNumber": "HKLSI26100929",
+    "customerName": "City University of Hong Kong - State Key Laboratory of Marine Environmental Health (SKLMEH) P5840 (Lift 17, 5/F), Yeung Kin Man Academic Building, 83 Tat Chee Avenue, Kowloon, Hong Kong SAR Hong Kong",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Mr. Aaron NG Mr. Aaron NG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRhCph",
+    "docNumber": "HKLSI26110010",
+    "customerName": "Technological and Higher Education Institute of Hong Kong 20A, Tsing Yi Road Tsing Yi Island New Territories",
+    "shipToAddress": "香港-柴灣",
+    "contactName": "Kate Wong Kate Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRgL6A",
+    "docNumber": "HKLSI26100930",
+    "customerName": "The Hong Kong Polytechnic University - Department of Rehabilitation Sciences Hung Hom, Kowloon, Hong Kong",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Peter Bohao YANG Peter Bohao YANG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRfRTR",
+    "docNumber": "HKLSI26100931",
+    "customerName": "ALS Technichem (HK) Pty Limited - Organic 11/F, Chung Shun Knitting Centre, 1-3 Wing Yip Street, Kwai Chung Hong Kong",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Douglas Yu Douglas Yu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRi3LT",
+    "docNumber": "HKLSI26100932",
+    "customerName": "API Lab Testing Limited Unit F and G, 22/F, Golden Bear Industrial Centre Nos. 66-82 Chai Wan Kok Street, Tsuen Wan New Territories Hong Kong",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Cyrus Lau Cyrus Lau",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRfOvc",
+    "docNumber": "HKLSI26100933",
+    "customerName": "Jean - Marie Pharmacal Co. Limited 1/F GMP Centre, 12 Dai Fu St, Tai Po Ind. Est., Tai Po, NT, HK",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Jenny Fung Jenny Fung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRf9wt",
+    "docNumber": "HKLSI26100934",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department 2/F, Garment Centre, 576 Castle Peak Rd., Hong Kong",
+    "shipToAddress": "Unit B, 8/F, Garment Centre, 576 Castle Peak Road, Kowloon, Hong Kong",
+    "contactName": "Cynthia Lee Chan Wai Sum",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Qm2qRgpE7",
+    "docNumber": "HKLSI26100935",
+    "customerName": "City University of Hong Kong - State Key Laboratory of Marine Pollution (SKLMP) Tat Chee Avenue, Kowloon, Hong Kong",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Coco Huang Coco Huang",
+    "status": "",
+    "transportQty": ""
   }
 ]
