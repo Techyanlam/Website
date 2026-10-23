@@ -1,7 +1,7 @@
 {
   "source": "BETTEREAT-Feishu-Base",
-  "date": "2026-10-23",
-  "generated_at": "2026-10-23T20:46:47+08:00",
+  "date": "2026-10-09",
+  "generated_at": "2026-10-23T23:35:33+08:00",
   "records": [
     {
       "store": "MAP",
@@ -945,7 +945,7 @@
     }
   ],
   "history": {
-    "2026-10-23": [
+    "2026-10-09": [
       {
         "store": "MAP",
         "product_code": "P-001",
