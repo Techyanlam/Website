@@ -1,7 +1,7 @@
 {
   "source": "BETTEREAT-Feishu-Base",
   "date": "2026-10-24",
-  "generated_at": "2026-10-24T01:23:21+08:00",
+  "generated_at": "2026-10-24T01:28:14+08:00",
   "records": [
     {
       "store": "MAP",
@@ -238,10 +238,10 @@
       "product_code": "P-001",
       "product_name": "驢打滾",
       "unit": "盤",
-      "allocated_pans": 0.5,
-      "no_of_pcs": 25.0,
+      "allocated_pans": 5.0,
+      "no_of_pcs": 245.0,
       "remaining_pcs": 0.0,
-      "sold_pcs": 25
+      "sold_pcs": 245
     },
     {
       "store": "MJF",
@@ -2123,10 +2123,10 @@
         "product_code": "P-001",
         "product_name": "驢打滾",
         "unit": "盤",
-        "allocated_pans": 0.5,
-        "no_of_pcs": 25.0,
+        "allocated_pans": 5.0,
+        "no_of_pcs": 245.0,
         "remaining_pcs": 0.0,
-        "sold_pcs": 25
+        "sold_pcs": 245
       },
       {
         "store": "MJF",
