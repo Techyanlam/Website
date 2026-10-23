@@ -1,0 +1,29 @@
+{
+  "source": "BETTEREAT-Feishu-Base",
+  "status": "sample",
+  "note": "Initial sample records only (2 verified rows). Full data will be written by the middleware sync once it is connected.",
+  "date": "2026-10-09",
+  "generated_at": "2026-10-23T17:00:00+08:00",
+  "records": [
+    {
+      "store": "MJF",
+      "product_code": "P-023",
+      "product_name": "芒果布甸糕",
+      "unit": "盤",
+      "allocated_pans": 2.0,
+      "no_of_pcs": 98,
+      "remaining_pcs": 68,
+      "sold_pcs": 30
+    },
+    {
+      "store": "MJF",
+      "product_code": "P-029",
+      "product_name": "一口tiramisu",
+      "unit": "盤",
+      "allocated_pans": 2.0,
+      "no_of_pcs": 98,
+      "remaining_pcs": 36,
+      "sold_pcs": 62
+    }
+  ]
+}
