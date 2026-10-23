@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BETTEREAT 門店系統</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "PingFang HK", "Microsoft JhengHei", sans-serif; background: #f6f4ef; color: #2b2620; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 20px 16px 48px; }
+  /* login */
+  #loginView { max-width: 380px; margin: 12vh auto 0; background: #fff; border-radius: 16px; padding: 36px 28px; box-shadow: 0 8px 30px rgba(60,45,20,.10); text-align: center; }
+  #loginView .logo { font-size: 40px; }
+  #loginView h1 { font-size: 22px; margin: 10px 0 4px; letter-spacing: 1px; }
+  #loginView p.sub { color: #8a7f70; font-size: 14px; margin-bottom: 22px; }
+  #codeInput { width: 100%; padding: 13px; font-size: 17px; border: 1.5px solid #ddd3c3; border-radius: 10px; text-align: center; letter-spacing: 2px; }
+  #codeInput:focus { outline: none; border-color: #c98a2d; }
+  #loginBtn { width: 100%; margin-top: 14px; padding: 13px; font-size: 16px; font-weight: 600; color: #fff; background: #c98a2d; border: none; border-radius: 10px; cursor: pointer; }
+  #loginBtn:active { opacity: .85; }
+  #loginErr { color: #c0392b; font-size: 14px; min-height: 20px; margin-top: 10px; }
+  /* dashboard */
+  #dashView { display: none; }
+  header.top { display: flex; align-items: center; justify-content: space-between; padding: 6px 0 16px; }
+  header.top .brand { font-size: 20px; font-weight: 700; letter-spacing: .5px; }
+  header.top .brand span { color: #c98a2d; }
+  #logoutBtn { background: none; border: 1px solid #d8cfc0; color: #6d6152; padding: 6px 14px; border-radius: 20px; font-size: 13px; cursor: pointer; }
+  .meta { color: #8a7f70; font-size: 13px; margin-bottom: 14px; }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+  .card { background: #fff; border-radius: 12px; padding: 14px 12px; box-shadow: 0 2px 10px rgba(60,45,20,.06); }
+  .card .k { font-size: 12px; color: #8a7f70; }
+  .card .v { font-size: 24px; font-weight: 700; margin-top: 4px; }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .action { display: block; text-decoration: none; border-radius: 14px; padding: 20px 16px; color: #fff; }
+  .action.a { background: linear-gradient(135deg, #d99a35, #b97a1e); }
+  .action.b { background: linear-gradient(135deg, #5b8c5a, #3f6b3e); }
+  .action .t { font-size: 18px; font-weight: 700; }
+  .action .d { font-size: 13px; opacity: .9; margin-top: 5px; line-height: 1.5; }
+  .action.pending { opacity: .55; pointer-events: none; }
+  h2.sec { font-size: 16px; margin: 6px 0 10px; }
+  .chips { margin-bottom: 10px; }
+  .chip { display: inline-block; padding: 6px 16px; border-radius: 20px; border: 1px solid #d8cfc0; background: #fff; font-size: 14px; cursor: pointer; margin-right: 6px; }
+  .chip.on { background: #2b2620; color: #fff; border-color: #2b2620; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(60,45,20,.06); font-size: 14px; }
+  th, td { padding: 9px 10px; text-align: left; border-bottom: 1px solid #f0eadf; }
+  th { background: #faf7f1; color: #6d6152; font-weight: 600; }
+  td.num, th.num { text-align: right; }
+  .foot { color: #a2937f; font-size: 12px; margin-top: 16px; text-align: center; }
+  @media (max-width: 560px) { .cards { grid-template-columns: repeat(2, 1fr); } .actions { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div id="loginView">
+  <div class="logo">🍰</div>
+  <h1>BETTEREAT</h1>
+  <p class="sub">門店系統 · 請輸入存取碼登入</p>
+  <input id="codeInput" type="password" inputmode="text" placeholder="存取碼" autocomplete="off">
+  <button id="loginBtn">登入</button>
+  <div id="loginErr"></div>
+</div>
+
+<div class="wrap" id="dashView">
+  <header class="top">
+    <div class="brand">🍰 BETTEREAT <span>門店系統</span></div>
+    <button id="logoutBtn">登出</button>
+  </header>
+
+  <div class="meta" id="metaLine">載入中…</div>
+  <div class="cards">
+    <div class="card"><div class="k">已銷售（件）</div><div class="v" id="statSold">–</div></div>
+    <div class="card"><div class="k">總件數 No of pcs</div><div class="v" id="statTotal">–</div></div>
+    <div class="card"><div class="k">剩餘（件）</div><div class="v" id="statRemain">–</div></div>
+    <div class="card"><div class="k">記錄數</div><div class="v" id="statCount">–</div></div>
+  </div>
+
+  <div class="actions">
+    <a class="action a" id="btnFormA" href="#" target="_blank" rel="noopener">
+      <div class="t">📋 紙單上載</div>
+      <div class="d">每日分貨紙單影相上載<br>紙要攤平 · 鏡頭正上方 · 成頁入鏡</div>
+    </a>
+    <a class="action b" id="btnFormB" href="#" target="_blank" rel="noopener">
+      <div class="t">🧁 剩餘甜點上報</div>
+      <div class="d">收市後影相＋填寫剩餘件數<br>要影到成盤頂面</div>
+    </a>
+  </div>
+
+  <h2 class="sec">每日已銷售清單</h2>
+  <div class="chips" id="chips"></div>
+  <table>
+    <thead><tr>
+      <th>門店</th><th>產品編號</th><th>產品名稱</th>
+      <th class="num">分配（盤）</th><th class="num">件數</th><th class="num">剩餘</th><th class="num">已銷售</th>
+    </tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div class="foot">數據來源：BETTEREAT 飛書系統 · 每晚自動更新</div>
+</div>
+
+<script>
+var ACCESS_CODE = "BETTEREAT"; // 存取碼（可隨時更改）
+var FORM_A_URL = ""; // 紙單上載表單連結（待填）
+var FORM_B_URL = ""; // 剩餘甜點表單連結（待填）
+var DATA_URL = "https://raw.githubusercontent.com/Techyanlam/Website/main/bettereat_sold_data.json";
+var allRecords = [], curStore = "ALL";
+
+function fmt(n){ return (Math.round(n * 10) / 10).toLocaleString("en-US"); }
+
+function showDash(){
+  document.getElementById("loginView").style.display = "none";
+  document.getElementById("dashView").style.display = "block";
+  setupActions(); loadData();
+}
+function setupActions(){
+  var a = document.getElementById("btnFormA"), b = document.getElementById("btnFormB");
+  if (FORM_A_URL) { a.href = FORM_A_URL; } else { a.classList.add("pending"); }
+  if (FORM_B_URL) { b.href = FORM_B_URL; } else { b.classList.add("pending"); }
+}
+function loadData(){
+  fetch(DATA_URL + "?t=" + Date.now()).then(function(r){ return r.json(); }).then(function(j){
+    allRecords = j.records || [];
+    document.getElementById("metaLine").textContent =
+      "日期：" + j.date + " ｜ 更新時間：" + j.generated_at + " ｜ 來源：" + j.source;
+    var sold = 0, tot = 0, rem = 0;
+    allRecords.forEach(function(r){ sold += r.sold_pcs||0; tot += r.no_of_pcs||0; rem += r.remaining_pcs||0; });
+    document.getElementById("statSold").textContent = fmt(sold);
+    document.getElementById("statTotal").textContent = fmt(tot);
+    document.getElementById("statRemain").textContent = fmt(rem);
+    document.getElementById("statCount").textContent = allRecords.length;
+    renderChips(); renderTable();
+  }).catch(function(){
+    document.getElementById("metaLine").textContent = "暫時讀取唔到數據，請稍後重新整理。";
+  });
+}
+function renderChips(){
+  var stores = ["ALL"], seen = {};
+  allRecords.forEach(function(r){ if(!seen[r.store]){ seen[r.store]=1; stores.push(r.store); } });
+  document.getElementById("chips").innerHTML = stores.map(function(s){
+    return '<span class="chip' + (s===curStore ? " on" : "") + '" data-store="' + s + '">' +
+      (s==="ALL" ? "全部門店" : s) + "</span>";
+  }).join("");
+  Array.prototype.forEach.call(document.querySelectorAll(".chip"), function(c){
+    c.onclick = function(){ curStore = c.getAttribute("data-store"); renderChips(); renderTable(); };
+  });
+}
+function renderTable(){
+  var rows = allRecords.filter(function(r){ return curStore==="ALL" || r.store===curStore; });
+  document.getElementById("tbody").innerHTML = rows.map(function(r){
+    return "<tr><td>" + r.store + "</td><td>" + r.product_code + "</td><td>" + r.product_name +
+      '</td><td class="num">' + fmt(r.allocated_pans||0) + '</td><td class="num">' + fmt(r.no_of_pcs||0) +
+      '</td><td class="num">' + fmt(r.remaining_pcs||0) + '</td><td class="num"><b>' + fmt(r.sold_pcs||0) + "</b></td></tr>";
+  }).join("");
+}
+
+document.getElementById("loginBtn").onclick = function(){
+  var v = document.getElementById("codeInput").value.trim();
+  if (v === ACCESS_CODE) { localStorage.setItem("bettereat_auth", "1"); showDash(); }
+  else { document.getElementById("loginErr").textContent = "存取碼唔正確，請再試。"; }
+};
+document.getElementById("codeInput").addEventListener("keydown", function(e){
+  if (e.key === "Enter") document.getElementById("loginBtn").click();
+});
+document.getElementById("logoutBtn").onclick = function(){
+  localStorage.removeItem("bettereat_auth"); location.reload();
+};
+if (localStorage.getItem("bettereat_auth") === "1") showDash();
+setInterval(function(){ if (localStorage.getItem("bettereat_auth") === "1") loadData(); }, 300000);
+</script>
+</body>
+</html>
