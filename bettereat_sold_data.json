@@ -1,7 +1,7 @@
 {
   "source": "BETTEREAT-Feishu-Base",
-  "date": "2026-10-09",
-  "generated_at": "2026-10-23T18:17:22+08:00",
+  "date": "1970-01-01",
+  "generated_at": "2026-10-23T18:44:27+08:00",
   "records": [
     {
       "store": "MAP",
@@ -310,8 +310,8 @@
       "unit": "盤",
       "allocated_pans": 2.0,
       "no_of_pcs": 98.0,
-      "remaining_pcs": 68.0,
-      "sold_pcs": 30
+      "remaining_pcs": 0.0,
+      "sold_pcs": 98
     },
     {
       "store": "MJF",
@@ -360,8 +360,8 @@
       "unit": "盤",
       "allocated_pans": 2.0,
       "no_of_pcs": 98.0,
-      "remaining_pcs": 36.0,
-      "sold_pcs": 62
+      "remaining_pcs": 0.0,
+      "sold_pcs": 98
     },
     {
       "store": "MJF",
@@ -945,7 +945,7 @@
     }
   ],
   "history": {
-    "2026-10-09": [
+    "1970-01-01": [
       {
         "store": "MAP",
         "product_code": "P-001",
@@ -1253,8 +1253,8 @@
         "unit": "盤",
         "allocated_pans": 2.0,
         "no_of_pcs": 98.0,
-        "remaining_pcs": 68.0,
-        "sold_pcs": 30
+        "remaining_pcs": 0.0,
+        "sold_pcs": 98
       },
       {
         "store": "MJF",
@@ -1303,8 +1303,8 @@
         "unit": "盤",
         "allocated_pans": 2.0,
         "no_of_pcs": 98.0,
-        "remaining_pcs": 36.0,
-        "sold_pcs": 62
+        "remaining_pcs": 0.0,
+        "sold_pcs": 98
       },
       {
         "store": "MJF",
