@@ -51,9 +51,16 @@ def text_of(v):
     return "" if v is None else str(v)
 
 def date_of(v):
-    # date fields arrive as ms epoch; text fields as string
+    # Real DateTime fields arrive as ms epoch (13 digits).
+    # Formula date results (e.g. TODAY()) arrive as Excel-style serial day
+    # numbers (days since 1899-12-30, ~5 digits). Text may be "2026-10-09".
     if isinstance(v, (int, float)):
-        return datetime.fromtimestamp(v / 1000, tz=HKT).strftime("%Y-%m-%d")
+        if v > 100_000_000_000:  # ms epoch
+            return datetime.fromtimestamp(v / 1000, tz=HKT).strftime("%Y-%m-%d")
+        if v > 10_000:  # serial day number
+            from datetime import date, timedelta
+            return (date(1899, 12, 30) + timedelta(days=int(v))).strftime("%Y-%m-%d")
+        return ""
     s = text_of(v)
     return s.replace("/", "-")[:10]
 
