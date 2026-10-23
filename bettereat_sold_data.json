@@ -1,7 +1,7 @@
 {
   "source": "BETTEREAT-Feishu-Base",
   "date": "2026-10-09",
-  "generated_at": "2026-10-23T17:24:06+08:00",
+  "generated_at": "2026-10-23T17:33:13+08:00",
   "records": [
     {
       "store": "MAP",
@@ -149,9 +149,9 @@
       "product_name": "花生糯米糍",
       "unit": "盤",
       "allocated_pans": 1.5,
-      "no_of_pcs": 73.5,
+      "no_of_pcs": 74.0,
       "remaining_pcs": 0.0,
-      "sold_pcs": 73.5
+      "sold_pcs": 74
     },
     {
       "store": "MAP",
@@ -238,10 +238,10 @@
       "product_code": "P-001",
       "product_name": "驢打滾",
       "unit": "盤",
-      "allocated_pans": 2.0,
-      "no_of_pcs": 98.0,
+      "allocated_pans": 0.5,
+      "no_of_pcs": 25.0,
       "remaining_pcs": 0.0,
-      "sold_pcs": 98
+      "sold_pcs": 25
     },
     {
       "store": "MJF",
@@ -269,9 +269,9 @@
       "product_name": "馬蹄糕",
       "unit": "盤",
       "allocated_pans": 0.5,
-      "no_of_pcs": 24.5,
+      "no_of_pcs": 25.0,
       "remaining_pcs": 0.0,
-      "sold_pcs": 24.5
+      "sold_pcs": 25
     },
     {
       "store": "MJF",
@@ -579,9 +579,9 @@
       "product_name": "啡色紅豆砵仔糕",
       "unit": "盤",
       "allocated_pans": 1.5,
-      "no_of_pcs": 73.5,
+      "no_of_pcs": 74.0,
       "remaining_pcs": 0.0,
-      "sold_pcs": 73.5
+      "sold_pcs": 74
     },
     {
       "store": "MKH",
@@ -599,9 +599,9 @@
       "product_name": "馬蹄糕",
       "unit": "盤",
       "allocated_pans": 0.5,
-      "no_of_pcs": 24.5,
+      "no_of_pcs": 25.0,
       "remaining_pcs": 0.0,
-      "sold_pcs": 24.5
+      "sold_pcs": 25
     },
     {
       "store": "MKH",
@@ -609,9 +609,9 @@
       "product_name": "芝麻卷",
       "unit": "盤",
       "allocated_pans": 1.5,
-      "no_of_pcs": 73.5,
+      "no_of_pcs": 74.0,
       "remaining_pcs": 0.0,
-      "sold_pcs": 73.5
+      "sold_pcs": 74
     },
     {
       "store": "MKH",
