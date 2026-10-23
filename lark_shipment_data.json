@@ -83248,5 +83248,68 @@
     "contactName": "Alicia ZHANG",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QhG2n4wie",
+    "docNumber": "HKLSI26100904",
+    "customerName": "City University of Hong Kong - School of Energy and Environment",
+    "shipToAddress": "九龍-城大",
+    "contactName": "LIU Xingchen",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QhG4ex1AS",
+    "docNumber": "HKLSI26100905",
+    "customerName": "The Hong Kong University of Science and Technology - Department of Chemistry",
+    "shipToAddress": "九龍-科大",
+    "contactName": "PI Yuzhe",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QhG4ewzBA",
+    "docNumber": "HKLSI26100906",
+    "customerName": "City University of Hong Kong - School of Energy and Environment",
+    "shipToAddress": "九龍-城大",
+    "contactName": "LIU Xingchen",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QhG4eyUW7",
+    "docNumber": "HKLSI26100907",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QhG4eyUFC",
+    "docNumber": "HKLSI26100908",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QhG4excB0",
+    "docNumber": "HKLSI26100909",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28QhG4ewJ8h",
+    "docNumber": "HKLSI26100910",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
