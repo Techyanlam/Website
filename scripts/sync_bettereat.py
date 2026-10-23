@@ -65,13 +65,18 @@ def num(v):
 
 def main():
     token = get_token()
-    rows = []
+    by_date = {}
     for it in list_records(token):
         f = it.get("fields") or {}
         sold = num(f.get("已銷售"))
         if sold is None or sold <= 0:
             continue
-        rows.append({
+        d = date_of(f.get("日期"))
+        if not d:
+            continue
+        if sold == int(sold):
+            sold = int(sold)
+        by_date.setdefault(d, []).append({
             "store": text_of(f.get("門店代號")),
             "product_code": text_of(f.get("產品編號")),
             "product_name": text_of(f.get("產品名稱")),
@@ -80,27 +85,24 @@ def main():
             "no_of_pcs": num(f.get("No of pcs")),
             "remaining_pcs": num(f.get("剩餘量")),
             "sold_pcs": sold,
-            "_date": date_of(f.get("日期")),
         })
-    if not rows:
+    if not by_date:
         print("no sold records found; leaving existing JSON untouched")
         return
-    latest = max(r["_date"] for r in rows)
-    rows = [r for r in rows if r["_date"] == latest]
-    rows.sort(key=lambda r: (r["store"], r["product_code"]))
-    for r in rows:
-        del r["_date"]
-        if r["sold_pcs"] == int(r["sold_pcs"]):
-            r["sold_pcs"] = int(r["sold_pcs"])
+    for d in by_date:
+        by_date[d].sort(key=lambda r: (r["store"], r["product_code"]))
+    latest = max(by_date)
     out = {
         "source": "BETTEREAT-Feishu-Base",
         "date": latest,
         "generated_at": datetime.now(HKT).strftime("%Y-%m-%dT%H:%M:%S+08:00"),
-        "records": rows,
+        "records": by_date[latest],
+        "history": {d: by_date[d] for d in sorted(by_date)},
     }
     with open(OUT, "w", encoding="utf-8") as fh:
         json.dump(out, fh, ensure_ascii=False, indent=2)
-    print(f"wrote {OUT}: date={latest} records={len(rows)}")
+    print(f"wrote {OUT}: latest={latest} dates={len(by_date)} "
+          f"total_records={sum(len(v) for v in by_date.values())}")
 
 if __name__ == "__main__":
     main()

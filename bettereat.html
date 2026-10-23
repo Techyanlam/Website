@@ -37,6 +37,10 @@
   .action .d { font-size: 13px; opacity: .9; margin-top: 5px; line-height: 1.5; }
   .action.pending { opacity: .55; pointer-events: none; }
   h2.sec { font-size: 16px; margin: 6px 0 10px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+  .controls select { padding: 7px 10px; font-size: 14px; border: 1px solid #d8cfc0; border-radius: 8px; background: #fff; }
+  .xbtn { padding: 8px 14px; font-size: 13.5px; border: 1px solid #c98a2d; color: #a06a14; background: #fdf8ef; border-radius: 8px; cursor: pointer; }
+  .xbtn:active { opacity: .8; }
   .chips { margin-bottom: 10px; }
   .chip { display: inline-block; padding: 6px 16px; border-radius: 20px; border: 1px solid #d8cfc0; background: #fff; font-size: 14px; cursor: pointer; margin-right: 6px; }
   .chip.on { background: #2b2620; color: #fff; border-color: #2b2620; }
@@ -85,6 +89,11 @@
   </div>
 
   <h2 class="sec">每日已銷售清單</h2>
+  <div class="controls">
+    <label>日期 <select id="dateSel"></select></label>
+    <button class="xbtn" id="expDay">⬇ 匯出本日 CSV</button>
+    <button class="xbtn" id="expAll">⬇ 匯出全部歷史 CSV</button>
+  </div>
   <div class="chips" id="chips"></div>
   <table>
     <thead><tr>
@@ -101,7 +110,7 @@ var ACCESS_CODE = "BETTEREAT"; // 存取碼（可隨時更改）
 var FORM_A_URL = "https://fcnnkklc0uhr.feishu.cn/share/base/form/shrcnySrPjIwg3IiovaafcoOfgc";
 var FORM_B_URL = "https://fcnnkklc0uhr.feishu.cn/share/base/form/shrcnZSBT4V0IgC3WAhvq9fhV5g";
 var DATA_URL = "https://raw.githubusercontent.com/Techyanlam/Website/main/bettereat_sold_data.json";
-var allRecords = [], curStore = "ALL";
+var allRecords = [], curStore = "ALL", payload = null, curDate = "";
 
 function fmt(n){ return (Math.round(n * 10) / 10).toLocaleString("en-US"); }
 
@@ -117,19 +126,43 @@ function setupActions(){
 }
 function loadData(){
   fetch(DATA_URL + "?t=" + Date.now()).then(function(r){ return r.json(); }).then(function(j){
-    allRecords = j.records || [];
+    payload = j;
+    if (!payload.history) { payload.history = {}; payload.history[j.date] = j.records || []; }
+    var dates = Object.keys(payload.history).sort().reverse();
+    var sel = document.getElementById("dateSel");
+    sel.innerHTML = dates.map(function(d){ return '<option value="' + d + '">' + d + "</option>"; }).join("");
+    if (!curDate || !payload.history[curDate]) curDate = j.date;
+    sel.value = curDate;
     document.getElementById("metaLine").textContent =
-      "日期：" + j.date + " ｜ 更新時間：" + j.generated_at + " ｜ 來源：" + j.source;
-    var sold = 0, tot = 0, rem = 0;
-    allRecords.forEach(function(r){ sold += r.sold_pcs||0; tot += r.no_of_pcs||0; rem += r.remaining_pcs||0; });
-    document.getElementById("statSold").textContent = fmt(sold);
-    document.getElementById("statTotal").textContent = fmt(tot);
-    document.getElementById("statRemain").textContent = fmt(rem);
-    document.getElementById("statCount").textContent = allRecords.length;
-    renderChips(); renderTable();
+      "最新日期：" + j.date + " ｜ 更新時間：" + j.generated_at + " ｜ 來源：" + j.source +
+      " ｜ 已存歷史：" + dates.length + " 日";
+    applyDate();
   }).catch(function(){
     document.getElementById("metaLine").textContent = "暫時讀取唔到數據，請稍後重新整理。";
   });
+}
+function applyDate(){
+  allRecords = (payload.history && payload.history[curDate]) || payload.records || [];
+  var sold = 0, tot = 0, rem = 0;
+  allRecords.forEach(function(r){ sold += r.sold_pcs||0; tot += r.no_of_pcs||0; rem += r.remaining_pcs||0; });
+  document.getElementById("statSold").textContent = fmt(sold);
+  document.getElementById("statTotal").textContent = fmt(tot);
+  document.getElementById("statRemain").textContent = fmt(rem);
+  document.getElementById("statCount").textContent = allRecords.length;
+  renderChips(); renderTable();
+}
+function csvCell(v){ v = (v === null || v === undefined) ? "" : String(v); return '"' + v.replace(/"/g, '""') + '"'; }
+function downloadCSV(name, rows){
+  var head = ["日期","門店","產品編號","產品名稱","單位","分配量(盤)","總件數","剩餘(件)","已銷售(件)"];
+  var lines = [head.map(csvCell).join(",")];
+  rows.forEach(function(r){
+    lines.push([r._d, r.store, r.product_code, r.product_name, r.unit,
+      r.allocated_pans, r.no_of_pcs, r.remaining_pcs, r.sold_pcs].map(csvCell).join(","));
+  });
+  var blob = new Blob(["\uFEFF" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name; a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
 }
 function renderChips(){
   var stores = ["ALL"], seen = {};
@@ -161,6 +194,26 @@ document.getElementById("codeInput").addEventListener("keydown", function(e){
 });
 document.getElementById("logoutBtn").onclick = function(){
   localStorage.removeItem("bettereat_auth"); location.reload();
+};
+document.getElementById("dateSel").addEventListener("change", function(){
+  curDate = this.value; applyDate();
+});
+document.getElementById("expDay").onclick = function(){
+  if (!payload) return;
+  var rows = ((payload.history && payload.history[curDate]) || []).map(function(r){
+    var o = {}; for (var k in r) o[k] = r[k]; o._d = curDate; return o;
+  });
+  downloadCSV("bettereat_sold_" + curDate + ".csv", rows);
+};
+document.getElementById("expAll").onclick = function(){
+  if (!payload || !payload.history) return;
+  var rows = [];
+  Object.keys(payload.history).sort().forEach(function(d){
+    payload.history[d].forEach(function(r){
+      var o = {}; for (var k in r) o[k] = r[k]; o._d = d; rows.push(o);
+    });
+  });
+  downloadCSV("bettereat_sold_all.csv", rows);
 };
 if (localStorage.getItem("bettereat_auth") === "1") showDash();
 setInterval(function(){ if (localStorage.getItem("bettereat_auth") === "1") loadData(); }, 300000);
