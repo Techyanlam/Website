@@ -69,7 +69,7 @@ function render(){
   document.getElementById("content").innerHTML = h;
 }
 function load(){
-  fetch("bettereat_sold_data.json?t=" + Date.now()).then(function(r){ return r.json(); }).then(function(j){
+  fetch("https://raw.githubusercontent.com/Techyanlam/Website/main/bettereat_sold_data.json?t=" + Date.now()).then(function(r){ return r.json(); }).then(function(j){
     DATA = j;
     document.getElementById("meta").textContent = "日期：" + (j.date||"—") + " ｜ 更新時間：" + (j.generated_at||"—") + " ｜ 來源：" + (j.source||"—");
     document.getElementById("badge").innerHTML = (j.status === "sample") ? '<span class="badge">樣本數據</span>' : '';
