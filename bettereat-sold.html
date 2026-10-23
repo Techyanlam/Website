@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BETTEREAT 每日已銷售清單</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "PingFang HK", "Microsoft JhengHei", "Noto Sans TC", sans-serif; background: #f4f5f7; color: #1f2329; padding: 24px 14px 48px; }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 22px; }
+  .meta { color: #646a73; font-size: 13.5px; margin: 6px 0 14px; }
+  .badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 20px; background: #fff4d6; color: #8a6100; border: 1px solid #ecd28a; vertical-align: middle; margin-left: 8px; }
+  .cards { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+  .card { background: #fff; border: 1px solid #dee0e3; border-radius: 10px; padding: 10px 16px; min-width: 130px; }
+  .card .k { font-size: 12.5px; color: #646a73; }
+  .card .v { font-size: 22px; font-weight: 700; margin-top: 2px; }
+  .filters { margin-bottom: 12px; }
+  .filters button { font-size: 13.5px; padding: 5px 14px; margin-right: 6px; border-radius: 20px; border: 1px solid #c9ced6; background: #fff; cursor: pointer; }
+  .filters button.on { background: #3370ff; color: #fff; border-color: #3370ff; }
+  table { width: 100%; border-collapse: collapse; background: #fff; font-size: 14px; }
+  th, td { border: 1px solid #dee0e3; padding: 7px 10px; text-align: left; }
+  th { background: #f0f2f5; }
+  td.n, th.n { text-align: right; }
+  tr.tot td { font-weight: 700; background: #fafbfc; }
+  .err { background: #fdf0f0; border: 1px solid #f1b6b8; border-radius: 8px; padding: 12px 14px; font-size: 14px; }
+  .foot { font-size: 12.5px; color: #646a73; margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>BETTEREAT 每日已銷售清單<span id="badge"></span></h1>
+  <div class="meta" id="meta">載入中…</div>
+  <div class="cards" id="cards"></div>
+  <div class="filters" id="filters"></div>
+  <div id="content"></div>
+  <div class="foot">數據來源：飛書多維表格「BETTEREAT - Dessert」C_每日分配及出貨記錄（已銷售 = No of pcs − 剩餘量）｜ 頁面每 5 分鐘自動更新 v1.0</div>
+</div>
+<script>
+var DATA = null, STORE = "ALL";
+function fmt(n){ return (n===null||n===undefined) ? "—" : Number(n).toLocaleString("en-US"); }
+function render(){
+  if(!DATA) return;
+  var recs = DATA.records || [];
+  var stores = [];
+  recs.forEach(function(r){ if(stores.indexOf(r.store)<0) stores.push(r.store); });
+  var fb = document.getElementById("filters");
+  fb.innerHTML = "";
+  ["ALL"].concat(stores).forEach(function(s){
+    var b = document.createElement("button");
+    b.textContent = (s==="ALL") ? "全部門店" : s;
+    if(STORE===s) b.className = "on";
+    b.onclick = function(){ STORE = s; render(); };
+    fb.appendChild(b);
+  });
+  var rows = recs.filter(function(r){ return STORE==="ALL" || r.store===STORE; });
+  var tSold=0, tRem=0, tPcs=0;
+  rows.forEach(function(r){ tSold+=+r.sold_pcs||0; tRem+=+r.remaining_pcs||0; tPcs+=+r.no_of_pcs||0; });
+  document.getElementById("cards").innerHTML =
+    '<div class="card"><div class="k">已銷售（件）</div><div class="v">'+fmt(tSold)+'</div></div>' +
+    '<div class="card"><div class="k">總件數 No of pcs</div><div class="v">'+fmt(tPcs)+'</div></div>' +
+    '<div class="card"><div class="k">剩餘（件）</div><div class="v">'+fmt(tRem)+'</div></div>' +
+    '<div class="card"><div class="k">記錄數</div><div class="v">'+fmt(rows.length)+'</div></div>';
+  var h = '<table><tr><th>門店</th><th>產品編號</th><th>產品名稱</th><th class="n">分配（盤）</th><th class="n">件數</th><th class="n">剩餘</th><th class="n">已銷售</th></tr>';
+  rows.forEach(function(r){
+    h += '<tr><td>'+r.store+'</td><td>'+r.product_code+'</td><td>'+r.product_name+'</td><td class="n">'+fmt(r.allocated_pans)+'</td><td class="n">'+fmt(r.no_of_pcs)+'</td><td class="n">'+fmt(r.remaining_pcs)+'</td><td class="n"><b>'+fmt(r.sold_pcs)+'</b></td></tr>';
+  });
+  h += '<tr class="tot"><td colspan="4">合計</td><td class="n">'+fmt(tPcs)+'</td><td class="n">'+fmt(tRem)+'</td><td class="n">'+fmt(tSold)+'</td></tr></table>';
+  document.getElementById("content").innerHTML = h;
+}
+function load(){
+  fetch("bettereat_sold_data.json?t=" + Date.now()).then(function(r){ return r.json(); }).then(function(j){
+    DATA = j;
+    document.getElementById("meta").textContent = "日期：" + (j.date||"—") + " ｜ 更新時間：" + (j.generated_at||"—") + " ｜ 來源：" + (j.source||"—");
+    document.getElementById("badge").innerHTML = (j.status === "sample") ? '<span class="badge">樣本數據</span>' : '';
+    render();
+  }).catch(function(e){
+    document.getElementById("content").innerHTML = '<div class="err">暫時讀不到數據檔（bettereat_sold_data.json），請稍後再試。</div>';
+  });
+}
+load();
+setInterval(load, 5*60*1000);
+</script>
+</body>
+</html>
