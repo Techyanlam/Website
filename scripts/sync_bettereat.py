@@ -5,8 +5,9 @@
 # history in bettereat_sold_data.json and appends today's snapshot keyed by the
 # RUN date (HKT). A snapshot, once written, is never changed by later runs —
 # except that a re-run on the SAME day refreshes that day's snapshot (end-of-day
-# state wins). If the data is identical to the latest snapshot, no new day is
-# created (avoids duplicating the same list on days with no new data entry).
+# state wins). Rule change 2026-10-25 (Yan's decision): EVERY run date opens
+# its own snapshot, even if the data is identical to the previous day —
+# the archive is a daily record, not a change log.
 # Credentials from env: FEISHU_APP_ID / FEISHU_APP_SECRET (GitHub Secrets).
 import json, os, urllib.request
 from datetime import datetime, timezone, timedelta
@@ -113,15 +114,11 @@ def main():
     if not rows:
         print("no sold records found; leaving existing JSON untouched")
         return
-    latest_key = max(history) if history else None
-    if latest_key and history[latest_key] == rows and latest_key != run_date:
-        # data unchanged since last snapshot -> keep the archive as-is,
-        # only refresh the timestamp
-        out_date = latest_key
-        print(f"data identical to snapshot {latest_key}; no new day created")
-    else:
-        history[run_date] = rows
-        out_date = run_date
+    # 2026-10-25 rule: every run date gets its own snapshot, even when the
+    # data is identical to the previous day. Same-day re-runs still refresh
+    # that day's snapshot (end-of-day state wins).
+    history[run_date] = rows
+    out_date = run_date
     out = {
         "source": "BETTEREAT-Feishu-Base",
         "date": out_date,
