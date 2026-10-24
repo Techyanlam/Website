@@ -1,7 +1,7 @@
 {
   "source": "BETTEREAT-Feishu-Base",
   "date": "2026-10-25",
-  "generated_at": "2026-10-25T00:12:27+08:00",
+  "generated_at": "2026-10-25T00:14:26+08:00",
   "records": [
     {
       "store": "MAP",
@@ -72,6 +72,16 @@
       "no_of_pcs": 49.0,
       "remaining_pcs": 0.0,
       "sold_pcs": 49
+    },
+    {
+      "store": "MAP",
+      "product_code": "P-023",
+      "product_name": "芒果布甸糕",
+      "unit": "盤",
+      "allocated_pans": 4.0,
+      "no_of_pcs": 196.0,
+      "remaining_pcs": 33.0,
+      "sold_pcs": 163
     },
     {
       "store": "MAP",
@@ -2899,6 +2909,16 @@
         "no_of_pcs": 49.0,
         "remaining_pcs": 0.0,
         "sold_pcs": 49
+      },
+      {
+        "store": "MAP",
+        "product_code": "P-023",
+        "product_name": "芒果布甸糕",
+        "unit": "盤",
+        "allocated_pans": 4.0,
+        "no_of_pcs": 196.0,
+        "remaining_pcs": 33.0,
+        "sold_pcs": 163
       },
       {
         "store": "MAP",
