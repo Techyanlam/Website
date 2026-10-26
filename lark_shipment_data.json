@@ -83716,5 +83716,23 @@
     "contactName": "Ruby Zhan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RxlNcm3nL",
+    "docNumber": "HKLSI26100965",
+    "customerName": "The University of Hong Kong - Department of Paediatrics and Adolescent Medicine",
+    "shipToAddress": "九龍-啟德",
+    "contactName": "Anna Au-Yeung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RxlOla36A",
+    "docNumber": "HKLSI26110018",
+    "customerName": "Government Laboratory - Residues Section",
+    "shipToAddress": "香港-薄扶林",
+    "contactName": "Szeto Yim Bun",
+    "status": "",
+    "transportQty": ""
   }
 ]
