@@ -83707,5 +83707,14 @@
     "contactName": "Sam Sze",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RxeBJjUAU",
+    "docNumber": "HKLSI26100966",
+    "customerName": "The Chinese University of Hong Kong - Faculty of Medicine",
+    "shipToAddress": "新界-中大",
+    "contactName": "Ruby Zhan",
+    "status": "",
+    "transportQty": ""
   }
 ]
