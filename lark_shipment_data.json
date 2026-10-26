@@ -83680,5 +83680,23 @@
     "contactName": "KA HO MAN, Dick",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RxFbLMVwL",
+    "docNumber": "HKLSI26100961",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr Eric Sze",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RxFc91u7D",
+    "docNumber": "HKLSI26110017",
+    "customerName": "The Hong Kong Polytechnic University - Department of Health Technology & Informatics",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Yuan Xinyi",
+    "status": "",
+    "transportQty": ""
   }
 ]
