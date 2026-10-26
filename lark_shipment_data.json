@@ -83518,5 +83518,158 @@
     "contactName": "Vivian Chong Yuk Ying",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvVxSbXwU",
+    "docNumber": "HKLSI26110011",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvVyNTy8Q",
+    "docNumber": "HKLSI26100945",
+    "customerName": "Hong Kong Light-Emitting Molecular Materials Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Bobby",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvVyNWBNS",
+    "docNumber": "HKLSI26100946",
+    "customerName": "Astute Electronics Inc.",
+    "shipToAddress": "九龍-九龍灣",
+    "contactName": "Alfee Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvVyNTqqS",
+    "docNumber": "HKLSI26100947",
+    "customerName": "NEXSEN HONG KONG LIMITED",
+    "shipToAddress": "新界-科學園",
+    "contactName": "ZHANG Xin",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvVyNVOiR",
+    "docNumber": "HKLSI26110012",
+    "customerName": "The University of Hong Kong - School of Biomedical Sciences",
+    "shipToAddress": "香港-港大",
+    "contactName": "Lap Hang Tse, Carrie",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvVyNSedl",
+    "docNumber": "HKLSI26110013",
+    "customerName": "The University Of Hong Kong - Department of Electrical & Electronic Engineering",
+    "shipToAddress": "香港-港大",
+    "contactName": "Qiyu Cao",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvVyNTgrF",
+    "docNumber": "HKLSI26100948",
+    "customerName": "APT Pharma Limited",
+    "shipToAddress": "九龍-觀塘",
+    "contactName": "Amy Mak",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvVyNT24u",
+    "docNumber": "HKLSI26110014",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvVyNSKHD",
+    "docNumber": "HKLSI26100950",
+    "customerName": "Fortune Pharmacal Co. Limited",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Jos Ki",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvVyNTBb4",
+    "docNumber": "HKLSI26100951",
+    "customerName": "St. Teresa's Hospital",
+    "shipToAddress": "九龍-聖德肋撒醫院",
+    "contactName": "Ms. Cheung ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvVyNTxfc",
+    "docNumber": "HKLSI26100952",
+    "customerName": "Government Laboratory - Additives, Contaminants and Composition Section (ACC)",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Kong Mei Fung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvW4Zx2Zo",
+    "docNumber": "HKLSI26110015",
+    "customerName": "GERMAN SWISS INTERNATIONAL SCHOOL",
+    "shipToAddress": "香港-山頂",
+    "contactName": "Lois Li",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvW5KPbSg",
+    "docNumber": "HKLSI26100953",
+    "customerName": "Unicorn Laboratories",
+    "shipToAddress": "新界-火炭",
+    "contactName": "Jessica",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvW5KMq2W",
+    "docNumber": "HKLSI26100954",
+    "customerName": "The Hong Kong University of Science and Technology - Department of CLS",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Cherry Lam",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvW5KN9UW",
+    "docNumber": "HKLSI26110016",
+    "customerName": "Technological and Higher Education Institute of Hong Kong",
+    "shipToAddress": "香港-柴灣",
+    "contactName": "NG Chi Yung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvW9Ub8EH",
+    "docNumber": "HKLSI26100955",
+    "customerName": "The Hong Kong Institute of Biotechnology Limited",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Ms Christina Lau",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RvWAPXgGF",
+    "docNumber": "HKLSI26100956",
+    "customerName": "Government Laboratory - FTB Section",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "Chiang Chak Man",
+    "status": "",
+    "transportQty": ""
   }
 ]
