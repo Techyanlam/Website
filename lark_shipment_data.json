@@ -83482,5 +83482,14 @@
     "contactName": "Coco Huang Coco Huang",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Rs2EusxUd",
+    "docNumber": "HKLSI26100938",
+    "customerName": "Hong Kong Baptist University - Department of Chemistry",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Eric Jim",
+    "status": "",
+    "transportQty": ""
   }
 ]
