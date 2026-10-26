@@ -83743,5 +83743,77 @@
     "contactName": "Sylvia Ng",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RyZ5hn7Un",
+    "docNumber": "HKLSI26100969",
+    "customerName": "Hong Kong Center for Neurodegenerative Diseases Limited, The Hong Kong University of Science and Technology",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Jay TING",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RyZ6jObVa",
+    "docNumber": "HKLSI26100970",
+    "customerName": "Bright Future Pharmaceutical Lab. Limited",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Jenny Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RyZ6jPMRG",
+    "docNumber": "HKLSI26100972",
+    "customerName": "Bureau Veritas Hong Kong Limited - KB - Chemical",
+    "shipToAddress": "九龍-九龍灣",
+    "contactName": "Zoey Lam",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RyZ6jMlF8",
+    "docNumber": "HKLSI26100973",
+    "customerName": "Government Laboratory - Pharmaceutical Chemistry (PC)",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "YEUNG Wing Yin",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RyZ6jNHGW",
+    "docNumber": "HKLSI26100974",
+    "customerName": "Water Supplies Department",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Ms. Lee Hing Yi",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RyZ6jLgRv",
+    "docNumber": "HKLSI26100975",
+    "customerName": "Government Laboratory - Pharmaceutical Chemistry (PC)",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "YEUNG Wing Yin",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Ryds6u7Jm",
+    "docNumber": "HKLSI26100971",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RydsyAEZ4",
+    "docNumber": "HKLSI26100976",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
