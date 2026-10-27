@@ -84207,7 +84207,7 @@
     "recordId": "reczz28SMKGALvMa",
     "docNumber": "HKLSI26110023",
     "customerName": "Bureau Veritas Hong Kong Limited - KB - Chemical",
-    "shipToAddress": "九龍灣啟興道2號太平洋貿易中心2/F",
+    "shipToAddress": "九龍-九龍灣",
     "contactName": "ANNY YAU / ZOEY LAM",
     "status": "",
     "transportQty": ""
@@ -84215,8 +84215,8 @@
   {
     "recordId": "reczz28SMKGAMbRo",
     "docNumber": "HKLSI26110024",
-    "customerName": "",
-    "shipToAddress": "",
+    "customerName": "The Hong Kong University of Science and Technology - Division of Life Science",
+    "shipToAddress": "Rm 6301A, via Lift 22, Academic Building, HKUST, Clear Water Bay Hong Kong",
     "contactName": "",
     "status": "",
     "transportQty": ""
