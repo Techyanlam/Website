@@ -83965,7 +83965,7 @@
     "docNumber": "HKLSI26100994",
     "customerName": "Hong Kong Light-Emitting Molecular Materials Limited Room 10, 13A/F, South Tower, World Finance Centre, Harbour City, 17 Canton Road, Tsim Sha Tsui, Kowloon",
     "shipToAddress": "新界-科學園",
-    "contactName": "Bobby Bobby",
+    "contactName": "Bobby",
     "status": "",
     "transportQty": ""
   },
@@ -83973,8 +83973,8 @@
     "recordId": "reczz28SIenrd6TC",
     "docNumber": "HKLSI26100995",
     "customerName": "The Chinese University of Hong Kong - Department of Medicine & Therapeutics Room 114028, 9/F, Lui Che Woo Clinical Sciences Building, Prince of Wales Hospital, Shatin, Hong Kong",
-    "shipToAddress": "新界-中大",
-    "contactName": "Simson Luk Simson Luk",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Simson Luk",
     "status": "",
     "transportQty": ""
   },
@@ -83982,7 +83982,7 @@
     "recordId": "reczz28SIgB2XjYQ",
     "docNumber": "HKLDN26100875",
     "customerName": "Laboratory for Synthetic Chemistry and Chemical Biology Limited Biology Limited",
-    "shipToAddress": "新界-科學園",
+    "shipToAddress": "香港-港大",
     "contactName": "Zhu Lihui",
     "status": "",
     "transportQty": ""
@@ -83992,7 +83992,7 @@
     "docNumber": "HKLSI26100996",
     "customerName": "Eu Yan Sang (Hong Kong) Limited Eu Yan Sang Centre Yuen Long Industrial Estate 10 Wang Lee Street Yuen Long, New Territories, Hong Kong",
     "shipToAddress": "新界-元朗",
-    "contactName": "Carmen Chan Carmen Chan",
+    "contactName": "Carmen Chan",
     "status": "",
     "transportQty": ""
   }
