@@ -83896,5 +83896,104 @@
     "contactName": "Ms. Ko Kit Wan, Wendy",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIVsHIVac",
+    "docNumber": "HKLSI26100986",
+    "customerName": "The Hong Kong Polytechnic University – Department of Food Science and Nutrition(FSN)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "LYU, Hujie Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIVtlewYz",
+    "docNumber": "HKLSI26100987",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department 2/F, Garment Centre, 576 Castle Peak Rd., Hong Kong",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Sam Sze",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIVtldvtl",
+    "docNumber": "HKLSI26100988",
+    "customerName": "The Hong Kong Polytechnic University - School of Fashion and Textiles Hung Hom, Kowloon, Hong Kong",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIVtldHaQ",
+    "docNumber": "HKLSI26100989",
+    "customerName": "The Hong Kong Polytechnic University - Department of Biomedical Engineering and Sports Technology(BEST) S106,The Hong Kong Polytechnic University, Hung Hom, Kowloon, Hong Kong",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIVtleI7q",
+    "docNumber": "HKLSI26100990",
+    "customerName": "The Hong Kong Polytechnic University – Department of Food Science and Nutrition(FSN)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIVtleEZZ",
+    "docNumber": "HKLSI26100991",
+    "customerName": "The University of Hong Kong - Department of Mechanical Engineering Department of Mechanical Engineering, Room 1-14, Haking Wong Building, The University of Hong Kong",
+    "shipToAddress": "香港-港大",
+    "contactName": "Mr. YIP, Pak San",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIVtlcKhr",
+    "docNumber": "HKLSI26100993",
+    "customerName": "The University of Hong Kong - Central Procurement, Finance and Enterprises Office 1/F, Kennedy Town Centre (Commercial Tower), 23 Belcher's Street, Kennedy Town, Hong Kong",
+    "shipToAddress": "香港-薄扶林",
+    "contactName": "Procurement Team Joyce Lee",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIVtlbe1r",
+    "docNumber": "HKLSI26100994",
+    "customerName": "Hong Kong Light-Emitting Molecular Materials Limited Room 10, 13A/F, South Tower, World Finance Centre, Harbour City, 17 Canton Road, Tsim Sha Tsui, Kowloon",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Bobby Bobby",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIenrd6TC",
+    "docNumber": "HKLSI26100995",
+    "customerName": "The Chinese University of Hong Kong - Department of Medicine & Therapeutics Room 114028, 9/F, Lui Che Woo Clinical Sciences Building, Prince of Wales Hospital, Shatin, Hong Kong",
+    "shipToAddress": "新界-中大",
+    "contactName": "Simson Luk Simson Luk",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIgB2XjYQ",
+    "docNumber": "HKLDN26100875",
+    "customerName": "Laboratory for Synthetic Chemistry and Chemical Biology Limited Biology Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Zhu Lihui",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIgBtiyRC",
+    "docNumber": "HKLSI26100996",
+    "customerName": "Eu Yan Sang (Hong Kong) Limited Eu Yan Sang Centre Yuen Long Industrial Estate 10 Wang Lee Street Yuen Long, New Territories, Hong Kong",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Carmen Chan Carmen Chan",
+    "status": "",
+    "transportQty": ""
   }
 ]
