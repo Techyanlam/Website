@@ -84049,5 +84049,41 @@
     "contactName": "Zhifeng Zhang",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SKDajv1Lt",
+    "docNumber": "HKLSI26101000",
+    "customerName": "The University of Hong Kong - Department of Clinical Oncology L6-02, 6/F., Laboratory Block, 21 Sassoon Road, Pokfulam, Hong Kong",
+    "shipToAddress": "香港-薄扶林",
+    "contactName": "Himmy Leung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SKDbdUt1d",
+    "docNumber": "HKLSI26110035",
+    "customerName": "Hong Kong Note Printing Limited 2-4 Dai Shing Street, Tai Po Industrial Estate, Tai Po, N. T., Hong Kong",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Eric Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SKDbdRqS3",
+    "docNumber": "HKLDN26110017",
+    "customerName": "Labware Technology (Shenzhen) Co., Limited",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Winnie",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SKDbdRpdd",
+    "docNumber": "HKLSI26101001",
+    "customerName": "Geotechnics & Concrete Engineering (HK) Ltd. G/F., 2-8, Ko Shan Road, Hung Hom, Kowloon, Hong Kong",
+    "shipToAddress": "九龍-新蒲崗",
+    "contactName": "Kevin Gu",
+    "status": "",
+    "transportQty": ""
   }
 ]
