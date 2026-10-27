@@ -84166,5 +84166,239 @@
     "contactName": "Dr. LIU, Yanya",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMK5kQyiI",
+    "docNumber": "HKLSI26110019",
+    "customerName": "Sequencio Therapeutics Company Limited ",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Charlotte LI",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMK7RiEne",
+    "docNumber": "HKLSI26110020",
+    "customerName": "I-RNA Asia Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Rowena Au",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKF8uGaD",
+    "docNumber": "HKLSI26110021",
+    "customerName": "Biotechnology Education Association",
+    "shipToAddress": "新界-屯門",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKGALM6l",
+    "docNumber": "HKLSI26110022",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKGALvMa",
+    "docNumber": "HKLSI26110023",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKGAMbRo",
+    "docNumber": "HKLSI26110024",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKGALd0M",
+    "docNumber": "HKLSI26110028",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKNfKTdT",
+    "docNumber": "HKLSI26110031",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKOekl30",
+    "docNumber": "HKLSI26110032",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKOem7Bh",
+    "docNumber": "HKLSI26110033",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKOekqok",
+    "docNumber": "HKLSI26110034",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKOelCnl",
+    "docNumber": "HKLSI26110037",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKSzqtzu",
+    "docNumber": "HKLSI26110038",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKZFhMvk",
+    "docNumber": "HKLSI26110039",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKaKwKAn",
+    "docNumber": "HKLSI26110040",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKaKwQ2O",
+    "docNumber": "HKLSI26110041",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKgIG9UD",
+    "docNumber": "HKLSI26110042",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKhLOmt9",
+    "docNumber": "HKLSI26110043",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKhLPiVI",
+    "docNumber": "HKLSI26110046",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKlzOMFx",
+    "docNumber": "HKLSI26110047",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKn1lMnW",
+    "docNumber": "HKLSI26110048",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKn1m2ue",
+    "docNumber": "HKLSI26110049",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKn1jLtT",
+    "docNumber": "HKLSI26110050",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKr8k0x8",
+    "docNumber": "HKLSI26110051",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKwwSygU",
+    "docNumber": "HKLSI26110052",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SMKy08Qf6",
+    "docNumber": "HKLSI26110053",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
