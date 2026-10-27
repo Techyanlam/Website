@@ -84126,8 +84126,8 @@
     "recordId": "reczz28SLNAzHVKx",
     "docNumber": "HKLSI26101005",
     "customerName": "The Hong Kong University of Science and Technology - Department of CLS Clear Water Bay, Kowloon, Hong Kong",
-    "shipToAddress": "九龍-清水灣",
-    "contactName": "Cherry Lam Cherry Lam",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Cherry Lam",
     "status": "",
     "transportQty": ""
   },
@@ -84136,7 +84136,7 @@
     "docNumber": "HKLSI26101006",
     "customerName": "The Chinese University of Hong Kong - Art Museum 2/F, West Wing The Chinese University of Hong Kong Sha Tin, New Territories Hong Kong",
     "shipToAddress": "新界-中大",
-    "contactName": "Miss XIE Ziqi, Kay",
+    "contactName": "Kay",
     "status": "",
     "transportQty": ""
   },
@@ -84144,7 +84144,7 @@
     "recordId": "reczz28SLNAzJwFp",
     "docNumber": "HKLSI26101007",
     "customerName": "Labware (Macau) Company Limited",
-    "shipToAddress": "OS-Macau",
+    "shipToAddress": "新界-葵涌",
     "contactName": "",
     "status": "",
     "transportQty": ""
@@ -84154,7 +84154,7 @@
     "docNumber": "HKLSI26101008",
     "customerName": "The Hong Kong Polytechnic University - Department of Biomedical Engineering and Sports Technology(BEST) S106,The Hong Kong Polytechnic University, Hung Hom, Kowloon, Hong Kong",
     "shipToAddress": "九龍-理大",
-    "contactName": "LI, Dany Ken Chan",
+    "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
   }
