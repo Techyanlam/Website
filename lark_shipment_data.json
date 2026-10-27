@@ -83995,5 +83995,59 @@
     "contactName": "Carmen Chan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIx6eF14Z",
+    "docNumber": "HKLDN26110009",
+    "customerName": "Laboratory for Synthetic Chemistry and Chemical Biology Limited , 15/F, Building 17W, Hong",
+    "shipToAddress": "新界-白石角",
+    "contactName": "Zhu Lihui",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIx7SVRoL",
+    "docNumber": "HKLSI26100998",
+    "customerName": "Bright Future Pharmaceutical Lab. Limited BF Pharmaceutical Center, 8 Wang Fu Street, Yuen Long Ind. Est, Yuen Long, HK",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Kwong Lee",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIx7SY763",
+    "docNumber": "HKLDN26110010",
+    "customerName": "Hong Kong Quantum AI Lab Limited",
+    "shipToAddress": "香港-港大",
+    "contactName": "Sarah Chow",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIx7SYMij",
+    "docNumber": "HKLDN26110011",
+    "customerName": "Hong Kong Quantum AI Lab Limited ong Kong Science Park, Shatin,",
+    "shipToAddress": "香港-港大",
+    "contactName": "Sarah Chow",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIx7SX3jO",
+    "docNumber": "HKLSI26100999",
+    "customerName": "MIRABO BIOTECHNOLOGY LIMITED Science Park, Hong Kong",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Brandon Ting",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SIx7SYeuD",
+    "docNumber": "HKLDN26110012",
+    "customerName": "ChemTechChem Biotechnology (HK) Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Zhifeng Zhang",
+    "status": "",
+    "transportQty": ""
   }
 ]
