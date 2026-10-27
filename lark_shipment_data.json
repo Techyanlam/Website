@@ -83846,6 +83846,24 @@
   {
     "recordId": "reczz28RzuxUpNim",
     "docNumber": "HKLSI26100980",
+    "customerName": "City University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Miss MAK Chiu Lam Eunice",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28RzuyUAxwO",
+    "docNumber": "HKLSI26100981",
+    "customerName": "The Hong Kong Polytechnic University - Department of PHYSICS & MATERIALS (PM)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SHq28jqU7",
+    "docNumber": "HKLSI26100982",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
@@ -83853,8 +83871,26 @@
     "transportQty": ""
   },
   {
-    "recordId": "reczz28RzuyUAxwO",
-    "docNumber": "HKLSI26100981",
+    "recordId": "reczz28SHq3uesY8",
+    "docNumber": "HKLSI26100983",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SHq3uf45x",
+    "docNumber": "HKLSI26100984",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SHq3uhYr0",
+    "docNumber": "HKLSI26100985",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
