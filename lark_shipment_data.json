@@ -84148,5 +84148,23 @@
     "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SM6KHYp67",
+    "docNumber": "HKLSI26110054",
+    "customerName": "Europharm Laboratoires Co. Limited",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Mr. Choi Wai Lun",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SM6L7mVAz",
+    "docNumber": "HKLSI26101012",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
