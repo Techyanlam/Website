@@ -82,10 +82,6 @@
       <div class="t">📋 紙單上載</div>
       <div class="d">每日分貨紙單影相上載<br>紙要攤平 · 鏡頭正上方 · 成頁入鏡</div>
     </a>
-    <a class="action b" id="btnFormB" href="#" target="_blank" rel="noopener">
-      <div class="t">🧁 剩餘甜點上報</div>
-      <div class="d">收市後影相＋填寫剩餘件數<br>要影到成盤頂面</div>
-    </a>
   </div>
 
   <h2 class="sec">每日已銷售清單</h2>
@@ -120,9 +116,8 @@ function showDash(){
   setupActions(); loadData();
 }
 function setupActions(){
-  var a = document.getElementById("btnFormA"), b = document.getElementById("btnFormB");
+  var a = document.getElementById("btnFormA");
   if (FORM_A_URL) { a.href = FORM_A_URL; } else { a.classList.add("pending"); }
-  if (FORM_B_URL) { b.href = FORM_B_URL; } else { b.classList.add("pending"); }
 }
 function loadData(){
   fetch(DATA_URL + "?t=" + Date.now()).then(function(r){ return r.json(); }).then(function(j){
