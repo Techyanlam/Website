@@ -84075,7 +84075,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Winnie",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28SKDbdRpdd",
@@ -84137,15 +84137,6 @@
     "customerName": "The Chinese University of Hong Kong - Art Museum 2/F, West Wing The Chinese University of Hong Kong Sha Tin, New Territories Hong Kong",
     "shipToAddress": "新界-中大",
     "contactName": "Kay",
-    "status": "",
-    "transportQty": ""
-  },
-  {
-    "recordId": "reczz28SLNAzJwFp",
-    "docNumber": "HKLSI26101007",
-    "customerName": "Labware (Macau) Company Limited",
-    "shipToAddress": "新界-葵涌",
-    "contactName": "",
     "status": "",
     "transportQty": ""
   },
