@@ -84085,5 +84085,77 @@
     "contactName": "Kevin Gu",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SLN9taix0",
+    "docNumber": "HKLSI26101002",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH) Hung Hom, Kowloon, Hong Kong",
+    "shipToAddress": "九龍-理大",
+    "contactName": "CHAN, Chi Ho Roy",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SLNAzIvmJ",
+    "docNumber": "HKLSI26110044",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH) 11 Yuk Choi Road Hong Kong",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SLNAzJdtt",
+    "docNumber": "HKLSI26110045",
+    "customerName": "The Hong Kong Polytechnic University - Department of Civil and Environmental Engineering Hung Hom, Kowloon, Hong Kong",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Inti HIE",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SLNAzGvF6",
+    "docNumber": "HKLSI26101004",
+    "customerName": "Pacific Sense Enterprises 12/F., The Eastmark, No.21 Sheung Yuet Road, Kowloon Bay, Kowloon",
+    "shipToAddress": "九龍-九龍灣",
+    "contactName": "Kai Cheong Leung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SLNAzHVKx",
+    "docNumber": "HKLSI26101005",
+    "customerName": "The Hong Kong University of Science and Technology - Department of CLS Clear Water Bay, Kowloon, Hong Kong",
+    "shipToAddress": "九龍-清水灣",
+    "contactName": "Cherry Lam Cherry Lam",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SLNAzIL9a",
+    "docNumber": "HKLSI26101006",
+    "customerName": "The Chinese University of Hong Kong - Art Museum 2/F, West Wing The Chinese University of Hong Kong Sha Tin, New Territories Hong Kong",
+    "shipToAddress": "新界-中大",
+    "contactName": "Miss XIE Ziqi, Kay",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SLNAzJwFp",
+    "docNumber": "HKLSI26101007",
+    "customerName": "Labware (Macau) Company Limited",
+    "shipToAddress": "OS-Macau",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SLVxIQ597",
+    "docNumber": "HKLSI26101008",
+    "customerName": "The Hong Kong Polytechnic University - Department of Biomedical Engineering and Sports Technology(BEST) S106,The Hong Kong Polytechnic University, Hung Hom, Kowloon, Hong Kong",
+    "shipToAddress": "九龍-理大",
+    "contactName": "LI, Dany Ken Chan",
+    "status": "",
+    "transportQty": ""
   }
 ]
