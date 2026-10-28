@@ -84657,7 +84657,16 @@
     "recordId": "reczz28SgZoDGkUh",
     "docNumber": "HKLSI26110084",
     "customerName": "Government Laboratory - Trace Elements Section (TE)",
-    "shipToAddress": "香港九龍何文田忠孝街 88 號何文田政府合署623室",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "Ms Irene Ng ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Sgb8GeHl5",
+    "docNumber": "HKLSI26110085",
+    "customerName": "",
+    "shipToAddress": "",
     "contactName": "",
     "status": "",
     "transportQty": ""
