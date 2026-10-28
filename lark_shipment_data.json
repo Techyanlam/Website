@@ -84436,5 +84436,32 @@
     "contactName": "Lam Tsing Tsun",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Se0PwhoXR",
+    "docNumber": "HKLSI26110058",
+    "customerName": "The Chinese University of Hong Kong - School of Biomedical Sciences Shatin, NT , Hong Kong",
+    "shipToAddress": "新界-中大",
+    "contactName": "Leung Lee Leanne",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Se0SHesfH",
+    "docNumber": "HKLSI26110059",
+    "customerName": "Fanling Lutheran Secondary School 270 Jockey Club Road, Fanling, N.T.",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Ms. WS Kwong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Se0SHeidi",
+    "docNumber": "HKLSI26110061",
+    "customerName": "The University Of Hong Kong - Department of Electrical & Electronic Engineering Pokfulam, Hong Kong",
+    "shipToAddress": "香港-港大",
+    "contactName": "Zhiwei Long",
+    "status": "",
+    "transportQty": ""
   }
 ]
