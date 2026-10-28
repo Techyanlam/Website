@@ -84481,5 +84481,176 @@
     "contactName": "Hilman Chan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKUQJIS8",
+    "docNumber": "HKLSI26110063",
+    "customerName": "Mongolian Minerals Pte Ltd. ",
+    "shipToAddress": "香港-黃竹坑",
+    "contactName": "James Rodriguez de Castro",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKVM9Atp",
+    "docNumber": "HKLSI26110064",
+    "customerName": "Hong Kong Applied Science and Technology Research Institute Company Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Dr NG Chun Fai Peter",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKVM9fk7",
+    "docNumber": "HKLSI26110065",
+    "customerName": "City University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "九龍-城大",
+    "contactName": "HE Shuhan ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKVM6DGL",
+    "docNumber": "HKLSI26110067",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Bi Kong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKVM6T2w",
+    "docNumber": "HKLSI26110068",
+    "customerName": "The University of Hong Kong - Faculty of Medicine",
+    "shipToAddress": "香港-港大",
+    "contactName": "Suki Chieh",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKVM7l57",
+    "docNumber": "HKLSI26110070",
+    "customerName": "Eurofins MTS Consumer Product Testing Hong Kong Limited",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Eric Thapa",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKVM96jJ",
+    "docNumber": "HKLSI26110069",
+    "customerName": "Eurofins MTS Consumer Product Testing Hong Kong Limited",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Eric Thapa",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKVM8SUX",
+    "docNumber": "HKLSI26110071",
+    "customerName": "The Hong Kong Polytechnic University – Department of Food Science and Nutrition(FSN)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKVM87Jn",
+    "docNumber": "HKLSI26110072",
+    "customerName": "Hong Kong Baptist University - School of Chinese Medicine",
+    "shipToAddress": "九龍-浸大",
+    "contactName": "Hilda Cheung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKVM6AMA",
+    "docNumber": "HKLSI26110073",
+    "customerName": "The Hong Kong and China Gas Company Limited",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Mr CK Li",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKVM7SbM",
+    "docNumber": "HKLSI26110074",
+    "customerName": "The Independent Schools Foundation Academy Limited",
+    "shipToAddress": "香港-港大",
+    "contactName": "Joyce Lam",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKVM8YFE",
+    "docNumber": "HKLSI26110075",
+    "customerName": "The Chinese University of Hong Kong - Department of Medicine & Therapeutics",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Simson Luk",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKey2XE8",
+    "docNumber": "HKLSI26110076",
+    "customerName": "Tai Wo Tung Medicine Company Limited",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Connie Ng",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKg3AhfD",
+    "docNumber": "HKLSI26110077",
+    "customerName": "APT Pharma Limited",
+    "shipToAddress": "九龍-觀塘",
+    "contactName": "Amy Mak",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKg3AItx",
+    "docNumber": "HKLSI26110079",
+    "customerName": "The United Laboratories Limited",
+    "shipToAddress": "元朗工業村福宏街6號",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKg3AZkf",
+    "docNumber": "HKLSI26110080",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKg39fJl",
+    "docNumber": "HKLSI26110081",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKlIXoa1",
+    "docNumber": "HKLSI26110082",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SgKmCZt4t",
+    "docNumber": "HKLSI26110083",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
