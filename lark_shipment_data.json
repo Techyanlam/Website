@@ -84670,5 +84670,59 @@
     "contactName": "Christian Clarke",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SijCKE5TX",
+    "docNumber": "HKLSI26110086",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SijD4aWyA",
+    "docNumber": "HKLSI26101018",
+    "customerName": "Bright Future Pharmaceutical Lab. Limited",
+    "shipToAddress": "新界-元朗",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SijE8IJg9",
+    "docNumber": "HKLSI26110087",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SijE8Hyzi",
+    "docNumber": "HKLDN26100957",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SijE8Ibb3",
+    "docNumber": "HKLDN26100966",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28SijE8FVnZ",
+    "docNumber": "HKLSI26110089",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
