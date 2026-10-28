@@ -13,8 +13,11 @@
   #loginView .logo { font-size: 40px; }
   #loginView h1 { font-size: 22px; margin: 10px 0 4px; letter-spacing: 1px; }
   #loginView p.sub { color: #8a7f70; font-size: 14px; margin-bottom: 22px; }
-  #codeInput { width: 100%; padding: 13px; font-size: 17px; border: 1.5px solid #ddd3c3; border-radius: 10px; text-align: center; letter-spacing: 2px; }
-  #codeInput:focus { outline: none; border-color: #c98a2d; }
+  #userInput, #codeInput { width: 100%; padding: 13px; font-size: 17px; border: 1.5px solid #ddd3c3; border-radius: 10px; text-align: center; }
+  #userInput { letter-spacing: 0; margin-bottom: 10px; }
+  #codeInput { letter-spacing: 2px; }
+  #userInput:focus, #codeInput:focus { outline: none; border-color: #c98a2d; }
+  #userLabel { font-size: 13px; color: #6d6152; margin-right: 8px; }
   #loginBtn { width: 100%; margin-top: 14px; padding: 13px; font-size: 16px; font-weight: 600; color: #fff; background: #c98a2d; border: none; border-radius: 10px; cursor: pointer; }
   #loginBtn:active { opacity: .85; }
   #loginErr { color: #c0392b; font-size: 14px; min-height: 20px; margin-top: 10px; }
@@ -57,8 +60,9 @@
 <div id="loginView">
   <div class="logo">🍰</div>
   <h1>BETTEREAT</h1>
-  <p class="sub">門店系統 · 請輸入存取碼登入</p>
-  <input id="codeInput" type="password" inputmode="text" placeholder="存取碼" autocomplete="off">
+  <p class="sub">門店系統 · 請登入</p>
+  <input id="userInput" type="text" placeholder="帳號" autocomplete="username">
+  <input id="codeInput" type="password" inputmode="text" placeholder="密碼" autocomplete="current-password">
   <button id="loginBtn">登入</button>
   <div id="loginErr"></div>
 </div>
@@ -66,7 +70,7 @@
 <div class="wrap" id="dashView">
   <header class="top">
     <div class="brand">🍰 BETTEREAT <span>門店系統</span></div>
-    <button id="logoutBtn">登出</button>
+    <div><span id="userLabel"></span><button id="logoutBtn">登出</button></div>
   </header>
 
   <div class="meta" id="metaLine">載入中…</div>
@@ -102,7 +106,7 @@
 </div>
 
 <script>
-var ACCESS_CODE = "BETTEREAT"; // 存取碼（可隨時更改）
+var ACCESS_CODE = "BETTEREAT"; // 登入密碼（可隨時更改）
 var FORM_A_URL = "https://fcnnkklc0uhr.feishu.cn/share/base/form/shrcnySrPjIwg3IiovaafcoOfgc";
 var FORM_B_URL = "https://fcnnkklc0uhr.feishu.cn/share/base/form/shrcnZSBT4V0IgC3WAhvq9fhV5g";
 var DATA_URL = "https://raw.githubusercontent.com/Techyanlam/Website/main/bettereat_sold_data.json";
@@ -110,10 +114,14 @@ var allRecords = [], curStore = "ALL", payload = null, curDate = "";
 
 function fmt(n){ return (Math.round(n * 10) / 10).toLocaleString("en-US"); }
 
+function showUser(){
+  var u = localStorage.getItem("bettereat_user") || "";
+  document.getElementById("userLabel").textContent = u ? "👤 " + u : "";
+}
 function showDash(){
   document.getElementById("loginView").style.display = "none";
   document.getElementById("dashView").style.display = "block";
-  setupActions(); loadData();
+  showUser(); setupActions(); loadData();
 }
 function setupActions(){
   var a = document.getElementById("btnFormA");
@@ -180,15 +188,25 @@ function renderTable(){
 }
 
 document.getElementById("loginBtn").onclick = function(){
+  var u = document.getElementById("userInput").value.trim();
   var v = document.getElementById("codeInput").value.trim();
-  if (v === ACCESS_CODE) { localStorage.setItem("bettereat_auth", "1"); showDash(); }
-  else { document.getElementById("loginErr").textContent = "存取碼唔正確，請再試。"; }
+  if (!u) { document.getElementById("loginErr").textContent = "請輸入帳號。"; return; }
+  if (v === ACCESS_CODE) {
+    localStorage.setItem("bettereat_auth", "1");
+    localStorage.setItem("bettereat_user", u);
+    showDash();
+  }
+  else { document.getElementById("loginErr").textContent = "密碼唔正確，請再試。"; }
 };
-document.getElementById("codeInput").addEventListener("keydown", function(e){
-  if (e.key === "Enter") document.getElementById("loginBtn").click();
+["userInput", "codeInput"].forEach(function(id){
+  document.getElementById(id).addEventListener("keydown", function(e){
+    if (e.key === "Enter") document.getElementById("loginBtn").click();
+  });
 });
 document.getElementById("logoutBtn").onclick = function(){
-  localStorage.removeItem("bettereat_auth"); location.reload();
+  localStorage.removeItem("bettereat_auth");
+  localStorage.removeItem("bettereat_user");
+  location.reload();
 };
 document.getElementById("dateSel").addEventListener("change", function(){
   curDate = this.value; applyDate();
