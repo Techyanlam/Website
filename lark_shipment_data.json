@@ -84724,5 +84724,23 @@
     "contactName": "Kwan Yau",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Sjnvzns6c",
+    "docNumber": "HKLSI26110091",
+    "customerName": "The University of Hong Kong - Central Procurement, Finance and Enterprises Office",
+    "shipToAddress": "香港-港大",
+    "contactName": "Joyce Lee",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Sjnwwd44e",
+    "docNumber": "HKLDN26100903",
+    "customerName": "Government Laboratory - Chinese Medicines Section",
+    "shipToAddress": "4/F, Government Chinese Medicine Testing Institute, 3 Pak Shing Kok Road, Tseung Kwan O",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
