@@ -83121,7 +83121,7 @@
     "shipToAddress": "香港-薄扶林",
     "contactName": "Pauline Yu",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28QLPeNHDrz",
@@ -83841,7 +83841,7 @@
     "shipToAddress": "九龍-理大",
     "contactName": "Armin Rezayan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28RzuxUpNim",
@@ -84461,6 +84461,24 @@
     "customerName": "The University Of Hong Kong - Department of Electrical & Electronic Engineering Pokfulam, Hong Kong",
     "shipToAddress": "香港-港大",
     "contactName": "Zhiwei Long",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Sg9m3mUlz",
+    "docNumber": "HKLSI26110066",
+    "customerName": "The Hong Kong Polytechnic University - School of Fashion and Textiles",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Sg9n3hWSj",
+    "docNumber": "HKLDN26100960",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
