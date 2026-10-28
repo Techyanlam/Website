@@ -84468,17 +84468,17 @@
     "recordId": "reczz28Sg9m3mUlz",
     "docNumber": "HKLSI26110066",
     "customerName": "The Hong Kong Polytechnic University - School of Fashion and Textiles",
-    "shipToAddress": "",
-    "contactName": "",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Chen Zhechang",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28Sg9n3hWSj",
     "docNumber": "HKLDN26100960",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Center for Chinese Herbal Medicine Drug Development (CDD)",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Hilman Chan",
     "status": "",
     "transportQty": ""
   }
