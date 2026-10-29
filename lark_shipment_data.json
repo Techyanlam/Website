@@ -84832,5 +84832,86 @@
     "contactName": "Grace Lai",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T4syI1QIt",
+    "docNumber": "HKLSI26110102",
+    "customerName": "Po Leung Kuk Lo Kit Sing (1983) College",
+    "shipToAddress": "新界-青衣",
+    "contactName": "Shiu Yik Ting",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T4szhzsA3",
+    "docNumber": "HKLSI26110103",
+    "customerName": "Tung Wah College",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "Kahei Chan ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T4szi3Nva",
+    "docNumber": "HKLSI26110104",
+    "customerName": "Lee Kum Kee Co Ltd.",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Edmond Mok",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T4szi0Mwc",
+    "docNumber": "HKLSI26110105",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T4szi1cjf",
+    "docNumber": "HKLSI26110106",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T4szi3Ckg",
+    "docNumber": "HKLSI26110107",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T4szi20k6",
+    "docNumber": "HKLSI26110108",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T4szhzaYA",
+    "docNumber": "HKLSI26110109",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T4szi363j",
+    "docNumber": "HKLSI26110110",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
