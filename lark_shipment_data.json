@@ -84742,5 +84742,68 @@
     "contactName": "Lai Mei Kuen",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T2ov1Rwj1",
+    "docNumber": "HKLSI26110092",
+    "customerName": "The Hong Kong Polytechnic University - Department of Rehabilitation Sciences",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Peter Bohao YANG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T2ox0GptT",
+    "docNumber": "HKLSI26110094",
+    "customerName": "The University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "香港-港大",
+    "contactName": "Lihui Zhu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T2ox0GeHq",
+    "docNumber": "HKLSI26110095",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T2ox0HZ8y",
+    "docNumber": "HKLSI26110096",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T2ox0EWib",
+    "docNumber": "HKLSI26110097",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T2ox0GdoT",
+    "docNumber": "HKLSI26110099",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T2ox0H2g4",
+    "docNumber": "HKLSI26110100",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
