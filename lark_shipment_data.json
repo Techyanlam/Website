@@ -84940,5 +84940,23 @@
     "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T9A7XrGpQ",
+    "docNumber": "HKLSI26110120",
+    "customerName": "The Hong Kong Polytechnic University - Department of Civil and Environmental Engineering",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Amy Ho Sze Man",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T9Bl2jLpa",
+    "docNumber": "HKLSI26110121",
+    "customerName": "The Chinese University of Hong Kong - School of Biomedical Sciences",
+    "shipToAddress": "新界-中大",
+    "contactName": "Dr XUE, Kwan Yuen Katherine",
+    "status": "",
+    "transportQty": ""
   }
 ]
