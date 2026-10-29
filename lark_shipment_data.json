@@ -84913,5 +84913,32 @@
     "contactName": "Kai Kit Chow",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T7dI3PoYU",
+    "docNumber": "HKLSI26110113",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Stanley Chow",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T7dJGBvAL",
+    "docNumber": "HKLSI26110114",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28T7dJGBn2X",
+    "docNumber": "HKLSI26110115",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
