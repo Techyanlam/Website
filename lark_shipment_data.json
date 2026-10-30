@@ -85034,9 +85034,9 @@
   {
     "recordId": "reczz28TRKX1AAaQ",
     "docNumber": "HKLDN26100178",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The University of Hong Kong - School of Chinese Medicine",
+    "shipToAddress": "香港-港大",
+    "contactName": "Keith Wong",
     "status": "",
     "transportQty": ""
   },
@@ -85052,9 +85052,9 @@
   {
     "recordId": "reczz28TRKX1CEr7",
     "docNumber": "HKLSI26110132",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "ALS Technichem (HK) Pty Limited - Organic",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Douglas Yu",
     "status": "",
     "transportQty": ""
   }
