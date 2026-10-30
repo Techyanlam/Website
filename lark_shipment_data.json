@@ -85186,7 +85186,25 @@
   },
   {
     "recordId": "reczz28TVdTQHjRp",
-    "docNumber": "LALDN26100028 ",
+    "docNumber": "LALDN26100028",
+    "customerName": "SGS Hong Kong Limited - Consumer and Retail",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Vincent Tang",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TVmUiaX2v",
+    "docNumber": "HKLDN26110025",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TVmVkvwzD",
+    "docNumber": "HKLDN26110014",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
