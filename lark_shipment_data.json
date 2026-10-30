@@ -85196,18 +85196,18 @@
   {
     "recordId": "reczz28TVmUiaX2v",
     "docNumber": "HKLDN26110025",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Labware (Macau) Company Limited",
+    "shipToAddress": "OS-Macau",
+    "contactName": "OS-Macau",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28TVmVkvwzD",
     "docNumber": "HKLDN26110014",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Labware (Macau) Company Limited",
+    "shipToAddress": "OS-Macau",
+    "contactName": "OS-Macau",
     "status": "",
     "transportQty": ""
   }
