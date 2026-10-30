@@ -85138,5 +85138,23 @@
     "contactName": "OS-Macau",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TTjpzMaZA",
+    "docNumber": "HKLSI26110133",
+    "customerName": "The Hong Kong Polytechnic University - Department of Electrical and Electronic Engineering",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Mr Edge DOU Quanhao",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TTlJkg5Qi",
+    "docNumber": "HKLSI26110134",
+    "customerName": "Nestle Hong Kong Limited",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Chau Tegan",
+    "status": "",
+    "transportQty": ""
   }
 ]
