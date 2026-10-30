@@ -85219,5 +85219,104 @@
     "contactName": "Zoey Lam",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TXK8URMo5",
+    "docNumber": "HKLSI26110139",
+    "customerName": "Invictus Secondary School",
+    "shipToAddress": "香港-柴灣",
+    "contactName": "Wong Sze Ho",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TXKBLVrRm",
+    "docNumber": "HKLSI26110140",
+    "customerName": "The Chinese University of Hong Kong - School of Life Sciences",
+    "shipToAddress": "新界-中大",
+    "contactName": "Ms. Helen Poon",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TXKBLTHx9",
+    "docNumber": "HKLSI26110141",
+    "customerName": "Hong Kong Metropolitan University",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Alicia ZHANG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TXKBLUZEy",
+    "docNumber": "HKLSI26110142",
+    "customerName": "Munsang College (HK Island)",
+    "shipToAddress": "香港-西灣河",
+    "contactName": "Chan Kwok Kwong Tomy",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TXKSLbh6R",
+    "docNumber": "HKLSI26110143",
+    "customerName": "Laboratory for Synthetic Chemistry and Chemical Biology Limited ",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Zhifeng Zhang ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TXKXmnHi2",
+    "docNumber": "HKLSI26110144",
+    "customerName": "Canadian International School of Hong Kong",
+    "shipToAddress": "香港-黃竹坑",
+    "contactName": "Michele Mak / Frankie Lui",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TXKYZeaLD",
+    "docNumber": "HKLSI26110145",
+    "customerName": "Vita Green Pharmaceutical (H.K.) Ltd.",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Lee On Yi, Rolley",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TXKYZd5Dv",
+    "docNumber": "HKLSI26110146",
+    "customerName": "The Chinese University of Hong Kong - Department of Electronic Engineering",
+    "shipToAddress": "新界-中大",
+    "contactName": "Zewen Kong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TXKYZdzZG",
+    "docNumber": "HKLSI26110148",
+    "customerName": "Hong Kong Metropolitan University",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Alicia ZHANG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TXRyH1Mgn",
+    "docNumber": "HKLSI26110147",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TXRzUunj2",
+    "docNumber": "HKLSI26110149",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
