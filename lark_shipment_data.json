@@ -85336,5 +85336,32 @@
     "contactName": "Mr Lui",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TYp6ywJNo",
+    "docNumber": "HKLSI26110153",
+    "customerName": "The University of Hong Kong-Dept of Ophthalmology",
+    "shipToAddress": "香港-港大",
+    "contactName": "Mr Kwok-wai Tse",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TYp7v9lqm",
+    "docNumber": "HKLSI26110154",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28TYp7v8Db4",
+    "docNumber": "HKLSI26110155",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
