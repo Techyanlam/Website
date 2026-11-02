@@ -85633,5 +85633,23 @@
     "contactName": "August Wong",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UiBfvIYy1",
+    "docNumber": "HKLSI26110186",
+    "customerName": "The Hong Kong University of Science and Technology - Department of CLS",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Simon Yip Ka Ming",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UiBhVAg7f",
+    "docNumber": "HKLSI26110189",
+    "customerName": "QIMA Testing (Germany) GmbH",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
