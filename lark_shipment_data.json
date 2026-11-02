@@ -85651,5 +85651,77 @@
     "contactName": "Angela Schultz",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UizAZ9XQn",
+    "docNumber": "HKLSI26110187",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Billy Siu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UizBX4KRO",
+    "docNumber": "HKLSI26110188",
+    "customerName": "Wai Fat Pharmaceutical Laboratory LTD.",
+    "shipToAddress": "九龍-觀塘",
+    "contactName": "Ronald Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UizIiH66Q",
+    "docNumber": "HKLSI26110190",
+    "customerName": "Eu Yan Sang (Hong Kong) Limited",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Carmen Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UizJcvcT2",
+    "docNumber": "HKLSI26110191",
+    "customerName": "Department of Health - Government Chinese Medicines Testing Institute",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": " Ms Cynthia KWONG / Mr. Franky CHOI",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UizJcwoUw",
+    "docNumber": "HKLSI26110192",
+    "customerName": "South Island School",
+    "shipToAddress": "50 Nam Fung Road, Aberdeen, Hong Kong ",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UizJcwhLO",
+    "docNumber": "HKLSI26110193",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UizJcwOig",
+    "docNumber": "HKLSI26110194",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UizJcvfWT",
+    "docNumber": "HKLSI26110195",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
