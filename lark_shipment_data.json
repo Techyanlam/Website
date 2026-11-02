@@ -85489,5 +85489,104 @@
     "contactName": "Emily Fung",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfIyJNi6I",
+    "docNumber": "LTSG26100038",
+    "customerName": "To Yee Lim office Winnie",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Winnie",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfIzHpktj",
+    "docNumber": "HKLSI26110172",
+    "customerName": "TUV Rheinland Hong Kong Limited - Organic Department",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Kamy Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfIzHpfCD",
+    "docNumber": "HKLSI26110173",
+    "customerName": "Government Laboratory - Trace Elements Section (TE)",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "Ms Irene Ng ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfIzHs4iF",
+    "docNumber": "HKLDN26120125",
+    "customerName": "Water Supplies Department",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Ms P M Lai",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfIzHquOk",
+    "docNumber": "HKLSI26110174",
+    "customerName": "Hong Kong Note Printing Limited",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Wah Kwok",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfIzHtV2V",
+    "docNumber": "HKLDN26110071",
+    "customerName": "Water Supplies Department",
+    "shipToAddress": "香港-灣仔",
+    "contactName": "Mr. K.W. Pat",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfIzHph3F",
+    "docNumber": "HKLDN26110072",
+    "customerName": "Water Supplies Department",
+    "shipToAddress": "新界-屯門",
+    "contactName": "Mr. C.Y. Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfSSl53Ev",
+    "docNumber": "HKLSI26110176",
+    "customerName": "Bluefin Company Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Amy Li Sze Man",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfSTtnmoK",
+    "docNumber": "HKLSI26110177",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr Eric Sze",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfSTtq8xn",
+    "docNumber": "HKLSI26110178",
+    "customerName": "The University of Hong Kong - School of Biomedical Sciences",
+    "shipToAddress": "香港-港大",
+    "contactName": "Ng Wai Loen Brendon",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfSTtowwz",
+    "docNumber": "HKLSI26110180",
+    "customerName": "Hong Kong Baptist University - Department of Chemistry",
+    "shipToAddress": "九龍-浸大",
+    "contactName": "Prof Kelvin Leung’s group",
+    "status": "",
+    "transportQty": ""
   }
 ]
