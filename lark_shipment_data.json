@@ -85475,9 +85475,18 @@
   {
     "recordId": "reczz28UcYppQUMl",
     "docNumber": "HKLDN26110008",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Labware (Macau) Company Limited",
+    "shipToAddress": "OS-Macau",
+    "contactName": "OS-Macau,OS-Macau,九龍-科大,OS-Macau",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UdNTH9Wq4",
+    "docNumber": "HKLSI26110171",
+    "customerName": "The Hong Kong Polytechnic University - Department of Civil and Environmental Engineering",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Emily Fung",
     "status": "",
     "transportQty": ""
   }
