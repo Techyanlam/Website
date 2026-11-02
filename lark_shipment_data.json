@@ -85692,35 +85692,35 @@
     "recordId": "reczz28UizJcwoUw",
     "docNumber": "HKLSI26110192",
     "customerName": "South Island School",
-    "shipToAddress": "50 Nam Fung Road, Aberdeen, Hong Kong ",
-    "contactName": "",
+    "shipToAddress": "香港-深水灣",
+    "contactName": "CN LAM",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28UizJcwhLO",
     "docNumber": "HKLSI26110193",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Smith & Associates Far East Limited",
+    "shipToAddress": "九龍-九龍灣",
+    "contactName": "Elizabeth Chan",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28UizJcwOig",
     "docNumber": "HKLSI26110194",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr Eric Sze",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28UizJcvfWT",
     "docNumber": "HKLSI26110195",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Blue Pearl TKO Desalination Limited",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Dean Mohammad",
     "status": "",
     "transportQty": ""
   }
