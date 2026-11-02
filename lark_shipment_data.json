@@ -85723,5 +85723,14 @@
     "contactName": "Dean Mohammad",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UjQOupAD9",
+    "docNumber": "HKLSI26110196",
+    "customerName": "City University of Hong Kong - State Key Laboratory of Marine Environmental Health (SKLMEH)",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Mr. Aaron NG",
+    "status": "",
+    "transportQty": ""
   }
 ]
