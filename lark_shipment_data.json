@@ -85431,17 +85431,17 @@
     "recordId": "reczz28UcYppRI6H",
     "docNumber": "HKLDN26110062",
     "customerName": "N-Techem International Co., Ltd.",
-    "shipToAddress": "",
-    "contactName": "",
+    "shipToAddress": "九龍-觀塘",
+    "contactName": "Tak Keung Tong",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28UcYppQtH3",
     "docNumber": "HKLSI26110164",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Polytechnic University - Department of Health Technology & Informatics",
+    "shipToAddress": "Y607b, Block Y, Department of Health Technology and Informatic",
+    "contactName": "Cherry Yim",
     "status": "",
     "transportQty": ""
   },
