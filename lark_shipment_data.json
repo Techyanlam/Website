@@ -85588,5 +85588,50 @@
     "contactName": "Prof Kelvin Leung’s group",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfacHkm4b",
+    "docNumber": "HKLSI26110181",
+    "customerName": "The Chinese University of Hong Kong-Earth System Science Programme, Faculty of Science",
+    "shipToAddress": "新界-中大",
+    "contactName": "Carmen HUI",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfadCVVQN",
+    "docNumber": "HKLSI26110182",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Tommy Chan/Clarice Ma",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfadCTy1E",
+    "docNumber": "HKLSI26110183",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Alex Yip",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfadCUmZJ",
+    "docNumber": "HKLSI26110184",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Alex Yip",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28UfadCWFb2",
+    "docNumber": "HKLSI26110185",
+    "customerName": "ALS Technichem (HK) Pty Limited - Organic",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "August Wong",
+    "status": "",
+    "transportQty": ""
   }
 ]
