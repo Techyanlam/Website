@@ -85395,7 +85395,7 @@
     "recordId": "reczz28UcYppTiYC",
     "docNumber": "HKLSI26110159",
     "customerName": "Food and Environmental Hygiene Department-Pest Control advisory Section",
-    "shipToAddress": "九龍觀塘茶果嶺道79 號 容鳳書紀念中心6 樓",
+    "shipToAddress": "九龍-觀塘",
     "contactName": "Ms Cheng",
     "status": "",
     "transportQty": ""
@@ -85403,34 +85403,34 @@
   {
     "recordId": "reczz28UcYppTqQl",
     "docNumber": "HKLSI26110160",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Technological and Higher Education Institute of Hong Kong",
+    "shipToAddress": "新界-青衣",
+    "contactName": "Alex Li SIU FUNG",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28UcYppSANn",
     "docNumber": "HKLSI26110161",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Japan Recreation and Miscellaneous Goods Safety Laboratory",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Hei Chang",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28UcYppSEKS",
     "docNumber": "HKLSI26110162",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Chinese University of Hong Kong - Department of Medicine & Therapeutics",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Simson Luk",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28UcYppRI6H",
     "docNumber": "HKLDN26110062",
-    "customerName": "",
+    "customerName": "N-Techem International Co., Ltd.",
     "shipToAddress": "",
     "contactName": "",
     "status": "",
