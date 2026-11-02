@@ -85440,7 +85440,7 @@
     "recordId": "reczz28UcYppQtH3",
     "docNumber": "HKLSI26110164",
     "customerName": "The Hong Kong Polytechnic University - Department of Health Technology & Informatics",
-    "shipToAddress": "Y607b, Block Y, Department of Health Technology and Informatic",
+    "shipToAddress": "九龍-理大",
     "contactName": "Cherry Yim",
     "status": "",
     "transportQty": ""
@@ -85448,9 +85448,9 @@
   {
     "recordId": "reczz28UcYppQyfv",
     "docNumber": "HKLSI26110165",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Chinese University of Hong Kong - School of Life Sciences",
+    "shipToAddress": "新界-中大",
+    "contactName": "Alice Poon",
     "status": "",
     "transportQty": ""
   },
