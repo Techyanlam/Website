@@ -85924,7 +85924,340 @@
   },
   {
     "recordId": "reczz28V5wmnGmA1",
-    "docNumber": "",
+    "docNumber": "HKLSI26110208",
+    "customerName": "Eurofins MTS Consumer Product Testing Hong Kong Limited",
+    "shipToAddress": "九龍-長沙灣",
+    "contactName": "Eric Thapa",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60YrkQGT",
+    "docNumber": "HKLSI26110209",
+    "customerName": "Hong Kong Community College",
+    "shipToAddress": "九龍-油麻地",
+    "contactName": "游先生 Mr Kelvin Yau",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60YrlGet",
+    "docNumber": "HKLSI26110210",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Cyrus Tsang",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60YrlkJT",
+    "docNumber": "HKLSI26110212",
+    "customerName": "Vickmans Laboratories Limited",
+    "shipToAddress": "九龍-觀塘",
+    "contactName": "Mr Leo Yeung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60YrjoSb",
+    "docNumber": "HKLSI26110213",
+    "customerName": "Neochem Pharmaceutical Laboratories Ltd.",
+    "shipToAddress": "新界-火炭",
+    "contactName": "Lau wing Kwong , Samson",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60YrnAT2",
+    "docNumber": "HKLSI26110214",
+    "customerName": "The Chinese University of Hong Kong-Earth System Science Programme, Faculty of Science",
+    "shipToAddress": "新界-中大",
+    "contactName": "Mandy So",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60YrkBmw",
+    "docNumber": "HKLSI26110215",
+    "customerName": "The University of Hong Kong SPACE - Kowloon East Campus",
+    "shipToAddress": "九龍-九龍灣",
+    "contactName": "Wong Tsz Ho Wendy",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60YrkG1B",
+    "docNumber": "HKLSI26110216",
+    "customerName": "City University of Hong Kong - State Key Laboratory of Marine Environmental Health (SKLMEH)",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Mr. Aaron NG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60foM8rG",
+    "docNumber": "HKLSI26110217",
+    "customerName": "QIMA Testing (HK) Limited",
+    "shipToAddress": "九龍-觀塘",
+    "contactName": "Loska Yeung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60gnFV8o",
+    "docNumber": "HKLSI26110218",
+    "customerName": "The Chinese University of Hong Kong - School of Biomedical Sciences",
+    "shipToAddress": "新界-中大",
+    "contactName": "FU TIN SAI CODY",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60gnDSML",
+    "docNumber": "HKLSI26110219",
+    "customerName": "The University of Hong Kong - School of Biological Sciences",
+    "shipToAddress": "香港-港大",
+    "contactName": "Ms. So Wing Wa, Oscar",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60gnCr4b",
+    "docNumber": "HKLSI26110220",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Qian Xi",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60gnEHLY",
+    "docNumber": "HKLSI26110221",
+    "customerName": "City University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "九龍-城大",
+    "contactName": "HE Shuhan ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60gnFcbA",
+    "docNumber": "HKLSI26110222",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60gnED8M",
+    "docNumber": "HKLSI26110223",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60lOOeFY",
+    "docNumber": "HKLSI26110224",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60mEkQRQ",
+    "docNumber": "HKLSI26110225",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60mEj6Hf",
+    "docNumber": "HKLSI26110226",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60sMYNH4",
+    "docNumber": "HKLSI26110227",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60tDCA7H",
+    "docNumber": "HKLSI26110228",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60tDBcgi",
+    "docNumber": "HKLSI26110229",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60y8w5OZ",
+    "docNumber": "HKLSI26110230",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60yxloTw",
+    "docNumber": "HKLSI26110232",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60yxki8w",
+    "docNumber": "HKLSI26110234",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V60yxjpal",
+    "docNumber": "HKLSI26110236",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V61b1Px3E",
+    "docNumber": "HKLSI26110238",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V61gJm1HO",
+    "docNumber": "HKLSI26110239",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V61koVsk3",
+    "docNumber": "HKLSI26110242",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V61pxkw8m",
+    "docNumber": "HKLSI26110245",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V61qimdwP",
+    "docNumber": "HKLSI26110246",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V61qimjLg",
+    "docNumber": "HKLSI26110247",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V61qimyOT",
+    "docNumber": "HKLSI26110248",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V61qim54u",
+    "docNumber": "HKLSI26110249",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V61wuEbN0",
+    "docNumber": "HKLDN26110157",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V61xW7xqH",
+    "docNumber": "HKLSI26110250",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V62820xk4",
+    "docNumber": "HKLSI26110251",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V62821RVH",
+    "docNumber": "HKLSI26110252",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V6281z5cR",
+    "docNumber": "HKLSI26110253",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
