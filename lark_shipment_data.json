@@ -85912,5 +85912,23 @@
     "contactName": "Tin Poon",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V5wmCQg14",
+    "docNumber": "HKLSI26110255",
+    "customerName": "Hong Kong Applied Science and Technology Research Institute Company Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Henry S. H. NG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V5wmnGmA1",
+    "docNumber": "",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
