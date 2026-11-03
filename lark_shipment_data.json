@@ -86281,5 +86281,50 @@
     "contactName": "Miko Kan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V7HP42hRu",
+    "docNumber": "HKLSI26110259",
+    "customerName": "Hong Kong Baptist University - Department of Chemistry",
+    "shipToAddress": "九龍-浸大",
+    "contactName": "Mr. Mak",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V7HPvUv3C",
+    "docNumber": "HKLSI26110261",
+    "customerName": "The University Of Hong Kong - Department of Electrical & Electronic Engineering",
+    "shipToAddress": "香港-港大",
+    "contactName": "Zhiwei Long",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V7HPvUt2M",
+    "docNumber": "HKLSI26110262",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V7HPvXcyE",
+    "docNumber": "HKLSI26110263",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V7HPvWaRY",
+    "docNumber": "HKLSI26110264",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
