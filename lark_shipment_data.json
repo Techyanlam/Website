@@ -86357,9 +86357,18 @@
   {
     "recordId": "reczz28V7OmhMVVU",
     "docNumber": "HKLSI26110266",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hong Kong Quantum AI Lab Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Andy Hung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V7Vnk337C",
+    "docNumber": "HKLSI26110267",
+    "customerName": "ACT GENOMICS (HONG KONG) LTD",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Justin Siu",
     "status": "",
     "transportQty": ""
   }
