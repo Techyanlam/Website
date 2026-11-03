@@ -85741,5 +85741,32 @@
     "contactName": "Mr. Aaron NG",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V14dfpJ1S",
+    "docNumber": "HKLSI26110200",
+    "customerName": "Government Laboratory - Chinese Materia Medica Chemistry Section(CMMC)",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Chan Kam Kit",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V14fH5Zqh",
+    "docNumber": "HKLSI26110201",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V14fH5q30",
+    "docNumber": "HKLSI26110202",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
