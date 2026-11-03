@@ -85819,13 +85819,76 @@
     "docNumber": "HKLDN26110087",
     "customerName": "Hong Kong Applied Science and Technology Research Institute Company Limited",
     "shipToAddress": "新界-科學園",
-    "contactName": "",
+    "contactName": "Angus Lau",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28V4915Q6jA",
     "docNumber": "HKLDN26110109",
+    "customerName": "Department of Health - Government Chinese Medicines Testing Institute",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Ms Tracy Lai Chui-ying",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V4IFtt9xG",
+    "docNumber": "HKLSI26110240",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V4IGn9Afu",
+    "docNumber": "HKLSI26110241",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V4IGn8Eo6",
+    "docNumber": "HKLSI26110243",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V4IGn8xL7",
+    "docNumber": "HKLDN26100962",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V4IGn5I4L",
+    "docNumber": "HKLDN26100963",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V4IGn5RRA",
+    "docNumber": "HKLDN26110119",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V4IGn821d",
+    "docNumber": "HKLDN26110145",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
