@@ -86371,5 +86371,59 @@
     "contactName": "Justin Siu",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V8AB0CIq6",
+    "docNumber": "HKLDN26110167",
+    "customerName": "Hong Kong Light-Emitting Molecular Materials Limited",
+    "shipToAddress": "香港-港大",
+    "contactName": "Lihui Zhu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V8ABc4FR6",
+    "docNumber": "HKLDN26110168",
+    "customerName": "Laboratory for Synthetic Chemistry and Chemical Biology Limited ",
+    "shipToAddress": "香港-港大",
+    "contactName": "Zhu Lihui",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V8AEExJlU",
+    "docNumber": "HKLDN26110169",
+    "customerName": "Hong Kong Quantum AI Lab Limited",
+    "shipToAddress": "香港-港大",
+    "contactName": "Sarah Chow",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V8AEEwVsA",
+    "docNumber": "HKLDN26110170",
+    "customerName": "Hong Kong Quantum AI Lab Limited",
+    "shipToAddress": "香港-港大",
+    "contactName": "Sarah Chow",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V8DwxQJJU",
+    "docNumber": "HKLDN26110171",
+    "customerName": "ChemTechChem Biotechnology (HK) Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Zhifeng Zhang",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28V8Fd8z4B8",
+    "docNumber": "HKLSI26110273",
+    "customerName": "Bright Future Pharmaceutical Lab. Limited",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Jenny Wong",
+    "status": "",
+    "transportQty": ""
   }
 ]
