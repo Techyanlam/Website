@@ -86920,5 +86920,14 @@
     "contactName": "Mr. Choi Wai Lun",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VY4Tz6AEv",
+    "docNumber": "HKLSI26110357",
+    "customerName": "The University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "香港-港大",
+    "contactName": "Yinian Tang (CYMC307D)",
+    "status": "",
+    "transportQty": ""
   }
 ]
