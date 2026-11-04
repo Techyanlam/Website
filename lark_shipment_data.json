@@ -86893,5 +86893,23 @@
     "contactName": "Cecily Law",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VWR7126Rc",
+    "docNumber": "HKLSI26110350",
+    "customerName": "Government Laboratory - Additives, Contaminants and Composition Section (ACC)",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "Kong Mei Fung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VWR7s8Gmz",
+    "docNumber": "HKLSI26110351",
+    "customerName": "Wai Fat Pharmaceutical Laboratory LTD.",
+    "shipToAddress": "九龍-觀塘",
+    "contactName": "Ronald Wong",
+    "status": "",
+    "transportQty": ""
   }
 ]
