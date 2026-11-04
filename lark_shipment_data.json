@@ -86474,9 +86474,18 @@
   {
     "recordId": "reczz28VPsd2Ino8",
     "docNumber": "HKLSI26110285",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The University of Hong Kong - Department of Clinical Oncology",
+    "shipToAddress": "香港-港大",
+    "contactName": "Himmy Leung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VPuA0uDl3",
+    "docNumber": "HKLDN26110148",
+    "customerName": "The University of Hong Kong - AIDS Institute",
+    "shipToAddress": "香港-港大",
+    "contactName": "Hallie Kwan",
     "status": "",
     "transportQty": ""
   }
