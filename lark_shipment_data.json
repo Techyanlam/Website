@@ -86681,27 +86681,27 @@
   {
     "recordId": "reczz28VSozt8mK5",
     "docNumber": "HKLSI26110302",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr Eric Sze",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28VSozt7oFf",
     "docNumber": "HKLSI26110303",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "UL VS Hong Kong Limited - Chemical Department",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Ms Joanne Wong",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28VSozt8gdZ",
     "docNumber": "HKLSI26110304",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Chan Wai Sum",
     "status": "",
     "transportQty": ""
   },
