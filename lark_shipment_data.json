@@ -86537,6 +86537,24 @@
   {
     "recordId": "reczz28VQVSrg9bi",
     "docNumber": "HKLDN26110190",
+    "customerName": "The University of Hong Kong - AIDS Institute",
+    "shipToAddress": "香港-港大",
+    "contactName": "Hallie Kwan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VQdHvlf7o",
+    "docNumber": "HKLSI26110288",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VQdND4Mjf",
+    "docNumber": "HKLSI26110291",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
