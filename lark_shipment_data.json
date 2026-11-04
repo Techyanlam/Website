@@ -86857,5 +86857,41 @@
     "contactName": "Fanny Chu ",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VWJMozxYU",
+    "docNumber": "HKLSI26110343",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Stanley Chow",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VWJoDkMiF",
+    "docNumber": "HKLSI26110346",
+    "customerName": "AIM Retail Hong Kong Limited",
+    "shipToAddress": "九龍-旺角",
+    "contactName": "Vladimir & Askar Fayzullin",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VWK24ZwUd",
+    "docNumber": "HKLSI26110347",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VWKYKlW4s",
+    "docNumber": "HKLSI26110345",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
