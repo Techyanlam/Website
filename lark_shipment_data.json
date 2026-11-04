@@ -86519,18 +86519,18 @@
   {
     "recordId": "reczz28VQVSrfoxX",
     "docNumber": "HKLDN26110150",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Department of Health - Government Chinese Medicines Testing Institute",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "NG Yuet-wa",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28VQVSrfjfo",
     "docNumber": "HKLSI26110293",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Government Laboratory - Environmental Chem A",
+    "shipToAddress": "8/F, Chai Wan Government Complex and Vehicle Depot, 11 Sheung Tat Street, Chai Wan",
+    "contactName": "Lai Wai Yi Rickly",
     "status": "",
     "transportQty": ""
   },
