@@ -86587,5 +86587,23 @@
     "contactName": "Tsz Ho",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VRP2I8MUs",
+    "docNumber": "HKLSI26110298",
+    "customerName": "AJA O-Power Limited",
+    "shipToAddress": "新界-上水",
+    "contactName": "Chelsea",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VRP32cnsN",
+    "docNumber": "HKLSI26110300 ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
