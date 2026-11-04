@@ -86636,18 +86636,18 @@
   {
     "recordId": "reczz28VS7LC7bO1",
     "docNumber": "HKLSI26110311",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hohenstein Laboratories (HK) Limited",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Wing Lam",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28VS7LC9jDG",
     "docNumber": "HKLSI26110313",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "TUV SUD Hong Kong Limited",
+    "shipToAddress": "元朗宏業西街33號元朗貿易中心19樓",
+    "contactName": "Sandra Chu",
     "status": "",
     "transportQty": ""
   },
