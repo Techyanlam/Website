@@ -85650,7 +85650,7 @@
     "shipToAddress": "Schleidenstr. 1\n22083 Hamburg",
     "contactName": "Angela Schultz",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28UizAZ9XQn",
@@ -86486,6 +86486,15 @@
     "customerName": "The University of Hong Kong - AIDS Institute",
     "shipToAddress": "香港-港大",
     "contactName": "Hallie Kwan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VPxUmqSwq",
+    "docNumber": "HKLSI26110287",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
