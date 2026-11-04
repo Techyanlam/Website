@@ -86343,7 +86343,7 @@
     "shipToAddress": "OS-Macau",
     "contactName": "OS-Macau",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28V7OmhLWXR",
@@ -86352,7 +86352,7 @@
     "shipToAddress": "OS-Macau",
     "contactName": "OS-Macau",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28V7OmhMVVU",
@@ -86603,6 +86603,69 @@
     "customerName": "INDOCHINA COMPANY",
     "shipToAddress": "OS-Indonesia",
     "contactName": "Thuan Doan Thi (Ms ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VS7J7d0bp",
+    "docNumber": "HKLSI26110306",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VS7JkI4k6",
+    "docNumber": "HKLSI26110308",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VS7LC8qb7",
+    "docNumber": "HKLSI26110309",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VS7LC7bO1",
+    "docNumber": "HKLSI26110311",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VS7LC9jDG",
+    "docNumber": "HKLSI26110313",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VS7LC5xt3",
+    "docNumber": "HKLSI26110315",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VS7LC8NiP",
+    "docNumber": "HKLSI26110318",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
