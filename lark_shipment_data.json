@@ -86438,9 +86438,18 @@
   {
     "recordId": "reczz28VPhb8sXXR",
     "docNumber": "HKLSI26110282",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "香港-港大",
+    "contactName": "Qingxin GUO (CYMC410)",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VPn13t9IU",
+    "docNumber": "HKLDN26110141",
+    "customerName": "Department of Health - Government Chinese Medicines Testing Institute",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Ms Tracy Lai Chui-ying",
     "status": "",
     "transportQty": ""
   }
