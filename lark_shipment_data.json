@@ -86646,7 +86646,7 @@
     "recordId": "reczz28VS7LC9jDG",
     "docNumber": "HKLSI26110313",
     "customerName": "TUV SUD Hong Kong Limited",
-    "shipToAddress": "元朗宏業西街33號元朗貿易中心19樓",
+    "shipToAddress": "新界-元朗",
     "contactName": "Sandra Chu",
     "status": "",
     "transportQty": ""
@@ -86654,9 +86654,9 @@
   {
     "recordId": "reczz28VS7LC5xt3",
     "docNumber": "HKLSI26110315",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Soils & Materials Engineering Co., Limited",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Patrick Tam",
     "status": "",
     "transportQty": ""
   },
