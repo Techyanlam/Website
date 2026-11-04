@@ -86879,18 +86879,18 @@
   {
     "recordId": "reczz28VWK24ZwUd",
     "docNumber": "HKLSI26110347",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Chinese University of Hong Kong - School of Pharmacy",
+    "shipToAddress": "新界-中大",
+    "contactName": "Celia Tang",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28VWKYKlW4s",
     "docNumber": "HKLSI26110345",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The University of Hong Kong - The Swire Institute of Marine Science",
+    "shipToAddress": "香港-港大",
+    "contactName": "Cecily Law",
     "status": "",
     "transportQty": ""
   }
