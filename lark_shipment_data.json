@@ -86497,5 +86497,50 @@
     "contactName": "Mr. Choi Wai Lun",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VQVROlm1D",
+    "docNumber": "HKLDN26110118",
+    "customerName": "Department of Health - Government Chinese Medicines Testing Institute",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "NG Yuet-wa",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VQVSrdXhT",
+    "docNumber": "HKLSI26110290",
+    "customerName": "Po Leung Kuk Lo Kit Sing (1983) College",
+    "shipToAddress": "新界-青衣",
+    "contactName": "Shiu Yik Ting",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VQVSrfoxX",
+    "docNumber": "HKLDN26110150",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VQVSrfjfo",
+    "docNumber": "HKLSI26110293",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VQVSrg9bi",
+    "docNumber": "HKLDN26110190",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
