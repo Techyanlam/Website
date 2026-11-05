@@ -85839,7 +85839,7 @@
     "shipToAddress": "新界-科學園",
     "contactName": "Ye Ziyun",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28V4IGn9Afu",
@@ -86550,7 +86550,7 @@
     "shipToAddress": "新界-文錦渡",
     "contactName": "Mr. Terry Lee",
     "status": "",
-    "transportQty": ""
+    "transportQty": "10"
   },
   {
     "recordId": "reczz28VQdND4Mjf",
@@ -86559,7 +86559,7 @@
     "shipToAddress": "新界-科學園",
     "contactName": "Ashley Leung",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28VQk4NDLZP",
@@ -86577,7 +86577,7 @@
     "shipToAddress": "新界-科學園",
     "contactName": "PeiYun Xie",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28VQk5FbMZJ",
@@ -86586,7 +86586,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Tsz Ho",
     "status": "",
-    "transportQty": ""
+    "transportQty": "7"
   },
   {
     "recordId": "reczz28VRP2I8MUs",
@@ -86613,7 +86613,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Rosana Poon",
     "status": "",
-    "transportQty": ""
+    "transportQty": "10"
   },
   {
     "recordId": "reczz28VS7JkI4k6",
@@ -86927,15 +86927,6 @@
     "customerName": "The University of Hong Kong - Department of Chemistry",
     "shipToAddress": "香港-港大",
     "contactName": "Yinian Tang (CYMC307D)",
-    "status": "",
-    "transportQty": ""
-  },
-  {
-    "recordId": "reczz28Vokzq3UKj",
-    "docNumber": "Test",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "Test",
     "status": "",
     "transportQty": ""
   }
