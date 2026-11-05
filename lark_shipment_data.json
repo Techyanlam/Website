@@ -86929,5 +86929,14 @@
     "contactName": "Yinian Tang (CYMC307D)",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Vokzq3UKj",
+    "docNumber": "Test",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "Test",
+    "status": "",
+    "transportQty": ""
   }
 ]
