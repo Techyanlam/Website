@@ -86847,7 +86847,7 @@
     "shipToAddress": "九龍-何文田",
     "contactName": "Mr Oliver Yeung ",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28VVW6vsUAG",
@@ -87215,6 +87215,42 @@
     "customerName": "Government Laboratory - Supplies Section",
     "shipToAddress": "九龍-何文田",
     "contactName": "Chan Yiu-wai",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VvQlOv4Jz",
+    "docNumber": "HKLSI26110387",
+    "customerName": "City University of Hong Kong – Department of Infectious Diseases and Public Health",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Miss Gigi WONG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VvQmSM7i5",
+    "docNumber": "HKLSI26110388",
+    "customerName": "City University of Hong Kong – Department of Infectious Diseases and Public Health",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Miss Gigi WONG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VvQmSKEJS",
+    "docNumber": "HKLSI26110389",
+    "customerName": "City University of Hong Kong – Department of Infectious Diseases and Public Health",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Miss Gigi WONG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VvQmSJnCV",
+    "docNumber": "HKLSI26110390",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
