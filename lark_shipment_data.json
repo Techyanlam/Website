@@ -86929,5 +86929,68 @@
     "contactName": "Yinian Tang (CYMC307D)",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VqdrxGC7a",
+    "docNumber": "HKLSI26110360",
+    "customerName": "Tung Wah College",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "Joey Lam",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VqdsrCLPO",
+    "docNumber": "HKLDN26110229",
+    "customerName": "FK ELECTRONICS (HONG KONG) LIMITED",
+    "shipToAddress": "元朗区 新田新田新界落马洲研发路19号港深创科园9号大楼",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VqdsrBcen",
+    "docNumber": "HKLSI26110356",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Vqdsr9NkL",
+    "docNumber": "HKLSI26110362",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VqdsrAWkx",
+    "docNumber": "HKLSI26110363",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VqdsrA9iP",
+    "docNumber": "HKLSI26120007",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28VqdsrCiYH",
+    "docNumber": "HKLSI26120008",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
