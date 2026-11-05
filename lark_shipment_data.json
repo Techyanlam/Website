@@ -86992,5 +86992,23 @@
     "contactName": "Ms. Eva Fung",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Vrt94qxEm",
+    "docNumber": "HKLSI26110366",
+    "customerName": "Government Laboratory - Trace Elements Section (TE)",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "Ms Irene Ng ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Vrt9ylWMr",
+    "docNumber": "HKLSI26110367",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
