@@ -87271,5 +87271,68 @@
     "contactName": "GUO Tianyu",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WEHqyoxnE",
+    "docNumber": "HKLSI26110396",
+    "customerName": "The University of Hong Kong – CPOS Bioresearch Support Core",
+    "shipToAddress": "香港-港大",
+    "contactName": "Zoey ZHAO",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WEHs5Zwiz",
+    "docNumber": "HKLSI26110399",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WEHs5Yrzx",
+    "docNumber": "HKLSI26110400",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WEHs5Z0vC",
+    "docNumber": "HKLSI26110402",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WEHs5XfH3",
+    "docNumber": "HKLSI26110403",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WEHs5aH7A",
+    "docNumber": "HKLSI26110404",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WEHs5ZOhI",
+    "docNumber": "HKLSI26110405",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
