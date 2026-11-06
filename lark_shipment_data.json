@@ -86730,7 +86730,7 @@
     "shipToAddress": "新界-元朗",
     "contactName": "Sandra Chu",
     "status": "",
-    "transportQty": "1"
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28VSozt9Kls",
@@ -87018,7 +87018,7 @@
     "shipToAddress": "新界-沙田",
     "contactName": "Mr. Lam Tsing TSUN",
     "status": "",
-    "transportQty": "1"
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28VtXGJR6uC",
@@ -87311,9 +87311,9 @@
   {
     "recordId": "reczz28WEHs5XfH3",
     "docNumber": "HKLSI26110403",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ritchie Xu",
     "status": "",
     "transportQty": ""
   },
