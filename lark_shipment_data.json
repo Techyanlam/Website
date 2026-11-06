@@ -85794,7 +85794,7 @@
     "shipToAddress": "九龍-何文田",
     "contactName": "Kelvin Cheung",
     "status": "",
-    "transportQty": ""
+    "transportQty": "4"
   },
   {
     "recordId": "reczz28V4915R3JM",
@@ -86604,7 +86604,7 @@
     "shipToAddress": "OS-Indonesia",
     "contactName": "Thuan Doan Thi (Ms ",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28VS7J7d0bp",
@@ -86955,7 +86955,7 @@
     "shipToAddress": "九龍-浸大",
     "contactName": "Kelvin CHUNG",
     "status": "",
-    "transportQty": ""
+    "transportQty": "11"
   },
   {
     "recordId": "reczz28Vqdsr9NkL",
@@ -87350,6 +87350,24 @@
     "customerName": "Li Chung Shing Tong (Holdings) Limited",
     "shipToAddress": "新界-大埔",
     "contactName": "Kelvin Lau",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WHuyxBDam",
+    "docNumber": "HKLSI26110412",
+    "customerName": "TUV Rheinland Hong Kong Limited - Organic Department",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Kamy Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WHuzfO4Cu",
+    "docNumber": "",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
