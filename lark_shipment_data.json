@@ -86874,7 +86874,7 @@
     "shipToAddress": "九龍-旺角",
     "contactName": "Vladimir & Askar Fayzullin",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28VWK24ZwUd",
@@ -86901,7 +86901,7 @@
     "shipToAddress": "九龍-何文田",
     "contactName": "Kong Mei Fung",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28VWR7s8Gmz",
@@ -86910,7 +86910,7 @@
     "shipToAddress": "九龍-觀塘",
     "contactName": "Ronald Wong",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28VX9D7aRZW",
@@ -87333,7 +87333,7 @@
     "shipToAddress": "九龍-將軍澳",
     "contactName": "Chan Kam Kit",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28WEa2dKEYw",
@@ -87382,7 +87382,43 @@
   },
   {
     "recordId": "reczz28WJsyjfYOp",
-    "docNumber": "",
+    "docNumber": "HKLSI26110418",
+    "customerName": "The Hong Kong Polytechnic University - Department of Civil and Environmental Engineering",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Amy Ho Sze Man",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WKLpTkLSA",
+    "docNumber": "HKLSI26110419",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WKLpTmqkO",
+    "docNumber": "HKLDN26110256",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WKLpTnb0t",
+    "docNumber": "HKLDN26110257",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WKLpTl0Ri",
+    "docNumber": "HKLSI26110420",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
