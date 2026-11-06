@@ -87253,5 +87253,23 @@
     "contactName": "Candice Tong",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WD1hEzpD5",
+    "docNumber": "HKLSI26110394",
+    "customerName": "Amoy Food Limited",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Q.A. Dept.",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WD1i9jtpW",
+    "docNumber": "HKLSI26110395",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
