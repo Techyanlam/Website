@@ -87337,10 +87337,19 @@
   },
   {
     "recordId": "reczz28WEa2dKEYw",
-    "docNumber": "",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "docNumber": "HKLSI26110397",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Shing / Alex Yip",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28WEbRP5RWY",
+    "docNumber": "HKLSI26110398",
+    "customerName": "Li Chung Shing Tong (Holdings) Limited",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Kelvin Lau",
     "status": "",
     "transportQty": ""
   }
