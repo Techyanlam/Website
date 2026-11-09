@@ -87568,5 +87568,122 @@
     "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XRwrB7IOL",
+    "docNumber": "HKLDN26110337",
+    "customerName": "Labware (Macau) Company Limited",
+    "shipToAddress": "OS-Macau",
+    "contactName": "魏怡然",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XRws3cTdG",
+    "docNumber": "HKLSI26110451",
+    "customerName": "Centre for Regenerative Medicine and Health, Hong Kong Institute of Science & Innovation, Chinese Academy of Sciences",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Lanny Zou",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XRws3bc4z",
+    "docNumber": "HKLDN26110347 ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XRws3bCL8",
+    "docNumber": "HKLSI26110452",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XT9TJ6vZ5",
+    "docNumber": "HKLSI26110455",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XT9U3x8Pe",
+    "docNumber": "HKLDN26110327",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XT9U3yoza",
+    "docNumber": "HKLDN26110328",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XT9U3zAkA",
+    "docNumber": "HKLDN26110329",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XT9U40H7s",
+    "docNumber": "HKLDN26110330",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XT9U3yuvw",
+    "docNumber": "HKLDN26110332",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XT9U40SWV",
+    "docNumber": "HKLDN26110333",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XT9U40O3Q",
+    "docNumber": "HKLDN26110348 ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XT9kNsWeK",
+    "docNumber": "",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
