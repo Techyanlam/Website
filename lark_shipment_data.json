@@ -87676,5 +87676,23 @@
     "contactName": "魏怡然",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XTyG2uP5q",
+    "docNumber": "HKLSI26110461",
+    "customerName": "The University of Hong Kong - School of Biological Sciences",
+    "shipToAddress": "香港-港大",
+    "contactName": "Ms. Tse Mei Ying, Iris",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XTyH0XnnZ",
+    "docNumber": "HKLSI26110462",
+    "customerName": "Fortune Pharmacal Co. Limited",
+    "shipToAddress": "50-68, Wang Lok Street,    ",
+    "contactName": "Jos Ki",
+    "status": "",
+    "transportQty": ""
   }
 ]
