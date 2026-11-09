@@ -86883,7 +86883,7 @@
     "shipToAddress": "新界-中大",
     "contactName": "Celia Tang",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28VWKYKlW4s",
@@ -87027,7 +87027,7 @@
     "shipToAddress": "新界-科學園",
     "contactName": "Jimmy HON",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28VtxRDNxUb",
@@ -87261,7 +87261,7 @@
     "shipToAddress": "新界-大埔",
     "contactName": "Q.A. Dept.",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28WD1i9jtpW",
@@ -87270,7 +87270,7 @@
     "shipToAddress": "新界-中大",
     "contactName": "GUO Tianyu",
     "status": "",
-    "transportQty": ""
+    "transportQty": "4"
   },
   {
     "recordId": "reczz28WEHqyoxnE",
@@ -87288,7 +87288,7 @@
     "shipToAddress": "新界-大埔",
     "contactName": "Paul Lee",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28WEHs5Yrzx",
@@ -87297,7 +87297,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "May Pang",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28WEHs5Z0vC",
@@ -87324,7 +87324,7 @@
     "shipToAddress": "新界-粉嶺",
     "contactName": "Stanley Chow",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28WEHs5ZOhI",
@@ -87360,7 +87360,7 @@
     "shipToAddress": "新界-荃灣",
     "contactName": "Kamy Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28WHuzfO4Cu",
@@ -87369,7 +87369,7 @@
     "shipToAddress": "新界-中大",
     "contactName": "Alice Poon",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28WIbgGEp3l",
@@ -87378,7 +87378,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Patrick Tam",
     "status": "",
-    "transportQty": ""
+    "transportQty": "4"
   },
   {
     "recordId": "reczz28WJsyjfYOp",
@@ -87422,6 +87422,33 @@
     "customerName": "Diocesan Girls' School",
     "shipToAddress": "九龍-佐敦",
     "contactName": "Eric Cheng",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XP1s4eVkm",
+    "docNumber": "HKLSI26120011",
+    "customerName": "Centre for Regenerative Medicine and Health, Hong Kong Institute of Science & Innovation, Chinese Academy of Sciences",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Lanny Zou",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XP1t0OVNc",
+    "docNumber": "HKLSI26110423",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XP1t0PaOe",
+    "docNumber": "HKLDN26110320",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
