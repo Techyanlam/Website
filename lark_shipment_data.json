@@ -87446,6 +87446,15 @@
   {
     "recordId": "reczz28XP1t0PaOe",
     "docNumber": "HKLDN26110320",
+    "customerName": "HK LABWARE CO LTD",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Winniw",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XP9PzE65Q",
+    "docNumber": "HKLSI26110429",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
