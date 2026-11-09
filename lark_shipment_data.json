@@ -87589,19 +87589,19 @@
   },
   {
     "recordId": "reczz28XRws3bc4z",
-    "docNumber": "HKLDN26110347 ",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "docNumber": "HKLDN26110347",
+    "customerName": "Labware (Macau) Company Limited",
+    "shipToAddress": "OS-Macau",
+    "contactName": "OS-Macau",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28XRws3bCL8",
     "docNumber": "HKLSI26110452",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Polytechnic University - Industrial Centre",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Mr. Tsang / Mr. Lee",
     "status": "",
     "transportQty": ""
   },
