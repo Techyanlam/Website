@@ -87455,9 +87455,18 @@
   {
     "recordId": "reczz28XP9PzE65Q",
     "docNumber": "HKLSI26110429",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "TUV Rheinland Hong Kong Limited - Organic Department",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Kamy Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XPDSDYJhj",
+    "docNumber": "HKLSI26110430",
+    "customerName": "Hong Kong Baptist University - Department of Chemistry",
+    "shipToAddress": "九龍-浸大",
+    "contactName": "Qi MIAO",
     "status": "",
     "transportQty": ""
   }
