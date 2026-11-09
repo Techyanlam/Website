@@ -87617,9 +87617,9 @@
   {
     "recordId": "reczz28XT9U3x8Pe",
     "docNumber": "HKLDN26110327",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hong Kong Light-Emitting Molecular Materials Limited",
+    "shipToAddress": "香港-港大",
+    "contactName": "Lihui Zhu",
     "status": "",
     "transportQty": ""
   },
@@ -87671,15 +87671,6 @@
   {
     "recordId": "reczz28XT9U40O3Q",
     "docNumber": "HKLDN26110348 ",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
-    "status": "",
-    "transportQty": ""
-  },
-  {
-    "recordId": "reczz28XT9kNsWeK",
-    "docNumber": "",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
