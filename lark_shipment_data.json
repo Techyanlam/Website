@@ -87690,8 +87690,62 @@
     "recordId": "reczz28XTyH0XnnZ",
     "docNumber": "HKLSI26110462",
     "customerName": "Fortune Pharmacal Co. Limited",
-    "shipToAddress": "50-68, Wang Lok Street,    ",
+    "shipToAddress": "新界-元朗",
     "contactName": "Jos Ki",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XU1m4mRd4",
+    "docNumber": "HKLSI26110443",
+    "customerName": "Advanced Biomedical Instrumentation Centre Limited",
+    "shipToAddress": "香港-港大",
+    "contactName": "Kehao Zeng / Zheqi Chen",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XU1mxOyJc",
+    "docNumber": "HKLSI26110445",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Candy Luk",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XU1mxMRSQ",
+    "docNumber": "HKLSI26110447",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr Eric Sze",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XU1mxPkqy",
+    "docNumber": "HKLSI26110448",
+    "customerName": "Hong Kong Productivity Council - Green Living and Innovation Division (GID)",
+    "shipToAddress": "九龍-九龍塘",
+    "contactName": "Jimmy Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XU1mxNvfv",
+    "docNumber": "HKLSI26110450",
+    "customerName": "Chu Suk Ching ",
+    "shipToAddress": "香港-鰂魚涌",
+    "contactName": "Fanny Chu ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XU6qZ6PUc",
+    "docNumber": "HKLSI26110463",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
