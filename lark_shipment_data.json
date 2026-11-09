@@ -87912,8 +87912,17 @@
     "transportQty": ""
   },
   {
-    "recordId": "reczz28XWUgZzZEj",
-    "docNumber": "HKLG26110093",
+    "recordId": "reczz28XWXTr9mbd",
+    "docNumber": "HKLSI26110493",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr Terry Fon",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XWYUhxUpx",
+    "docNumber": "HKLSI26110488",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
@@ -87921,8 +87930,8 @@
     "transportQty": ""
   },
   {
-    "recordId": "reczz28XWUhPDZ4G",
-    "docNumber": "HKLG26110094",
+    "recordId": "reczz28XWYVdxblM",
+    "docNumber": "HKLSI26110491",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
