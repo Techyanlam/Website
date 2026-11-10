@@ -88234,5 +88234,32 @@
     "contactName": "Dennis Ku",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xsy1iitQW",
+    "docNumber": "HKLDN26110373",
+    "customerName": "Department of Health - Government Chinese Medicines Testing Institute",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Ms Cynthia KWONG / Ms Tracy LAI",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xsy2Zps4u",
+    "docNumber": "HKLSI26110508",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xsy2ZoSuk",
+    "docNumber": "HKLSI26110509",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
