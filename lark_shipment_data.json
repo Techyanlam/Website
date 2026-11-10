@@ -88288,5 +88288,23 @@
     "contactName": "Bosco Chan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XuAy9eAr1",
+    "docNumber": "HKLSI26110514",
+    "customerName": "The Chinese University of Hong Kong - School of Biomedical Sciences",
+    "shipToAddress": "新界-中大",
+    "contactName": "Dexuan Cui",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XuAz0Cbt1",
+    "docNumber": "HKLSI26110515",
+    "customerName": "The Chinese University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "新界-中大",
+    "contactName": "Mr. KY Kwong",
+    "status": "",
+    "transportQty": ""
   }
 ]
