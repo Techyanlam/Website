@@ -88270,5 +88270,23 @@
     "contactName": "Amy Ho Sze Man",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XtVTzJE6x",
+    "docNumber": "HKLSI26110512",
+    "customerName": "Europharm Laboratoires Co. Limited",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Mr. Choi Wai Lun",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XtVUmEMQC",
+    "docNumber": "HKLDN26110380",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
