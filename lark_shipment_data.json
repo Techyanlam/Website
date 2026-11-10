@@ -88306,5 +88306,23 @@
     "contactName": "Mr. KY Kwong",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XuxQIhCLL",
+    "docNumber": "HKLDN26110279",
+    "customerName": "King's College",
+    "shipToAddress": "香港-西營盤",
+    "contactName": "Gordon Cheung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XuxRv2fWP",
+    "docNumber": "HKLDN26110376",
+    "customerName": "King's College",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
