@@ -88212,8 +88212,26 @@
     "recordId": "reczz28XsnvUot1h",
     "docNumber": "HKLSI26110510",
     "customerName": "The University of Hong Kong - CPOS Bioreagent Core",
-    "shipToAddress": "6/F, The Hong Kong Jockey Club Building for Interdisciplinary Research\n5 Sassoon Road, Pokfulam, Hong Kong",
+    "shipToAddress": "香港-港大",
     "contactName": "Joyce Fung/PM Core",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xst3kGBkt",
+    "docNumber": "HKLSI26110505",
+    "customerName": "Hong Kong Metropolitan University",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "Agnes Cheung / Chen Yingya",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XstCAE8sc",
+    "docNumber": "HKLSI26110506",
+    "customerName": "Quality Control Consultants Limited",
+    "shipToAddress": "新界-火炭",
+    "contactName": "Dennis Ku",
     "status": "",
     "transportQty": ""
   }
