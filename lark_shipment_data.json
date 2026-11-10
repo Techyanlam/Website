@@ -88009,5 +88009,149 @@
     "contactName": "MAK, Tsz Fung",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1dW78wA",
+    "docNumber": "HKLSI26110501",
+    "customerName": "City University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "九龍-城大",
+    "contactName": "HE Shuhan ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eL8V3Z",
+    "docNumber": "HKLDN26100001",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eL7Urf",
+    "docNumber": "HKLDN26100039",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eL9lBf",
+    "docNumber": "HKLDN26100347",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eL6a3G",
+    "docNumber": "HKLDN26110002",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eL9Kuv",
+    "docNumber": "HKLDN26110007        ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eLA8bH",
+    "docNumber": "HKLDN26110021",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eL7KiJ",
+    "docNumber": "HKLDN26110070 ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eL7vqu",
+    "docNumber": "HKLDN26110198        ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eL941P",
+    "docNumber": "HKLDN26110281 ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eL7NJe",
+    "docNumber": "HKLDN26110282       ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eL8gLV",
+    "docNumber": "LTSG26090029  ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1eL90zM",
+    "docNumber": "LTSG26100001        ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq1zlWOUE",
+    "docNumber": "LTSG26100003        ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq2RJMuBl",
+    "docNumber": "LTSG26100004        ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xq3AhkHrv",
+    "docNumber": " LTSG26100032        ",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
