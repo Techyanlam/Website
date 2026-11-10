@@ -87982,5 +87982,23 @@
     "contactName": "Lihui Zhu (CYMCLG103CMC)",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Xoe9NqBC1",
+    "docNumber": "HKLSI26110500",
+    "customerName": "Hohenstein Laboratories (HK) Limited",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Hok Wing Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28XoeFV5J2O",
+    "docNumber": "LALDN26100047",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
