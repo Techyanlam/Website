@@ -88324,5 +88324,59 @@
     "contactName": "Gordon Cheung",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YBEdSMpNs",
+    "docNumber": "HKLSI26110522",
+    "customerName": "The Hong Kong Polytechnic University – Department of Food Science and Nutrition(FSN)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YBEeSMqMm",
+    "docNumber": "HKLSI26110525",
+    "customerName": "TUV SUD Hong Kong Limited",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Sandra Chu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YBEeSOCYN",
+    "docNumber": "HKLSI26110527",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Cynthia Lee ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YBEeSQMYD",
+    "docNumber": "HKLSI26110530",
+    "customerName": "The University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "香港-港大",
+    "contactName": "Derek Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YBEeSOWCm",
+    "docNumber": "HKLSI26110533",
+    "customerName": "The Hong Kong University of Science and Technology - Department of CLS",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Simon Yip Ka Ming",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YBEeSO2TB",
+    "docNumber": "HKLSI26110537",
+    "customerName": "The University of Hong Kong -Department of Materials and Energy",
+    "shipToAddress": "香港-港大",
+    "contactName": "Yanpei Song",
+    "status": "",
+    "transportQty": ""
   }
 ]
