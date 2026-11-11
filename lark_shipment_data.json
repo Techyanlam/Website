@@ -88423,5 +88423,23 @@
     "contactName": "Charles Yung",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YDWigsHh1",
+    "docNumber": "HKLSI26110543",
+    "customerName": "The University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "香港-港大",
+    "contactName": "Dr Aspen Chen",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YDWjeaMSJ",
+    "docNumber": "HKLSI26110544",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
