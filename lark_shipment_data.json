@@ -88459,5 +88459,41 @@
     "contactName": "Charles Yung",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YHjbBCvDt",
+    "docNumber": "HKLSI26110550",
+    "customerName": "APT Pharma Limited",
+    "shipToAddress": "九龍-觀塘",
+    "contactName": "Amy Mak",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YHl6seLUP",
+    "docNumber": "HKLSI26110551",
+    "customerName": "City University of Hong Kong – Department of Infectious Diseases and Public Health",
+    "shipToAddress": "九龍-城大",
+    "contactName": "KHINE Nwai Oo",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YHl7p9Qly",
+    "docNumber": "HKLSI26110552",
+    "customerName": "Lee Kum Kee Co Ltd.",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Tommy Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YHl7p6ABN",
+    "docNumber": "HKLSI26110553",
+    "customerName": "Wycombe Abbey School Hong Kong(Kowloon)",
+    "shipToAddress": "九龍-九龍城",
+    "contactName": "Mr Tse Yuk Man",
+    "status": "",
+    "transportQty": ""
   }
 ]
