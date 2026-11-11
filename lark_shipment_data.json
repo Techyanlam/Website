@@ -88378,5 +88378,50 @@
     "contactName": "Yanpei Song",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YCX2K7lJQ",
+    "docNumber": "HKLSI26110538",
+    "customerName": "Hong Kong Police Force",
+    "shipToAddress": "香港-灣仔",
+    "contactName": "Yeung Chi Shing",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YCX4VZwLY",
+    "docNumber": "HKLSI26110539",
+    "customerName": "Hong Kong Metropolitan University",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "Chau Yat Sing",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YCX4VZX70",
+    "docNumber": "HKLSI26110540",
+    "customerName": "The University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "香港-港大",
+    "contactName": "Kelly Lee",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YCX4VYtoj",
+    "docNumber": "HKLSI26110541",
+    "customerName": "The Chinese University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "新界-中大",
+    "contactName": "Mr. KY Kwong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YCX4VZHB6",
+    "docNumber": "HKLSI26110542",
+    "customerName": "Hong Kong Jockey Club",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Charles Yung",
+    "status": "",
+    "transportQty": ""
   }
 ]
