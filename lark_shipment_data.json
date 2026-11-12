@@ -88534,6 +88534,51 @@
   },
   {
     "recordId": "reczz28YZuRTnPSZ",
+    "docNumber": "HKLDN26100662",
+    "customerName": "Government Laboratory - Supplies Section",
+    "shipToAddress": "Government Laboratory - CM Section\n4/F, Government Chinese Medicine Testing Institute, 3 Pak Shing Kok Road, Tseung Kwan O",
+    "contactName": "Ms Lai",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YZw3WJ0FF",
+    "docNumber": "HKLSI26110569",
+    "customerName": "City University of Hong Kong - Department of Materials Science and Engineering ",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Joonas Ryssy",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YZw3WJuaS",
+    "docNumber": "HKLSI26110571",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YZw3WL4Ca",
+    "docNumber": "HKLSI26110572",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YaJfqgEmv",
+    "docNumber": "HKLSI26110573",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YaJgUprL3",
     "docNumber": "",
     "customerName": "",
     "shipToAddress": "",
