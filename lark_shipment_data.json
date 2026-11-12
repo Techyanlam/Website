@@ -88648,5 +88648,41 @@
     "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YiTdk1eZX",
+    "docNumber": "HKLSI26110602",
+    "customerName": "Vitasoy International Holdings Limited",
+    "shipToAddress": "新界-屯門",
+    "contactName": "Ella Hui",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YiTevpZe2",
+    "docNumber": "HKLSI26110604",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr Eric Sze",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YiTevtL2K",
+    "docNumber": "HKLSI26110607",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Jianzhi Zheng",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YiTevpQn2",
+    "docNumber": "HKLSI26110615",
+    "customerName": "The Hong Kong Polytechnic University - Department of Electrical and Electronic Engineering",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
   }
 ]
