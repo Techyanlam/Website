@@ -88458,7 +88458,7 @@
     "shipToAddress": "新界-沙田",
     "contactName": "Charles Yung",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28YHjbBCvDt",
@@ -88579,10 +88579,28 @@
   },
   {
     "recordId": "reczz28YaJgUprL3",
-    "docNumber": "",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "docNumber": "HKLSI26110574",
+    "customerName": "Hong Kong Baptist University - Department of Chemistry",
+    "shipToAddress": "九龍-浸大",
+    "contactName": "Qi MIAO",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YbYLuDUIW",
+    "docNumber": "HKLSI26110575",
+    "customerName": "Hong Kong Baptist University - Department of Chemistry",
+    "shipToAddress": "九龍-浸大",
+    "contactName": "Mr. Mak",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YbYLuEr5W",
+    "docNumber": "HKLSI26110577",
+    "customerName": "The Hong Kong Polytechnic University - School of Fashion and Textiles",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
   }
