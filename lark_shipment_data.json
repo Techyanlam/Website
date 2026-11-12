@@ -88612,5 +88612,41 @@
     "contactName": "Simon Lee",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Yh8gNXcTG",
+    "docNumber": "HKLSI26110585",
+    "customerName": "Hong Kong Baptist University - School of Chinese Medicine",
+    "shipToAddress": "九龍-浸大",
+    "contactName": "Ku Chuen Fai",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Yh8hJEN7O",
+    "docNumber": "HKLSI26110586",
+    "customerName": "The University of Hong Kong - Department of Electrical and Computer Engineering",
+    "shipToAddress": "香港-港大",
+    "contactName": "Qiyu Cao",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Yh8hJEdHy",
+    "docNumber": "HKLSI26110587",
+    "customerName": "The Hong Kong Polytechnic University - Department of Industrial and System Engineering",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28Yh8hJF1Gv",
+    "docNumber": "HKLSI26110588",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
   }
 ]
