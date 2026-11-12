@@ -87999,7 +87999,7 @@
     "shipToAddress": "新界-荃灣",
     "contactName": "Wang Kang Lai",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28XpIfX9Tpz",
@@ -88601,6 +88601,15 @@
     "customerName": "The Hong Kong Polytechnic University - School of Fashion and Textiles",
     "shipToAddress": "九龍-理大",
     "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YeYaK3qi5",
+    "docNumber": "HKLSI26110578",
+    "customerName": "The Dairy Farm Company Limited",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Simon Lee",
     "status": "",
     "transportQty": ""
   }
