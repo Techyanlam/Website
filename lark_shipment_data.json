@@ -88864,5 +88864,23 @@
     "contactName": "Marco Cheung",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YzDpUL9Lb",
+    "docNumber": "HKLSI26110617",
+    "customerName": "Lingnan University-Division of Science",
+    "shipToAddress": "新界-屯門",
+    "contactName": "Novia Minh-Chau Kayfetz-Vuong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28YzDqSm3iQ",
+    "docNumber": "HKLSI26110618",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
