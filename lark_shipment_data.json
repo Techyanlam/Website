@@ -89031,26 +89031,26 @@
     "recordId": "reczz28Z44kIm7uk",
     "docNumber": "HKLDN26110491",
     "customerName": "Labware (Macau) Company Limited",
-    "shipToAddress": "",
-    "contactName": "",
+    "shipToAddress": "OS-Macau",
+    "contactName": "OS-Macau",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28Z44kIoXZ6",
     "docNumber": "HKLDN26110506",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Labware (Macau) Company Limited",
+    "shipToAddress": "OS-Macau",
+    "contactName": "OS-Macau",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28Z44kIpXi8",
     "docNumber": "HKLSI26110634",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The University of Hong Kong - Department of Mechanical Engineering",
+    "shipToAddress": "香港大學黃克兢樓215室",
+    "contactName": "Mr. YIP, Pak San",
     "status": "",
     "transportQty": ""
   }
