@@ -89107,5 +89107,41 @@
     "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aGr68vy0I",
+    "docNumber": "HKLSI26110642",
+    "customerName": "N-Techem International Co., Ltd.",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Muzammil Katheeb",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aGr6zW5in",
+    "docNumber": "HKLSI26110644",
+    "customerName": "The Hong Kong Polytechnic University - Department of Life Science (LS)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aGr6zVfN4",
+    "docNumber": "HKLSI26110645",
+    "customerName": "The Hong Kong Polytechnic University - Department of Industrial and System Engineering",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aGr6zUCrx",
+    "docNumber": "HKLSI26110646",
+    "customerName": "The University of Hong Kong - Department of Mechanical Engineering",
+    "shipToAddress": "香港-港大",
+    "contactName": "Zhou Yihao",
+    "status": "",
+    "transportQty": ""
   }
 ]
