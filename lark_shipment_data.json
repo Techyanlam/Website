@@ -84768,7 +84768,7 @@
     "shipToAddress": "香港-山頂",
     "contactName": "Denise Lam",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28T2ox0HZ8y",
@@ -89049,7 +89049,7 @@
     "recordId": "reczz28Z44kIpXi8",
     "docNumber": "HKLSI26110634",
     "customerName": "The University of Hong Kong - Department of Mechanical Engineering",
-    "shipToAddress": "香港大學黃克兢樓215室",
+    "shipToAddress": "香港-港大",
     "contactName": "Mr. YIP, Pak San",
     "status": "",
     "transportQty": ""
@@ -89069,6 +89069,24 @@
     "customerName": "Chevalier (Envirotech) Limited",
     "shipToAddress": "新界-小蠔灣",
     "contactName": "Jacky LEE",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aFQ8C8acV",
+    "docNumber": "HKLSI26110637",
+    "customerName": "The University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "香港-港大",
+    "contactName": "Kaida JIA (CYMC204)",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aFQJ4dJsP",
+    "docNumber": "HKLSI26110638",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
