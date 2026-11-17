@@ -89674,5 +89674,122 @@
     "contactName": "Anson Chu",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRgUk1oT",
+    "docNumber": "HKLSI26110712",
+    "customerName": "QIMA Testing (HK) Limited",
+    "shipToAddress": "九龍-觀塘",
+    "contactName": "Kevin Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7nIYO",
+    "docNumber": "HKLSI26110713",
+    "customerName": "Castco Testing Centre Limited",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Hiu Yat Lau",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7pP01",
+    "docNumber": "HKLSI26110714",
+    "customerName": "Vitasoy International Holdings Limited",
+    "shipToAddress": "新界-屯門",
+    "contactName": "Ella Hui",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7npSz",
+    "docNumber": "HKLSI26110715",
+    "customerName": "Geotechnics & Concrete Engineering (HK) Ltd.",
+    "shipToAddress": "九龍-新蒲崗",
+    "contactName": "Kevin Gu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7nPTY",
+    "docNumber": "HKLSI26110716",
+    "customerName": "Kowloon West Cluster - Princess Margaret Hospital",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "MR BEN HO",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7oe4D",
+    "docNumber": "HKLSI26110717",
+    "customerName": "Quality Pro Test-Consult Ltd.",
+    "shipToAddress": "新界-火炭",
+    "contactName": "Biamka Chu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7nUdE",
+    "docNumber": "HKLSI26110718",
+    "customerName": "Quality Pro Test-Consult Ltd.",
+    "shipToAddress": "新界-火炭",
+    "contactName": "Biamka Chu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7lwd9",
+    "docNumber": "HKLSI26110719",
+    "customerName": "Enviro Labs Limited",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Koo Tsz Ching",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7p5ts",
+    "docNumber": "HKLSI26110720",
+    "customerName": "Government Laboratory-Strategic and Development Section",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "YUEN Chung Fai",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7mVKO",
+    "docNumber": "HKLSI26110721",
+    "customerName": "Government Laboratory - Trade Descriptions Section",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Hung Yuet Wah",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7mChk",
+    "docNumber": "HKLSI26110722",
+    "customerName": "TUV Rheinland Hong Kong Limited - Organic Department",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Jason Tsang",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7nYdO",
+    "docNumber": "HKLSI26110723",
+    "customerName": "The Hong Kong and China Gas Company Limited",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Mr CK Li",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28agRn7mUM9",
+    "docNumber": "HKLSI26110724",
+    "customerName": "Government Laboratory -  Product Testing & Dutiable Commodities Section (PTDC Section)",
+    "shipToAddress": "九龍-九龍灣",
+    "contactName": "Yan Yee Man Isabel",
+    "status": "",
+    "transportQty": ""
   }
 ]
