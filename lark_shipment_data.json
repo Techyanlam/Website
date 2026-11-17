@@ -89503,5 +89503,68 @@
     "contactName": "Mr Kelvin CHEN",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aeCyqcVBy",
+    "docNumber": "HKLSI26110691",
+    "customerName": "CTC Asia (Hong Kong) Limited",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Cheung Kam Kwan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aeCznsL67",
+    "docNumber": "HKLSI26110692",
+    "customerName": "CMA Industrial Development Foundation Limited",
+    "shipToAddress": "新界-火炭",
+    "contactName": "Sprite Ho",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aeCzntzCt",
+    "docNumber": "HKLSI26110693",
+    "customerName": "UL VS Hong Kong Limited - Chemical Department",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Ms Joanne Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aeCzntrDr",
+    "docNumber": "HKLSI26110694",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Mr. Crane Tsang",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aeCzntRBk",
+    "docNumber": "HKLSI26110695",
+    "customerName": "ALS Technichem (HK) Pty Limited - Organic",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Cora Cheng",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aeHCYeqkf",
+    "docNumber": "HKLSI26110696",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aeHDKLa1x",
+    "docNumber": "HKLSI26110697",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
