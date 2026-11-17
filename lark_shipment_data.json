@@ -89566,5 +89566,95 @@
     "contactName": "Xiaoyang Zhou, PI: Hui Zhang",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28afKHKxBh9",
+    "docNumber": "HKLSI26110698",
+    "customerName": "Soy-Sky Farmtech Co., Ltd.",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Kathy Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28afKIIbTDY",
+    "docNumber": "HKLSI26110700",
+    "customerName": "Water Supplies Department",
+    "shipToAddress": "新界-馬鞍山",
+    "contactName": "Mr. Wong KF",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28afKNJSWb9",
+    "docNumber": "HKLSI26110701",
+    "customerName": "Mongolian Minerals Pte Ltd. ",
+    "shipToAddress": "香港-黃竹坑",
+    "contactName": "James Rodriguez de Castro",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28afKOSLslm",
+    "docNumber": "HKLSI26110702",
+    "customerName": "The Hong Kong University of Science and Technology - Division of Life Science",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Francis Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28afKToFy3p",
+    "docNumber": "HKLSI26110703",
+    "customerName": "Singapore International School (Hong Kong)",
+    "shipToAddress": "香港-黃竹坑",
+    "contactName": "Coey Ho",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28afKUekYpe",
+    "docNumber": "HKLSI26110704",
+    "customerName": "St. Rose of Lima's College",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Hilary KWOK",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28afKUel9tu",
+    "docNumber": "HKLSI26110705",
+    "customerName": "Sawwing Conservation Limited",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Emma Lau",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28afKUelN5W",
+    "docNumber": "HKLSI26110706",
+    "customerName": "The Hong Kong University of Science and Technology -Biosciences Central Research Facility",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Haity Ngan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28afKUeiy7P",
+    "docNumber": "HKLSI26110707",
+    "customerName": "The Hong Kong University of Science and Technology -Biosciences Central Research Facility",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Haity Ngan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28afKYjTPoi",
+    "docNumber": "HKLSI26110708",
+    "customerName": "Lingnan University-Division of Science",
+    "shipToAddress": "新界-嶺南大學",
+    "contactName": "Chun Wai Ng",
+    "status": "",
+    "transportQty": ""
   }
 ]
