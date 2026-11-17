@@ -89656,5 +89656,23 @@
     "contactName": "Chun Wai Ng",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28affNdcIkA",
+    "docNumber": "HKLSI26110709",
+    "customerName": "Department of Health - Government Chinese Medicines Testing Institute",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Ms Cynthia KWONG / Mr. Franky CHO",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28affOYrp0s",
+    "docNumber": "HKLSI26110710",
+    "customerName": "Hong Kong Productivity Council - Green Living and Innovation Division (GID)",
+    "shipToAddress": "九龍-九龍塘",
+    "contactName": "Anson Chu",
+    "status": "",
+    "transportQty": ""
   }
 ]
