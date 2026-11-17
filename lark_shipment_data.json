@@ -89220,7 +89220,43 @@
     "recordId": "reczz28aYdj7BVig",
     "docNumber": "HKLSI26110657",
     "customerName": "JetreQ Components (HK) Co., Limited",
-    "shipToAddress": "香港新界荃灣橫龍街78-84號正好工業大廈10/FD,D05",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Colin Chen",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aYsgn5i64",
+    "docNumber": "HKLDN26110553",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aYsheGd4y",
+    "docNumber": "HKLDN26110554",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aYsheDp7h",
+    "docNumber": "HKLDN26110555",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aYsheCzeW",
+    "docNumber": "HKLSI26110661",
+    "customerName": "",
+    "shipToAddress": "",
     "contactName": "",
     "status": "",
     "transportQty": ""
