@@ -89490,16 +89490,25 @@
     "recordId": "reczz28adSkJbYPe",
     "docNumber": "HKLDN26110586",
     "customerName": "Department of Health - Government Chinese Medicines Testing Institute",
-    "shipToAddress": "",
-    "contactName": "",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Mr Kelvin CHEN",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28adSkJazJV",
     "docNumber": "HKLDN26110567",
+    "customerName": "Department of Health - Government Chinese Medicines Testing Institute",
+    "shipToAddress": "1/F, Government Chinese Medicines Testing Institute, 3 Pak Shing Kok Road, Tseung Kwan O, New Territories",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28adbHdsuJP",
+    "docNumber": "",
     "customerName": "",
-    "shipToAddress": "",
+    "shipToAddress": "- DN for delivery",
     "contactName": "",
     "status": "",
     "transportQty": ""
