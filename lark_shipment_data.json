@@ -89908,5 +89908,23 @@
     "contactName": "Edwin Shum",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28b4ue6ZiCV",
+    "docNumber": "HKLSI26110742",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Alan Lam",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28b4uf3xnak",
+    "docNumber": "HKLSI26110743",
+    "customerName": "City University of Hong Kong - Finance Office (Procurement)",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Ivy Cheung",
+    "status": "",
+    "transportQty": ""
   }
 ]
