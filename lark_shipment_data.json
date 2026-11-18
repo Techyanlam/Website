@@ -89845,5 +89845,41 @@
     "contactName": "Kevin Gu",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aztnJaBv4",
+    "docNumber": "HKLSI26110732",
+    "customerName": "The Hong Kong University of Science and Technology - Department of CLS",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Simon Yip Ka Ming",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aztoIZgh2",
+    "docNumber": "HKLDN26110591",
+    "customerName": "Drainage Services Department",
+    "shipToAddress": "九龍-長沙灣",
+    "contactName": "Vivien Lee",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28aztoIXJdI",
+    "docNumber": "HKLSI26110734",
+    "customerName": "Centre for Virology, Vaccinology and Therapeutics Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Jessica Tsang",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28azv0U9x2m",
+    "docNumber": "HKLSI26110735",
+    "customerName": "Food and Environmental Hygiene Department, Centre for Food Safety, Food Chemistry Section",
+    "shipToAddress": "新界-文錦渡",
+    "contactName": "Mr. Terry Lee",
+    "status": "",
+    "transportQty": ""
   }
 ]
