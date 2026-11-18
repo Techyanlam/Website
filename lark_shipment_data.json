@@ -89822,18 +89822,18 @@
   {
     "recordId": "reczz28ayahquRX7",
     "docNumber": "HKLSI26110728",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Canadian International School of Hong Kong Limited",
+    "shipToAddress": "香港-香港仔",
+    "contactName": "Billy Leung",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28ayahqtaHD",
     "docNumber": "HKLDN26110617",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The University of Hong Kong - Faculty of Dentistry",
+    "shipToAddress": "香港-西營盤",
+    "contactName": "Seki Lam",
     "status": "",
     "transportQty": ""
   }
