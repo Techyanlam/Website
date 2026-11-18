@@ -89890,5 +89890,23 @@
     "contactName": "Ms. Helen Poon (PI: Prof. TK Tsui)",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28b3g5OsYWo",
+    "docNumber": "HKLSI26110739",
+    "customerName": "International College Hong Kong",
+    "shipToAddress": "新界-沙頭角",
+    "contactName": "Sophie FUNG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28b3g6OP1Su",
+    "docNumber": "HKLSI26110741",
+    "customerName": "San Miguel Brewery HK Ltd.",
+    "shipToAddress": "新界-元朗",
+    "contactName": "Edwin Shum",
+    "status": "",
+    "transportQty": ""
   }
 ]
