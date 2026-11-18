@@ -89881,5 +89881,14 @@
     "contactName": "Mr. Terry Lee",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28b1xVO19Vv",
+    "docNumber": "HKLSI26110736",
+    "customerName": "The Chinese University of Hong Kong - School of Life Sciences",
+    "shipToAddress": "新界-中大",
+    "contactName": "Ms. Helen Poon (PI: Prof. TK Tsui)",
+    "status": "",
+    "transportQty": ""
   }
 ]
