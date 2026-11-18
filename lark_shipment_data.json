@@ -89791,5 +89791,23 @@
     "contactName": "Yan Yee Man Isabel",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28ax22pCFk5",
+    "docNumber": "HKLSI26110725",
+    "customerName": "The Hong Kong Polytechnic University - Department of Life Science (LS)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "KIN HO LAW",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28ax23s4F6V",
+    "docNumber": "HKLSI26110726",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
