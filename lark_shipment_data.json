@@ -89971,5 +89971,23 @@
     "contactName": "Sandra Chu",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28bOiD7gMeo",
+    "docNumber": "HKLSI26110754",
+    "customerName": "City University of Hong Kong - State Key Laboratory of Marine Environmental Health (SKLMEH)",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Mr. Aaron NG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28bOiE07ID1",
+    "docNumber": "HKLSI26110755",
+    "customerName": "The Hong Kong Polytechnic University - Department of PHYSICS & MATERIALS (PM)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
   }
 ]
