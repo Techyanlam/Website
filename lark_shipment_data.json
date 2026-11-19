@@ -89989,5 +89989,23 @@
     "contactName": "Ken Chan",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28bS34zOG3h",
+    "docNumber": "HKLSI26110756",
+    "customerName": "The Hong Kong Polytechnic University - Department of Biomedical Engineering and Sports Technology(BEST)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Ken Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28bS35xXY2Q",
+    "docNumber": "HKLSI26110757",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
