@@ -90021,7 +90021,7 @@
     "recordId": "reczz28bTdRgchLh",
     "docNumber": "HKLSI26110750",
     "customerName": "HK YOUXIANG AVIATION SERVICES COMPANY LIMITED ",
-    "shipToAddress": "Unit 12, 13/F, AFFC, No. 2 Chun Wan Road, Chek Lap Kok, Hong Kong ",
+    "shipToAddress": "新界-大嶼山",
     "contactName": "kutman chan ",
     "status": "",
     "transportQty": ""
@@ -90029,9 +90029,9 @@
   {
     "recordId": "reczz28bTdSYDVS4",
     "docNumber": "HKLSI26110762",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The University of Hong Kong - Department of Mechanical Engineering",
+    "shipToAddress": "香港-港大",
+    "contactName": "Han Gao",
     "status": "",
     "transportQty": ""
   }
