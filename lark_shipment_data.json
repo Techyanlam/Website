@@ -90142,5 +90142,41 @@
     "contactName": "Rebecca Wong",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28bnmuUPAwd",
+    "docNumber": "HKLSI26110776",
+    "customerName": "The Hong Kong University of Science and Technology - Department of CLS",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Simon Yip Ka Ming",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28bnmvLgELz",
+    "docNumber": "HKLSI26110777",
+    "customerName": "Hong Kong Baptist University - School of Chinese Medicine",
+    "shipToAddress": "新界-科學園",
+    "contactName": "David Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28bnmvLfymh",
+    "docNumber": "HKLSI26110778",
+    "customerName": "The Hong Kong Polytechnic University - Centralised Animal Facilities (CAF)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "CHAU, ManHuen Bonnie",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28bnmvLfr4P",
+    "docNumber": "HKLSI26110779",
+    "customerName": "The University of Hong Kong - School of Biomedical Sciences",
+    "shipToAddress": "香港-港大",
+    "contactName": "Gloria Tse",
+    "status": "",
+    "transportQty": ""
   }
 ]
