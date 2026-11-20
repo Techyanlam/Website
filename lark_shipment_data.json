@@ -90006,7 +90006,7 @@
     "shipToAddress": "新界-荃灣",
     "contactName": "Cyrus Lau",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28bSdnAACo7",
@@ -90015,7 +90015,7 @@
     "shipToAddress": "新界-科學園",
     "contactName": "Joey Lee",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28bTdRgchLh",
@@ -90113,6 +90113,33 @@
     "customerName": "Hong Kong Police Force",
     "shipToAddress": "香港-灣仔",
     "contactName": "Yeung Chi Shing",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28bn4dgK63K",
+    "docNumber": "HKLSI26110772",
+    "customerName": "The University of Hong Kong - Department of Materials and Energy",
+    "shipToAddress": "香港-港大",
+    "contactName": "Yanpei Song",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28bn4eqF2hm",
+    "docNumber": "HKLSI26110773",
+    "customerName": "The University of Hong Kong - School of Biological Sciences",
+    "shipToAddress": "香港-港大",
+    "contactName": "Ms. Tse Mei Ying, Iris",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28bn4eqFJCF",
+    "docNumber": "HKLSI26110774",
+    "customerName": "City University of Hong Kong- Farm",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Rebecca Wong",
     "status": "",
     "transportQty": ""
   }
