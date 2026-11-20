@@ -90088,5 +90088,32 @@
     "contactName": "Dr Ling Lam",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28blU3ZqtsX",
+    "docNumber": "HKLSI26110767",
+    "customerName": "The Hong Kong University of Science and Technology - Division of Life Science",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Jason Tam",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28blU4d7Mio",
+    "docNumber": "HKLSI26110768",
+    "customerName": "Hong Kong Police Force",
+    "shipToAddress": "香港-灣仔",
+    "contactName": "Yeung Chi Shing",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28blU4dD9OL",
+    "docNumber": "HKLSI26110770",
+    "customerName": "Hong Kong Police Force",
+    "shipToAddress": "香港-灣仔",
+    "contactName": "Yeung Chi Shing",
+    "status": "",
+    "transportQty": ""
   }
 ]
