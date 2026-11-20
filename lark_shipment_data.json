@@ -90074,9 +90074,18 @@
   {
     "recordId": "reczz28blGi7OkBz",
     "docNumber": "HKLSI26110769",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "ALS Technichem (HK) Pty Limited - Environmental Department",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "May Pang",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28blRXvLgkH",
+    "docNumber": "HKLSI26110771",
+    "customerName": "The Hong Kong Polytechnic University - School of Fashion and Textiles",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Dr Ling Lam",
     "status": "",
     "transportQty": ""
   }
