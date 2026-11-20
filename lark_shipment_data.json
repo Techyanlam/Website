@@ -90047,27 +90047,27 @@
   {
     "recordId": "reczz28blGgfJBWW",
     "docNumber": "HKLSI26110764",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hong Kong Baptist University - Department of Chemistry",
+    "shipToAddress": "九龍-浸大",
+    "contactName": "Qi MIAO",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28blGi7NWvV",
     "docNumber": "HKLDN26110516",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": " Yee Lim office ",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Winnie",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28blGi7NolU",
     "docNumber": "HKLSI26110766",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "City University of Hong Kong - Finance Office (Procurement)",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Chemical Receipt Point",
     "status": "",
     "transportQty": ""
   },
