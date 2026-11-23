@@ -90258,7 +90258,7 @@
     "shipToAddress": "新界-屯門",
     "contactName": "Sophie",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28cxlGZLBvG",
@@ -90303,7 +90303,7 @@
     "shipToAddress": "九龍-九龍塘",
     "contactName": "Ricky Lee",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28d0ea2ONun",
@@ -90312,7 +90312,7 @@
     "shipToAddress": "九龍-伊利沙伯醫院",
     "contactName": "Mr. Frankie Ip",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28d0eeUuyD8",
@@ -90321,7 +90321,7 @@
     "shipToAddress": "新界-大埔",
     "contactName": "Alice Chow",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28d0ekQRVau",
@@ -90330,7 +90330,7 @@
     "shipToAddress": "新界-科學園",
     "contactName": "Thirteen Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "3"
   },
   {
     "recordId": "reczz28d0eouqwzr",
@@ -90339,7 +90339,7 @@
     "shipToAddress": "新界-火炭",
     "contactName": "Sprite Ho",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28d0epktCGf",
@@ -90357,7 +90357,7 @@
     "shipToAddress": "新界-沙田",
     "contactName": "Sze Ki Hung",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28d2NdGDhwK",
@@ -90366,7 +90366,7 @@
     "shipToAddress": "新界-粉嶺",
     "contactName": "Mr Terry Fon",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28d2NeXB4Zf",
@@ -90375,6 +90375,6 @@
     "shipToAddress": "九龍-九龍城",
     "contactName": "Viola Ting",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   }
 ]
