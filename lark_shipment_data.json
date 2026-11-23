@@ -90250,5 +90250,50 @@
     "contactName": "Ms. So Wing Wa, Oscar",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28cxixX34GG",
+    "docNumber": "HKLSI26110798",
+    "customerName": "Lingnan University-Division of Science",
+    "shipToAddress": "新界-屯門",
+    "contactName": "Sophie",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28cxlGZLBvG",
+    "docNumber": "HKLSI26110783",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28cxlHkDLq8",
+    "docNumber": "HKLSI26110784",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28cxlHkFSTR",
+    "docNumber": "HKLSI26110786",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28cxlHkG4Ht",
+    "docNumber": "HKLSI26110787",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
