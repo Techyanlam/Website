@@ -90042,7 +90042,7 @@
     "shipToAddress": "新界-元朗",
     "contactName": "Sandra Chu",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28blGgfJBWW",
@@ -90051,7 +90051,7 @@
     "shipToAddress": "九龍-浸大",
     "contactName": "Qi MIAO",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28blGi7NWvV",
@@ -90060,7 +90060,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Winnie",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28blGi7NolU",
@@ -90069,7 +90069,7 @@
     "shipToAddress": "九龍-城大",
     "contactName": "Chemical Receipt Point",
     "status": "",
-    "transportQty": ""
+    "transportQty": "3"
   },
   {
     "recordId": "reczz28blGi7OkBz",
@@ -90078,7 +90078,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "May Pang",
     "status": "",
-    "transportQty": ""
+    "transportQty": "13"
   },
   {
     "recordId": "reczz28blRXvLgkH",
@@ -90141,7 +90141,7 @@
     "shipToAddress": "新界-大埔",
     "contactName": "Rebecca Wong",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28bnmuUPAwd",
@@ -90150,7 +90150,7 @@
     "shipToAddress": "九龍-科大",
     "contactName": "Simon Yip Ka Ming",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28bnmvLgELz",
@@ -90159,7 +90159,7 @@
     "shipToAddress": "新界-科學園",
     "contactName": "David Wong",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28bnmvLfymh",
@@ -90192,7 +90192,7 @@
     "recordId": "reczz28cvxQwo4xJ",
     "docNumber": "HKLSI26110780",
     "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
-    "shipToAddress": "九龍-荔枝角",
+    "shipToAddress": "Cancelled",
     "contactName": "Brian Tse",
     "status": "",
     "transportQty": ""
@@ -90213,7 +90213,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Roy",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28cvxRwwfnP",
@@ -90222,7 +90222,7 @@
     "shipToAddress": "新界-中大",
     "contactName": "Bowie Ng",
     "status": "",
-    "transportQty": ""
+    "transportQty": "3"
   },
   {
     "recordId": "reczz28cvxRwxZU4",
@@ -90293,6 +90293,60 @@
     "customerName": "The University of Hong Kong - School of Public Health",
     "shipToAddress": "香港-灣仔",
     "contactName": "Jade YAO",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28d0eUpfz6K",
+    "docNumber": "HKLSI26110804",
+    "customerName": "Hong Kong Productivity Council - EMD",
+    "shipToAddress": "九龍-九龍塘",
+    "contactName": "Ricky Lee",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28d0ea2ONun",
+    "docNumber": "HKLSI26110805",
+    "customerName": "Electrical and Mechanical Services Department",
+    "shipToAddress": "九龍-伊利沙伯醫院",
+    "contactName": "Mr. Frankie Ip",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28d0eeUuyD8",
+    "docNumber": "HKLSI26110806",
+    "customerName": "Hong Kong Standards and Testing Centre - Food, Chemical and Pharmaceutical Service Division",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Alice Chow",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28d0ekQRVau",
+    "docNumber": "HKLSI26110807",
+    "customerName": "Hong Kong Applied Science and Technology Research Institute Company Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Thirteen Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28d0eouqwzr",
+    "docNumber": "HKLSI26110809",
+    "customerName": "CMA Industrial Development Foundation Limited",
+    "shipToAddress": "新界-火炭",
+    "contactName": "Sprite Ho",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28d0epktCGf",
+    "docNumber": "HKLSI26110810",
+    "customerName": "The University of Hong Kong - School of Biomedical Sciences",
+    "shipToAddress": "School of Biomedical Sciences\nRm L3-12, 3/F Laboratory Blk\nLKS Faculty of Medicine, 21 Sassoon Rd, HK",
+    "contactName": "Eric Chau",
     "status": "",
     "transportQty": ""
   }
