@@ -90186,6 +90186,69 @@
     "shipToAddress": "新界-青衣",
     "contactName": "Thomas Cheung",
     "status": "",
+    "transportQty": "2"
+  },
+  {
+    "recordId": "reczz28cvxQwo4xJ",
+    "docNumber": "HKLSI26110780",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Brian Tse",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28cvxRwyA1I",
+    "docNumber": "HKLSI26110781",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28cvxRwxZz6",
+    "docNumber": "HKLDN26110685",
+    "customerName": "Labware (Macau) Company Limited",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Roy",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28cvxRwwfnP",
+    "docNumber": "HKLSI26110785",
+    "customerName": "The Chinese University of Hong Kong - Division of Biomedical Engineering",
+    "shipToAddress": "新界-中大",
+    "contactName": "Bowie Ng",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28cvxRwxZU4",
+    "docNumber": "HKLSI26110788",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28cvxRwys1h",
+    "docNumber": "HKLSI26110789",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28cvxRwzChK",
+    "docNumber": "HKLSI26110790",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
     "transportQty": ""
   }
 ]
