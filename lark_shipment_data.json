@@ -90358,5 +90358,23 @@
     "contactName": "Sze Ki Hung",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28d2NdGDhwK",
+    "docNumber": "HKLSI26110817",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr Terry Fon",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28d2NeXB4Zf",
+    "docNumber": "HKLSI26110818",
+    "customerName": "Hong Kong Eye Hospital",
+    "shipToAddress": "九龍-九龍城",
+    "contactName": "Viola Ting",
+    "status": "",
+    "transportQty": ""
   }
 ]
