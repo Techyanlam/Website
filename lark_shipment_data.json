@@ -90632,9 +90632,18 @@
   {
     "recordId": "reczz28dLDe0HNV1",
     "docNumber": "HKLSI26120012",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hong Kong Light-Emitting Molecular Materials Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Bobby",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dLJ8eVjn5",
+    "docNumber": "HKLSI26110860",
+    "customerName": "Eurofins MTS Consumer Product Testing Hong Kong Limited",
+    "shipToAddress": "九龍-長沙灣",
+    "contactName": "Kenneth Lau",
     "status": "",
     "transportQty": ""
   }
