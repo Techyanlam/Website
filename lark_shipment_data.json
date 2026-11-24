@@ -90552,7 +90552,7 @@
     "recordId": "reczz28dKdWvA0z8",
     "docNumber": "LALDN26090039 ",
     "customerName": "Government Laboratory - Trace Elements Section",
-    "shipToAddress": "九龍-何文田",
+    "shipToAddress": "香港-柴灣",
     "contactName": "Dr. LEE Wan-waan",
     "status": "",
     "transportQty": ""
@@ -90560,18 +90560,18 @@
   {
     "recordId": "reczz28dKdWv76Dh",
     "docNumber": "LALDN26110009 ",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Government Laboratory - Trace Elements Section",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "Miss Pak ",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28dKdWv7c6I",
     "docNumber": "LALDN26110010",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Government Laboratory - Trace Elements Section",
+    "shipToAddress": "香港-柴灣",
+    "contactName": "Dr. LEE Wan-waan",
     "status": "",
     "transportQty": ""
   },
