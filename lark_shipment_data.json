@@ -90893,27 +90893,27 @@
   {
     "recordId": "reczz28dPk1QzdXM",
     "docNumber": "HKLSI26110880",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "GERMAN SWISS INTERNATIONAL SCHOOL",
+    "shipToAddress": "香港-山頂",
+    "contactName": "Denise Lam",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28dPk2CssG8",
     "docNumber": "HKLSI26110881",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "City University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "九龍-城大",
+    "contactName": "HE Shuhan ",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28dPk2CtbKz",
     "docNumber": "HKLSI26110882",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Lingnan University-Division of Science",
+    "shipToAddress": "新界-屯門",
+    "contactName": "Novia Minh-Chau Kayfetz-Vuong",
     "status": "",
     "transportQty": ""
   }
