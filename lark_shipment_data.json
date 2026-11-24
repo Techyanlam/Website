@@ -90750,8 +90750,17 @@
     "recordId": "reczz28dMs2F3YxX",
     "docNumber": "HKLSI26110867",
     "customerName": "GLS GLOBAL LAB SOLUTIONS PVT LTD",
-    "shipToAddress": "\nUnit 315-316-317, 3rd Floor, Tower A, Plot No. 4B",
+    "shipToAddress": "OS-Indonesia",
     "contactName": "Niranjan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dN9GhM24A",
+    "docNumber": "HKLSI26110873",
+    "customerName": "Electrical and Mechanical Services Department",
+    "shipToAddress": "新界-大圍",
+    "contactName": "Ng Kwan Leong",
     "status": "",
     "transportQty": ""
   }
