@@ -90646,5 +90646,68 @@
     "contactName": "Kenneth Lau",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMix9Vcg8",
+    "docNumber": "HKLSI26110863",
+    "customerName": "Hydro Kalon Limited",
+    "shipToAddress": "新界-青衣",
+    "contactName": "Adam Lam",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMiy23sz7",
+    "docNumber": "HKLSI26110866",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMjRzPvJS",
+    "docNumber": "HKLSI26110868",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMjSlouU2",
+    "docNumber": "HKLSI26110869",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMjSllcg5",
+    "docNumber": "HKLSI26110870",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMjSlo203",
+    "docNumber": "HKLSI26110871",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMjSlmzrd",
+    "docNumber": "HKLSI26110872",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
