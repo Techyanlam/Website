@@ -90659,42 +90659,60 @@
   {
     "recordId": "reczz28dMiy23sz7",
     "docNumber": "HKLSI26110866",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Polytechnic University - School of Fashion and Textiles",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Chen Zhechang",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28dMjRzPvJS",
     "docNumber": "HKLSI26110868",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr Eric Sze",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28dMjSlouU2",
     "docNumber": "HKLSI26110869",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The University of Hong Kong - Department of Materials and Energy",
+    "shipToAddress": "香港-港大",
+    "contactName": "Yanpei Song",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28dMjSllcg5",
     "docNumber": "HKLSI26110870",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong Polytechnic University - Department of Chemistry (CH)",
+    "shipToAddress": "九龍-理大",
+    "contactName": "CHAN, Chi Ho Roy",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28dMjSlo203",
     "docNumber": "HKLSI26110871",
+    "customerName": "City University of Hong Kong - Department of Biomedical Sciences",
+    "shipToAddress": "九龍-城大",
+    "contactName": "Miss PAU Fiona",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMjSlmzrd",
+    "docNumber": "HKLSI26110872",
+    "customerName": "API Lab Testing Limited",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Cyrus Lau",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMs1HOEOa",
+    "docNumber": "HKLSI26110861",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
@@ -90702,8 +90720,35 @@
     "transportQty": ""
   },
   {
-    "recordId": "reczz28dMjSlmzrd",
-    "docNumber": "HKLSI26110872",
+    "recordId": "reczz28dMs2F2JYD",
+    "docNumber": "HKLSI26110862",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMs2F2h2K",
+    "docNumber": "HKLSI26110864",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMs2F4p8r",
+    "docNumber": "HKLSI26110865",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dMs2F3YxX",
+    "docNumber": "HKLSI26110867",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
