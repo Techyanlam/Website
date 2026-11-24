@@ -90829,7 +90829,88 @@
   },
   {
     "recordId": "reczz28dPeEBHZGY",
-    "docNumber": "",
+    "docNumber": "HKLSI26110885",
+    "customerName": "Lee Kum Kee Co Ltd.",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Edmond Mok",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dPjTTuGlz",
+    "docNumber": "HKLSI26110886",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department ",
+    "shipToAddress": "九龍-荔枝角",
+    "contactName": "Chan Wai Sum",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dPjTTwh74",
+    "docNumber": "HKLSI26110887",
+    "customerName": "API Lab Testing Limited",
+    "shipToAddress": "新界-荃灣",
+    "contactName": "Tim Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dPjTTw0TI",
+    "docNumber": "HKLSI26110889",
+    "customerName": "SGS Hong Kong Limited - Central Chemical Laboratory",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr Eric Sze",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dPjtzZh39",
+    "docNumber": "HKLSI26110876",
+    "customerName": "Wai Fat Pharmaceutical Laboratory LTD.",
+    "shipToAddress": "九龍-觀塘",
+    "contactName": "Ronald Wong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dPjuo2Y3I",
+    "docNumber": "HKLSI26110877",
+    "customerName": "The Hong Kong University of Science and Technology - Department of Civil Engineering",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Senali Withanachchi ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dPjuo1wVa",
+    "docNumber": "HKLSI26110879",
+    "customerName": "Chu Suk Ching ",
+    "shipToAddress": "香港-鰂魚涌",
+    "contactName": "Fanny Chu ",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dPk1QzdXM",
+    "docNumber": "HKLSI26110880",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dPk2CssG8",
+    "docNumber": "HKLSI26110881",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dPk2CtbKz",
+    "docNumber": "HKLSI26110882",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
