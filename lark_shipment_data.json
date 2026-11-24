@@ -90384,7 +90384,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Sheila Tsang",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28dKdWvAgT9",
@@ -90393,7 +90393,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Sheila Tsang",
     "status": "",
-    "transportQty": ""
+    "transportQty": "3"
   },
   {
     "recordId": "reczz28dKdWvAUa9",
@@ -90914,6 +90914,60 @@
     "customerName": "Lingnan University-Division of Science",
     "shipToAddress": "新界-屯門",
     "contactName": "Novia Minh-Chau Kayfetz-Vuong",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dQxOSrKV4",
+    "docNumber": "HKLDN26110765",
+    "customerName": "The Hong Kong Polytechnic University - Department of Civil and Environmental Engineering",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Amy Ho Sze Man",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dQxPLGtG4",
+    "docNumber": "HKLSI26110893",
+    "customerName": "Department of Health - Government Chinese Medicines Testing Institute",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Ms Carmen LAW",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dQxPLGonL",
+    "docNumber": "HKLSI26110894",
+    "customerName": "Europharm Laboratoires Co. Limited",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Mr. Choi Wai Lun",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dR2WI3O8A",
+    "docNumber": "HKLSI26110892",
+    "customerName": "Hong Kong Science and Technology Parks Corporation",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Hebe Li",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dR2XDXVIC",
+    "docNumber": "HKLSI26110895",
+    "customerName": "Government Laboratory -  Product Testing & Dutiable Commodities Section (PTDC Section)",
+    "shipToAddress": "九龍-九龍灣",
+    "contactName": "Enrique Kwan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dR2XDUdhm",
+    "docNumber": "HKLSI26110896",
+    "customerName": "Synco (Hong Kong) Ltd",
+    "shipToAddress": "新界-大埔",
+    "contactName": "Vincent Ng",
     "status": "",
     "transportQty": ""
   }
