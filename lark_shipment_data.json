@@ -90820,10 +90820,19 @@
   },
   {
     "recordId": "reczz28dPLYOoGKj",
-    "docNumber": "HKLSI26110890",
+    "docNumber": "HKLDN26110792",
     "customerName": "Center for Chinese Herbal Medicine Drug Development (CDD)",
     "shipToAddress": "新界-科學園",
     "contactName": "Hilman Chan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dPeEBHZGY",
+    "docNumber": "",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
