@@ -90979,5 +90979,68 @@
     "contactName": "Juon Kiu Lee / Lucia Liu",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dRM2NfyAg",
+    "docNumber": "HKLSI26110900",
+    "customerName": "The University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "香港-港大",
+    "contactName": "Yinian Tang",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dRM3GllRG",
+    "docNumber": "HKLSI26110903",
+    "customerName": "Centre for Virology, Vaccinology and Therapeutics Limited",
+    "shipToAddress": "新界-科學園",
+    "contactName": "Dr Raven Kok / Michael Chow",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dRM3Gl526",
+    "docNumber": "HKLDN26110412",
+    "customerName": "Department of Health - Government Chinese Medicines Testing Institute",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Ms Tracy Lai Chui-ying",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dRQRvjnQp",
+    "docNumber": "HKLSI26110898",
+    "customerName": "Castco Testing Centre Limited",
+    "shipToAddress": "新界-粉嶺",
+    "contactName": "Mr KK Au",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dRQdLowXh",
+    "docNumber": "HKLSI26110899",
+    "customerName": "ALS Technichem (HK) Pty Limited - Organic",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Douglas Yu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dRQeRvtDZ",
+    "docNumber": "HKLSI26110901",
+    "customerName": "ALS Technichem (HK) Pty Limited - Organic",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Cora Cheng",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dRQeRxvNv",
+    "docNumber": "HKLSI26110902",
+    "customerName": "UL VS Hong Kong Limited - Chemical Department",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Ms Joanne Wong",
+    "status": "",
+    "transportQty": ""
   }
 ]
