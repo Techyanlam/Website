@@ -91631,18 +91631,18 @@
   {
     "recordId": "reczz28dpxlwBkDI",
     "docNumber": "HKLDN26110866",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hong Kong Metropolitan University",
+    "shipToAddress": "九龍-何文田",
+    "contactName": "Mr. Arthur Chan",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28dpxlwDpAb",
     "docNumber": "HKLSI26110970",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "HKBU Chinese Medicine Hospital Company Limited",
+    "shipToAddress": "九龍-將軍澳",
+    "contactName": "Ms. Irene HUI / Mr. Eric CHOW / Mr. Raymond YEUNG",
     "status": "",
     "transportQty": ""
   }
