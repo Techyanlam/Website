@@ -91591,5 +91591,32 @@
     "contactName": "Mr Tommy Lee",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dp1aROzsS",
+    "docNumber": "HKLSI26110966",
+    "customerName": "The University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "香港-港大",
+    "contactName": "Liting He",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dp22gmeRs",
+    "docNumber": "HKLSI26120022",
+    "customerName": "Hong Kong Jockey Club",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Charles Yung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dpB2eulGA",
+    "docNumber": "HKLSI26110967",
+    "customerName": "Government Laboratory - Chinese Medicines Section",
+    "shipToAddress": "九龍-石硤尾",
+    "contactName": "Lai Mei Kuen",
+    "status": "",
+    "transportQty": ""
   }
 ]
