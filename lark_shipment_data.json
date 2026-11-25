@@ -91406,17 +91406,17 @@
   {
     "recordId": "reczz28dngUOzvhR",
     "docNumber": "HKLSI26110965",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Unicorn Laboratories",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Jessica",
     "status": "",
     "transportQty": ""
   },
   {
     "recordId": "reczz28dnhRIepJz",
     "docNumber": "HKLSI26110940",
-    "customerName": "",
-    "shipToAddress": "",
+    "customerName": "The University Of Hong Kong - Department of Electrical & Electronic Engineering",
+    "shipToAddress": "香港大學周亦卿樓807室",
     "contactName": "",
     "status": "",
     "transportQty": ""
