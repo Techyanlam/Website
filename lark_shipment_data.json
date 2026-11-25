@@ -91618,5 +91618,32 @@
     "contactName": "Lai Mei Kuen",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dpxkNP7Go",
+    "docNumber": "HKLSI26110968",
+    "customerName": "The Hong Kong Polytechnic University - Department of Civil and Environmental Engineering",
+    "shipToAddress": "九龍-理大",
+    "contactName": "Amy Ho Sze Man",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dpxlwBkDI",
+    "docNumber": "HKLDN26110866",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28dpxlwDpAb",
+    "docNumber": "HKLSI26110970",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
