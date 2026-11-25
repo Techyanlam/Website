@@ -91722,8 +91722,8 @@
     "recordId": "reczz28drhfCA9IG",
     "docNumber": "HKLSI26120031",
     "customerName": "The Hong Kong Polytechnic University - Institute of Textiles and Clothing",
-    "shipToAddress": "",
-    "contactName": "",
+    "shipToAddress": "九龍-紅磡",
+    "contactName": "Dr Ling Lam",
     "status": "",
     "transportQty": ""
   },
@@ -91739,9 +91739,9 @@
   {
     "recordId": "reczz28drhkjhzo0",
     "docNumber": "HKLSI26120033",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The Hong Kong University of Science and Technology - Department of CLS",
+    "shipToAddress": "九龍-科大",
+    "contactName": "Simon Yip Ka Ming",
     "status": "",
     "transportQty": ""
   },
@@ -91757,9 +91757,9 @@
   {
     "recordId": "reczz28drhkjgMwM",
     "docNumber": "HKLSI26120035",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "New Territories East Cluster - Prince of Wales Hospital",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Kim Hung",
     "status": "",
     "transportQty": ""
   },
