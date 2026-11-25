@@ -91730,9 +91730,9 @@
   {
     "recordId": "reczz28drhjx5lVq",
     "docNumber": "HKLSI26120032",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hong Kong Baptist University - School of Chinese Medicine",
+    "shipToAddress": "新界-沙田",
+    "contactName": "David Wong",
     "status": "",
     "transportQty": ""
   },
@@ -91748,9 +91748,9 @@
   {
     "recordId": "reczz28drhkjgtAn",
     "docNumber": "HKLSI26120034",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "CUHK Medical Centre",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Tiki Cheng",
     "status": "",
     "transportQty": ""
   },
