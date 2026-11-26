@@ -91794,8 +91794,26 @@
     "recordId": "reczz28eAL1CBDdZ",
     "docNumber": "HKLSI26110977",
     "customerName": "Hong Kong Baptist University - Department of Chemistry",
-    "shipToAddress": "九龍-浸大",
+    "shipToAddress": "九龍-九龍塘",
     "contactName": "Mr. Jim, Eric W H",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eCABbPb4r",
+    "docNumber": "HKLSI26110980",
+    "customerName": "Hong Kong Baptist University - Department of Chemistry",
+    "shipToAddress": "OEW1304, Oen Hall Building West, Ho Sin Hang Campus, Hong Kong Baptist University, 224 Waterloo Road, Kowloon Tong, Hong Kong SAR, China ",
+    "contactName": "Qi MIAO",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eCACNvTXv",
+    "docNumber": "HKLSI26110982",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
