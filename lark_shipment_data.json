@@ -91263,7 +91263,7 @@
     "recordId": "reczz28djDCMstl5",
     "docNumber": "HKLSI26110933",
     "customerName": "Hong Kong Baptist University - Department of Physics",
-    "shipToAddress": "九龍-九龍塘",
+    "shipToAddress": "九龍-浸大",
     "contactName": "Professor Thomas Knopfel",
     "status": "",
     "transportQty": "2"
@@ -91731,7 +91731,7 @@
     "recordId": "reczz28drhjx5lVq",
     "docNumber": "HKLSI26120032",
     "customerName": "Hong Kong Baptist University - School of Chinese Medicine",
-    "shipToAddress": "新界-沙田",
+    "shipToAddress": "新界-科學園",
     "contactName": "David Wong",
     "status": "",
     "transportQty": ""
@@ -91794,7 +91794,7 @@
     "recordId": "reczz28eAL1CBDdZ",
     "docNumber": "HKLSI26110977",
     "customerName": "Hong Kong Baptist University - Department of Chemistry",
-    "shipToAddress": "九龍-九龍塘",
+    "shipToAddress": "九龍-浸大",
     "contactName": "Mr. Jim, Eric W H",
     "status": "",
     "transportQty": ""
@@ -91821,7 +91821,7 @@
     "recordId": "reczz28eDFnry473",
     "docNumber": "HKLDN26100967",
     "customerName": "The University of Hong Kong - AIDS Institute",
-    "shipToAddress": "香港-港大",
+    "shipToAddress": "香港-薄扶林",
     "contactName": "Hallie Kwan",
     "status": "",
     "transportQty": ""
@@ -91832,6 +91832,33 @@
     "customerName": "Agriculture, Fisheries and Conservation Department - Antimicrobial Resistance Surveillance Section - Animal Health Division",
     "shipToAddress": "九龍-啟德",
     "contactName": "Ivy NG",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eEYMwtZNt",
+    "docNumber": "HKLDN26110918",
+    "customerName": "GD",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "Roy",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eEYPAsqpz",
+    "docNumber": "HKLSI26120040",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eEYPApnk1",
+    "docNumber": "HKLSI26120041",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
     "status": "",
     "transportQty": ""
   }
