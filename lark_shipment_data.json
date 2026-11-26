@@ -91803,7 +91803,7 @@
     "recordId": "reczz28eCABbPb4r",
     "docNumber": "HKLSI26110980",
     "customerName": "Hong Kong Baptist University - Department of Chemistry",
-    "shipToAddress": "OEW1304, Oen Hall Building West, Ho Sin Hang Campus, Hong Kong Baptist University, 224 Waterloo Road, Kowloon Tong, Hong Kong SAR, China ",
+    "shipToAddress": "九龍-浸大",
     "contactName": "Qi MIAO",
     "status": "",
     "transportQty": ""
@@ -91811,9 +91811,9 @@
   {
     "recordId": "reczz28eCACNvTXv",
     "docNumber": "HKLSI26110982",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Vitasoy International Holdings Limited",
+    "shipToAddress": "新界-屯門",
+    "contactName": "Terry Yu",
     "status": "",
     "transportQty": ""
   }
