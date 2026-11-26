@@ -90555,7 +90555,7 @@
     "shipToAddress": "香港-柴灣",
     "contactName": "Dr. LEE Wan-waan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "3"
   },
   {
     "recordId": "reczz28dKdWv76Dh",
@@ -90564,7 +90564,7 @@
     "shipToAddress": "九龍-何文田",
     "contactName": "Miss Pak ",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dKdWv7c6I",
@@ -90573,7 +90573,7 @@
     "shipToAddress": "香港-柴灣",
     "contactName": "Dr. LEE Wan-waan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dKdWv7clk",
@@ -90789,7 +90789,7 @@
     "shipToAddress": "九龍-浸大",
     "contactName": "Sophy Pan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28dOvVMo9Jn",
@@ -91814,6 +91814,24 @@
     "customerName": "Vitasoy International Holdings Limited",
     "shipToAddress": "新界-屯門",
     "contactName": "Terry Yu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eDFnry473",
+    "docNumber": "HKLDN26100967",
+    "customerName": "The University of Hong Kong - AIDS Institute",
+    "shipToAddress": "香港-港大",
+    "contactName": "Hallie Kwan",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eDFonZ9Qh",
+    "docNumber": "HKLSI26110984",
+    "customerName": "Agriculture, Fisheries and Conservation Department - Antimicrobial Resistance Surveillance Section - Animal Health Division",
+    "shipToAddress": "九龍-啟德",
+    "contactName": "Ivy NG",
     "status": "",
     "transportQty": ""
   }
