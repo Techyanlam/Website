@@ -86595,7 +86595,7 @@
     "shipToAddress": "新界-上水",
     "contactName": "Chelsea",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28VRP32cnsN",
@@ -90456,7 +90456,7 @@
     "shipToAddress": "新界-中大",
     "contactName": "Mr. Louis Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "10"
   },
   {
     "recordId": "reczz28dKdWv7KwO",
@@ -90582,7 +90582,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Lihui Zhu",
     "status": "",
-    "transportQty": ""
+    "transportQty": "5"
   },
   {
     "recordId": "reczz28dKdWv70mv",
@@ -90591,7 +90591,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Zhu Lihui",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28dKdWv8SdZ",
@@ -90600,7 +90600,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Sarah Chow",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28dKdWv7q53",
@@ -90609,7 +90609,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Sarah Chow",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dLDdAo3or",
@@ -90654,7 +90654,7 @@
     "shipToAddress": "新界-青衣",
     "contactName": "Adam Lam",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dMiy23sz7",
@@ -90663,7 +90663,7 @@
     "shipToAddress": "九龍-理大",
     "contactName": "Chen Zhechang",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dMjRzPvJS",
@@ -90681,7 +90681,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Yanpei Song",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dMjSllcg5",
@@ -90690,7 +90690,7 @@
     "shipToAddress": "九龍-理大",
     "contactName": "CHAN, Chi Ho Roy",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dMjSlo203",
@@ -90762,7 +90762,7 @@
     "shipToAddress": "新界-大圍",
     "contactName": "Ng Kwan Leong",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dOvU7FlpJ",
@@ -90808,15 +90808,6 @@
     "contactName": "Stanley Chow",
     "status": "",
     "transportQty": "3"
-  },
-  {
-    "recordId": "reczz28dOvVMo2um",
-    "docNumber": "HKLSI26110888",
-    "customerName": "Hong Kong Jockey Club",
-    "shipToAddress": "新界-沙田",
-    "contactName": "Teresa Tsang",
-    "status": "",
-    "transportQty": ""
   },
   {
     "recordId": "reczz28dPLYOoGKj",
@@ -90888,7 +90879,7 @@
     "shipToAddress": "香港-鰂魚涌",
     "contactName": "Fanny Chu ",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dPk1QzdXM",
@@ -90897,7 +90888,7 @@
     "shipToAddress": "香港-山頂",
     "contactName": "Denise Lam",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dPk2CssG8",
@@ -90924,7 +90915,7 @@
     "shipToAddress": "九龍-理大",
     "contactName": "Amy Ho Sze Man",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dQxPLGtG4",
@@ -91095,7 +91086,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Jiayun SUN",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dTH8oe5ms",
@@ -91104,7 +91095,7 @@
     "shipToAddress": "香港-上環",
     "contactName": "Monica Yip",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dTH9oLmRc",
@@ -91113,7 +91104,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Qiyu Cao",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dTH9oLLac",
@@ -91122,7 +91113,7 @@
     "shipToAddress": "香港-柴灣",
     "contactName": "Ms LO King-chi",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dTHGQuqKR",
@@ -91131,7 +91122,7 @@
     "shipToAddress": "九龍-理大",
     "contactName": "Ken Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dTHMOKdXO",
@@ -91167,7 +91158,7 @@
     "shipToAddress": "香港-柴灣",
     "contactName": "Ms Lydia Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dTHTXCj1M",
@@ -91176,7 +91167,7 @@
     "shipToAddress": "九龍-理大",
     "contactName": "Ken Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dTHUSAiIR",
@@ -91239,7 +91230,7 @@
     "shipToAddress": "香港-柴灣",
     "contactName": "NG Chi Yung",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dTHUS9Eu3",
@@ -91419,7 +91410,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Zhiwei Long",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhSER5CH",
@@ -91428,7 +91419,7 @@
     "shipToAddress": "九龍-科大",
     "contactName": "PI Yuzhe",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhSES1er",
@@ -91437,7 +91428,7 @@
     "shipToAddress": "新界-科學園",
     "contactName": "Ben Wong Tin Yan / Zhang Lichun ",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhSERm4K",
@@ -91446,7 +91437,7 @@
     "shipToAddress": "九龍-觀塘",
     "contactName": "Amy Mak",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28dnhSESUcF",
@@ -91455,7 +91446,7 @@
     "shipToAddress": "九龍-理大",
     "contactName": "Ken Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhSEPApE",
@@ -91464,7 +91455,7 @@
     "shipToAddress": "九龍-理大",
     "contactName": "Ken Chan ",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhblt9hd",
@@ -91473,7 +91464,7 @@
     "shipToAddress": "新界-沙田",
     "contactName": "Ms. Lee Hing Yi",
     "status": "",
-    "transportQty": ""
+    "transportQty": "8"
   },
   {
     "recordId": "reczz28dnhcjWSAD",
@@ -91482,7 +91473,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Cecily Law",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhjXXUl0",
@@ -91491,7 +91482,7 @@
     "shipToAddress": "新界-火炭",
     "contactName": "Lau wing Kwong , Samson",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhkKCo8c",
@@ -91500,7 +91491,7 @@
     "shipToAddress": "九龍-聖德肋撒醫院",
     "contactName": "Ms. Cheung ",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhkKFZhq",
@@ -91509,7 +91500,7 @@
     "shipToAddress": "九龍-聖德肋撒醫院",
     "contactName": "Ms. Cheung ",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhkKEqYQ",
@@ -91518,7 +91509,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Kelly Lee",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhkKGGZu",
@@ -91527,7 +91518,7 @@
     "shipToAddress": "九龍-浸大",
     "contactName": "Andrew ZHUANG",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhkKDoJO",
@@ -91536,7 +91527,7 @@
     "shipToAddress": "新界-粉嶺",
     "contactName": "Shing / Alex Yip",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhkKEEvS",
@@ -91545,7 +91536,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Xin Liang",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhoNUMQV",
@@ -91554,7 +91545,7 @@
     "shipToAddress": "新界-粉嶺",
     "contactName": "Mr KK Au",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhsxjyPV",
@@ -91563,7 +91554,7 @@
     "shipToAddress": "香港-黃竹坑",
     "contactName": "Leung Wai Yuk Karina",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhtfh2T2",
@@ -91572,7 +91563,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Mr Ho",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dnhxlRc7b",
@@ -91581,7 +91572,7 @@
     "shipToAddress": "新界-中大",
     "contactName": "Mr. KY Kwong",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dni2ExDD4",
@@ -91590,7 +91581,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Mr Tommy Lee",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dp1aROzsS",
@@ -91599,7 +91590,7 @@
     "shipToAddress": "香港-港大",
     "contactName": "Liting He",
     "status": "",
-    "transportQty": ""
+    "transportQty": "3"
   },
   {
     "recordId": "reczz28dp22gmeRs",
@@ -91626,7 +91617,7 @@
     "shipToAddress": "九龍-理大",
     "contactName": "Amy Ho Sze Man",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dpxlwBkDI",
@@ -91635,7 +91626,7 @@
     "shipToAddress": "九龍-何文田",
     "contactName": "Mr. Arthur Chan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28dpxlwDpAb",
@@ -91644,7 +91635,7 @@
     "shipToAddress": "九龍-將軍澳",
     "contactName": "Ms. Irene HUI / Mr. Eric CHOW / Mr. Raymond YEUNG",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28drhXIe006",
@@ -91788,7 +91779,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Roy",
     "status": "",
-    "transportQty": ""
+    "transportQty": "3"
   },
   {
     "recordId": "reczz28eAL1CBDdZ",
@@ -91797,7 +91788,7 @@
     "shipToAddress": "九龍-浸大",
     "contactName": "Mr. Jim, Eric W H",
     "status": "",
-    "transportQty": ""
+    "transportQty": "2"
   },
   {
     "recordId": "reczz28eCABbPb4r",
@@ -91806,7 +91797,7 @@
     "shipToAddress": "九龍-浸大",
     "contactName": "Qi MIAO",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28eCACNvTXv",
@@ -91815,7 +91806,7 @@
     "shipToAddress": "新界-屯門",
     "contactName": "Terry Yu",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28eDFnry473",
@@ -91824,7 +91815,7 @@
     "shipToAddress": "香港-薄扶林",
     "contactName": "Hallie Kwan",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28eDFonZ9Qh",
@@ -91833,7 +91824,7 @@
     "shipToAddress": "九龍-啟德",
     "contactName": "Ivy NG",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28eEYMwtZNt",
@@ -91842,7 +91833,7 @@
     "shipToAddress": "新界-葵涌",
     "contactName": "Roy",
     "status": "",
-    "transportQty": ""
+    "transportQty": "1"
   },
   {
     "recordId": "reczz28eEYPAsqpz",
