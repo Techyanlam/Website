@@ -23605,5 +23605,32 @@
     "contactName": "Andrew Leung",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28edcsMgk8b",
+    "docNumber": "HKLSI26120068",
+    "customerName": "Intertek Testing Services Hong Kong Limited - C&E Department",
+    "shipToAddress": "九龍-長沙灣",
+    "contactName": "Clifton Ma",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28edywAQmh7",
+    "docNumber": "HKLSI26120069",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28edyx8hdgS",
+    "docNumber": "HKLSI26120070",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
