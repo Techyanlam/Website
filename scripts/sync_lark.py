@@ -290,8 +290,7 @@ def main():
         print("WARNING: no valid records, aborting to avoid overwriting good data")
         sys.exit(1)
     # 防呆：合併後筆數唔應該比之前少超過一半
-    # TEMP BYPASS 2026-11-27: 已確認 archive 搬走 ~7,600 行，2,616 係正確新數；跑完今次即還原
-    if False and existing and len(data) < len(existing) // 2:
+    if existing and len(data) < len(existing) // 2:
         print(f"WARNING: record count dropped {len(existing)} -> {len(data)}, aborting")
         sys.exit(1)
 
