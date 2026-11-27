@@ -23555,9 +23555,9 @@
   {
     "recordId": "reczz28ebeJDXjSt",
     "docNumber": "HKLSI26120060",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "The University of Hong Kong - Li Ka Shing Faculty of Medicine - Centre for Comparative Medicine Research",
+    "shipToAddress": "香港-港大",
+    "contactName": "Ms Candy C. K. HO",
     "status": "",
     "transportQty": ""
   },
@@ -23565,7 +23565,7 @@
     "recordId": "reczz28ecJU4L9xz",
     "docNumber": "HKLSI26120064",
     "customerName": "Hong Kong Metropolitan University",
-    "shipToAddress": "Room B0309, 3/F, Main Campus,\n30 Good Shepherd Street,\nHo Man Tin, Kowloon, Hong Kong",
+    "shipToAddress": "九龍-何文田",
     "contactName": "Alfred Lee",
     "status": "",
     "transportQty": ""
