@@ -91973,6 +91973,15 @@
   {
     "recordId": "reczz28eXNCKzrIR",
     "docNumber": "HKLSI26120053",
+    "customerName": "Queen Elizabeth School",
+    "shipToAddress": "九龍-旺角",
+    "contactName": "Mr. TS TAN",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eXPFyittu",
+    "docNumber": "",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
