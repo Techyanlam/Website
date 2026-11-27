@@ -23560,5 +23560,23 @@
     "contactName": "",
     "status": "",
     "transportQty": ""
+  },
+  {
+    "recordId": "reczz28ecJU4L9xz",
+    "docNumber": "HKLSI26120064",
+    "customerName": "Hong Kong Metropolitan University",
+    "shipToAddress": "Room B0309, 3/F, Main Campus,\n30 Good Shepherd Street,\nHo Man Tin, Kowloon, Hong Kong",
+    "contactName": "Alfred Lee",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28ecK3pCGvg",
+    "docNumber": "HKLSI26120052",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
   }
 ]
