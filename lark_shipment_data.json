@@ -23627,6 +23627,24 @@
   {
     "recordId": "reczz28edyx8hdgS",
     "docNumber": "HKLSI26120070",
+    "customerName": "The University of Hong Kong - Department of Chemistry",
+    "shipToAddress": "香港-港大",
+    "contactName": "Lihui Zhu",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eeZjgkMgn",
+    "docNumber": "HKLSI26120071",
+    "customerName": "",
+    "shipToAddress": "",
+    "contactName": "",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eeZkVm1q2",
+    "docNumber": "HKLSI26120072",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
