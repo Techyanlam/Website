@@ -91919,6 +91919,60 @@
   {
     "recordId": "reczz28eW85E49gM",
     "docNumber": "HKLSI26120050",
+    "customerName": "Queen Elizabeth Hospital",
+    "shipToAddress": "九龍-九龍灣",
+    "contactName": "Ivan Cheung",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eWnL2twFZ",
+    "docNumber": "HKLDN26110880",
+    "customerName": "東華三院何超蕸檔案及文物中心",
+    "shipToAddress": "新界-葵涌",
+    "contactName": "黃小姐",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eWnMTPTLa",
+    "docNumber": "HKLDN26110816",
+    "customerName": "Labware (Macau) Company Limited",
+    "shipToAddress": "OS-Macau",
+    "contactName": "OS-Macau",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eWnMTPIfl",
+    "docNumber": "HKLDN26110849",
+    "customerName": "Labware (Macau) Company Limited",
+    "shipToAddress": "OS-Macau",
+    "contactName": "OS-Macau",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eWnMTP4R5",
+    "docNumber": "HKLDN26110871",
+    "customerName": "Labware (Macau) Company Limited",
+    "shipToAddress": "OS-Macau",
+    "contactName": "OS-Macau",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eWnMTN8fQ",
+    "docNumber": "HKLSI26120051",
+    "customerName": "The University of Hong Kong - CPOS Bioreagent Core",
+    "shipToAddress": "香港-港大",
+    "contactName": "Aaron Li",
+    "status": "",
+    "transportQty": ""
+  },
+  {
+    "recordId": "reczz28eXNCKzrIR",
+    "docNumber": "HKLSI26120053",
     "customerName": "",
     "shipToAddress": "",
     "contactName": "",
