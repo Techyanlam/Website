@@ -17166,7 +17166,7 @@
     "recordId": "reczz28UiBhVAg7f",
     "docNumber": "HKLSI26110189",
     "customerName": "QIMA Testing (Germany) GmbH",
-    "shipToAddress": "Schleidenstr. 1\n22083 Hamburg",
+    "shipToAddress": "OS-Germany",
     "contactName": "Angela Schultz",
     "status": "",
     "transportQty": "1"
@@ -23573,9 +23573,9 @@
   {
     "recordId": "reczz28ecK3pCGvg",
     "docNumber": "HKLSI26120052",
-    "customerName": "",
-    "shipToAddress": "",
-    "contactName": "",
+    "customerName": "Hong Kong Jockey Club",
+    "shipToAddress": "新界-沙田",
+    "contactName": "Teresa Tsang",
     "status": "",
     "transportQty": ""
   }
